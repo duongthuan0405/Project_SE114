@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ECF3F8"
-    tools:context=".presentation.view.activity.Register">
+    tools:context=".presentation.view.activities.Register">
 
     <ImageButton
         android:id="@+id/btn_Home_Register"

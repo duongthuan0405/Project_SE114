@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="#ECF3F8"
     android:foregroundTint="#070606"
-    tools:context=".presentation.view.activity.Login"
+    tools:context=".presentation.view.activities.Login"
     tools:layout_editor_absoluteX="-34dp"
     tools:layout_editor_absoluteY="-163dp">
 
