@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">TQT_Quiz</string>
+    <string name="app_name">TQT Quiz</string>
+    <string name="logo_description">Logo của ứng dụng</string>
 </resources>
