@@ -1,4 +1,4 @@
-package com.example.tqt_quiz.presentation.view.activity;
+package com.example.tqt_quiz.presentation.view.activities;
 
 import android.os.Bundle;
 import android.widget.Toast;
