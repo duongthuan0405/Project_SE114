@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ECF3F8"
@@ -12,7 +12,7 @@
     tools:layout_editor_absoluteY="-163dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/scrv_Login_Main"
+        android:id="@+id/cl_Login_Login"
         android:layout_width="327dp"
         android:layout_height="385dp"
         android:background="#FFFFFF"
@@ -23,7 +23,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/tv_Register_Reigster"
+            android:id="@+id/tv_Login_Login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="28dp"
@@ -36,7 +36,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/edt_Email_Register"
+            android:id="@+id/edt_Email_Login"
             android:layout_width="300dp"
             android:layout_height="50dp"
             android:layout_marginTop="36dp"
@@ -46,10 +46,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_Register_Reigster" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_Login_Login" />
 
         <EditText
-            android:id="@+id/edt_Pw_Register"
+            android:id="@+id/edt_Pw_Login"
             android:layout_width="300dp"
             android:layout_height="50dp"
             android:layout_marginTop="28dp"
@@ -58,10 +58,10 @@
             android:inputType="textPassword"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edt_Email_Register" />
+            app:layout_constraintTop_toBottomOf="@+id/edt_Email_Login" />
 
         <Button
-            android:id="@+id/btn_Login_Register"
+            android:id="@+id/btn_Login_Login"
             android:layout_width="300dp"
             android:layout_height="50dp"
             android:layout_marginTop="284dp"
@@ -75,7 +75,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tv_NoAccount_Main"
+            android:id="@+id/tv_NoAccount_Login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="340dp"
@@ -86,7 +86,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/btn_Register_Main"
+            android:id="@+id/btn_Register_Login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Đăng ký"
@@ -95,12 +95,12 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.087"
-            app:layout_constraintStart_toEndOf="@+id/tv_NoAccount_Main"
-            app:layout_constraintTop_toBottomOf="@+id/btn_Login_Register"
+            app:layout_constraintStart_toEndOf="@+id/tv_NoAccount_Login"
+            app:layout_constraintTop_toBottomOf="@+id/btn_Login_Login"
             app:layout_constraintVertical_bias="0.193" />
 
         <TextView
-            android:id="@+id/btn_ForgotPw_Main"
+            android:id="@+id/btn_ForgotPw_Login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Quên mật khẩu"
@@ -110,13 +110,13 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.085"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edt_Pw_Register"
+            app:layout_constraintTop_toBottomOf="@+id/edt_Pw_Login"
             app:layout_constraintVertical_bias="0.068" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageButton
-        android:id="@+id/imageButton2"
+        android:id="@+id/btn_Home_Login"
         android:layout_width="115dp"
         android:layout_height="58dp"
         android:backgroundTint="#00FFFFFF"
