@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/Course"
+        android:icon="@drawable/baseline_library_books_24"
+        android:title="Khóa học" />
+    <item
+        android:id="@+id/Quiz"
+        android:icon="@drawable/baseline_quiz_24"
+        android:title="Bài tập" />
+    <item
+        android:id="@+id/Notification"
+        android:icon="@drawable/baseline_notifications_24"
+        android:title="Thông báo" />
+    <item
+        android:id="@+id/Profile"
+        android:icon="@drawable/baseline_person_24"
+        android:title="Tài khoản" />
+</menu>
