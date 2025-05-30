@@ -1,14 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ECF3F8"
     tools:context=".presentation.fragments.CourseFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
+
+    <ImageButton
+        android:id="@+id/btn_Home_Course"
+        android:layout_width="58dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:backgroundTint="#00FFFFFF"
+        android:scaleType="fitXY"
+        android:layout_gravity="start|top"
+        android:src="@drawable/atozalogo"
+        android:contentDescription="@string/logo_description" />
+
+    <EditText
+        android:id="@+id/edt_Find_Course"
+        android:layout_width="324dp"
+        android:layout_height="50dp"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="80dp"
+        android:hint="Tìm kiếm"
+        android:inputType="text"
+        android:background="#FFFFFF"
+        android:ems="10" />
+
+    <TextView
+        android:id="@+id/tv_Course_Course"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="25dp"
+        android:text="KHÓA HỌC"
+        android:textSize="25dp"
+        android:textStyle="bold"/>
+
+
+    <ScrollView
+        android:id="@+id/scrv_Course_Course"
+        android:layout_width="match_parent"
+        android:layout_height="511dp"
+        android:layout_gravity="top"
+        android:layout_marginTop="140dp"
+        android:fillViewport="true">
+
+        <ListView
+            android:id="@+id/lv_Course_Course"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </ScrollView>
 </FrameLayout>
