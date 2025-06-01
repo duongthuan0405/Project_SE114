@@ -5,22 +5,21 @@
 namespace BE.Migrations
 {
     /// <inheritdoc />
-    public partial class InitDB : Migration
+    public partial class Add_TB_AccountType : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "MyTestEntities",
+                name: "AccountType",
                 columns: table => new
                 {
-                    ID = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Age = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<string>(type: "Char(6)", maxLength: 6, nullable: false),
+                    Name = table.Column<string>(type: "NVarChar(20)", maxLength: 20, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MyTestEntities", x => x.ID);
+                    table.PrimaryKey("PK_AccountType", x => x.Id);
                 });
         }
 
@@ -28,7 +27,7 @@ namespace BE.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "MyTestEntities");
+                name: "AccountType");
         }
     }
 }

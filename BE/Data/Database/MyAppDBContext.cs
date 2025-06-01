@@ -26,8 +26,32 @@ namespace BE.Data.Database
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<JoinCourse>(
+                b =>
+                {
+                    b.HasKey(jc => new { jc.AccountID, jc.CourseID, jc.TimeJoin });
+                }
+            );
+
+            modelBuilder.Entity<DetailResult>(
+                b =>
+                {
+                    b.HasKey(dr => new { dr.AnswerId, dr.AttemptQuizId });
+                }
+            );
+
         }
 
-        public DbSet<MyTestEntity> MyTestEntities { get; set; }
+        public DbSet<AccountType> AccountTypes { get; set; }
+        public DbSet<Account> Accounts { get; set; }
+        public DbSet<Course> Courses { get; set; }
+        public DbSet<JoinCourse> JoinCourses { get; set; }
+        public DbSet<Quiz> Quizzes { get; set; }
+        public DbSet<Question> Questions { get; set; }
+        public DbSet<Answer> Answers { get; set; }
+        public DbSet<AttemptQuiz> AttemptQuizzes { get; set; }
+        public DbSet<DetailResult> DetailResults { get; set; }
+        
     }
 }

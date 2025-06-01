@@ -4,6 +4,7 @@ using BE.Data.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BE.Migrations
 {
     [DbContext(typeof(MyAppDBContext))]
-    partial class MyAppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250601150414_Add_TB_Question")]
+    partial class Add_TB_Question
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -77,31 +80,6 @@ namespace BE.Migrations
                     b.ToTable("AccountType");
                 });
 
-            modelBuilder.Entity("BE.Data.Entities.Answer", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasMaxLength(6)
-                        .HasColumnType("Char(6)");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("NVarChar(1000)");
-
-                    b.Property<bool>("IsTrue")
-                        .HasColumnType("Bit");
-
-                    b.Property<string>("QuestionID")
-                        .IsRequired()
-                        .HasColumnType("Char(6)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("QuestionID");
-
-                    b.ToTable("Answer");
-                });
-
             modelBuilder.Entity("BE.Data.Entities.AttemptQuiz", b =>
                 {
                     b.Property<string>("Id")
@@ -162,21 +140,6 @@ namespace BE.Migrations
                     b.HasIndex("HostId");
 
                     b.ToTable("Course");
-                });
-
-            modelBuilder.Entity("BE.Data.Entities.DetailResult", b =>
-                {
-                    b.Property<string>("AnswerId")
-                        .HasColumnType("Char(6)");
-
-                    b.Property<string>("AttemptQuizId")
-                        .HasColumnType("Char(6)");
-
-                    b.HasKey("AnswerId", "AttemptQuizId");
-
-                    b.HasIndex("AttemptQuizId");
-
-                    b.ToTable("DetailResults");
                 });
 
             modelBuilder.Entity("BE.Data.Entities.JoinCourse", b =>
@@ -264,17 +227,6 @@ namespace BE.Migrations
                     b.Navigation("OAccountType");
                 });
 
-            modelBuilder.Entity("BE.Data.Entities.Answer", b =>
-                {
-                    b.HasOne("BE.Data.Entities.Question", "OQuestion")
-                        .WithMany("LAnswers")
-                        .HasForeignKey("QuestionID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("OQuestion");
-                });
-
             modelBuilder.Entity("BE.Data.Entities.AttemptQuiz", b =>
                 {
                     b.HasOne("BE.Data.Entities.Account", "OAccount")
@@ -301,25 +253,6 @@ namespace BE.Migrations
                         .HasForeignKey("HostId");
 
                     b.Navigation("OHost");
-                });
-
-            modelBuilder.Entity("BE.Data.Entities.DetailResult", b =>
-                {
-                    b.HasOne("BE.Data.Entities.Answer", "OAnswer")
-                        .WithMany("LDetailResults")
-                        .HasForeignKey("AnswerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BE.Data.Entities.AttemptQuiz", "OAttemptQuiz")
-                        .WithMany("LDetailResults")
-                        .HasForeignKey("AttemptQuizId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("OAnswer");
-
-                    b.Navigation("OAttemptQuiz");
                 });
 
             modelBuilder.Entity("BE.Data.Entities.JoinCourse", b =>
@@ -370,26 +303,11 @@ namespace BE.Migrations
                     b.Navigation("LOwnCourses");
                 });
 
-            modelBuilder.Entity("BE.Data.Entities.Answer", b =>
-                {
-                    b.Navigation("LDetailResults");
-                });
-
-            modelBuilder.Entity("BE.Data.Entities.AttemptQuiz", b =>
-                {
-                    b.Navigation("LDetailResults");
-                });
-
             modelBuilder.Entity("BE.Data.Entities.Course", b =>
                 {
                     b.Navigation("LJoinCourses");
 
                     b.Navigation("LQuizes");
-                });
-
-            modelBuilder.Entity("BE.Data.Entities.Question", b =>
-                {
-                    b.Navigation("LAnswers");
                 });
 
             modelBuilder.Entity("BE.Data.Entities.Quiz", b =>

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BE.Migrations
 {
     [DbContext(typeof(MyAppDBContext))]
-    [Migration("20250530101427_Init DB")]
+    [Migration("20250531164528_InitDB")]
     partial class InitDB
     {
         /// <inheritdoc />
@@ -23,25 +23,6 @@ namespace BE.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("BE.Data.Entities.MyTestEntity", b =>
-                {
-                    b.Property<string>("ID")
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<int>("Age")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("MyTestEntities");
-                });
 #pragma warning restore 612, 618
         }
     }
