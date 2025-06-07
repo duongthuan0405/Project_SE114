@@ -11,8 +11,8 @@ namespace BE.Data.Entities
     public class Course
     {
         [Key]
-        [Column(TypeName = "Char(6)")]
-        [MinLength(6), MaxLength(6)]
+        [Column(TypeName = "Char(10)")]
+        [MinLength(10), MaxLength(10)]
         public string Id { get; set; }
 
         [Required]

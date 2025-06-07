@@ -11,8 +11,8 @@ namespace BE.Data.Entities
     public class AccountType
     {
         [Key]
-        [Column(TypeName = "Char(6)")]
-        [MinLength(6), MaxLength(6)]
+        [Column(TypeName = "Char(10)")]
+        [MinLength(10), MaxLength(10)]
         public string Id { get; set; }
 
         [Required]
@@ -20,6 +20,6 @@ namespace BE.Data.Entities
         [MaxLength(20)]
         public string Name { get; set; }
         
-        //public List<Account> LAccounts { get; set; } = new List<Account>();
+        public List<Account> LAccounts { get; set; } = new List<Account>();
     }
 }

@@ -12,15 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BE.Migrations
 {
     [DbContext(typeof(MyAppDBContext))]
-    [Migration("20250601150414_Add_TB_Question")]
-    partial class Add_TB_Question
+    [Migration("20250607154319_Build DB")]
+    partial class BuildDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.5")
+                .HasAnnotation("ProductVersion", "8.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -28,21 +28,16 @@ namespace BE.Migrations
             modelBuilder.Entity("BE.Data.Entities.Account", b =>
                 {
                     b.Property<string>("Id")
-                        .HasMaxLength(6)
-                        .HasColumnType("Char(6)");
+                        .HasMaxLength(10)
+                        .HasColumnType("Char(10)");
 
                     b.Property<string>("AccountTypeId")
                         .IsRequired()
-                        .HasColumnType("Char(6)");
+                        .HasColumnType("Char(10)");
 
                     b.Property<string>("Avatar")
                         .HasMaxLength(3000)
                         .HasColumnType("VarChar(3000)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(60)
-                        .HasColumnType("VarChar(60)");
 
                     b.Property<string>("FirstName")
                         .HasMaxLength(20)
@@ -52,11 +47,6 @@ namespace BE.Migrations
                         .HasMaxLength(40)
                         .HasColumnType("NVarChar(40)");
 
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("VarChar(25)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AccountTypeId");
@@ -64,11 +54,32 @@ namespace BE.Migrations
                     b.ToTable("Account");
                 });
 
+            modelBuilder.Entity("BE.Data.Entities.AccountAuthen", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(10)
+                        .HasColumnType("Char(10)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("VarChar(60)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("VarChar(25)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AccountAuthen");
+                });
+
             modelBuilder.Entity("BE.Data.Entities.AccountType", b =>
                 {
                     b.Property<string>("Id")
-                        .HasMaxLength(6)
-                        .HasColumnType("Char(6)");
+                        .HasMaxLength(10)
+                        .HasColumnType("Char(10)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -80,15 +91,40 @@ namespace BE.Migrations
                     b.ToTable("AccountType");
                 });
 
+            modelBuilder.Entity("BE.Data.Entities.Answer", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(10)
+                        .HasColumnType("Char(10)");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("NVarChar(1000)");
+
+                    b.Property<bool>("IsTrue")
+                        .HasColumnType("Bit");
+
+                    b.Property<string>("QuestionID")
+                        .IsRequired()
+                        .HasColumnType("Char(10)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuestionID");
+
+                    b.ToTable("Answer");
+                });
+
             modelBuilder.Entity("BE.Data.Entities.AttemptQuiz", b =>
                 {
                     b.Property<string>("Id")
-                        .HasMaxLength(6)
-                        .HasColumnType("Char(6)");
+                        .HasMaxLength(10)
+                        .HasColumnType("Char(10)");
 
                     b.Property<string>("AccountId")
                         .IsRequired()
-                        .HasColumnType("Char(6)");
+                        .HasColumnType("Char(10)");
 
                     b.Property<DateTime>("AttemptTime")
                         .HasColumnType("datetime2");
@@ -98,7 +134,7 @@ namespace BE.Migrations
 
                     b.Property<string>("QuizId")
                         .IsRequired()
-                        .HasColumnType("Char(6)");
+                        .HasColumnType("Char(10)");
 
                     b.HasKey("Id");
 
@@ -112,8 +148,8 @@ namespace BE.Migrations
             modelBuilder.Entity("BE.Data.Entities.Course", b =>
                 {
                     b.Property<string>("Id")
-                        .HasMaxLength(6)
-                        .HasColumnType("Char(6)");
+                        .HasMaxLength(10)
+                        .HasColumnType("Char(10)");
 
                     b.Property<string>("Avatar")
                         .IsRequired()
@@ -125,7 +161,7 @@ namespace BE.Migrations
                         .HasColumnType("NVarChar(100)");
 
                     b.Property<string>("HostId")
-                        .HasColumnType("Char(6)");
+                        .HasColumnType("Char(10)");
 
                     b.Property<bool>("IsPrivate")
                         .HasColumnType("Bit");
@@ -142,13 +178,28 @@ namespace BE.Migrations
                     b.ToTable("Course");
                 });
 
+            modelBuilder.Entity("BE.Data.Entities.DetailResult", b =>
+                {
+                    b.Property<string>("AnswerId")
+                        .HasColumnType("Char(10)");
+
+                    b.Property<string>("AttemptQuizId")
+                        .HasColumnType("Char(10)");
+
+                    b.HasKey("AnswerId", "AttemptQuizId");
+
+                    b.HasIndex("AttemptQuizId");
+
+                    b.ToTable("DetailResults");
+                });
+
             modelBuilder.Entity("BE.Data.Entities.JoinCourse", b =>
                 {
                     b.Property<string>("AccountID")
-                        .HasColumnType("Char(6)");
+                        .HasColumnType("Char(10)");
 
                     b.Property<string>("CourseID")
-                        .HasColumnType("Char(6)");
+                        .HasColumnType("Char(10)");
 
                     b.Property<DateTime>("TimeJoin")
                         .HasColumnType("datetime2");
@@ -166,8 +217,8 @@ namespace BE.Migrations
             modelBuilder.Entity("BE.Data.Entities.Question", b =>
                 {
                     b.Property<string>("Id")
-                        .HasMaxLength(6)
-                        .HasColumnType("Char(6)");
+                        .HasMaxLength(10)
+                        .HasColumnType("Char(10)");
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -175,7 +226,7 @@ namespace BE.Migrations
                         .HasColumnType("NVarChar(1000)");
 
                     b.Property<string>("QuizId")
-                        .HasColumnType("Char(6)");
+                        .HasColumnType("Char(10)");
 
                     b.HasKey("Id");
 
@@ -187,12 +238,12 @@ namespace BE.Migrations
             modelBuilder.Entity("BE.Data.Entities.Quiz", b =>
                 {
                     b.Property<string>("Id")
-                        .HasMaxLength(6)
-                        .HasColumnType("Char(6)");
+                        .HasMaxLength(10)
+                        .HasColumnType("Char(10)");
 
                     b.Property<string>("CourseID")
                         .IsRequired()
-                        .HasColumnType("Char(6)");
+                        .HasColumnType("Char(10)");
 
                     b.Property<string>("Description")
                         .HasMaxLength(100)
@@ -219,12 +270,31 @@ namespace BE.Migrations
             modelBuilder.Entity("BE.Data.Entities.Account", b =>
                 {
                     b.HasOne("BE.Data.Entities.AccountType", "OAccountType")
-                        .WithMany()
+                        .WithMany("LAccounts")
                         .HasForeignKey("AccountTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("BE.Data.Entities.AccountAuthen", "OAccountAuthen")
+                        .WithMany()
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("OAccountAuthen");
+
                     b.Navigation("OAccountType");
+                });
+
+            modelBuilder.Entity("BE.Data.Entities.Answer", b =>
+                {
+                    b.HasOne("BE.Data.Entities.Question", "OQuestion")
+                        .WithMany("LAnswers")
+                        .HasForeignKey("QuestionID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("OQuestion");
                 });
 
             modelBuilder.Entity("BE.Data.Entities.AttemptQuiz", b =>
@@ -253,6 +323,25 @@ namespace BE.Migrations
                         .HasForeignKey("HostId");
 
                     b.Navigation("OHost");
+                });
+
+            modelBuilder.Entity("BE.Data.Entities.DetailResult", b =>
+                {
+                    b.HasOne("BE.Data.Entities.Answer", "OAnswer")
+                        .WithMany("LDetailResults")
+                        .HasForeignKey("AnswerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BE.Data.Entities.AttemptQuiz", "OAttemptQuiz")
+                        .WithMany("LDetailResults")
+                        .HasForeignKey("AttemptQuizId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("OAnswer");
+
+                    b.Navigation("OAttemptQuiz");
                 });
 
             modelBuilder.Entity("BE.Data.Entities.JoinCourse", b =>
@@ -303,11 +392,31 @@ namespace BE.Migrations
                     b.Navigation("LOwnCourses");
                 });
 
+            modelBuilder.Entity("BE.Data.Entities.AccountType", b =>
+                {
+                    b.Navigation("LAccounts");
+                });
+
+            modelBuilder.Entity("BE.Data.Entities.Answer", b =>
+                {
+                    b.Navigation("LDetailResults");
+                });
+
+            modelBuilder.Entity("BE.Data.Entities.AttemptQuiz", b =>
+                {
+                    b.Navigation("LDetailResults");
+                });
+
             modelBuilder.Entity("BE.Data.Entities.Course", b =>
                 {
                     b.Navigation("LJoinCourses");
 
                     b.Navigation("LQuizes");
+                });
+
+            modelBuilder.Entity("BE.Data.Entities.Question", b =>
+                {
+                    b.Navigation("LAnswers");
                 });
 
             modelBuilder.Entity("BE.Data.Entities.Quiz", b =>

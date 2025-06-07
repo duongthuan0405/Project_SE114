@@ -13,19 +13,9 @@ namespace BE.Data.Entities
     public class Account
     {
         [Key]
-        [Column(TypeName = "Char(6)")]
-        [MinLength(6), MaxLength(6)]
+        [Column(TypeName = "Char(10)")]
+        [MinLength(10), MaxLength(10)]
         public string Id { get; set; }
-
-        [Required]
-        [Column(TypeName = "VarChar(60)")]
-        [MaxLength(60)]
-        public string Email { get; set; }
-
-        [Required]
-        [Column(TypeName = "VarChar(25)")]
-        [MinLength(5), MaxLength(25)]
-        public string Password { get; set; }
 
         [Column(TypeName = "NVarChar(40)")]
         [MaxLength(40)]
@@ -45,6 +35,10 @@ namespace BE.Data.Entities
         [ForeignKey("AccountTypeId")]
         [Required]
         public AccountType OAccountType { get; set; }
+
+        [ForeignKey("Id")]
+        [Required]
+        public AccountAuthen OAccountAuthen { get; set; }
         public List<Course> LOwnCourses { get; set; } = new List<Course>();
         public List<JoinCourse> LJoinCourses { get; set; } = new List<JoinCourse>();
         public List<AttemptQuiz> LAttemptQuizzes { get; set; } = new List<AttemptQuiz>();

@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace BE.Data.Entities
 {
-    [Table("Question")]
-    public class Question
+    [Table("AccountAuthen")]
+    public class AccountAuthen
     {
         [Key]
         [Column(TypeName = "Char(10)")]
@@ -16,15 +16,14 @@ namespace BE.Data.Entities
         public string Id { get; set; }
 
         [Required]
-        [Column(TypeName = "NVarChar(1000)")]
-        [MaxLength(1000)]
-        public string Content { get; set; }
+        [Column(TypeName = "VarChar(60)")]
+        [MaxLength(60)]
+        public string Email { get; set; }
 
-        public string? QuizId { get; set; }
+        [Required]
+        [Column(TypeName = "VarChar(25)")]
+        [MinLength(5), MaxLength(25)]
+        public string Password { get; set; }
 
-        [ForeignKey("QuizId")]
-        public Quiz? OQuiz { get; set; }
-
-        public List<Answer> LAnswers { get; set; } = new List<Answer>();
     }
 }
