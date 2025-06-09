@@ -45,6 +45,7 @@ namespace BE.Data.Database
 
         public DbSet<AccountType> AccountTypes { get; set; }
         public DbSet<Account> Accounts { get; set; }
+        public DbSet<AccountAuthen> AccountAuthens  { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<JoinCourse> JoinCourses { get; set; }
         public DbSet<Quiz> Quizzes { get; set; }

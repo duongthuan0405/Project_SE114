@@ -7,6 +7,13 @@ namespace BE.DTOs
 {
     public class AccountTypeDTO
     {
-        string Name { get; set; }
+        public AccountTypeDTO(string name)
+        {
+            Name = name;
+        }
+        public AccountTypeDTO() { }
+
+        public string Name { get; set; }
+
     }
 }

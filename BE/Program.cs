@@ -1,7 +1,13 @@
 
 using BE.Data.Database;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Security.Claims;
+using System.Text;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 
 namespace BE;
 
@@ -12,6 +18,10 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
         string? TQT_Quiz_Connection = builder.Configuration.GetConnectionString("TQT_Quiz_Connection");
 
+        // Đọc cấu hình từ appsetting.json
+        var jwtConfig = builder.Configuration.GetSection("Jwt");
+        var keyBytes  = Encoding.UTF8.GetBytes(jwtConfig["Key"]);
+
         // Make the connection
         builder.Services.AddDbContext<MyAppDBContext>(
             opts => opts.UseSqlServer(TQT_Quiz_Connection)
@@ -19,10 +29,45 @@ public class Program
 
         // CamelCase
         builder.Services.AddControllers().AddJsonOptions(
-            opt => opt.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase
+            opt =>
+            {
+                opt.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+                opt.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
+            }
         );
 
-        Console.WriteLine(TQT_Quiz_Connection ?? "null");
+        // Đăng ký và cấu hình 
+        builder.Services
+                .AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(options =>
+                {
+                    options.RequireHttpsMetadata = true;  
+                    options.SaveToken = true;  
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                    ValidateIssuer = true,
+                    ValidIssuer = jwtConfig["Issuer"],
+
+                    ValidateAudience = true,
+                    ValidAudience = jwtConfig["Audience"],
+
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(keyBytes),
+
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero,
+
+                    NameClaimType = ClaimTypes.NameIdentifier,
+                    RoleClaimType = ClaimTypes.Role
+                    };
+                });
+
+
+        Console.WriteLine(TQT_Quiz_Connection ?? "null");  
 
         // Add services to the container.
         builder.Services.AddAuthorization();
@@ -37,7 +82,29 @@ public class Program
                 Version = "v1",
                 Description = "Tài liệu Swagger cho dự án BE (.NET 8)"
             });
-            // Nếu muốn, bạn có thể cấu hình thêm (security definitions, XML comments,…)
+
+            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Name = "Authorization",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.ApiKey,
+                Scheme = "Bearer",
+                BearerFormat = "JWT",
+                Description = "Nhập ‘Bearer {token}’"
+            });
+
+            options.AddSecurityRequirement(new OpenApiSecurityRequirement {
+            {
+                new OpenApiSecurityScheme {
+                Reference = new OpenApiReference {
+                    Type = ReferenceType.SecurityScheme,
+                    Id   = "Bearer"
+                }
+                },
+                Array.Empty<string>()
+            }
+            });
+           
         });
         
 
@@ -51,31 +118,16 @@ public class Program
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Project_SE114 BE API V1");
+                
             });
+
+            
         }
 
         //app.UseHttpsRedirection();
 
+        app.UseAuthentication(); 
         app.UseAuthorization();
-
-        var summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
-        app.MapGet("/weatherforecast", (HttpContext httpContext) =>
-        {
-            var forecast =  Enumerable.Range(1, 5).Select(index =>
-                new WeatherForecast
-                {
-                    Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                    TemperatureC = Random.Shared.Next(-20, 55),
-                    Summary = summaries[Random.Shared.Next(summaries.Length)]
-                })
-                .ToArray();
-            return forecast;
-        })
-        .WithName("GetWeatherForecast");
 
         app.MapControllers();
         app.Run();

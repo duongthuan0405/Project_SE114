@@ -13,7 +13,6 @@ namespace BE.Data.Entities
         // [Key] ====
         public string CourseID { get; set; }
         public string AccountID { get; set; }
-
         public DateTime TimeJoin { get; set; }
         // =====
         public int State { get; set; }
