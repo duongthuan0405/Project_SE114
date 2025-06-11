@@ -24,7 +24,7 @@ import com.example.tqt_quiz.presentation.presenter.LoginPresenter;
 public class Login extends AppCompatActivity implements LoginContract.IView {
     Button Login;
     EditText Email, Password;
-    TextView Register;
+    TextView Register, ForgotPw;
     LoginPresenter presenter;
     ActivityResultLauncher<Intent> launcher;
 
@@ -41,10 +41,12 @@ public class Login extends AppCompatActivity implements LoginContract.IView {
             return insets;
         });
 
+        //Ánh xạ
         Login = findViewById(R.id.btn_Login_Login);
         Email = findViewById(R.id.edt_Email_ForgotPw);
         Password = findViewById(R.id.edt_Pw_ForgotPw);
         Register = findViewById(R.id.btn_Register_Login);
+        ForgotPw = findViewById(R.id.btn_ForgotPw_Login);
 
         presenter = new LoginPresenter(this);
 
@@ -62,7 +64,11 @@ public class Login extends AppCompatActivity implements LoginContract.IView {
             presenter.LoginClick(account);
         });
 
+        //Thao tác Register Click
         Register.setOnClickListener(v -> presenter.RegisterClick());
+
+        //Thao tác ForgotPw Click
+        ForgotPw.setOnClickListener(v -> presenter.ForgotPasswordClick());
     }
 
     @Override
@@ -79,6 +85,12 @@ public class Login extends AppCompatActivity implements LoginContract.IView {
     @Override
     public void navigateToRegister() {
         Intent intent = new Intent(Login.this, Register.class);
+        launcher.launch(intent);
+    }
+
+    @Override
+    public void navigateToForgotPassword() {
+        Intent intent = new Intent(this, ForgotPassword.class);
         launcher.launch(intent);
     }
 }

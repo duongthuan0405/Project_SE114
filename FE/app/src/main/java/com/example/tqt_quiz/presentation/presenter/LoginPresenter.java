@@ -25,4 +25,9 @@ public class LoginPresenter implements LoginContract.IPresenter {
     public void RegisterClick() {
         view.navigateToRegister();
     }
+
+    @Override
+    public void ForgotPasswordClick() {
+        view.navigateToForgotPassword();
+    }
 }

@@ -9,10 +9,12 @@ public interface LoginContract {
 
         void loginFailed();
         void navigateToRegister();
+        void navigateToForgotPassword();
     }
 
     public interface IPresenter{
         void LoginClick(Account account);
         void RegisterClick();
+        void ForgotPasswordClick();
     }
 }
