@@ -2,7 +2,7 @@
   {
     "ContainingType": "BE.Controller.AccountTypeController",
     "Method": "GetAllAccountType",
-    "RelativePath": "tqtquiz/AccountType",
+    "RelativePath": "tqtquiz/AccountType/accounttypes",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -33,7 +33,17 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "BE.DTOs.LoginResponseDTO",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "BE.Controller.AuthenticationService.AuthenController",
@@ -49,6 +59,42 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "BE.DTOs.RegisterResponseDTO",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BE.Controller.APIService.CourseController",
+    "Method": "GetCoursThatAccountJoin",
+    "RelativePath": "tqtquiz/Course/course/{account_id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "account_id",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[BE.DTOs.CourseDTO, BE, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   }
 ]

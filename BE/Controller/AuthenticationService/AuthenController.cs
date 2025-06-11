@@ -29,7 +29,7 @@ namespace BE.Controller.AuthenticationService
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequestDTO req)
+        public async Task<ActionResult<LoginResponseDTO>> Login([FromBody] LoginRequestDTO req)
         {
             try
             {
@@ -81,7 +81,7 @@ namespace BE.Controller.AuthenticationService
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new LoginResponseDTO()
+                return StatusCode(StatusCodes.Status500InternalServerError, new LoginResponseDTO()
                 {
                     Message = "Lỗi hệ thống: " + ex.Message
                 });
@@ -89,7 +89,7 @@ namespace BE.Controller.AuthenticationService
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterRequestDTO req)
+        public async Task<ActionResult<RegisterResponseDTO>> Register([FromBody] RegisterRequestDTO req)
         {
             try
             {
