@@ -240,10 +240,6 @@
       "LoginResponseDTO": {
         "type": "object",
         "properties": {
-          "message": {
-            "type": "string",
-            "nullable": true
-          },
           "token": {
             "type": "string",
             "nullable": true
@@ -301,10 +297,6 @@
       "RegisterResponseDTO": {
         "type": "object",
         "properties": {
-          "message": {
-            "type": "string",
-            "nullable": true
-          },
           "userId": {
             "type": "string",
             "nullable": true

@@ -87,7 +87,7 @@ namespace BE.Controller.AuthenticationService
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new 
                     {
-                        Message = "Lỗi hệ thống: " + ex.Message
+                        Message = "Lỗi hệ thống khi đăng nhập"
                     }
                 );
             }
@@ -144,7 +144,7 @@ namespace BE.Controller.AuthenticationService
                 await DbContext.SaveChangesAsync();
                 return Ok(new RegisterResponseDTO()
                 {
-                    Message = "Đăng ký thành công",
+                    
                     UserId = newAccount.Id
                 });
             }
@@ -152,7 +152,7 @@ namespace BE.Controller.AuthenticationService
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new
                     {
-                        Message = "Lỗi hệ thống: " + ex.Message
+                        Message = "Lỗi hệ thống khi đăng ký"
                     }
                 );
             }
