@@ -7,7 +7,7 @@ public interface LoginContract {
 
         void loginSuccess();
 
-        void loginFailed();
+        void showLoginError(String message);
         void navigateToRegister();
         void navigateToForgotPassword();
     }

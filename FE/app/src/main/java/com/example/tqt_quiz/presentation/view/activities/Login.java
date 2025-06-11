@@ -78,8 +78,8 @@ public class Login extends AppCompatActivity implements LoginContract.IView {
     }
 
     @Override
-    public void loginFailed() {
-        Toast.makeText(this, "Đăng nhập thất bại!", Toast.LENGTH_SHORT).show();
+    public void showLoginError(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
