@@ -8,10 +8,11 @@ public interface LoginContract {
         void loginSuccess();
 
         void loginFailed();
+        void navigateToRegister();
     }
 
     public interface IPresenter{
-
         void LoginClick(Account account);
+        void RegisterClick();
     }
 }

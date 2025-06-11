@@ -20,4 +20,9 @@ public class LoginPresenter implements LoginContract.IPresenter {
             view.loginFailed();
         }
     }
+
+    @Override
+    public void RegisterClick() {
+        view.navigateToRegister();
+    }
 }

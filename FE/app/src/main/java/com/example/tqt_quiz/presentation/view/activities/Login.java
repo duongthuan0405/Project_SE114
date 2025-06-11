@@ -4,9 +4,9 @@ import android.accounts.Account;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -24,6 +24,7 @@ import com.example.tqt_quiz.presentation.presenter.LoginPresenter;
 public class Login extends AppCompatActivity implements LoginContract.IView {
     Button Login;
     EditText Email, Password;
+    TextView Register;
     LoginPresenter presenter;
     ActivityResultLauncher<Intent> launcher;
 
@@ -33,6 +34,7 @@ public class Login extends AppCompatActivity implements LoginContract.IView {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -42,25 +44,25 @@ public class Login extends AppCompatActivity implements LoginContract.IView {
         Login = findViewById(R.id.btn_Login_Login);
         Email = findViewById(R.id.edt_Email_Login);
         Password = findViewById(R.id.edt_Pw_Login);
+        Register = findViewById(R.id.btn_Register_Login);
 
         presenter = new LoginPresenter(this);
 
+        //Navigate
         launcher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == RESULT_OK) {
-                        Toast.makeText(this, "Trở về từ MainHome", Toast.LENGTH_SHORT).show();
-                    }
-                }
+                result -> {}
         );
 
-
+        //Thao tác Login Click
         Login.setOnClickListener(v -> {
             String email = Email.getText().toString();
             String password = Password.getText().toString();
             Account account = new Account(email, password);
             presenter.LoginClick(account);
         });
+
+        Register.setOnClickListener(v -> presenter.RegisterClick());
     }
 
     @Override
@@ -72,6 +74,12 @@ public class Login extends AppCompatActivity implements LoginContract.IView {
     @Override
     public void loginFailed() {
         Toast.makeText(this, "Đăng nhập thất bại!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void navigateToRegister() {
+        Intent intent = new Intent(Login.this, Register.class);
+        launcher.launch(intent);
     }
 }
 
