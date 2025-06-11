@@ -34,7 +34,11 @@ namespace BE.Controller.APIService
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "Lỗi server khi lấy danh sách khóa học" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new 
+                    {
+                        Message = "Lỗi server khi lấy danh sách khóa học" 
+                    }
+                );
             }
         }
     }

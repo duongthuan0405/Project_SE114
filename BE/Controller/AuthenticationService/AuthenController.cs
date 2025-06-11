@@ -39,10 +39,12 @@ namespace BE.Controller.AuthenticationService
                 AccountAuthen? authen = await DbContext.AccountAuthens.FirstOrDefaultAsync(authen => authen.Email == reqEmail && authen.Password == reqPass);
                 if (authen == null)
                 {
-                    return Unauthorized(new LoginResponseDTO()
-                    {
-                        Message = "Tên đăng nhập hoặc mật khẩu không đúng"
-                    });
+
+                    return StatusCode(StatusCodes.Status401Unauthorized, new
+                        {
+                            Message = "Tên đăng nhập hoặc mật khẩu không đúng"
+                        }
+                    );
                 }
 
                 var UserInfo = await DbContext.Accounts.Join(DbContext.AccountTypes, ac => ac.AccountTypeId, at => at.Id,
@@ -68,23 +70,26 @@ namespace BE.Controller.AuthenticationService
                     signingCredentials: creds
                 );
 
-                return Ok(new LoginResponseDTO
-                {
-                    Message = "Đăng nhập thành công",
-                    Token = new JwtSecurityTokenHandler().WriteToken(token),
-                    Expires = expires,
-                    UserId = UserInfo.ac.Id,
-                    FullName = $"{UserInfo.ac.FirstName} {UserInfo.ac.LastMiddleName}",
-                    Email = authen.Email,
-                    Role = UserInfo.at.Name
-                });
+
+                return StatusCode(StatusCodes.Status200OK,
+                    new LoginResponseDTO
+                    {
+                        Token = new JwtSecurityTokenHandler().WriteToken(token),
+                        Expires = expires,
+                        UserId = UserInfo.ac.Id,
+                        FullName = $"{UserInfo.ac.FirstName} {UserInfo.ac.LastMiddleName}",
+                        Email = authen.Email,
+                        Role = UserInfo.at.Name
+                    }
+                );
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new LoginResponseDTO()
-                {
-                    Message = "Lỗi hệ thống: " + ex.Message
-                });
+                return StatusCode(StatusCodes.Status500InternalServerError, new 
+                    {
+                        Message = "Lỗi hệ thống: " + ex.Message
+                    }
+                );
             }
         }
 
@@ -95,20 +100,22 @@ namespace BE.Controller.AuthenticationService
             {
                 if (string.IsNullOrEmpty(req.Email) || string.IsNullOrEmpty(req.Password) || string.IsNullOrEmpty(req.AccountTypeId))
                 {
-                    return BadRequest(new RegisterResponseDTO()
-                    {
-                        Message = "Email, mật khẩu và loại tài khoản là bắt buộc"
-                    });
+                    return StatusCode(StatusCodes.Status400BadRequest, new
+                        {
+                            Message = "Email, mật khẩu và loại tài khoản là bắt buộc"
+                        }
+                    );
                 }
 
                 var existingAuthen = await DbContext.AccountAuthens.FirstOrDefaultAsync(a => a.Email == req.Email);
 
                 if (existingAuthen != null)
                 {
-                    return Conflict(new RegisterResponseDTO()
-                    {
-                        Message = "Email đã được sử dụng"
-                    });
+                    return StatusCode(StatusCodes.Status409Conflict, new
+                        {
+                            Message = "Email đã được sử dụng"
+                        }
+                    );
                 }
 
                 string id = "";
@@ -143,10 +150,11 @@ namespace BE.Controller.AuthenticationService
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new RegisterResponseDTO()
-                {
-                    Message = "Lỗi hệ thống: " + ex.Message
-                });
+                return StatusCode(StatusCodes.Status500InternalServerError, new
+                    {
+                        Message = "Lỗi hệ thống: " + ex.Message
+                    }
+                );
             }
         }
     }
