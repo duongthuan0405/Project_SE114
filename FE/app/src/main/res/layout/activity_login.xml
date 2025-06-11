@@ -12,7 +12,7 @@
     tools:layout_editor_absoluteY="-163dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_Login_Login"
+        android:id="@+id/cl_ForgotPw_ForgotPw"
         android:layout_width="327dp"
         android:layout_height="385dp"
         android:background="#FFFFFF"
@@ -23,7 +23,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/tv_Login_Login"
+            android:id="@+id/tv_ForgotPw_ForgotPw"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="28dp"
@@ -36,7 +36,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/edt_Email_Login"
+            android:id="@+id/edt_Email_ForgotPw"
             android:layout_width="300dp"
             android:layout_height="50dp"
             android:layout_marginTop="36dp"
@@ -46,10 +46,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_Login_Login" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_ForgotPw_ForgotPw" />
 
         <EditText
-            android:id="@+id/edt_Pw_Login"
+            android:id="@+id/edt_Pw_ForgotPw"
             android:layout_width="300dp"
             android:layout_height="50dp"
             android:layout_marginTop="28dp"
@@ -58,7 +58,7 @@
             android:inputType="textPassword"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edt_Email_Login" />
+            app:layout_constraintTop_toBottomOf="@+id/edt_Email_ForgotPw" />
 
         <Button
             android:id="@+id/btn_Login_Login"
@@ -110,7 +110,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.085"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edt_Pw_Login"
+            app:layout_constraintTop_toBottomOf="@+id/edt_Pw_ForgotPw"
             app:layout_constraintVertical_bias="0.068" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

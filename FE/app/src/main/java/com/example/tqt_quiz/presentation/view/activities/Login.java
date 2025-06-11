@@ -42,8 +42,8 @@ public class Login extends AppCompatActivity implements LoginContract.IView {
         });
 
         Login = findViewById(R.id.btn_Login_Login);
-        Email = findViewById(R.id.edt_Email_Login);
-        Password = findViewById(R.id.edt_Pw_Login);
+        Email = findViewById(R.id.edt_Email_ForgotPw);
+        Password = findViewById(R.id.edt_Pw_ForgotPw);
         Register = findViewById(R.id.btn_Register_Login);
 
         presenter = new LoginPresenter(this);
