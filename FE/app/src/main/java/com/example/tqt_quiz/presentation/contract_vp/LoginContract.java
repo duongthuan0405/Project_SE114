@@ -1,5 +1,7 @@
 package com.example.tqt_quiz.presentation.contract_vp;
 
+import android.accounts.Account;
+
 public interface LoginContract {
     public interface IView{
 
@@ -10,6 +12,6 @@ public interface LoginContract {
 
     public interface IPresenter{
 
-        void LoginClick(User user);
+        void LoginClick(Account account);
     }
 }
