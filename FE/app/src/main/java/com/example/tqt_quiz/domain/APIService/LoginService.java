@@ -8,6 +8,6 @@ import retrofit2.http.Body;
 import retrofit2.http.POST;
 
 public interface LoginService {
-    @POST("tqtquiz/login ")
+    @POST("/tqtquiz/Authen/login")
     Call<LoginResponse> login(@Body AuthenInfo infologin);
 }
