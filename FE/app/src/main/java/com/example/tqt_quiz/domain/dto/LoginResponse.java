@@ -8,11 +8,6 @@ import com.google.gson.annotations.SerializedName;
 import java.time.LocalDateTime;
 
 public class LoginResponse {
-
-    @SerializedName("message")
-    @NonNull
-    private String message;
-
     @SerializedName("token")
     @Nullable
     private String token;
@@ -36,17 +31,6 @@ public class LoginResponse {
     @SerializedName("role")
     @Nullable
     private String role;
-
-    // Getter and Setter for message
-    @NonNull
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(@NonNull String message) {
-        this.message = message;
-    }
-
     // Getter and Setter for token
     public String getToken() {
         return token;
