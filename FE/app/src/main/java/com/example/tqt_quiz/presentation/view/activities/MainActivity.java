@@ -1,6 +1,7 @@
 package com.example.tqt_quiz.presentation.view.activities;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -10,11 +11,18 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.tqt_quiz.R;
+import com.example.tqt_quiz.data.interactor.AuthInteractorIMP;
+import com.example.tqt_quiz.data.repository.Token.TokenManager;
+import com.example.tqt_quiz.domain.dto.LoginResponse;
+import com.example.tqt_quiz.domain.dto.RegisterInfo;
+import com.example.tqt_quiz.domain.interactor.AuthInteract;
 import com.example.tqt_quiz.presentation.contract_vp.MainActitvityContract;
 import com.example.tqt_quiz.presentation.presenter.MainActivityPresenter;
 
 public class MainActivity extends AppCompatActivity implements MainActitvityContract.IView {
     private MainActitvityContract.IPresenter mainActivityPresenter = null;
+    private AuthInteractorIMP interactorIMP=new AuthInteractorIMP();
+    private LoginResponse info=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +36,40 @@ public class MainActivity extends AppCompatActivity implements MainActitvityCont
 
         mainActivityPresenter = new MainActivityPresenter(this);
         mainActivityPresenter.onCreateActivity();
+        TokenManager tokenManager= new TokenManager(getApplicationContext());
+        interactorIMP.Login("1", "1", tokenManager, new AuthInteract.LoginCallBack() {
+            @Override
+            public void onSuccess(LoginResponse response) {
+                info=response;
+                Log.d("LOGIN","DANG NHAP THANH CONG");
+            }
+
+            @Override
+            public void onUnAuthorized() {
+                Log.d("Login","Unauthorized");
+            }
+
+            @Override
+            public void FailedByNotResponse() {
+                Log.d("Login","CannotSendToServer");
+            }
+        });
+        interactorIMP.Register(new RegisterInfo("1", "1", "1", "1", "0000000001"), tokenManager, new AuthInteract.RegCallBack() {
+            @Override
+            public void onSuccess() {
+                Log.d("REG","DANG KY THANH CONG");
+            }
+
+            @Override
+            public void onFailedRegister() {
+                Log.d("REG","DANG KY THAT BAI");
+            }
+
+            @Override
+            public void FailedByNotResponse() {
+                Log.d("REG","KHONG GUI TOI SERVER");
+            }
+        });
     }
 
     @Override

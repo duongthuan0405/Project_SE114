@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "D:\\KTPM2023\\2024_2025_HK2\\SE114_NM_AppMobile\\DoAnCuoiKy\\Project_SE114\\BE\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{0421CB15-ABA9-7BE0-D708-C01FCA13F309}|BE.csproj|d:\\ktpm2023\\2024_2025_hk2\\se114_nm_appmobile\\doancuoiky\\project_se114\\be\\controller\\authenticationservice\\authencontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0421CB15-ABA9-7BE0-D708-C01FCA13F309}|BE.csproj|solutionrelative:controller\\authenticationservice\\authencontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{0421CB15-ABA9-7BE0-D708-C01FCA13F309}|BE.csproj|d:\\ktpm2023\\2024_2025_hk2\\se114_nm_appmobile\\doancuoiky\\project_se114\\be\\dtos\\registerrequestdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0421CB15-ABA9-7BE0-D708-C01FCA13F309}|BE.csproj|solutionrelative:dtos\\registerrequestdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -51,8 +55,25 @@
       "RelativeMoniker": "D:0:0:{0421CB15-ABA9-7BE0-D708-C01FCA13F309}|BE.csproj|solutionrelative:dtos\\loginrequestdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+<<<<<<< HEAD
       "AbsoluteMoniker": "D:0:0:{0421CB15-ABA9-7BE0-D708-C01FCA13F309}|BE.csproj|d:\\ktpm2023\\2024_2025_hk2\\se114_nm_appmobile\\doancuoiky\\project_se114\\be\\dtos\\joincourseresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0421CB15-ABA9-7BE0-D708-C01FCA13F309}|BE.csproj|solutionrelative:dtos\\joincourseresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+=======
+      "AbsoluteMoniker": "D:0:0:{0421CB15-ABA9-7BE0-D708-C01FCA13F309}|BE.csproj|d:\\ktpm2023\\2024_2025_hk2\\se114_nm_appmobile\\doancuoiky\\project_se114\\be\\controller\\apiservice\\accounttypecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0421CB15-ABA9-7BE0-D708-C01FCA13F309}|BE.csproj|solutionrelative:controller\\apiservice\\accounttypecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0421CB15-ABA9-7BE0-D708-C01FCA13F309}|BE.csproj|d:\\ktpm2023\\2024_2025_hk2\\se114_nm_appmobile\\doancuoiky\\project_se114\\be\\controller\\apiservice\\coursecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0421CB15-ABA9-7BE0-D708-C01FCA13F309}|BE.csproj|solutionrelative:controller\\apiservice\\coursecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0421CB15-ABA9-7BE0-D708-C01FCA13F309}|BE.csproj|d:\\ktpm2023\\2024_2025_hk2\\se114_nm_appmobile\\doancuoiky\\project_se114\\be\\constanctvalue\\constantvalue.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0421CB15-ABA9-7BE0-D708-C01FCA13F309}|BE.csproj|solutionrelative:constanctvalue\\constantvalue.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0421CB15-ABA9-7BE0-D708-C01FCA13F309}|BE.csproj|d:\\ktpm2023\\2024_2025_hk2\\se114_nm_appmobile\\doancuoiky\\project_se114\\be\\dtos\\coursedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0421CB15-ABA9-7BE0-D708-C01FCA13F309}|BE.csproj|solutionrelative:dtos\\coursedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+>>>>>>> Models
     },
     {
       "AbsoluteMoniker": "D:0:0:{0421CB15-ABA9-7BE0-D708-C01FCA13F309}|BE.csproj|d:\\ktpm2023\\2024_2025_hk2\\se114_nm_appmobile\\doancuoiky\\project_se114\\be\\data\\entities\\account.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -66,7 +87,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
+<<<<<<< HEAD
           "SelectedChildIndex": 6,
+=======
+          "SelectedChildIndex": 14,
+>>>>>>> Models
           "Children": [
             {
               "$type": "Bookmark",
@@ -82,6 +107,7 @@
               "RelativeToolTip": "Controller\\APIService\\AccountTypesController.cs",
               "ViewState": "AgIAAAwAAAAAAAAAAAAAAAwAAAAXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+<<<<<<< HEAD
               "WhenOpened": "2025-06-12T11:27:49.422Z",
               "EditorCaption": ""
             },
@@ -97,6 +123,45 @@
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-12T10:23:31.967Z",
               "EditorCaption": ""
+=======
+              "WhenOpened": "2025-06-11T09:16:23.819Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "CourseController.cs",
+              "DocumentMoniker": "D:\\KTPM2023\\2024_2025_HK2\\SE114_NM_AppMobile\\DoAnCuoiKy\\Project_SE114\\BE\\Controller\\APIService\\CourseController.cs",
+              "RelativeDocumentMoniker": "Controller\\APIService\\CourseController.cs",
+              "ToolTip": "D:\\KTPM2023\\2024_2025_HK2\\SE114_NM_AppMobile\\DoAnCuoiKy\\Project_SE114\\BE\\Controller\\APIService\\CourseController.cs",
+              "RelativeToolTip": "Controller\\APIService\\CourseController.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAAB4AAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-08T15:38:57.428Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "RegisterResponseDTO.cs",
+              "DocumentMoniker": "D:\\KTPM2023\\2024_2025_HK2\\SE114_NM_AppMobile\\DoAnCuoiKy\\Project_SE114\\BE\\DTOs\\RegisterResponseDTO.cs",
+              "RelativeDocumentMoniker": "DTOs\\RegisterResponseDTO.cs",
+              "ToolTip": "D:\\KTPM2023\\2024_2025_HK2\\SE114_NM_AppMobile\\DoAnCuoiKy\\Project_SE114\\BE\\DTOs\\RegisterResponseDTO.cs",
+              "RelativeToolTip": "DTOs\\RegisterResponseDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-08T15:05:44.744Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "LoginResponseDTO.cs",
+              "DocumentMoniker": "D:\\KTPM2023\\2024_2025_HK2\\SE114_NM_AppMobile\\DoAnCuoiKy\\Project_SE114\\BE\\DTOs\\LoginResponseDTO.cs",
+              "RelativeDocumentMoniker": "DTOs\\LoginResponseDTO.cs",
+              "ToolTip": "D:\\KTPM2023\\2024_2025_HK2\\SE114_NM_AppMobile\\DoAnCuoiKy\\Project_SE114\\BE\\DTOs\\LoginResponseDTO.cs",
+              "RelativeToolTip": "DTOs\\LoginResponseDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-08T14:46:33.431Z"
+>>>>>>> Models
             },
             {
               "$type": "Document",
@@ -130,8 +195,8 @@
               "Title": "AuthenController.cs",
               "DocumentMoniker": "D:\\KTPM2023\\2024_2025_HK2\\SE114_NM_AppMobile\\DoAnCuoiKy\\Project_SE114\\BE\\Controller\\AuthenticationService\\AuthenController.cs",
               "RelativeDocumentMoniker": "Controller\\AuthenticationService\\AuthenController.cs",
-              "ToolTip": "D:\\KTPM2023\\2024_2025_HK2\\SE114_NM_AppMobile\\DoAnCuoiKy\\Project_SE114\\BE\\Controller\\AuthenticationService\\AuthenController.cs*",
-              "RelativeToolTip": "Controller\\AuthenticationService\\AuthenController.cs*",
+              "ToolTip": "D:\\KTPM2023\\2024_2025_HK2\\SE114_NM_AppMobile\\DoAnCuoiKy\\Project_SE114\\BE\\Controller\\AuthenticationService\\AuthenController.cs",
+              "RelativeToolTip": "Controller\\AuthenticationService\\AuthenController.cs",
               "ViewState": "AgIAAIUAAAAAAAAAAAAtwJEAAAAcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-12T10:36:46.67Z",
@@ -139,14 +204,15 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "RegisterRequestDTO.cs",
               "DocumentMoniker": "D:\\KTPM2023\\2024_2025_HK2\\SE114_NM_AppMobile\\DoAnCuoiKy\\Project_SE114\\BE\\DTOs\\RegisterRequestDTO.cs",
               "RelativeDocumentMoniker": "DTOs\\RegisterRequestDTO.cs",
-              "ToolTip": "D:\\KTPM2023\\2024_2025_HK2\\SE114_NM_AppMobile\\DoAnCuoiKy\\Project_SE114\\BE\\DTOs\\RegisterRequestDTO.cs*",
-              "RelativeToolTip": "DTOs\\RegisterRequestDTO.cs*",
+              "ToolTip": "D:\\KTPM2023\\2024_2025_HK2\\SE114_NM_AppMobile\\DoAnCuoiKy\\Project_SE114\\BE\\DTOs\\RegisterRequestDTO.cs",
+              "RelativeToolTip": "DTOs\\RegisterRequestDTO.cs",
               "ViewState": "AgIAAAQAAAAAAAAAAAAzwAgAAAA3AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+<<<<<<< HEAD
               "WhenOpened": "2025-06-12T10:35:37.376Z",
               "EditorCaption": ""
             },
@@ -159,6 +225,67 @@
               "ToolTip": "D:\\KTPM2023\\2024_2025_HK2\\SE114_NM_AppMobile\\DoAnCuoiKy\\Project_SE114\\BE\\Controller\\APIService\\CoursesController.cs",
               "RelativeToolTip": "Controller\\APIService\\CoursesController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAKgAAAANAAAAAAAAAA==",
+=======
+              "WhenOpened": "2025-06-08T10:36:35.113Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "AccountType.cs",
+              "DocumentMoniker": "D:\\KTPM2023\\2024_2025_HK2\\SE114_NM_AppMobile\\DoAnCuoiKy\\Project_SE114\\BE\\Data\\Entities\\AccountType.cs",
+              "RelativeDocumentMoniker": "Data\\Entities\\AccountType.cs",
+              "ToolTip": "D:\\KTPM2023\\2024_2025_HK2\\SE114_NM_AppMobile\\DoAnCuoiKy\\Project_SE114\\BE\\Data\\Entities\\AccountType.cs",
+              "RelativeToolTip": "Data\\Entities\\AccountType.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-08T10:25:28.985Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\KTPM2023\\2024_2025_HK2\\SE114_NM_AppMobile\\DoAnCuoiKy\\Project_SE114\\BE\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "D:\\KTPM2023\\2024_2025_HK2\\SE114_NM_AppMobile\\DoAnCuoiKy\\Project_SE114\\BE\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAACsAAAAAAAAAAAAQwD4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-08T10:16:38.104Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "LoginRequestDTO.cs",
+              "DocumentMoniker": "D:\\KTPM2023\\2024_2025_HK2\\SE114_NM_AppMobile\\DoAnCuoiKy\\Project_SE114\\BE\\DTOs\\LoginRequestDTO.cs",
+              "RelativeDocumentMoniker": "DTOs\\LoginRequestDTO.cs",
+              "ToolTip": "D:\\KTPM2023\\2024_2025_HK2\\SE114_NM_AppMobile\\DoAnCuoiKy\\Project_SE114\\BE\\DTOs\\LoginRequestDTO.cs",
+              "RelativeToolTip": "DTOs\\LoginRequestDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-08T10:15:15.463Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "D:\\KTPM2023\\2024_2025_HK2\\SE114_NM_AppMobile\\DoAnCuoiKy\\Project_SE114\\BE\\appsettings.json",
+              "RelativeDocumentMoniker": "appsettings.json",
+              "ToolTip": "D:\\KTPM2023\\2024_2025_HK2\\SE114_NM_AppMobile\\DoAnCuoiKy\\Project_SE114\\BE\\appsettings.json",
+              "RelativeToolTip": "appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-06-08T09:42:37.174Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AuthenController.cs",
+              "DocumentMoniker": "D:\\KTPM2023\\2024_2025_HK2\\SE114_NM_AppMobile\\DoAnCuoiKy\\Project_SE114\\BE\\Controller\\AuthenticationService\\AuthenController.cs",
+              "RelativeDocumentMoniker": "Controller\\AuthenticationService\\AuthenController.cs",
+              "ToolTip": "D:\\KTPM2023\\2024_2025_HK2\\SE114_NM_AppMobile\\DoAnCuoiKy\\Project_SE114\\BE\\Controller\\AuthenticationService\\AuthenController.cs",
+              "RelativeToolTip": "Controller\\AuthenticationService\\AuthenController.cs",
+              "ViewState": "AgIAAB8AAAAAAAAAAAA1wDUAAAARAAAAAAAAAA==",
+>>>>>>> Models
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-12T10:37:19.357Z",
               "EditorCaption": ""
@@ -173,6 +300,7 @@
               "RelativeToolTip": "DTOs\\AccountInfoDTO.cs",
               "ViewState": "AgIAAAMAAAAAAAAAAAAAAAcAAAAsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+<<<<<<< HEAD
               "WhenOpened": "2025-06-12T10:34:53.673Z",
               "EditorCaption": ""
             },
@@ -253,6 +381,9 @@
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-12T10:44:45.179Z",
               "EditorCaption": ""
+=======
+              "WhenOpened": "2025-06-08T09:24:30.215Z"
+>>>>>>> Models
             }
           ]
         },

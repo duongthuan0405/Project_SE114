@@ -677,6 +677,7 @@
       "RequestCreateCourseDTO": {
         "type": "object",
         "properties": {
+<<<<<<< HEAD
           "name": {
             "type": "string",
             "nullable": true
@@ -689,6 +690,9 @@
             "type": "boolean"
           },
           "avatar": {
+=======
+          "userId": {
+>>>>>>> Models
             "type": "string",
             "nullable": true
           }
