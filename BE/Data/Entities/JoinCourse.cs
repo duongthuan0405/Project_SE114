@@ -28,8 +28,9 @@ namespace BE.Data.Entities
         public enum JoinCourseState
         {
             Pending = 0,
-            Joined = 1,
-            Left = 2
+            Denied = 1,
+            Joined = 2,
+            Left = 3
         }
 
     }
