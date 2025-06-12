@@ -13,7 +13,7 @@ namespace BE.DTOs
         }
         public AccountTypeDTO() { }
 
-        public string Name { get; set; }
+        public string Name { get; set; } = "";
 
     }
 }

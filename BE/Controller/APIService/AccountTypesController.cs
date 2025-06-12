@@ -13,12 +13,12 @@ using Microsoft.EntityFrameworkCore;
 namespace BE.Controller
 {
     [ApiController]
-    [Route(ConstantValue.AppName + "/[controller]")]
-    public class AccountTypeController : ControllerBase
+    [Route(StaticClass.AppName + "/[controller]")]
+    public class AccountTypesController : ControllerBase
     {
         private readonly MyAppDBContext DbContext;
 
-        public AccountTypeController(MyAppDBContext context)
+        public AccountTypesController(MyAppDBContext context)
         {
             DbContext = context;
         }
