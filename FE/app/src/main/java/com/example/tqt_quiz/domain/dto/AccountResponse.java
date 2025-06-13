@@ -1,13 +1,12 @@
 package com.example.tqt_quiz.domain.dto;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.time.LocalDateTime;
 
-public class LoginResponse {
+public class AccountResponse {
     @SerializedName("token")
     @Nullable
     private String token;

@@ -1,22 +1,23 @@
 package com.example.tqt_quiz.domain.interactor;
 
-import com.example.tqt_quiz.data.repository.Token.TokenManager;
-import com.example.tqt_quiz.domain.dto.LoginResponse;
+import android.content.Context;
+
+import com.example.tqt_quiz.domain.dto.AccountResponse;
 import com.example.tqt_quiz.domain.dto.RegisterInfo;
 
 public interface AuthInteract {
-    public void Login(String Email, String PassWord, TokenManager tokenManager, LoginCallBack callBack);
+    public void Login(String Email, String PassWord, Context context, LoginCallBack callBack);
     public interface LoginCallBack
     {
-        public void onSuccess(LoginResponse response);
-        public void onUnAuthorized();
+        public void onSuccess(AccountResponse response);
+        public void onUnAuthorized(String msg);
         public void FailedByNotResponse();
     }
-    public void Register(RegisterInfo info, TokenManager tokenManager,RegCallBack callBack);
+    public void Register(RegisterInfo info, Context context,RegCallBack callBack);
     public interface RegCallBack
     {
         public void onSuccess();
-        public void onFailedRegister();
+        public void onFailedRegister(String msg);
         public void FailedByNotResponse();
     }
 

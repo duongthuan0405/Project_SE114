@@ -2,7 +2,7 @@ package com.example.tqt_quiz.domain.dto;
 
 import com.google.gson.annotations.SerializedName;
 
-public class RegisterResponse {
+public class AccountInfo {
     @SerializedName("userId")
     private String UserID;
 

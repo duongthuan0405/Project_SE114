@@ -13,7 +13,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.tqt_quiz.R;
 import com.example.tqt_quiz.data.interactor.AuthInteractorIMP;
 import com.example.tqt_quiz.data.repository.Token.TokenManager;
-import com.example.tqt_quiz.domain.dto.LoginResponse;
+import com.example.tqt_quiz.domain.dto.AccountResponse;
 import com.example.tqt_quiz.domain.dto.RegisterInfo;
 import com.example.tqt_quiz.domain.interactor.AuthInteract;
 import com.example.tqt_quiz.presentation.contract_vp.MainActitvityContract;
@@ -22,7 +22,7 @@ import com.example.tqt_quiz.presentation.presenter.MainActivityPresenter;
 public class MainActivity extends AppCompatActivity implements MainActitvityContract.IView {
     private MainActitvityContract.IPresenter mainActivityPresenter = null;
     private AuthInteractorIMP interactorIMP=new AuthInteractorIMP();
-    private LoginResponse info=null;
+    private AccountResponse info=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,15 +37,15 @@ public class MainActivity extends AppCompatActivity implements MainActitvityCont
         mainActivityPresenter = new MainActivityPresenter(this);
         mainActivityPresenter.onCreateActivity();
         TokenManager tokenManager= new TokenManager(getApplicationContext());
-        interactorIMP.Login("1", "1", tokenManager, new AuthInteract.LoginCallBack() {
+        interactorIMP.Login("1", "1", this.getApplicationContext(), new AuthInteract.LoginCallBack() {
             @Override
-            public void onSuccess(LoginResponse response) {
+            public void onSuccess(AccountResponse response) {
                 info=response;
                 Log.d("LOGIN","DANG NHAP THANH CONG");
             }
 
             @Override
-            public void onUnAuthorized() {
+            public void onUnAuthorized(String msg) {
                 Log.d("Login","Unauthorized");
             }
 
@@ -54,14 +54,14 @@ public class MainActivity extends AppCompatActivity implements MainActitvityCont
                 Log.d("Login","CannotSendToServer");
             }
         });
-        interactorIMP.Register(new RegisterInfo("1", "1", "1", "1", "0000000001"), tokenManager, new AuthInteract.RegCallBack() {
+        interactorIMP.Register(new RegisterInfo("1", "1", "1", "1", "0000000001"), getApplicationContext(), new AuthInteract.RegCallBack() {
             @Override
             public void onSuccess() {
                 Log.d("REG","DANG KY THANH CONG");
             }
 
             @Override
-            public void onFailedRegister() {
+            public void onFailedRegister(String msg) {
                 Log.d("REG","DANG KY THAT BAI");
             }
 
