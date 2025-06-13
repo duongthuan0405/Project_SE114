@@ -5,10 +5,12 @@ namespace BE.DTOs
 {
     public class RequestCreateCourseDTO
     {
+        [Required]
         public string Name { get; set; } = "";
 
         public string? Description { get; set; } = "";
 
+        [Required]
         public bool IsPrivate { get; set; } = true;
 
         public string? Avatar { get; set; } = "";
