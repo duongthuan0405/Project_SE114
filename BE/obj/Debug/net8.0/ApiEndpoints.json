@@ -1,8 +1,8 @@
 [
   {
-    "ContainingType": "BE.Controller.AccountTypeController",
+    "ContainingType": "BE.Controller.AccountTypesController",
     "Method": "GetAllAccountType",
-    "RelativePath": "tqtquiz/AccountType/accounttypes",
+    "RelativePath": "tqtquiz/AccountTypes/accounttypes",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -61,7 +61,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "BE.DTOs.RegisterResponseDTO",
+        "Type": "BE.DTOs.AccountInfoDTO",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -72,10 +72,142 @@
     ]
   },
   {
-    "ContainingType": "BE.Controller.APIService.CourseController",
-    "Method": "GetCoursThatAccountJoin",
-    "RelativePath": "tqtquiz/Course/course/{account_id}",
+    "ContainingType": "BE.Controller.APIService.CoursesController",
+    "Method": "CreateCourse",
+    "RelativePath": "tqtquiz/Courses",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "BE.DTOs.RequestCreateCourseDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "BE.DTOs.CourseDTO",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BE.Controller.APIService.CoursesController",
+    "Method": "GetCourseByCourseId",
+    "RelativePath": "tqtquiz/Courses/{course_id}",
     "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "course_id",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "BE.DTOs.CourseDTO",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BE.Controller.APIService.CoursesController",
+    "Method": "GetCoursesUserIsDenied",
+    "RelativePath": "tqtquiz/Courses/myself/denied",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[BE.DTOs.CourseDTO, BE, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BE.Controller.APIService.CoursesController",
+    "Method": "GetCoursesHostedByUser",
+    "RelativePath": "tqtquiz/Courses/myself/hosted",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[BE.DTOs.CourseDTO, BE, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BE.Controller.APIService.CoursesController",
+    "Method": "GetCourseUserJoined",
+    "RelativePath": "tqtquiz/Courses/myself/joined",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[BE.DTOs.CourseDTO, BE, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BE.Controller.APIService.CoursesController",
+    "Method": "GetCoursesUserPending",
+    "RelativePath": "tqtquiz/Courses/myself/pending",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[BE.DTOs.CourseDTO, BE, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BE.Controller.APIService.JoinCoursesController",
+    "Method": "AcceptJoinCoursePermission",
+    "RelativePath": "tqtquiz/JoinCourses/{account_id}/join/{course_id}/approve",
+    "HttpMethod": "PATCH",
     "IsController": true,
     "Order": 0,
     "Parameters": [
@@ -83,11 +215,79 @@
         "Name": "account_id",
         "Type": "System.String",
         "IsRequired": true
+      },
+      {
+        "Name": "course_id",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BE.Controller.APIService.JoinCoursesController",
+    "Method": "DenyJoinCoursePermission",
+    "RelativePath": "tqtquiz/JoinCourses/{account_id}/join/{course_id}/deny",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "account_id",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "course_id",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BE.Controller.APIService.JoinCoursesController",
+    "Method": "JoinCourseWithIds",
+    "RelativePath": "tqtquiz/JoinCourses/{course_id}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "course_id",
+        "Type": "System.String",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.List\u00601[[BE.DTOs.CourseDTO, BE, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "BE.DTOs.JoinCourseResponseDTO",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BE.Controller.APIService.JoinCoursesController",
+    "Method": "GetAllPermissionByCourseId",
+    "RelativePath": "tqtquiz/JoinCourses/{course_id}/permissions",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "course_id",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[BE.DTOs.AccountInfoDTO, BE, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",

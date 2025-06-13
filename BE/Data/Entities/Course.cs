@@ -29,7 +29,7 @@ namespace BE.Data.Entities
 
         [Column(TypeName = "VarChar(3000)")]
         [MaxLength(3000)]
-        public string Avatar { get; set; }
+        public string? Avatar { get; set; }
 
         public string? HostId { get; set; }
 

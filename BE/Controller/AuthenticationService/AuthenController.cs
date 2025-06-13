@@ -75,17 +75,15 @@ namespace BE.Controller.AuthenticationService
                     new LoginResponseDTO
                     {
                         Token = new JwtSecurityTokenHandler().WriteToken(token),
-                        Expires = expires,
                         UserId = UserInfo.ac.Id,
-                        FullName = $"{UserInfo.ac.FirstName} {UserInfo.ac.LastMiddleName}",
-                        Email = authen.Email,
+                        FullName = $"{UserInfo.ac.LastMiddleName} {UserInfo.ac.FirstName}",
                         Role = UserInfo.at.Name
                     }
                 );
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new 
+                return StatusCode(StatusCodes.Status500InternalServerError, new
                     {
                         Message = "Lỗi hệ thống khi đăng nhập"
                     }
@@ -94,7 +92,7 @@ namespace BE.Controller.AuthenticationService
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<RegisterResponseDTO>> Register([FromBody] RegisterRequestDTO req)
+        public async Task<ActionResult<AccountInfoDTO>> Register([FromBody] RegisterRequestDTO req)
         {
             try
             {
@@ -142,10 +140,14 @@ namespace BE.Controller.AuthenticationService
                 DbContext.Accounts.Add(newAccount);
 
                 await DbContext.SaveChangesAsync();
-                return Ok(new RegisterResponseDTO()
+                return Ok(new AccountInfoDTO()
                 {
-                    
-                    UserId = newAccount.Id
+                    Id = newAccount.Id,
+                    FullName = newAccount.LastMiddleName + " " + newAccount.FirstName,
+                    Email = newAuthen.Email,
+                    Avatar = newAccount.Avatar,
+                    AccountType = await DbContext.AccountTypes.Where(at => at.Id == newAccount.AccountTypeId)
+                                                                .Select(at => at.Name).FirstOrDefaultAsync() ?? "Chưa xác định"
                 });
             }
             catch (Exception ex)
