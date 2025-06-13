@@ -400,17 +400,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/JoinCourseResponse"
+                  "$ref": "#/components/schemas/JoinCourseResponseDTO"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/JoinCourseResponse"
+                  "$ref": "#/components/schemas/JoinCourseResponseDTO"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/JoinCourseResponse"
+                  "$ref": "#/components/schemas/JoinCourseResponseDTO"
                 }
               }
             }
@@ -530,15 +530,20 @@
   "components": {
     "schemas": {
       "AccountInfoDTO": {
+        "required": [
+          "accountType",
+          "email",
+          "id"
+        ],
         "type": "object",
         "properties": {
           "id": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "email": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "fullName": {
             "type": "string",
@@ -549,8 +554,8 @@
             "nullable": true
           },
           "accountType": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           }
         },
         "additionalProperties": false
@@ -566,15 +571,20 @@
         "additionalProperties": false
       },
       "CourseDTO": {
+        "required": [
+          "id",
+          "isPrivate",
+          "name"
+        ],
         "type": "object",
         "properties": {
           "id": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "name": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "hostName": {
             "type": "string",
@@ -594,70 +604,89 @@
         },
         "additionalProperties": false
       },
-      "JoinCourseResponse": {
+      "JoinCourseResponseDTO": {
+        "required": [
+          "accountId",
+          "courseId",
+          "state"
+        ],
         "type": "object",
         "properties": {
           "courseId": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "accountId": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "state": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           }
         },
         "additionalProperties": false
       },
       "LoginRequestDTO": {
+        "required": [
+          "email",
+          "password"
+        ],
         "type": "object",
         "properties": {
           "email": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "password": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           }
         },
         "additionalProperties": false
       },
       "LoginResponseDTO": {
+        "required": [
+          "role",
+          "token",
+          "userId"
+        ],
         "type": "object",
         "properties": {
           "token": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "userId": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "fullName": {
             "type": "string",
             "nullable": true
           },
           "role": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           }
         },
         "additionalProperties": false
       },
       "RegisterRequestDTO": {
+        "required": [
+          "accountTypeId",
+          "email",
+          "password"
+        ],
         "type": "object",
         "properties": {
           "email": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "password": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "firstName": {
             "type": "string",
@@ -668,19 +697,22 @@
             "nullable": true
           },
           "accountTypeId": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           }
         },
         "additionalProperties": false
       },
       "RequestCreateCourseDTO": {
+        "required": [
+          "isPrivate",
+          "name"
+        ],
         "type": "object",
         "properties": {
-<<<<<<< HEAD
           "name": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "description": {
             "type": "string",
@@ -690,9 +722,6 @@
             "type": "boolean"
           },
           "avatar": {
-=======
-          "userId": {
->>>>>>> Models
             "type": "string",
             "nullable": true
           }

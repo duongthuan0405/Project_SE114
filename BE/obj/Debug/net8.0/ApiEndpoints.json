@@ -261,7 +261,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "BE.DTOs.JoinCourseResponse",
+        "Type": "BE.DTOs.JoinCourseResponseDTO",
         "MediaTypes": [
           "text/plain",
           "application/json",

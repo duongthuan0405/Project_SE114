@@ -23,7 +23,7 @@ namespace BE.Controller.APIService
 
         [HttpPost("{course_id}")]
         [Authorize(Roles = StaticClass.Role.Student + "," + StaticClass.Role.Teacher)]
-        public async Task<ActionResult<JoinCourseResponse>> JoinCourseWithIds([FromRoute] string course_id)
+        public async Task<ActionResult<JoinCourseResponseDTO>> JoinCourseWithIds([FromRoute] string course_id)
         {
             try
             {
@@ -41,18 +41,19 @@ namespace BE.Controller.APIService
 
                 if (course.HostId == requester)
                 {
-                    return StatusCode(StatusCodes.Status200OK, new { Message = "Bạn không cần phải tham gia khóa học của chính mình" });
+                    return StatusCode(StatusCodes.Status200OK, new JoinCourseResponseDTO(course_id, requester, "Bạn không cần phải tham gia khóa học của chính mình"));
                 }
 
 
                 var existingJoin = DbContext.JoinCourses.Where(jc => jc.CourseID == course_id && jc.AccountID == requester);
                 if (await existingJoin.AnyAsync(jc => jc.State == (int)JoinCourse.JoinCourseState.Joined))
                 {
-                    return StatusCode(StatusCodes.Status200OK, new { Message = "Bạn đã tham gia khóa học này rồi" });
+                    return StatusCode(StatusCodes.Status200OK, new JoinCourseResponseDTO(course_id, requester, "Bạn đã tham gia khóa học này rồi"));
                 }
                 if (await existingJoin.AnyAsync(jc => jc.State == (int)JoinCourse.JoinCourseState.Pending))
                 {
-                    return StatusCode(StatusCodes.Status200OK, new { Message = "Bạn đã gửi yêu cầu tham gia khóa học này, vui lòng chờ phê duyệt" });
+                    return StatusCode(StatusCodes.Status200OK, new JoinCourseResponseDTO(course_id, requester, "Bạn đã gửi yêu cầu tham gia khóa học này, vui lòng chờ phê duyệt"));
+                  
                 }
                
                 var joinCourse = new JoinCourse
@@ -67,13 +68,13 @@ namespace BE.Controller.APIService
                     joinCourse.State = (int)JoinCourse.JoinCourseState.Pending;
                     await DbContext.JoinCourses.AddAsync(joinCourse);
                     await DbContext.SaveChangesAsync();
-                    return Ok(new JoinCourseResponse(course_id, requester, JoinCourse.JoinCourseState.Pending.ToString()));
+                    return Ok(new JoinCourseResponseDTO(course_id, requester, "Vui lòng chờ giáo viên duyệt yêu cầu tham gia"));
                 }
        
                 joinCourse.State = (int)JoinCourse.JoinCourseState.Joined;
                 await DbContext.JoinCourses.AddAsync(joinCourse);
                 await DbContext.SaveChangesAsync();
-                return Ok(new JoinCourseResponse(course_id, requester, JoinCourse.JoinCourseState.Joined.ToString()));
+                return Ok(new JoinCourseResponseDTO(course_id, requester, "Tham gia khóa học thành công"));
                     
             }
             catch (Exception ex)

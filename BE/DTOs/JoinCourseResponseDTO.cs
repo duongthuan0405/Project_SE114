@@ -1,19 +1,26 @@
-﻿namespace BE.DTOs
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BE.DTOs
 {
-    public class JoinCourseResponse
+    public class JoinCourseResponseDTO
     {
+        [Required]
         public string CourseId { get; set; } = "";
+
+        [Required]
         public string AccountId { get; set; } = "";
+
+        [Required]
         public string State { get; set; } = "";
 
-        public JoinCourseResponse(string courseId, string accountId, string state)
+        public JoinCourseResponseDTO(string courseId, string accountId, string state)
         {
             CourseId = courseId;
             AccountId = accountId;
             State = state;
         }
 
-        public JoinCourseResponse()
+        public JoinCourseResponseDTO()
         { }
 
     }
