@@ -17,11 +17,12 @@ import com.example.tqt_quiz.presentation.fragments.NotificationFragment;
 import com.example.tqt_quiz.presentation.fragments.ProfileFragment;
 
 import com.example.tqt_quiz.R;
-import com.example.tqt_quiz.databinding.ActivityMainHomeBinding;
+import com.google.android.material.tabs.TabLayout;
 
 public class MainHome extends AppCompatActivity {
 
-    ActivityMainHomeBinding binding;
+    TabLayout tabLayout;
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

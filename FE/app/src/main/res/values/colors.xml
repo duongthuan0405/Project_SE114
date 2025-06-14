@@ -4,4 +4,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="AppBackground">#ECF3F8</color>
     <color name="grey">#D6DBDF</color>
+    <color name="Primary">#113483</color>
 </resources>
