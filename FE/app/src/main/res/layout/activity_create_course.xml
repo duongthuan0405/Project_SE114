@@ -8,7 +8,7 @@
     android:padding="16dp">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView_Register"
+        android:id="@+id/cardView_CreateCourse"
         android:layout_width="325dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
@@ -26,7 +26,7 @@
 
             <!-- 1. Avatar -->
             <ImageView
-                android:id="@+id/img_Avatar"
+                android:id="@+id/img_Avatar_CreateCourse"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_marginTop="16dp"
@@ -42,19 +42,19 @@
 
             <!-- 2. Course Name -->
             <EditText
-                android:id="@+id/et_CourseName"
+                android:id="@+id/edt_CourseName_CreateCourse"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="Tên khóa học"
                 android:inputType="text"
                 android:layout_marginTop="24dp"
-                app:layout_constraintTop_toBottomOf="@id/img_Avatar"
+                app:layout_constraintTop_toBottomOf="@id/img_Avatar_CreateCourse"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
             <!-- 3. Description -->
             <EditText
-                android:id="@+id/et_Description"
+                android:id="@+id/edt_Description_CreateCourse"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="Mô tả khóa học"
@@ -63,18 +63,18 @@
                 android:maxLines="6"
                 android:gravity="top"
                 android:layout_marginTop="16dp"
-                app:layout_constraintTop_toBottomOf="@id/et_CourseName"
+                app:layout_constraintTop_toBottomOf="@id/edt_CourseName_CreateCourse"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
             <!-- 4. IsPrivate -->
             <LinearLayout
-                android:id="@+id/ll_IsPrivate"
+                android:id="@+id/ll_IsPrivate_CreateCourse"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginTop="16dp"
-                app:layout_constraintTop_toBottomOf="@id/et_Description"
+                app:layout_constraintTop_toBottomOf="@id/edt_Description_CreateCourse"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
 
@@ -86,7 +86,7 @@
                     android:textColor="@color/black"/>
 
                 <Switch
-                    android:id="@+id/switch_IsPrivate"
+                    android:id="@+id/swt_IsPrivate_CreateCourse"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -95,20 +95,20 @@
 
             <!-- 5. HostID (tự tạo hoặc hiển thị) -->
             <TextView
-                android:id="@+id/tv_HostID"
+                android:id="@+id/tv_HostID_CreateCourse"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="HostID: abc123xyz"
                 android:textSize="14sp"
                 android:textColor="@color/black"
                 android:layout_marginTop="12dp"
-                app:layout_constraintTop_toBottomOf="@id/ll_IsPrivate"
+                app:layout_constraintTop_toBottomOf="@id/ll_IsPrivate_CreateCourse"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
             <!-- 6. Button tạo khóa học -->
             <Button
-                android:id="@+id/btn_CreateCourse"
+                android:id="@+id/btn_CreateCourse_CreateCourse"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Tạo khóa học"
@@ -117,7 +117,7 @@
                 android:textSize="20dp"
                 android:layout_marginTop="24dp"
                 android:background="@drawable/btn_rectagle"
-                app:layout_constraintTop_toBottomOf="@id/tv_HostID"
+                app:layout_constraintTop_toBottomOf="@id/tv_HostID_CreateCourse"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
