@@ -29,18 +29,10 @@
         android:textSize="25dp"
         android:textStyle="bold"/>
 
-    <ScrollView
-        android:id="@+id/scrv_Notify_Notification"
+    <ListView
+        android:id="@+id/lv_Notify_Notification"
         android:layout_width="match_parent"
-        android:layout_height="571dp"
-        android:layout_gravity="top"
-        android:layout_marginTop="80dp"
-        android:fillViewport="true">
-
-        <ListView
-            android:id="@+id/lv_Notify_Notification"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </ScrollView>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"/>
 
 </FrameLayout>

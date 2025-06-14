@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:fitsSystemWindows="true"
     android:id="@+id/main"
     android:background="@color/AppBackground"
     android:layout_width="match_parent"
@@ -48,7 +49,7 @@
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewpager_MainHome"
         android:layout_width="match_parent"
-        android:layout_height="685dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
