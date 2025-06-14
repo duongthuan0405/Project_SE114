@@ -54,7 +54,8 @@ public class MainActivity extends AppCompatActivity implements MainActitvityCont
                 Log.d("Login","CannotSendToServer");
             }
         });
-        interactorIMP.Register(new RegisterInfo("1", "1", "1", "1", "0000000001"), getApplicationContext(), new AuthInteract.RegCallBack() {
+        interactorIMP.Register(new RegisterInfo("1", "1", "1", "1", "0000000001"),
+                getApplicationContext(), new AuthInteract.RegCallBack() {
             @Override
             public void onSuccess() {
                 Log.d("REG","DANG KY THANH CONG");
