@@ -1,68 +1,58 @@
 package com.example.tqt_quiz.presentation.view.activities;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.tqt_quiz.presentation.fragments.CourseFragment;
-import com.example.tqt_quiz.presentation.fragments.QuizFragment;
-import com.example.tqt_quiz.presentation.fragments.NotificationFragment;
-import com.example.tqt_quiz.presentation.fragments.ProfileFragment;
+import com.example.tqt_quiz.presentation.adapters.ViewPagerAdapter;
 
 import com.example.tqt_quiz.R;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
+
 
 public class MainHome extends AppCompatActivity {
 
-    TabLayout tabLayout;
-    
+    private TabLayout tabLayout;
+    private ViewPager2 viewPager2;
+    private ViewPagerAdapter viewPagerAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityMainHomeBinding.inflate(getLayoutInflater());
         EdgeToEdge.enable(this);
-        setContentView(binding.getRoot());
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        setContentView(R.layout.activity_main_home);
 
-        replaceFragment(new CourseFragment());
+        tabLayout = findViewById(R.id.tb_Tabbar_MainHome);
+        viewPager2 = findViewById(R.id.viewpager_MainHome);
+        viewPagerAdapter = new ViewPagerAdapter(this);
+        viewPager2.setAdapter(viewPagerAdapter);
 
-        binding.bottomNavigationView.setOnItemSelectedListener(item -> {
-            if (item.getItemId() == R.id.Course){
-                replaceFragment(new CourseFragment());
-            } else if (item.getItemId() == R.id.Quiz) {
-                replaceFragment(new QuizFragment());
-            } else if (item.getItemId() == R.id.Notification){
-                replaceFragment(new NotificationFragment());
-            } else if (item.getItemId() == R.id.Profile) {
-                replaceFragment(new ProfileFragment());
+        new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> {
+            switch (position) {
+                case 0:
+                    tab.setText("Khóa học");
+                    tab.setIcon(R.drawable.tab_course_selector);
+                    break;
+                case 1:
+                    tab.setText("Bài kiểm tra");
+                    tab.setIcon(R.drawable.tab_quiz_selector);
+                    break;
+                case 2:
+                    tab.setText("Thông báo");
+                    tab.setIcon(R.drawable.tab_notifications_selector);
+                    break;
+                case 3:
+                    tab.setText("Tài khoản");
+                    tab.setIcon(R.drawable.tab_profile_selector);
+                    break;
             }
-
-            return true;
-        });
-    }
-
-    @Override
-    public void onBackPressed() {
-        setResult(RESULT_OK);
-        super.onBackPressed();
-    }
-
-    private void replaceFragment(Fragment fragment){
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frameLayout, fragment);
-        fragmentTransaction.commit();
+        }).attach();
     }
 }

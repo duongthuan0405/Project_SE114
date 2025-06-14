@@ -156,7 +156,7 @@
         android:id="@+id/btn_Save_ChangePf"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/button"
+        android:background="@drawable/btn_rectagle"
         android:text="Lưu"
         android:textSize="15sp"
         android:textColor="@color/white"

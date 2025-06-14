@@ -3,18 +3,18 @@
 
     <item
         android:id="@+id/Course"
-        android:icon="@drawable/baseline_library_books_24"
+        android:icon="@drawable/ic_course_inactive"
         android:title="Khóa học" />
     <item
         android:id="@+id/Quiz"
-        android:icon="@drawable/baseline_quiz_24"
+        android:icon="@drawable/ic_quiz_inactive"
         android:title="Bài tập" />
     <item
         android:id="@+id/Notification"
-        android:icon="@drawable/baseline_notifications_24"
+        android:icon="@drawable/ic_notifications_inactive"
         android:title="Thông báo" />
     <item
         android:id="@+id/Profile"
-        android:icon="@drawable/baseline_person_24"
+        android:icon="@drawable/ic_profile_inactive"
         android:title="Tài khoản" />
 </menu>

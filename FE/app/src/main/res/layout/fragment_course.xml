@@ -43,18 +43,23 @@
         android:textSize="25dp"
         android:textStyle="bold"/>
 
-
-    <ScrollView
-        android:id="@+id/scrv_Course_Course"
+    <ListView
+        android:id="@+id/lv_Course_Course"
         android:layout_width="match_parent"
-        android:layout_height="511dp"
-        android:layout_gravity="top"
-        android:layout_marginTop="140dp"
-        android:fillViewport="true">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="140dp" />
 
-        <ListView
-            android:id="@+id/lv_Course_Course"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </ScrollView>
+    <Button
+        android:id="@+id/btn_Add_Course"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:text="+"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:background="@drawable/btn_round"/>
+
 </FrameLayout>
