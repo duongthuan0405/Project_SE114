@@ -1,6 +1,5 @@
 package com.example.tqt_quiz.presentation.view.activities;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -11,14 +10,13 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.tqt_quiz.R;
 
-public class ViewCourse extends AppCompatActivity {
+public class MemberInfo extends AppCompatActivity {
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_view_course);
+        setContentView(R.layout.activity_member_info);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);

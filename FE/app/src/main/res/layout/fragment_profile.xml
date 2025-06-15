@@ -1,32 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView_Profile"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/AppBackground"
-    tools:context=".presentation.fragments.ProfileFragment">
+    android:padding="16dp"
+    android:fitsSystemWindows="true">
 
-    <!-- TODO: Update blank fragment layout -->
-    <ImageButton
-        android:id="@+id/btn_Home_Profile"
-        android:layout_width="58dp"
-        android:layout_height="58dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
-        android:backgroundTint="#00FFFFFF"
-        android:scaleType="fitXY"
-        android:layout_gravity="start|top"
-        android:src="@drawable/atozalogo"
-        android:contentDescription="@string/logo_description"/>
-
-    <TextView
-        android:id="@+id/tv_Profile_Profile"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/layout_Profile_Profile"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="top|center_horizontal"
-        android:layout_marginTop="25dp"
-        android:text="TÀI KHOẢN"
-        android:textSize="25dp"
-        android:textStyle="bold"/>
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
 
-</FrameLayout>
+        <TextView
+            android:id="@+id/tv_Profile_Profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:text="TÀI KHOẢN"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:textColor="@color/Primary" />
+
+        <ImageView
+            android:id="@+id/img_Avatar_Profile"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="24dp"
+            android:src="@drawable/resource_default"
+            android:scaleType="fitXY"
+            android:background="@drawable/btn_round"
+            android:contentDescription="Avatar"
+            android:elevation="4dp" />
+
+        <TextView
+            android:id="@+id/tv_FirstName_Profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="First Name"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_marginTop="16dp" />
+
+        <TextView
+            android:id="@+id/tv_LastMiddleName_Profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Last + Middle Name"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:layout_marginTop="4dp" />
+
+        <TextView
+            android:id="@+id/tv_Email_Profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="email@example.com"
+            android:textSize="16sp"
+            android:textColor="@color/dark_gray"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="24dp" />
+
+        <View
+            android:layout_width="80dp"
+            android:layout_height="1dp"
+            android:background="@color/gray"
+            android:layout_marginBottom="24dp" />
+
+        <Button
+            android:id="@+id/btn_EditInfo_Profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Chỉnh sửa thông tin"
+            android:textSize="15dp"
+            android:textColor="@color/white"
+            android:background="@drawable/btn_rectagle"
+            android:layout_marginBottom="16dp" />
+
+        <Button
+            android:id="@+id/btn_ChangePassword_Profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Đổi mật khẩu"
+            android:textSize="15dp"
+            android:textColor="@color/white"
+            android:background="@drawable/btn_rectagle"
+            android:layout_marginBottom="32dp" />
+
+    </LinearLayout>
+
+</ScrollView>

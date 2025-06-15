@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/AppBackground"
-    android:padding="16dp">
+    android:fitsSystemWindows="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="16dp">
 
-        <!-- Avatar + Tên khóa học + Riêng tư -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -21,12 +22,12 @@
             android:layout_marginBottom="16dp">
 
             <ImageView
-                android:id="@+id/img_CourseAvatar"
+                android:id="@+id/img_CourseAvatar_ViewCourse"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:src="@drawable/resource_default"
-                android:background="@drawable/btn_rectagle"
-                android:scaleType="centerCrop"
+                android:background="@drawable/rounded_border"
+                android:scaleType="fitXY"
                 android:layout_marginEnd="12dp" />
 
             <LinearLayout
@@ -36,7 +37,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tv_CourseName"
+                    android:id="@+id/tv_CourseName_ViewCourse"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Lập trình Android cơ bản"
@@ -45,7 +46,7 @@
                     android:textColor="@color/gray" />
 
                 <TextView
-                    android:id="@+id/tv_IsPrivate"
+                    android:id="@+id/tv_IsPrivate_ViewCourse"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Riêng tư: Có"
@@ -55,9 +56,8 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Mô tả -->
         <TextView
-            android:id="@+id/tv_Description"
+            android:id="@+id/tv_Description_ViewCourse"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="📌 Mô tả khóa học"
@@ -67,29 +67,30 @@
             android:layout_marginBottom="4dp" />
 
         <TextView
-            android:id="@+id/tv_DescriptionValue"
+            android:id="@+id/tv_DescriptionValue_ViewCourse"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Khóa học dành cho người mới bắt đầu học lập trình Android."
             android:textSize="14sp"
             android:textColor="@color/black"
-            android:background="@drawable/btn_rectagle"
+            android:inputType="textMultiLine"
+            android:minLines="4"
+            android:maxLines="6"
+            android:background="@drawable/rounded_border"
             android:padding="12dp"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="16dp"/>
 
-        <!-- Host ID -->
         <TextView
-            android:id="@+id/tv_HostID"
+            android:id="@+id/tv_HostName_ViewCourse"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="👤 Host ID: abc123"
-            android:textSize="14sp"
+            android:text="👤 Tên giáo viên: "
+            android:textSize="16sp"
             android:textColor="@color/dark_gray"
             android:layout_marginBottom="16dp" />
 
-        <!-- Danh sách thành viên -->
         <TextView
-            android:id="@+id/tv_MembersLabel"
+            android:id="@+id/tv_MembersLabel_ViewCourse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="📚 Danh sách thành viên"
@@ -99,7 +100,7 @@
             android:layout_marginBottom="8dp" />
 
         <ListView
-            android:id="@+id/lv_Members"
+            android:id="@+id/lv_Members_ViewCourse"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:divider="@android:color/darker_gray"
