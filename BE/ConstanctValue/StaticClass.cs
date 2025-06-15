@@ -7,6 +7,7 @@
         {
             public const string Teacher = "Giáo viên";
             public const string Student = "Học sinh";
+            public const string Admin = "Quản trị";
         }
 
 
