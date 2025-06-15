@@ -140,4 +140,3 @@ D:\KTPM2023\2024_2025_HK2\SE114_NM_AppMobile\DoAnCuoiKy\Project_SE114\BE\obj\Deb
 D:\KTPM2023\2024_2025_HK2\SE114_NM_AppMobile\DoAnCuoiKy\Project_SE114\BE\obj\Debug\net8.0\BE.genruntimeconfig.cache
 D:\KTPM2023\2024_2025_HK2\SE114_NM_AppMobile\DoAnCuoiKy\Project_SE114\BE\obj\Debug\net8.0\ref\BE.dll
 D:\KTPM2023\2024_2025_HK2\SE114_NM_AppMobile\DoAnCuoiKy\Project_SE114\BE\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
-D:\KTPM2023\2024_2025_HK2\SE114_NM_AppMobile\DoAnCuoiKy\Project_SE114\BE\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
