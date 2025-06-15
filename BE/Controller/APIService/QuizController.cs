@@ -20,7 +20,7 @@ namespace BE.Controller.APIService
         }
 
         [HttpGet("{quiz_id}")]
-        [Authorize(Roles = StaticClass.Role.Admin + "," + StaticClass.Role.Teacher + "," + StaticClass.Role.Student)]
+        [Authorize(Roles = StaticClass.RoleId.Admin + "," + StaticClass.RoleId.Teacher + "," + StaticClass.RoleId.Student)]
         public async Task<ActionResult<QuizDTO>> GetQuizById([FromRoute] string quiz_id)
         {
             var requester = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -50,7 +50,7 @@ namespace BE.Controller.APIService
         }
 
         [HttpGet("course/{course_id}")]
-        [Authorize(Roles = StaticClass.Role.Admin + "," + StaticClass.Role.Teacher + "," + StaticClass.Role.Student)]
+        [Authorize(Roles = StaticClass.RoleId.Admin + "," + StaticClass.RoleId.Teacher + "," + StaticClass.RoleId.Student)]
         public async Task<ActionResult<List<QuizDTO>>> GetQuizzesInCourse([FromRoute] string course_id)
         {
             var requester = User.FindFirstValue(ClaimTypes.NameIdentifier);

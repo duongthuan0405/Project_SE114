@@ -1,5 +1,51 @@
 [
   {
+    "ContainingType": "BE.Controller.APIService.AccountInfoController",
+    "Method": "GetUserInfoById",
+    "RelativePath": "tqtquiz/AccountInfo/{account_id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "account_id",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "BE.DTOs.AccountInfoDTO",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BE.Controller.APIService.AccountInfoController",
+    "Method": "GetUserInfo",
+    "RelativePath": "tqtquiz/AccountInfo/myself",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "BE.DTOs.AccountInfoDTO",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "BE.Controller.AccountTypesController",
     "Method": "GetAllAccountType",
     "RelativePath": "tqtquiz/AccountTypes/accounttypes",
@@ -288,6 +334,58 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.List\u00601[[BE.DTOs.AccountInfoDTO, BE, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BE.Controller.APIService.QuizController",
+    "Method": "GetQuizById",
+    "RelativePath": "tqtquiz/Quiz/{quiz_id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "quiz_id",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "BE.DTOs.QuizDTO",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BE.Controller.APIService.QuizController",
+    "Method": "GetQuizzesInCourse",
+    "RelativePath": "tqtquiz/Quiz/course/{course_id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "course_id",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[BE.DTOs.QuizDTO, BE, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",

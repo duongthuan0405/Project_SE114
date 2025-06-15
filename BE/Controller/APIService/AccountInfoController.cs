@@ -20,7 +20,7 @@ namespace BE.Controller.APIService
         }
 
         [HttpGet("myself")]
-        [Authorize(Roles = StaticClass.Role.Admin + "," + StaticClass.Role.Student + "," + StaticClass.Role.Teacher)]
+        [Authorize(Roles = StaticClass.RoleId.Admin + "," + StaticClass.RoleId.Student + "," + StaticClass.RoleId.Teacher)]
         public async Task<ActionResult<AccountInfoDTO>> GetUserInfo()
         {
             var requester = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -39,6 +39,7 @@ namespace BE.Controller.APIService
                         x.aa.Email,
                         x.a.LastMiddleName + " " + x.a.FirstName,
                         x.a.Avatar,
+                        x.a.AccountTypeId,
                         DbContext.AccountTypes.Where(at => at.Id == x.a.AccountTypeId)
                             .Select(at => at.Name).FirstOrDefault() ?? "Unknown Account Type"
                     ))
@@ -56,7 +57,7 @@ namespace BE.Controller.APIService
         }
 
         [HttpGet("{account_id}")]
-        [Authorize(Roles = StaticClass.Role.Admin + "," + StaticClass.Role.Teacher + "," + StaticClass.Role.Student)]
+        [Authorize(Roles = StaticClass.RoleId.Admin + "," + StaticClass.RoleId.Teacher + "," + StaticClass.RoleId.Student)]
         public async Task<ActionResult<AccountInfoDTO>> GetUserInfoById([FromRoute] string account_id)
         {
             try
@@ -69,6 +70,7 @@ namespace BE.Controller.APIService
                         x.aa.Email,
                         x.a.LastMiddleName + " " + x.a.FirstName,
                         x.a.Avatar,
+                        x.a.AccountTypeId,
                         DbContext.AccountTypes.Where(at => at.Id == x.a.AccountTypeId)
                             .Select(at => at.Name).FirstOrDefault() ?? "Unknown Account Type"
                     ))

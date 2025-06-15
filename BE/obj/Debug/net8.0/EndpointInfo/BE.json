@@ -6,6 +6,74 @@
     "version": "v1"
   },
   "paths": {
+    "/tqtquiz/AccountInfo/myself": {
+      "get": {
+        "tags": [
+          "AccountInfo"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountInfoDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountInfoDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountInfoDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tqtquiz/AccountInfo/{account_id}": {
+      "get": {
+        "tags": [
+          "AccountInfo"
+        ],
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountInfoDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountInfoDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountInfoDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/tqtquiz/AccountTypes/accounttypes": {
       "get": {
         "tags": [
@@ -525,6 +593,93 @@
           }
         }
       }
+    },
+    "/tqtquiz/Quiz/{quiz_id}": {
+      "get": {
+        "tags": [
+          "Quiz"
+        ],
+        "parameters": [
+          {
+            "name": "quiz_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuizDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuizDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuizDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tqtquiz/Quiz/course/{course_id}": {
+      "get": {
+        "tags": [
+          "Quiz"
+        ],
+        "parameters": [
+          {
+            "name": "course_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QuizDTO"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QuizDTO"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QuizDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -532,6 +687,7 @@
       "AccountInfoDTO": {
         "required": [
           "accountType",
+          "accountTypeId",
           "email",
           "id"
         ],
@@ -554,6 +710,10 @@
             "nullable": true
           },
           "accountType": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "accountTypeId": {
             "minLength": 1,
             "type": "string"
           }
@@ -587,6 +747,10 @@
             "type": "string"
           },
           "hostName": {
+            "type": "string",
+            "nullable": true
+          },
+          "hostId": {
             "type": "string",
             "nullable": true
           },
@@ -648,6 +812,7 @@
       "LoginResponseDTO": {
         "required": [
           "role",
+          "roleId",
           "token",
           "userId"
         ],
@@ -668,13 +833,52 @@
           "role": {
             "minLength": 1,
             "type": "string"
+          },
+          "roleId": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "QuizDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "dueTime": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "stateOfAttemption": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
           }
         },
         "additionalProperties": false
       },
       "RegisterRequestDTO": {
         "required": [
-          "accountTypeId",
           "email",
           "password"
         ],
@@ -695,10 +899,6 @@
           "lastMiddleName": {
             "type": "string",
             "nullable": true
-          },
-          "accountTypeId": {
-            "minLength": 1,
-            "type": "string"
           }
         },
         "additionalProperties": false

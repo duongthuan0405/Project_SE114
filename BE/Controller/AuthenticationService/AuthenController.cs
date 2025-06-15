@@ -53,7 +53,7 @@ namespace BE.Controller.AuthenticationService
                 var claims = new Claim[]
                 {
                 new Claim(ClaimTypes.NameIdentifier, UserInfo.ac.Id),
-                new Claim(ClaimTypes.Role, UserInfo.at.Name),
+                new Claim(ClaimTypes.Role, UserInfo.at.Id),
                 };
 
                 var jwt = Configuration.GetSection("Jwt");
@@ -77,7 +77,8 @@ namespace BE.Controller.AuthenticationService
                         Token = new JwtSecurityTokenHandler().WriteToken(token),
                         UserId = UserInfo.ac.Id,
                         FullName = $"{UserInfo.ac.LastMiddleName} {UserInfo.ac.FirstName}",
-                        Role = UserInfo.at.Name
+                        Role = UserInfo.at.Name,
+                        RoleId = UserInfo.at.Id
                     }
                 );
             }
@@ -96,7 +97,7 @@ namespace BE.Controller.AuthenticationService
         {
             try
             {
-                if (string.IsNullOrEmpty(req.Email) || string.IsNullOrEmpty(req.Password) || string.IsNullOrEmpty(req.AccountTypeId))
+                if (string.IsNullOrEmpty(req.Email) || string.IsNullOrEmpty(req.Password))
                 {
                     return StatusCode(StatusCodes.Status400BadRequest, new
                         {
@@ -135,7 +136,7 @@ namespace BE.Controller.AuthenticationService
                     Id = id,
                     FirstName = req.FirstName,
                     LastMiddleName = req.LastMiddleName,
-                    AccountTypeId = req.AccountTypeId
+                    AccountTypeId = await DbContext.AccountTypes.Where(at => at.Name == StaticClass.RoleId.Student).Select(at => at.Id).FirstOrDefaultAsync() ?? ""
                 };
                 DbContext.Accounts.Add(newAccount);
 
@@ -146,6 +147,7 @@ namespace BE.Controller.AuthenticationService
                     FullName = newAccount.LastMiddleName + " " + newAccount.FirstName,
                     Email = newAuthen.Email,
                     Avatar = newAccount.Avatar,
+                    AccountTypeId = newAccount.AccountTypeId,
                     AccountType = await DbContext.AccountTypes.Where(at => at.Id == newAccount.AccountTypeId)
                                                                 .Select(at => at.Name).FirstOrDefaultAsync() ?? "Chưa xác định"
                 });

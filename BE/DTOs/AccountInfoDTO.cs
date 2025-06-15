@@ -18,13 +18,17 @@ namespace BE.DTOs
         [Required]
         public string AccountType { get; set; } = "";
 
-        public AccountInfoDTO(string userId, string email, string? fullName, string? avatar, string accountType)
+        [Required]
+        public string AccountTypeId { get; set; } = "";
+
+        public AccountInfoDTO(string userId, string email, string? fullName, string? avatar, string accountTypeId, string accountType)
         {
             Id = userId;
             Email = email;
             FullName = fullName;
             Avatar = avatar;
             AccountType = accountType;
+            AccountTypeId = accountTypeId;
         }
 
         public AccountInfoDTO() { }
