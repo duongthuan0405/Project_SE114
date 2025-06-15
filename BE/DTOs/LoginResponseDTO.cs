@@ -14,12 +14,16 @@ namespace BE.DTOs
 
         [Required]
         public string Role { get; set; } = "";
-        public LoginResponseDTO(string token, DateTime expires, string userId, string fullName, string email, string role)
+
+        [Required]
+        public string RoleId { get; set; } = "";    
+        public LoginResponseDTO(string token, string userId, string fullName, string roleId, string role)
         {
             Token = token;
             UserId = userId;
             FullName = fullName;
             Role = role;
+            RoleId = roleId;
         }
 
         public LoginResponseDTO() { }

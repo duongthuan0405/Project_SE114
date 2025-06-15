@@ -11,6 +11,7 @@ namespace BE.DTOs
         public string Name { get; set; } = "";
 
         public string? HostName { get; set; } = "";
+        public string? HostId { get; set; } = "";
 
         [Required]
         public bool IsPrivate { get; set; } = true;
@@ -19,7 +20,7 @@ namespace BE.DTOs
 
         public string? Description { get;  set; } = "";
 
-        public CourseDTO(string id, string name, string hostName, bool isPrivate, string? avatar, string? description)
+        public CourseDTO(string id, string name, string hostId, string hostName, bool isPrivate, string? avatar, string? description)
         {
             Id = id;
             Name = name;
@@ -27,6 +28,7 @@ namespace BE.DTOs
             IsPrivate = isPrivate;
             Avatar = avatar;
             Description = description;
+            HostId = hostId;
         }
 
         public CourseDTO() { }

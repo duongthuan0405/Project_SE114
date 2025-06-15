@@ -14,15 +14,12 @@ namespace BE.DTOs
 
         public string? LastMiddleName { get; set; } = "";
 
-        [Required]
-        public string AccountTypeId { get; set; } = "";
-        public RegisterRequestDTO(string email, string password, string firstName, string lastMiddleName, string accountTypeId)
+        public RegisterRequestDTO(string email, string password, string firstName, string lastMiddleName)
         {
             Email = email;
             Password = password;
             FirstName = firstName;
             LastMiddleName = lastMiddleName;
-            AccountTypeId = accountTypeId;
         }
         public RegisterRequestDTO()
         {

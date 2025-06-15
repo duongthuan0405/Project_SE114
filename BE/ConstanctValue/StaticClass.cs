@@ -3,11 +3,11 @@
     public static class StaticClass
     {
         public const string AppName = "tqtquiz";
-        public static class Role
+        public static class RoleId
         {
-            public const string Teacher = "Giáo viên";
-            public const string Student = "Học sinh";
-            public const string Admin = "Quản trị";
+            public const string Teacher = "0000000001";
+            public const string Student = "0000000002";
+            public const string Admin = "0000000000";
         }
 
 

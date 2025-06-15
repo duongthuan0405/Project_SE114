@@ -24,7 +24,7 @@ namespace BE.Controller.APIService
 
         // --- Get all courses that this user has joined ------------------------------------------------
         [HttpGet("myself/joined")]
-        [Authorize(Roles = StaticClass.Role.Student + "," + StaticClass.Role.Teacher)]
+        [Authorize(Roles = StaticClass.RoleId.Student + "," + StaticClass.RoleId.Teacher)]
         public async Task<ActionResult<List<CourseDTO>>> GetCourseUserJoined()
         {
             try
@@ -37,7 +37,7 @@ namespace BE.Controller.APIService
 
                 List<CourseDTO> courses = await DbContext.Courses.Where(
                     (c) => DbContext.JoinCourses.Any(jc => jc.AccountID == requester && jc.CourseID == c.Id && jc.State == (int)JoinCourse.JoinCourseState.Joined)
-                ).Join(DbContext.Accounts, c => c.HostId, a => a.Id, (c, a) => new CourseDTO(c.Id, c.Name, a.LastMiddleName + " " + a.FirstName, c.IsPrivate, c.Avatar, c.Description))
+                ).Join(DbContext.Accounts, c => c.HostId, a => a.Id, (c, a) => new CourseDTO(c.Id, c.Name, a.Id, a.LastMiddleName + " " + a.FirstName, c.IsPrivate, c.Avatar, c.Description))
                 .ToListAsync();
 
                 return Ok(courses);
@@ -55,7 +55,7 @@ namespace BE.Controller.APIService
 
         // --- Get all courses that this user is the host ------------------------------------------------
         [HttpGet("myself/hosted")]
-        [Authorize(Roles = StaticClass.Role.Teacher)]
+        [Authorize(Roles = StaticClass.RoleId.Teacher)]
         public async Task<ActionResult<List<CourseDTO>>> GetCoursesHostedByUser()
         {
             var requester = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -68,7 +68,7 @@ namespace BE.Controller.APIService
             try
             {
                 List<CourseDTO> courses = await DbContext.Courses.Where(c => c.HostId == requester)
-                    .Join(DbContext.Accounts, c => c.HostId, a => a.Id, (c, a) => new CourseDTO(c.Id, c.Name, a.LastMiddleName + " " + a.FirstName, c.IsPrivate, c.Avatar, c.Description))
+                    .Join(DbContext.Accounts, c => c.HostId, a => a.Id, (c, a) => new CourseDTO(c.Id, c.Name, a.Id, a.LastMiddleName + " " + a.FirstName, c.IsPrivate, c.Avatar, c.Description))
                     .ToListAsync();
                 return Ok(courses);
             }
@@ -85,7 +85,7 @@ namespace BE.Controller.APIService
 
         // --- Get all courses that this user is pending ------------------------------------------------
         [HttpGet("myself/pending")]
-        [Authorize(Roles = StaticClass.Role.Student + "," + StaticClass.Role.Teacher)]
+        [Authorize(Roles = StaticClass.RoleId.Student + "," + StaticClass.RoleId.Teacher)]
         public async Task<ActionResult<List<CourseDTO>>> GetCoursesUserPending()
         {
             var requester = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -96,7 +96,7 @@ namespace BE.Controller.APIService
             try
             {
                 List<CourseDTO> courses = await DbContext.Courses.Where(c => DbContext.JoinCourses.Any(jc => jc.AccountID == requester && jc.CourseID == c.Id && jc.State == (int)JoinCourse.JoinCourseState.Pending))
-                    .Join(DbContext.Accounts, c => c.HostId, a => a.Id, (c, a) => new CourseDTO(c.Id, c.Name, a.LastMiddleName + " " + a.FirstName, c.IsPrivate, c.Avatar, c.Description))
+                    .Join(DbContext.Accounts, c => c.HostId, a => a.Id, (c, a) => new CourseDTO(c.Id, c.Name, a.Id, a.LastMiddleName + " " + a.FirstName, c.IsPrivate, c.Avatar, c.Description))
                     .ToListAsync();
                 return Ok(courses);
             }
@@ -113,7 +113,7 @@ namespace BE.Controller.APIService
 
         // --- Get all courses that this user has been denied by host ------------------------------------------------
         [HttpGet("myself/denied")]
-        [Authorize(Roles = StaticClass.Role.Student + "," + StaticClass.Role.Teacher)]
+        [Authorize(Roles = StaticClass.RoleId.Student + "," + StaticClass.RoleId.Teacher)]
         public async Task<ActionResult<List<CourseDTO>>> GetCoursesUserIsDenied()
         {
             var requester = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -124,7 +124,7 @@ namespace BE.Controller.APIService
             try
             {
                 List<CourseDTO> courses = await DbContext.Courses.Where(c => DbContext.JoinCourses.Any(jc => jc.AccountID == requester && jc.CourseID == c.Id && jc.State == (int)JoinCourse.JoinCourseState.Denied))
-                    .Join(DbContext.Accounts, c => c.HostId, a => a.Id, (c, a) => new CourseDTO(c.Id, c.Name, a.LastMiddleName + " " + a.FirstName, c.IsPrivate, c.Avatar, c.Description))
+                    .Join(DbContext.Accounts, c => c.HostId, a => a.Id, (c, a) => new CourseDTO(c.Id, c.Name, a.Id, a.LastMiddleName + " " + a.FirstName, c.IsPrivate, c.Avatar, c.Description))
                     .ToListAsync();
                 return Ok(courses);
             }
@@ -141,7 +141,7 @@ namespace BE.Controller.APIService
 
         // --- Get course by its ID ------------------------------------------------
         [HttpGet("{course_id}")]
-        [Authorize(Roles = StaticClass.Role.Teacher + "," + StaticClass.Role.Student)]
+        [Authorize(Roles = StaticClass.RoleId.Teacher + "," + StaticClass.RoleId.Student)]
         public async Task<ActionResult<CourseDTO>> GetCourseByCourseId([FromRoute] string course_id)
         {
             try
@@ -154,17 +154,16 @@ namespace BE.Controller.APIService
                 Account? host = await DbContext.Accounts.FindAsync(course.HostId);
 
                 string hostFullName = "";
+                string hostId = "";
 
                 if (host != null)
                 {
                     hostFullName = host.LastMiddleName + " " + host.FirstName;
+                    hostId = host.Id;
                 }
-                else
-                {
-                    hostFullName = "";
-                }
+               
 
-                CourseDTO courseDTO = new CourseDTO(course.Id, course.Name, hostFullName, course.IsPrivate, course.Avatar, course.Description);
+                CourseDTO courseDTO = new CourseDTO(course.Id, course.Name, hostId, hostFullName, course.IsPrivate, course.Avatar, course.Description);
                 return Ok(courseDTO);
             }
             catch (Exception ex)
@@ -180,7 +179,7 @@ namespace BE.Controller.APIService
 
         // --- Create the code ------------------------------------------------
         [HttpPost]
-        [Authorize(Roles = StaticClass.Role.Teacher)]
+        [Authorize(Roles = StaticClass.RoleId.Teacher)]
         public async Task<ActionResult<CourseDTO>> CreateCourse([FromBody] RequestCreateCourseDTO request)
         {
             var requester = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -220,7 +219,8 @@ namespace BE.Controller.APIService
                     HostName= hostName,
                     IsPrivate = newCourse.IsPrivate,
                     Avatar = newCourse.Avatar,
-                    Description = newCourse.Description
+                    Description = newCourse.Description,
+                    HostId = requester
                 }
                 );
             }

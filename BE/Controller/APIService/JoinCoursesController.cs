@@ -22,7 +22,7 @@ namespace BE.Controller.APIService
         }
 
         [HttpPost("{course_id}")]
-        [Authorize(Roles = StaticClass.Role.Student + "," + StaticClass.Role.Teacher)]
+        [Authorize(Roles = StaticClass.RoleId.Student + "," + StaticClass.RoleId.Teacher)]
         public async Task<ActionResult<JoinCourseResponseDTO>> JoinCourseWithIds([FromRoute] string course_id)
         {
             try
@@ -84,7 +84,7 @@ namespace BE.Controller.APIService
         }
 
         [HttpPatch("{account_id}/join/{course_id}/approve")]
-        [Authorize(Roles = StaticClass.Role.Teacher)]
+        [Authorize(Roles = StaticClass.RoleId.Teacher)]
         public async Task<ActionResult> AcceptJoinCoursePermission([FromRoute] string account_id, [FromRoute] string course_id)
         {
             try
@@ -125,7 +125,7 @@ namespace BE.Controller.APIService
         }
 
         [HttpPatch("{account_id}/join/{course_id}/deny")]
-        [Authorize(Roles = StaticClass.Role.Teacher)]
+        [Authorize(Roles = StaticClass.RoleId.Teacher)]
         public async Task<ActionResult> DenyJoinCoursePermission([FromRoute] string account_id, [FromRoute] string course_id)
         {
             try
@@ -165,7 +165,7 @@ namespace BE.Controller.APIService
         }
 
         [HttpGet("{course_id}/permissions")]
-        [Authorize(Roles = StaticClass.Role.Teacher)]
+        [Authorize(Roles = StaticClass.RoleId.Teacher)]
         public async Task<ActionResult<List<AccountInfoDTO>>> GetAllPermissionByCourseId(string course_id)
         {
             try
@@ -195,10 +195,11 @@ namespace BE.Controller.APIService
                             FullName = x.a.LastMiddleName + " " + x.a.FirstName,
                             Email = aa.Email,
                             Avatar = x.a.Avatar,
+                            AccountTypeId = x.a.AccountTypeId,
                             AccountType = DbContext.AccountTypes.Where(at => at.Id == x.a.AccountTypeId)
-                                                                .Select(at => at.Name)
-                                                                .FirstOrDefault() ?? "Chưa xác định"
-                    }
+                                                                    .Select(at => at.Name)
+                                                                    .FirstOrDefault() ?? "Chưa xác định"
+                        }
                     ).ToListAsync();
                 return Ok(permissions);
             }
