@@ -6,30 +6,27 @@ import com.google.gson.annotations.SerializedName;
 
 import java.time.LocalDateTime;
 
-public class AccountResponse {
+public class LoginResponse {
     @SerializedName("token")
     @Nullable
     private String token;
 
-    @SerializedName("expries")
-    @Nullable
-    private LocalDateTime expires;
-
-    @SerializedName("userid")
+    @SerializedName("userId")
     @Nullable
     private String userID;
 
-    @SerializedName("fullname")
+    @SerializedName("fullName")
     @Nullable
     private String fullName;
-
-    @SerializedName("Email")
-    @Nullable
-    private String email;
 
     @SerializedName("role")
     @Nullable
     private String role;
+
+    @SerializedName("roleId")
+    @Nullable
+    private String roleId;
+
     // Getter and Setter for token
     public String getToken() {
         return token;
@@ -37,16 +34,6 @@ public class AccountResponse {
 
     public void setToken(String token) {
         this.token = token;
-    }
-
-    // Getter and Setter for expires
-    @Nullable
-    public LocalDateTime getExpires() {
-        return expires;
-    }
-
-    public void setExpires(@Nullable LocalDateTime expires) {
-        this.expires = expires;
     }
 
     // Getter and Setter for userID
@@ -69,16 +56,6 @@ public class AccountResponse {
         this.fullName = fullName;
     }
 
-    // Getter and Setter for email
-    @Nullable
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(@Nullable String email) {
-        this.email = email;
-    }
-
     // Getter and Setter for role
     @Nullable
     public String getRole() {
@@ -87,6 +64,28 @@ public class AccountResponse {
 
     public void setRole(@Nullable String role) {
         this.role = role;
+    }
+
+
+    // Getter and Setter for roleId
+    @Nullable
+    public String getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(@Nullable String roleId) {
+        this.roleId = roleId;
+    }
+
+    @Override
+    public String toString() {
+        return "LoginResponse{" +
+                "token='" + token + '\'' +
+                ", userID='" + userID + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", role='" + role + '\'' +
+                ", roleId='" + roleId + '\'' +
+                '}';
     }
 }
 

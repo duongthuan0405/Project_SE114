@@ -1,7 +1,7 @@
 package com.example.tqt_quiz.domain.APIService;
 
-import com.example.tqt_quiz.domain.dto.AuthenInfo;
-import com.example.tqt_quiz.domain.dto.AccountResponse;
+import com.example.tqt_quiz.domain.dto.LoginRequest;
+import com.example.tqt_quiz.domain.dto.LoginResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -9,5 +9,5 @@ import retrofit2.http.POST;
 
 public interface LoginService {
     @POST("/tqtquiz/authen/login")
-    Call<AccountResponse> login(@Body AuthenInfo infologin);
+    Call<LoginResponse> login(@Body LoginRequest infologin);
 }

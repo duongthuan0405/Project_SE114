@@ -15,7 +15,7 @@ public class AccountInfo {
     @NotNull
     private String Email;
 
-    @SerializedName("fullname")
+    @SerializedName("fullName")
     private String FullName;
 
     @SerializedName("avatar")
@@ -24,6 +24,10 @@ public class AccountInfo {
     @SerializedName("accountType")
     @NotNull
     private String AccountType;
+
+    @SerializedName("accountTypeId")
+    @NotNull
+    private String AccountTypeId;
 
     // Getter and Setter for UserID
     public String getUserID() {
@@ -68,6 +72,14 @@ public class AccountInfo {
 
     public void setAccountType(String accountType) {
         this.AccountType = accountType;
+    }
+
+    public @NotNull String getAccountTypeId() {
+        return AccountTypeId;
+    }
+
+    public void setAccountTypeId(@NotNull String accountTypeId) {
+        AccountTypeId = accountTypeId;
     }
 }
 

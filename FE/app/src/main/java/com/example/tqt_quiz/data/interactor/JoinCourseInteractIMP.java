@@ -6,7 +6,7 @@ import android.util.Log;
 import com.example.tqt_quiz.data.repository.Token.RetrofitClient;
 import com.example.tqt_quiz.data.repository.Token.TokenManager;
 import com.example.tqt_quiz.domain.APIService.JoinCourseRelatedService;
-import com.example.tqt_quiz.domain.dto.AccountResponse;
+import com.example.tqt_quiz.domain.dto.LoginResponse;
 import com.example.tqt_quiz.domain.dto.JoinCourseResponseDTO;
 import com.example.tqt_quiz.domain.interactor.JoinCourseInteract;
 
@@ -141,12 +141,12 @@ public class JoinCourseInteractIMP implements JoinCourseInteract {
     public void ViewAllAccountPendingThisCourse(Context context, ViewAllAccountPendingThisCourse callBack) {
         TokenManager tokenManager = new TokenManager(context);
         JoinCourseRelatedService service = RetrofitClient.GetClient(tokenManager).create(JoinCourseRelatedService.class);
-        Call<List<AccountResponse>> call = service.ViewAllAccountPendingThisCourse();
-        call.enqueue(new Callback<List<AccountResponse>>() {
+        Call<List<LoginResponse>> call = service.ViewAllAccountPendingThisCourse();
+        call.enqueue(new Callback<List<LoginResponse>>() {
 
 
             @Override
-            public void onResponse(Call<List<AccountResponse>> call, Response<List<AccountResponse>> response) {
+            public void onResponse(Call<List<LoginResponse>> call, Response<List<LoginResponse>> response) {
                 if(response.isSuccessful())
                 {
                     callBack.onSuccess(response.body());
@@ -183,7 +183,7 @@ public class JoinCourseInteractIMP implements JoinCourseInteract {
             }
 
             @Override
-            public void onFailure(Call<List<AccountResponse>> call, Throwable t) {
+            public void onFailure(Call<List<LoginResponse>> call, Throwable t) {
                 callBack.onCannotContactWithServer();
             }
         });

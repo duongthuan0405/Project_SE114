@@ -1,17 +1,21 @@
 package com.example.tqt_quiz.domain.dto;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
-public class AuthenInfo {
+public class LoginRequest {
 
     @SerializedName("email")
+    @NonNull
     private String email;
 
     @SerializedName("password")
+    @NonNull
     private String password;
 
     // Constructor (optional)
-    public AuthenInfo(String email,String password) {
+    public LoginRequest(String email, String password) {
         this.email=email;
         this.password=password;
     }

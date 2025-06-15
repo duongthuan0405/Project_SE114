@@ -16,6 +16,9 @@ public class CourseDTO {
     @SerializedName("hostName")
     private String hostName;
 
+    @SerializedName("hostId")
+    private String hostId;
+
     @SerializedName("isPrivate")
     private boolean isPrivate;
 
@@ -79,6 +82,14 @@ public class CourseDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getHostId() {
+        return hostId;
+    }
+
+    public void setHostId(String hostId) {
+        this.hostId = hostId;
     }
 }
 

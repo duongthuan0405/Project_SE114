@@ -1,7 +1,7 @@
 package com.example.tqt_quiz.domain.dto;
 
 import com.google.gson.annotations.SerializedName;
-public class RegisterInfo {
+public class RegisterRequest {
     @SerializedName("email")
     private String Email;
 
@@ -13,16 +13,12 @@ public class RegisterInfo {
 
     @SerializedName("lastMiddleName")
     private String LastMiddleName;
-
-    @SerializedName("accountTypeId")
-    private String AccountTypeID;
-    public RegisterInfo(String email,String password,String Firstname,String LastMiddleName,String AccountTypeID)
+    public RegisterRequest(String email, String password, String Firstname, String LastMiddleName)
     {
         this.Email=email;
         this.Password=password;
         this.FirstName=Firstname;
         this.LastMiddleName=LastMiddleName;
-        this.AccountTypeID=AccountTypeID;
     }
 
     // Getters and Setters
@@ -58,11 +54,4 @@ public class RegisterInfo {
         this.LastMiddleName = lastMiddleName;
     }
 
-    public String getAccountTypeID() {
-        return AccountTypeID;
-    }
-
-    public void setAccountTypeID(String accountTypeID) {
-        this.AccountTypeID = accountTypeID;
-    }
 }

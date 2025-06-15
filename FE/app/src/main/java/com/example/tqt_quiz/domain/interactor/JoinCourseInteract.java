@@ -2,9 +2,7 @@ package com.example.tqt_quiz.domain.interactor;
 
 import android.content.Context;
 
-import com.example.tqt_quiz.data.repository.Token.TokenManager;
-import com.example.tqt_quiz.domain.dto.AccountInfo;
-import com.example.tqt_quiz.domain.dto.AccountResponse;
+import com.example.tqt_quiz.domain.dto.LoginResponse;
 import com.example.tqt_quiz.domain.dto.JoinCourseResponseDTO;
 
 import java.util.List;
@@ -37,7 +35,7 @@ public interface JoinCourseInteract {
     public void ViewAllAccountPendingThisCourse(Context context,ViewAllAccountPendingThisCourse callBack);
     public interface ViewAllAccountPendingThisCourse
     {
-        public void onSuccess(List<AccountResponse> response);
+        public void onSuccess(List<LoginResponse> response);
         public void onFailureByExpiredToken(String msg);
         public void onFailureByUnacceptedRole(String msg);
         public void onFailureByNotExistCourse(String msg);
