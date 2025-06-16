@@ -1,10 +1,13 @@
 package com.example.tqt_quiz.presentation.view.activities;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +16,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.tqt_quiz.presentation.adapters.MemberAdapter;
+import com.example.tqt_quiz.presentation.classes.Course;
 import com.example.tqt_quiz.presentation.classes.Member;
 
 import com.example.tqt_quiz.R;
@@ -21,6 +25,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ViewCourse extends AppCompatActivity {
+
+    ImageView avatar;
+    TextView name, isPrivate, description, host;
     ListView lvMembers;
     List<Member> memberList;
     MemberAdapter memberAdapter;
@@ -37,6 +44,22 @@ public class ViewCourse extends AppCompatActivity {
             return insets;
         });
 
+        Course course = (Course) getIntent().getSerializableExtra("selected_course");
+
+        avatar = findViewById(R.id.img_CourseAvatar_ViewCourse);
+        name = findViewById(R.id.tv_CourseName_ViewCourse);
+        isPrivate = findViewById(R.id.tv_IsPrivate_ViewCourse);
+        description = findViewById(R.id.tv_DescriptionValue_ViewCourse);
+        host = findViewById(R.id.tv_HostName_ViewCourse);
+
+        if (course != null) {
+            avatar.setImageResource(course.getAvatar());
+            name.setText(course.getName());
+            isPrivate.setText("Riêng tư: " + (course.isPrivate() ? "Có" : "Không"));
+            description.setText(course.getDescription());
+            host.setText("👤 Tên giáo viên: " + course.getHostName());
+        }
+
         lvMembers = findViewById(R.id.lv_Members_ViewCourse);
 
         memberList = new ArrayList<>();
@@ -48,6 +71,13 @@ public class ViewCourse extends AppCompatActivity {
         lvMembers.setAdapter(memberAdapter);
 
         setListViewHeightBasedOnChildren(lvMembers);
+
+        lvMembers.setOnItemClickListener((parent, view, position, id) -> {
+            Member selectedMember = memberList.get(position);
+            Intent intent = new Intent(ViewCourse.this, MemberInfo.class);
+            intent.putExtra("selected_member", selectedMember);
+            startActivity(intent);
+        });
 
     }
 

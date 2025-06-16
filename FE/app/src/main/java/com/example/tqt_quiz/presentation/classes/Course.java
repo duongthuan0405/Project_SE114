@@ -1,6 +1,8 @@
 package com.example.tqt_quiz.presentation.classes;
 
-public class Course {
+import java.io.Serializable;
+
+public class Course implements Serializable {
     private String name;
     private String description;
     private boolean isPrivate;

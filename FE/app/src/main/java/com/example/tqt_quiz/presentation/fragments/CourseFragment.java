@@ -1,5 +1,6 @@
 package com.example.tqt_quiz.presentation.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,6 +13,7 @@ import android.widget.ListView;
 import com.example.tqt_quiz.R;
 import com.example.tqt_quiz.presentation.adapters.CourseAdapter;
 import com.example.tqt_quiz.presentation.classes.Course;
+import com.example.tqt_quiz.presentation.view.activities.ViewCourse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +43,13 @@ public class CourseFragment extends Fragment {
 
         courseAdapter = new CourseAdapter(requireContext(), R.layout.item_course, courseList);
         lvCourse.setAdapter(courseAdapter);
+
+        lvCourse.setOnItemClickListener((parent, view1, position, id) -> {
+            Course selectedCourse = courseList.get(position);
+            Intent intent = new Intent(requireContext(), ViewCourse.class);
+            intent.putExtra("selected_course", selectedCourse);
+            startActivity(intent);
+        });
 
         return view;
     }

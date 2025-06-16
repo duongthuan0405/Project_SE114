@@ -25,7 +25,7 @@
             android:padding="24dp">
 
             <ImageView
-                android:id="@+id/imgAvatar"
+                android:id="@+id/img_Avatar_MemInfo"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_marginBottom="24dp"
@@ -36,7 +36,7 @@
                 android:elevation="4dp" />
 
             <TextView
-                android:id="@+id/tvFirstName"
+                android:id="@+id/tv_FirstName_MemInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="First Name"
@@ -46,7 +46,7 @@
                 android:layout_marginBottom="8dp" />
 
             <TextView
-                android:id="@+id/tvLastMiddleName"
+                android:id="@+id/tv_LastMiddleName_MemInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Last + Middle Name"
@@ -61,7 +61,7 @@
                 android:layout_marginBottom="12dp" />
 
             <TextView
-                android:id="@+id/tvEmail"
+                android:id="@+id/tv_Email_MemInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="email@example.com"
