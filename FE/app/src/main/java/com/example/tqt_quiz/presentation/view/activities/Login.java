@@ -69,6 +69,8 @@ public class Login extends AppCompatActivity implements LoginContract.IView {
 
         //Thao tác ForgotPw Click
         ForgotPw.setOnClickListener(v -> presenter.ForgotPasswordClick());
+
+        
     }
 
     @Override
