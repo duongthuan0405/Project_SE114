@@ -1,0 +1,319 @@
+package com.example.tqt_quiz.data.interactor;
+
+import android.content.Context;
+import android.util.Log;
+
+import com.example.tqt_quiz.data.repository.Token.RetrofitClient;
+import com.example.tqt_quiz.data.repository.Token.TokenManager;
+import com.example.tqt_quiz.domain.APIService.CreateNewCourseService;
+import com.example.tqt_quiz.domain.APIService.FetchAllUserCourseService;
+import com.example.tqt_quiz.domain.APIService.FindCourseService;
+import com.example.tqt_quiz.domain.dto.CourseCreateInfo;
+import com.example.tqt_quiz.domain.dto.CourseDTO;
+import com.example.tqt_quiz.domain.interactor.CourseRelatedInteract;
+
+import org.json.JSONObject;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class CourseRelatedInteractIMP implements CourseRelatedInteract {
+    @Override
+    public void FetchAllCourseJoined(Context context, FetchJoinedCallBack callBack)
+    {
+        TokenManager tokenManager=new TokenManager(context);
+        FetchAllUserCourseService service= RetrofitClient.GetClient(tokenManager).create(FetchAllUserCourseService.class);
+        Call<List<CourseDTO>> call= service.FetchAllCoruseJoined();
+        call.enqueue(new Callback<List<CourseDTO>>()
+        {
+
+            @Override
+            public void onResponse(Call<List<CourseDTO>> call, Response<List<CourseDTO>> response) {
+                if(response.isSuccessful())
+                {
+                    callBack.onSuccess(response.body());
+                }
+                else
+                {
+                    String rawJson="";
+                    try {
+                        int code= response.code();
+                        rawJson=response.errorBody().string();
+                        JSONObject obj=new JSONObject(rawJson);
+                        String msg=obj.optString("message");
+                        switch (code)
+                        {
+
+                            case 401:
+                                callBack.onFailureByExpiredToken(msg);
+                                break;
+                            case 402:
+                                callBack.onFailureByUnAcepptedRole(msg);
+                                break;
+                            case 404:
+                                callBack.onFailureByNotExistAccount(msg);
+                                break;
+                            case 500:
+                                callBack.onFailureByServerError(msg);
+                                break;
+
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                        Log.e("Fetch","UnknowError");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<CourseDTO>> call, Throwable t) {
+                    callBack.onFailureByCannotSendToServer();
+            }
+        });
+    }
+    public void FetchAllCourseHosted(Context context,FetchHostedCallBack callBack)
+    {
+        TokenManager tokenManager=new TokenManager(context);
+        FetchAllUserCourseService service= RetrofitClient.GetClient(tokenManager).create(FetchAllUserCourseService.class);
+        Call<List<CourseDTO>> call= service.FetchAllCourseHosted();
+        call.enqueue(new Callback<List<CourseDTO>>() {
+
+            @Override
+            public void onResponse(Call<List<CourseDTO>> call, Response<List<CourseDTO>> response) {
+                if (response.isSuccessful()) {
+                    callBack.onSuccess(response.body());
+                } else {
+                    String rawJson="";
+                    try {
+                        int code= response.code();
+                        rawJson=response.errorBody().string();
+                        JSONObject obj=new JSONObject(rawJson);
+                        String msg=obj.optString("message");
+                        switch (code) {
+                            case 401:
+                                callBack.onFailureByExpiredToken(msg);
+                                break;
+                            case 402:
+                                callBack.onFailureByUnAcepptedRole(msg);
+                                break;
+                            case 404:
+                                callBack.onFailureByNotExistAccount(msg);
+                                break;
+                            case 500:
+                                callBack.onFailureByServerError(msg);
+                                break;
+
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e("Fetch", "UnknowError");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<CourseDTO>> call, Throwable t) {
+                callBack.onFailureByCannotSendToServer();
+            }
+        });
+    }
+    public void FetchAllCoursePending(Context context,FetchAllPendingCallBack callBack)
+    {
+        TokenManager tokenManager= new TokenManager(context);
+        FetchAllUserCourseService service= RetrofitClient.GetClient(tokenManager).create(FetchAllUserCourseService.class);
+        Call<List<CourseDTO>> call= service.FetchAllCoursePending();
+        call.enqueue(new Callback<List<CourseDTO>>() {
+
+            @Override
+            public void onResponse(Call<List<CourseDTO>> call, Response<List<CourseDTO>> response) {
+                if (response.isSuccessful()) {
+                    callBack.onSuccess(response.body());
+                } else {
+                    String rawJson="";
+                    try {
+                        int code= response.code();
+                        rawJson=response.errorBody().string();
+                        JSONObject obj=new JSONObject(rawJson);
+                        String msg= obj.optString("message");
+                        switch (code) {
+                            case 401:
+                                callBack.onFailureByExpiredToken(msg);
+                                break;
+                            case 402:
+                                callBack.onFailureByUnAcepptedRole(msg);
+                                break;
+                            case 404:
+                                callBack.onFailureByNotExistAccount(msg);
+                                break;
+                            case 500:
+                                callBack.onFailureByServerError(msg);
+                                break;
+
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e("Fetch", "UnknowError");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<CourseDTO>> call, Throwable t) {
+                callBack.onFailureByCannotSendToServer();
+            }
+        });
+    }
+
+    @Override
+    public void FetchAllCourseDenied(Context context, FetchAllDeniedCallBack callBack) {
+        TokenManager tokenManager=new TokenManager(context);
+        FetchAllUserCourseService service= RetrofitClient.GetClient(tokenManager).create(FetchAllUserCourseService.class);
+        Call<List<CourseDTO>> call= service.FetchAllCourseDenied();
+        call.enqueue(new Callback<List<CourseDTO>>() {
+
+            @Override
+            public void onResponse(Call<List<CourseDTO>> call, Response<List<CourseDTO>> response) {
+                if (response.isSuccessful()) {
+                    callBack.onSuccess(response.body());
+                } else {
+                    String rawJson="";
+                    try {
+                        int code = response.code();
+                        rawJson=response.errorBody().string();
+                        JSONObject obj=new JSONObject(rawJson);
+                        String msg=obj.optString("message");
+                        switch (code) {
+                            case 401:
+                                callBack.onFailureByExpiredToken(msg);
+                                break;
+                            case 402:
+                                callBack.onFailureByUnAcepptedRole(msg);
+                                break;
+                            case 404:
+                                callBack.onFailureByNotExistAccount(msg);
+                                break;
+                            case 500:
+                                callBack.onFailureByServerError(msg);
+                                break;
+
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+
+                        Log.e("Fetch", "UnknowError");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<CourseDTO>> call, Throwable t) {
+                callBack.onFailureByCannotSendToServer();
+            }
+        });
+    }
+    @Override
+    public void FindCourseByID(int id,Context context,FindCourseByIDCallBack callBack)
+    {
+        TokenManager tokenManager=new TokenManager(context);
+        FindCourseService service=RetrofitClient.GetClient(tokenManager).create(FindCourseService.class);
+        Call<CourseDTO> call=service.FindCourseByID(id);
+        call.enqueue(new Callback<CourseDTO>() {
+            @Override
+            public void onResponse(Call<CourseDTO> call, Response<CourseDTO> response) {
+                if(response.isSuccessful())
+                {
+                    callBack.onSuccess(response.body());
+                }
+                else {
+                    String rawJson="";
+                    try
+                    {
+                        int code= response.code();
+                        rawJson=response.errorBody().string();
+                        JSONObject obj=new JSONObject(rawJson);
+                        String msg= obj.optString(rawJson);
+                        switch (code)
+                        {
+                            case 401:
+                                callBack.onFailureByExpiredToken(msg);
+                                break;
+                            case 403:
+                                callBack.onFailureByUnAcepptedRole(msg);
+                                break;
+                            case 404:
+                                callBack.onFailureByNotExistCourse(msg);
+                                break;
+                            case 500:
+                                callBack.onFailureByServerError(msg);
+                                break;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                        Log.d("Finding Course","UnknowError");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CourseDTO> call, Throwable t) {
+                callBack.onFailureByCannotSendToServer();
+            }
+        });
+    }
+    @Override
+    public void CreateNewCourse(CourseCreateInfo info, Context context,CreateNewCourseCallBack callBack)
+    {
+        TokenManager tokenManager=new TokenManager(context);
+        CreateNewCourseService service=RetrofitClient.GetClient(tokenManager).create(CreateNewCourseService.class);
+        Call<CourseDTO> call= service.Create(info);
+        call.enqueue(new Callback<CourseDTO>() {
+            @Override
+            public void onResponse(Call<CourseDTO> call, Response<CourseDTO> response) {
+                if(response.isSuccessful())
+                {
+                    callBack.onSuccess(response.body());
+                }
+                else
+                {
+                    String rawJson="";
+                    try {
+                        int code = response.code();
+                        rawJson=response.errorBody().string();
+                        JSONObject obj=new JSONObject(rawJson);
+                        String msg=response.errorBody().string();
+                        switch (code) {
+                            case 401:
+                                callBack.onFailureByExpiredToken(msg);
+                                break;
+                            case 403:
+                                callBack.onFailureByUnAcepptedRole(msg);
+                                break;
+                            case 404:
+                                callBack.onFailureByNotExistAccount(msg);
+                                break;
+                            case 500:
+                                callBack.onFailureByServerError(msg);
+                                break;
+                        }
+                    }catch(Exception e){
+                            e.printStackTrace();
+                            Log.d("Finding Course", "UnknowError");
+                        }
+                    }
+                }
+
+
+            @Override
+            public void onFailure(Call<CourseDTO> call, Throwable t) {
+                callBack.onFailureByCannotSendToServer();
+            }
+        });
+    }
+}
