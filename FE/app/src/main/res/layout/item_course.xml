@@ -22,13 +22,13 @@
             android:gravity="center_vertical">
 
             <!-- Avatar -->
-            <ImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/img_Avatar_CourseItem"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:src="@drawable/resource_default"
                 android:scaleType="centerCrop"
-                android:background="@drawable/btn_round"
+                app:shapeAppearanceOverlay="@style/rounded_border_img"
                 android:contentDescription="Course Avatar" />
 
             <!-- Texts -->
