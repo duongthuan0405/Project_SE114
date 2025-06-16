@@ -1,9 +1,7 @@
 package com.example.tqt_quiz.domain.interactor;
 
 import android.content.Context;
-import android.media.session.MediaSession;
 
-import com.example.tqt_quiz.data.repository.Token.TokenManager;
 import com.example.tqt_quiz.domain.dto.CourseCreateInfo;
 import com.example.tqt_quiz.domain.dto.CourseDTO;
 
@@ -50,7 +48,7 @@ public interface CourseRelatedInteract {
         public void onFailureByServerError(String msg);
         public void onFailureByCannotSendToServer();
     }
-    public void FindCourseByID(int course_ID,Context context,FindCourseByIDCallBack callBack);
+    public void FindCourseByID(String course_ID, Context context, FindCourseByIDCallBack callBack);
     public interface FindCourseByIDCallBack
     {
         public void onSuccess(CourseDTO response);

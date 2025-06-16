@@ -2,6 +2,7 @@ package com.example.tqt_quiz.domain.interactor;
 
 import android.content.Context;
 
+import com.example.tqt_quiz.domain.dto.AccountInfo;
 import com.example.tqt_quiz.domain.dto.LoginResponse;
 import com.example.tqt_quiz.domain.dto.RegisterRequest;
 
@@ -12,6 +13,7 @@ public interface AuthInteract {
         public void onSuccess(LoginResponse response);
         public void onUnAuthorized(String msg);
         public void FailedByNotResponse();
+
     }
     public void Register(RegisterRequest info, Context context, RegCallBack callBack);
     public interface RegCallBack
