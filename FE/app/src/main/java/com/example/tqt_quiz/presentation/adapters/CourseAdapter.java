@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.example.tqt_quiz.R;
 import com.example.tqt_quiz.presentation.classes.Course;
 
@@ -15,22 +17,22 @@ import java.util.List;
 
 public class CourseAdapter extends ArrayAdapter<Course> {
     private Context context;
-    private List<Course> courseList;
+    private List<Course> courses;
 
-    public CourseAdapter(Context context, int resource,List<Course> courseList) {
-        super(context,resource,courseList);
+    public CourseAdapter(@NonNull Context context, int resource, @NonNull List<Course> courses) {
+        super(context, resource, courses);
         this.context = context;
-        this.courseList = courseList;
+        this.courses = courses;
     }
 
     @Override
     public int getCount() {
-        return courseList.size();
+        return courses.size();
     }
 
     @Override
     public Course getItem(int position) {
-        return courseList.get(position);
+        return courses.get(position);
     }
 
     @Override
@@ -58,7 +60,7 @@ public class CourseAdapter extends ArrayAdapter<Course> {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        Course course = courseList.get(position);
+        Course course = courses.get(position);
         holder.tvCourseName.setText(course.getName());
         holder.tvHostName.setText(course.getHostName());
         holder.imgCourseAvatar.setImageResource(course.getAvatar());

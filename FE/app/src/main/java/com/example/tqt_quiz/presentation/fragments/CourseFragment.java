@@ -7,19 +7,41 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import com.example.tqt_quiz.R;
+import com.example.tqt_quiz.presentation.adapters.CourseAdapter;
+import com.example.tqt_quiz.presentation.classes.Course;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CourseFragment extends Fragment {
 
+    private ListView lvCourse;
+    private List<Course> courseList;
+    private CourseAdapter courseAdapter;
+
     public CourseFragment() {
-        // Required empty public constructor
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_course, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_course, container, false);
+
+        lvCourse = view.findViewById(R.id.lv_Course_Course);
+
+        courseList = new ArrayList<>();
+        courseList.add(new Course("Lập trình Java", "Mô tả", false, R.drawable.resource_default, "Nguyễn Văn A"));
+        courseList.add(new Course("Phân tích hệ thống", "Mô tả", true, R.drawable.resource_default, "Trần Thị B"));
+        courseList.add(new Course("Cơ sở dữ liệu", "Mô tả", false, R.drawable.resource_default, "Lê Văn C"));
+
+        courseAdapter = new CourseAdapter(requireContext(), R.layout.item_course, courseList);
+        lvCourse.setAdapter(courseAdapter);
+
+        return view;
     }
 }
