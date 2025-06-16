@@ -2,6 +2,7 @@ package com.example.tqt_quiz.presentation.view.activities;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.content.Intent;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -71,6 +72,10 @@ public class MainActivity extends AppCompatActivity implements MainActitvityCont
                 Log.d("REG","KHONG GUI TOI SERVER");
             }
         });
+
+
+        Intent intent = new Intent(this, MainHome.class);
+        startActivity(intent);
     }
 
     @Override

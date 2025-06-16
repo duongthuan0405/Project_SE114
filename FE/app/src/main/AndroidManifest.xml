@@ -15,16 +15,43 @@
         android:theme="@style/Theme.TQT_Quiz"
         android:networkSecurityConfig="@xml/config"
         tools:targetApi="31">
-
+        <activity
+            android:name=".presentation.view.activities.MemberInfo"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.view.activities.ViewCourse"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.view.activities.CreateCourse"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.view.activities.ForgotPassword"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.view.activities.MainHome"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.view.activities.ChangeProfile"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.view.activities.Login"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.view.activities.Register"
+            android:exported="false" />
         <activity
             android:name=".presentation.view.activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/Main_font" />
     </application>
 
 </manifest>
