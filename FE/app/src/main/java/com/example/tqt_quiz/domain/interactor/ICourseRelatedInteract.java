@@ -7,7 +7,7 @@ import com.example.tqt_quiz.domain.dto.CourseDTO;
 
 import java.util.List;
 
-public interface CourseRelatedInteract {
+public interface ICourseRelatedInteract {
     public void FetchAllCourseJoined(Context context, FetchJoinedCallBack callBack);
     public interface FetchJoinedCallBack
     {
@@ -58,7 +58,7 @@ public interface CourseRelatedInteract {
         public void onFailureByServerError(String msg);
         public void onFailureByCannotSendToServer();
     }
-    public void CreateNewCourse(CourseCreateInfo info, Context context,CreateNewCourseCallBack callBack);
+    public void CreateNewCourse(CourseCreateInfo info, Context context, CreateNewCourseCallBack callBack);
 
     public interface CreateNewCourseCallBack {
         public void onSuccess(CourseDTO response);
@@ -73,5 +73,4 @@ public interface CourseRelatedInteract {
 
         public void onFailureByCannotSendToServer();
     }
-
 }

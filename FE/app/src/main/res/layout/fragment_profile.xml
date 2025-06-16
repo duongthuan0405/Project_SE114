@@ -91,6 +91,16 @@
             android:background="@drawable/btn_rectagle"
             android:layout_marginBottom="32dp" />
 
+        <Button
+            android:id="@+id/btn_Logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Đăng xuất"
+            android:textSize="15dp"
+            android:textColor="@color/white"
+            android:background="@drawable/btn_rectagle_red"
+            android:layout_marginBottom="32dp" />
+
     </LinearLayout>
 
 </ScrollView>

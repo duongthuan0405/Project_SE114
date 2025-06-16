@@ -1,4 +1,4 @@
-package com.example.tqt_quiz.domain.repository.Token;
+package com.example.tqt_quiz.domain.repository.token;
 
 public interface ITokenManager {
     public void SaveToken(String Token);

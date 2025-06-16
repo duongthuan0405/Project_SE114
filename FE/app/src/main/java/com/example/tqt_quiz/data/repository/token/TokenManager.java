@@ -1,9 +1,9 @@
-package com.example.tqt_quiz.data.repository.Token;
+package com.example.tqt_quiz.data.repository.token;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.example.tqt_quiz.domain.repository.Token.ITokenManager;
+import com.example.tqt_quiz.domain.repository.token.ITokenManager;
 public class TokenManager implements ITokenManager {
     private static final String PREF_NAME = "TokenPref";
 

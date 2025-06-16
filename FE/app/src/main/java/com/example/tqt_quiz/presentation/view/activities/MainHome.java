@@ -1,17 +1,16 @@
 package com.example.tqt_quiz.presentation.view.activities;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.ImageView;
+import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.tqt_quiz.presentation.adapters.ViewPagerAdapter;
 
 import com.example.tqt_quiz.R;
+import com.example.tqt_quiz.data.repository.token.TokenManager;
+import com.example.tqt_quiz.presentation.adapters.ViewPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -28,6 +27,8 @@ public class MainHome extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main_home);
+
+        Log.d("KKK", new TokenManager(getApplicationContext()).GetToken());
 
         tabLayout = findViewById(R.id.tb_Tabbar_MainHome);
         viewPager2 = findViewById(R.id.viewpager_MainHome);

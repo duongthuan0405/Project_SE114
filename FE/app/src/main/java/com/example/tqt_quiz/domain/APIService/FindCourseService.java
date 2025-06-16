@@ -8,5 +8,5 @@ import retrofit2.http.Path;
 
 public interface FindCourseService {
     @GET("/tqtquiz/Courses/{course_id}")
-    Call<CourseDTO> FindCourseByID(@Path("course_id") int course_id);
+    Call<CourseDTO> FindCourseByID(@Path("course_id") String course_id);
 }
