@@ -5,10 +5,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.example.tqt_quiz.presentation.fragments.CourseFragment;
-import com.example.tqt_quiz.presentation.fragments.NotificationFragment;
-import com.example.tqt_quiz.presentation.fragments.ProfileFragment;
-import com.example.tqt_quiz.presentation.fragments.QuizFragment;
+import com.example.tqt_quiz.presentation.view.fragments.CourseFragment;
+import com.example.tqt_quiz.presentation.view.fragments.NotificationFragment;
+import com.example.tqt_quiz.presentation.view.fragments.ProfileFragment;
+import com.example.tqt_quiz.presentation.view.fragments.QuizFragment;
 
 public class ViewPagerAdapter extends FragmentStateAdapter {
     public ViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {

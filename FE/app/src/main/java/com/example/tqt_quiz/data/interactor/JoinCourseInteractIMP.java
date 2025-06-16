@@ -3,12 +3,13 @@ package com.example.tqt_quiz.data.interactor;
 import android.content.Context;
 import android.util.Log;
 
-import com.example.tqt_quiz.data.repository.Token.RetrofitClient;
-import com.example.tqt_quiz.data.repository.Token.TokenManager;
+
+import com.example.tqt_quiz.data.repository.token.RetrofitClient;
+import com.example.tqt_quiz.data.repository.token.TokenManager;
 import com.example.tqt_quiz.domain.APIService.JoinCourseRelatedService;
 import com.example.tqt_quiz.domain.dto.LoginResponse;
 import com.example.tqt_quiz.domain.dto.JoinCourseResponseDTO;
-import com.example.tqt_quiz.domain.interactor.JoinCourseInteract;
+import com.example.tqt_quiz.domain.interactor.IJoinCourseInteract;
 
 import org.json.JSONObject;
 
@@ -18,7 +19,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class JoinCourseInteractIMP implements JoinCourseInteract {
+public class JoinCourseInteractIMP implements IJoinCourseInteract {
     @Override
     public void JoinCourse(Context context, JoinCourseCallBack callBack) {
         TokenManager tokenManager = new TokenManager(context);
@@ -37,12 +38,6 @@ public class JoinCourseInteractIMP implements JoinCourseInteract {
                         JSONObject obj = new JSONObject(rawJson);
                         String msg = response.errorBody().string();
                         switch (code) {
-                            case 401:
-                                callBack.onFailureByExpiredToken(msg);
-                                break;
-                            case 403:
-                                callBack.onFailureByUnAcceptedRole(msg);
-                                break;
                             case 404:
                                 callBack.onFailureByNotExistCourse(msg);
                                 break;
@@ -51,8 +46,15 @@ public class JoinCourseInteractIMP implements JoinCourseInteract {
                                 break;
                         }
                     } catch (Exception e) {
+                        if(response.code() == 401)
+                        {
+                            callBack.onFailureByExpiredToken("");
+                        }
+                        else if(response.code() == 403)
+                        {
+                            callBack.onFailureByUnAcceptedRole("");
+                        }
                         e.printStackTrace();
-                        Log.d("Finding Course", "UnknowError");
                     }
                 }
             }
@@ -75,7 +77,7 @@ public class JoinCourseInteractIMP implements JoinCourseInteract {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if(response.isSuccessful())
                 {
-                    callBack.onSuccess();
+                    callBack.onSuccess("Đã chấp nhận yêu cầu");
                 }
                 else
                 {
@@ -86,17 +88,25 @@ public class JoinCourseInteractIMP implements JoinCourseInteract {
                         rawJson=response.errorBody().string();
                         JSONObject obj=new JSONObject(rawJson);
                         String msg=obj.optString("message");
-                        callBack.onFailed(msg);
+                        callBack.onOtherFailure(msg);
+
                     } catch (Exception e) {
+                        if(response.code() == 401)
+                        {
+                            callBack.onFailureByExpiredToken("");
+                        }
+                        else if(response.code() == 403)
+                        {
+                            callBack.onFailureByUnAcepptedRole("");
+                        }
                         e.printStackTrace();
-                        Log.d("AcceptJoin","ErrorUnknow");
                     }
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                    callBack.onCannotContactWithServer();
+                    callBack.onCannotConnectToServer("Không thể kết nối đến server");
             }
         });
     }
@@ -111,7 +121,7 @@ public class JoinCourseInteractIMP implements JoinCourseInteract {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if(response.isSuccessful())
                 {
-                    callBack.onSuccess();
+                    callBack.onSuccess("Đã từ chối yêu cầu tham gia");
                 }
                 else
                 {
@@ -122,17 +132,33 @@ public class JoinCourseInteractIMP implements JoinCourseInteract {
                         rawJson=response.errorBody().string();
                         JSONObject obj=new JSONObject(rawJson);
                         String msg=obj.optString("message");
-                        callBack.onFailed(msg);
-                    } catch (Exception e) {
+                        if(response.code() == 500)
+                        {
+                            callBack.onCannotConnectToServer(msg);
+                        }
+                        else
+                        {
+                            callBack.onOtherFailure(msg);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        if(response.code() == 401)
+                        {
+                            callBack.onFailureByExpiredToken("");
+                        }
+                        else if(response.code() == 403)
+                        {
+                            callBack.onFailureByUnAcepptedRole("");
+                        }
                         e.printStackTrace();
-                        Log.d("AcceptJoin","ErrorUnknow");
                     }
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                callBack.onCannotContactWithServer();
+                callBack.onCannotConnectToServer("Không thể kết nối đến server");
             }
         });
     }
@@ -162,12 +188,6 @@ public class JoinCourseInteractIMP implements JoinCourseInteract {
                         String msg= obj.getString("message");
                         switch (code)
                         {
-                            case 401:
-                                callBack.onFailureByExpiredToken(msg);
-                                break;
-                            case 403:
-                                callBack.onFailureByExpiredToken(msg);
-                                break;
                             case 404:
                                 callBack.onFailureByNotExistCourse(msg);
                                 break;
@@ -176,8 +196,10 @@ public class JoinCourseInteractIMP implements JoinCourseInteract {
                                 break;
                         }
                     } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.d("DENYJOINERROR","UnknowError");
+                        if(response.code() == 401)
+                            callBack.onFailureByExpiredToken("");
+                        else if(response.code() == 403)
+                            callBack.onFailureByUnacceptedRole("");
                     }
                 }
             }

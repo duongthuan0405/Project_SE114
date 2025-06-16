@@ -1,4 +1,4 @@
-package com.example.tqt_quiz.presentation.fragments;
+package com.example.tqt_quiz.presentation.view.fragments;
 
 import android.app.Activity;
 import android.content.Intent;

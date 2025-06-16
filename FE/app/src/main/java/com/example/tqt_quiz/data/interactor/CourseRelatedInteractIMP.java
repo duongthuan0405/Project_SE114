@@ -3,14 +3,14 @@ package com.example.tqt_quiz.data.interactor;
 import android.content.Context;
 import android.util.Log;
 
-import com.example.tqt_quiz.data.repository.Token.RetrofitClient;
-import com.example.tqt_quiz.data.repository.Token.TokenManager;
+import com.example.tqt_quiz.data.repository.token.RetrofitClient;
+import com.example.tqt_quiz.data.repository.token.TokenManager;
 import com.example.tqt_quiz.domain.APIService.CreateNewCourseService;
 import com.example.tqt_quiz.domain.APIService.FetchAllUserCourseService;
 import com.example.tqt_quiz.domain.APIService.FindCourseService;
 import com.example.tqt_quiz.domain.dto.CourseCreateInfo;
 import com.example.tqt_quiz.domain.dto.CourseDTO;
-import com.example.tqt_quiz.domain.interactor.CourseRelatedInteract;
+import com.example.tqt_quiz.domain.interactor.ICourseRelatedInteract;
 
 import org.json.JSONObject;
 
@@ -20,7 +20,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CourseRelatedInteractIMP implements CourseRelatedInteract {
+public class CourseRelatedInteractIMP implements ICourseRelatedInteract {
     @Override
     public void FetchAllCourseJoined(Context context, FetchJoinedCallBack callBack)
     {
@@ -46,13 +46,6 @@ public class CourseRelatedInteractIMP implements CourseRelatedInteract {
                         String msg=obj.optString("message");
                         switch (code)
                         {
-
-                            case 401:
-                                callBack.onFailureByExpiredToken(msg);
-                                break;
-                            case 402:
-                                callBack.onFailureByUnAcepptedRole(msg);
-                                break;
                             case 404:
                                 callBack.onFailureByNotExistAccount(msg);
                                 break;
@@ -64,8 +57,11 @@ public class CourseRelatedInteractIMP implements CourseRelatedInteract {
                     }
                     catch (Exception e)
                     {
+                        if(response.code() == 401)
+                            callBack.onFailureByExpiredToken("");
+                        else if(response.code() == 403)
+                            callBack.onFailureByUnAcepptedRole("");
                         e.printStackTrace();
-                        Log.e("Fetch","UnknowError");
                     }
                 }
             }
@@ -95,12 +91,6 @@ public class CourseRelatedInteractIMP implements CourseRelatedInteract {
                         JSONObject obj=new JSONObject(rawJson);
                         String msg=obj.optString("message");
                         switch (code) {
-                            case 401:
-                                callBack.onFailureByExpiredToken(msg);
-                                break;
-                            case 402:
-                                callBack.onFailureByUnAcepptedRole(msg);
-                                break;
                             case 404:
                                 callBack.onFailureByNotExistAccount(msg);
                                 break;
@@ -110,8 +100,12 @@ public class CourseRelatedInteractIMP implements CourseRelatedInteract {
 
                         }
                     } catch (Exception e) {
+                        if(response.code() == 401)
+                            callBack.onFailureByExpiredToken("");
+                        else if(response.code() == 403)
+                            callBack.onFailureByUnAcepptedRole("");
+
                         e.printStackTrace();
-                        Log.e("Fetch", "UnknowError");
                     }
                 }
             }
@@ -141,12 +135,6 @@ public class CourseRelatedInteractIMP implements CourseRelatedInteract {
                         JSONObject obj=new JSONObject(rawJson);
                         String msg= obj.optString("message");
                         switch (code) {
-                            case 401:
-                                callBack.onFailureByExpiredToken(msg);
-                                break;
-                            case 402:
-                                callBack.onFailureByUnAcepptedRole(msg);
-                                break;
                             case 404:
                                 callBack.onFailureByNotExistAccount(msg);
                                 break;
@@ -156,8 +144,11 @@ public class CourseRelatedInteractIMP implements CourseRelatedInteract {
 
                         }
                     } catch (Exception e) {
+                        if(response.code() == 401)
+                            callBack.onFailureByExpiredToken("");
+                        else if(response.code() == 403)
+                            callBack.onFailureByUnAcepptedRole("");
                         e.printStackTrace();
-                        Log.e("Fetch", "UnknowError");
                     }
                 }
             }
@@ -188,12 +179,6 @@ public class CourseRelatedInteractIMP implements CourseRelatedInteract {
                         JSONObject obj=new JSONObject(rawJson);
                         String msg=obj.optString("message");
                         switch (code) {
-                            case 401:
-                                callBack.onFailureByExpiredToken(msg);
-                                break;
-                            case 402:
-                                callBack.onFailureByUnAcepptedRole(msg);
-                                break;
                             case 404:
                                 callBack.onFailureByNotExistAccount(msg);
                                 break;
@@ -203,9 +188,11 @@ public class CourseRelatedInteractIMP implements CourseRelatedInteract {
 
                         }
                     } catch (Exception e) {
+                        if(response.code() == 401)
+                            callBack.onFailureByExpiredToken("");
+                        else if(response.code() == 403)
+                            callBack.onFailureByUnAcepptedRole("");
                         e.printStackTrace();
-
-                        Log.e("Fetch", "UnknowError");
                     }
                 }
             }
@@ -216,12 +203,12 @@ public class CourseRelatedInteractIMP implements CourseRelatedInteract {
             }
         });
     }
+
     @Override
-    public void FindCourseByID(int id,Context context,FindCourseByIDCallBack callBack)
-    {
+    public void FindCourseByID(String course_ID, Context context, FindCourseByIDCallBack callBack) {
         TokenManager tokenManager=new TokenManager(context);
         FindCourseService service=RetrofitClient.GetClient(tokenManager).create(FindCourseService.class);
-        Call<CourseDTO> call=service.FindCourseByID(id);
+        Call<CourseDTO> call=service.FindCourseByID(course_ID);
         call.enqueue(new Callback<CourseDTO>() {
             @Override
             public void onResponse(Call<CourseDTO> call, Response<CourseDTO> response) {
@@ -239,12 +226,6 @@ public class CourseRelatedInteractIMP implements CourseRelatedInteract {
                         String msg= obj.optString(rawJson);
                         switch (code)
                         {
-                            case 401:
-                                callBack.onFailureByExpiredToken(msg);
-                                break;
-                            case 403:
-                                callBack.onFailureByUnAcepptedRole(msg);
-                                break;
                             case 404:
                                 callBack.onFailureByNotExistCourse(msg);
                                 break;
@@ -255,8 +236,11 @@ public class CourseRelatedInteractIMP implements CourseRelatedInteract {
                     }
                     catch (Exception e)
                     {
+                        if(response.code() == 401)
+                            callBack.onFailureByExpiredToken("");
+                        else if(response.code() == 403)
+                            callBack.onFailureByUnAcepptedRole("");
                         e.printStackTrace();
-                        Log.d("Finding Course","UnknowError");
                     }
                 }
             }
@@ -267,6 +251,7 @@ public class CourseRelatedInteractIMP implements CourseRelatedInteract {
             }
         });
     }
+
     @Override
     public void CreateNewCourse(CourseCreateInfo info, Context context,CreateNewCourseCallBack callBack)
     {
@@ -289,12 +274,6 @@ public class CourseRelatedInteractIMP implements CourseRelatedInteract {
                         JSONObject obj=new JSONObject(rawJson);
                         String msg=response.errorBody().string();
                         switch (code) {
-                            case 401:
-                                callBack.onFailureByExpiredToken(msg);
-                                break;
-                            case 403:
-                                callBack.onFailureByUnAcepptedRole(msg);
-                                break;
                             case 404:
                                 callBack.onFailureByNotExistAccount(msg);
                                 break;
@@ -303,8 +282,12 @@ public class CourseRelatedInteractIMP implements CourseRelatedInteract {
                                 break;
                         }
                     }catch(Exception e){
-                            e.printStackTrace();
-                            Log.d("Finding Course", "UnknowError");
+                        if(response.code() == 401)
+                            callBack.onFailureByExpiredToken("");
+                        else if(response.code() == 403)
+                            callBack.onFailureByUnAcepptedRole("");
+                        e.printStackTrace();
+
                         }
                     }
                 }

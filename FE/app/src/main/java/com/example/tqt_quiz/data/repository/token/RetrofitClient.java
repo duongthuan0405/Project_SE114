@@ -1,4 +1,7 @@
-package com.example.tqt_quiz.data.repository.Token;
+package com.example.tqt_quiz.data.repository.token;
+
+import com.example.tqt_quiz.data.repository.token.AuthInterceptor;
+import com.example.tqt_quiz.data.repository.token.TokenManager;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;

@@ -24,7 +24,8 @@ import com.example.tqt_quiz.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ViewCourse extends AppCompatActivity {
+public class ViewCourse extends AppCompatActivity
+{
 
     ImageView avatar;
     TextView name, isPrivate, description, host;
@@ -57,7 +58,7 @@ public class ViewCourse extends AppCompatActivity {
             name.setText(course.getName());
             isPrivate.setText("Riêng tư: " + (course.isPrivate() ? "Có" : "Không"));
             description.setText(course.getDescription());
-            host.setText("👤 Tên giáo viên: " + course.getHostName());
+            host.setText("👤Tên giáo viên: " + course.getHostName());
         }
 
         lvMembers = findViewById(R.id.lv_Members_ViewCourse);

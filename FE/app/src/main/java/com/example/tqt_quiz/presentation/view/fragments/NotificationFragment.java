@@ -1,4 +1,4 @@
-package com.example.tqt_quiz.presentation.fragments;
+package com.example.tqt_quiz.presentation.view.fragments;
 
 import android.os.Bundle;
 
@@ -10,9 +10,9 @@ import android.view.ViewGroup;
 
 import com.example.tqt_quiz.R;
 
-public class ProfileFragment extends Fragment {
+public class NotificationFragment extends Fragment {
 
-    public ProfileFragment() {
+    public NotificationFragment() {
         // Required empty public constructor
     }
 
@@ -20,6 +20,6 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        return inflater.inflate(R.layout.fragment_notifycation, container, false);
     }
 }

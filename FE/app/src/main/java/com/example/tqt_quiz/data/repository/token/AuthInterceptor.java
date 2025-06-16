@@ -1,4 +1,4 @@
-package com.example.tqt_quiz.data.repository.Token;
+package com.example.tqt_quiz.data.repository.token;
 
 import java.io.IOException;
 
@@ -7,9 +7,9 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class AuthInterceptor implements Interceptor {
-    private final TokenManager tokenManager;
+    private final com.example.tqt_quiz.data.repository.token.TokenManager tokenManager;
 
-    public AuthInterceptor(TokenManager tokenManager) {
+    public AuthInterceptor(com.example.tqt_quiz.data.repository.token.TokenManager tokenManager) {
         this.tokenManager = tokenManager;
     }
     @Override
@@ -20,7 +20,7 @@ public class AuthInterceptor implements Interceptor {
         Request.Builder builder=original.newBuilder();
         if(Token!=null)
         {
-           builder.header("Authorization","Bearer"+Token);
+           builder.header("Authorization","Bearer " + Token);
         }
         Request authorized=builder.build();
         return chain.proceed(authorized);

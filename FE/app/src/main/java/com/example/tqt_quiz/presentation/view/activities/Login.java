@@ -1,7 +1,7 @@
 package com.example.tqt_quiz.presentation.view.activities;
 
 import android.accounts.Account;
-import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -26,9 +26,9 @@ public class Login extends AppCompatActivity implements LoginContract.IView {
     EditText Email, Password;
     TextView Register, ForgotPw;
     LoginPresenter presenter;
-    ActivityResultLauncher<Intent> launcher;
+    ActivityResultLauncher<Intent> launcher_Login_Main;
+    ActivityResultLauncher<Intent> getLauncher_Login_Register;
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,17 +51,27 @@ public class Login extends AppCompatActivity implements LoginContract.IView {
         presenter = new LoginPresenter(this);
 
         //Navigate
-        launcher = registerForActivityResult(
+        launcher_Login_Main = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {}
+        );
+
+        getLauncher_Login_Register = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result ->
+                {
+                    if(result.getResultCode() == RESULT_OK)
+                    {
+                        Toast.makeText(Login.this, "Đăng ký thành công", Toast.LENGTH_LONG).show();
+                    }
+                }
         );
 
         //Thao tác Login Click
         Login.setOnClickListener(v -> {
             String email = Email.getText().toString();
             String password = Password.getText().toString();
-            Account account = new Account(email, password);
-            presenter.LoginClick(account);
+            presenter.LoginClick(email, password);
         });
 
         //Thao tác Register Click
@@ -74,26 +84,41 @@ public class Login extends AppCompatActivity implements LoginContract.IView {
     }
 
     @Override
-    public void loginSuccess() {
-        Intent intent = new Intent(this, MainHome.class);
-        launcher.launch(intent);
+    public void loginSuccess(String roleId) {
+        if(roleId.equals("0000000000"))
+        {
+
+        }
+        else if (roleId.equals("0000000001"))
+        {
+            Intent i = new Intent(com.example.tqt_quiz.presentation.view.activities.Login.this, MainHome.class);
+            launcher_Login_Main.launch(i);
+        }
+        else if (roleId.equals("0000000002"))
+        {
+
+        }
+
     }
 
     @Override
     public void showLoginError(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(com.example.tqt_quiz.presentation.view.activities.Login.this, message, Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void navigateToRegister() {
-        Intent intent = new Intent(Login.this, Register.class);
-        launcher.launch(intent);
+
     }
 
     @Override
     public void navigateToForgotPassword() {
-        Intent intent = new Intent(this, ForgotPassword.class);
-        launcher.launch(intent);
+
+    }
+
+    @Override
+    public Context getContext() {
+        return com.example.tqt_quiz.presentation.view.activities.Login.this.getApplicationContext();
     }
 }
 
