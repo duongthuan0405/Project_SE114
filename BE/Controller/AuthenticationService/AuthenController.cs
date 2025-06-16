@@ -148,8 +148,7 @@ namespace BE.Controller.AuthenticationService
                     Email = newAuthen.Email,
                     Avatar = newAccount.Avatar,
                     AccountTypeId = newAccount.AccountTypeId,
-                    AccountType = await DbContext.AccountTypes.Where(at => at.Id == newAccount.AccountTypeId)
-                                                                .Select(at => at.Name).FirstOrDefaultAsync() ?? "Chưa xác định"
+                    AccountType = StaticClass.RoleId.Student
                 });
             }
             catch (Exception ex)
