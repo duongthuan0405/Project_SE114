@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,11 +13,12 @@ import com.example.tqt_quiz.presentation.classes.Course;
 
 import java.util.List;
 
-public class CourseAdapter {
+public class CourseAdapter extends ArrayAdapter<Course> {
     private Context context;
     private List<Course> courseList;
 
-    public CourseAdapter(Context context, List<Course> courseList) {
+    public CourseAdapter(Context context, int resource,List<Course> courseList) {
+        super(context,resource,courseList);
         this.context = context;
         this.courseList = courseList;
     }
@@ -27,7 +29,7 @@ public class CourseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public Course getItem(int position) {
         return courseList.get(position);
     }
 
