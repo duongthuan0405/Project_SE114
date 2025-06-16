@@ -2,11 +2,10 @@ package com.example.tqt_quiz.domain.interactor;
 
 import android.content.Context;
 
-import com.example.tqt_quiz.domain.dto.AccountInfo;
 import com.example.tqt_quiz.domain.dto.LoginResponse;
 import com.example.tqt_quiz.domain.dto.RegisterRequest;
 
-public interface AuthInteract {
+public interface IAuthInteract {
     public void Login(String Email, String PassWord, Context context, LoginCallBack callBack);
     public interface LoginCallBack
     {

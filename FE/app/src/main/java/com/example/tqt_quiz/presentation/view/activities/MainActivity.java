@@ -16,7 +16,7 @@ import com.example.tqt_quiz.data.interactor.AuthInteractorIMP;
 import com.example.tqt_quiz.data.repository.Token.TokenManager;
 import com.example.tqt_quiz.domain.dto.LoginResponse;
 import com.example.tqt_quiz.domain.dto.RegisterRequest;
-import com.example.tqt_quiz.domain.interactor.AuthInteract;
+import com.example.tqt_quiz.domain.interactor.IAuthInteract;
 import com.example.tqt_quiz.presentation.contract_vp.MainActitvityContract;
 import com.example.tqt_quiz.presentation.presenter.MainActivityPresenter;
 
@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements MainActitvityCont
         mainActivityPresenter = new MainActivityPresenter(this);
         mainActivityPresenter.onCreateActivity();
         TokenManager tokenManager= new TokenManager(getApplicationContext());
-        interactorIMP.Login("studentA@gmail.com", "studentA", this.getApplicationContext(), new AuthInteract.LoginCallBack() {
+        interactorIMP.Login("studentA@gmail.com", "studentA", this.getApplicationContext(), new IAuthInteract.LoginCallBack() {
             @Override
             public void onSuccess(LoginResponse response) {
                 info=response;
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements MainActitvityCont
             }
         });
         interactorIMP.Register(new RegisterRequest("studentD@gmail.com", "studentD", "D", "Student"),
-                getApplicationContext(), new AuthInteract.RegCallBack() {
+                getApplicationContext(), new IAuthInteract.RegCallBack() {
             @Override
             public void onSuccess() {
                 Log.d("REG","DANG KY THANH CONG");

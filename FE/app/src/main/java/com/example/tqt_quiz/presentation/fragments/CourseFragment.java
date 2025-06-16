@@ -1,18 +1,22 @@
 package com.example.tqt_quiz.presentation.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.tqt_quiz.R;
 import com.example.tqt_quiz.presentation.adapters.CourseAdapter;
 import com.example.tqt_quiz.presentation.classes.Course;
+import com.example.tqt_quiz.presentation.view.activities.CreateCourse;
 import com.example.tqt_quiz.presentation.view.activities.ViewCourse;
 
 import java.util.ArrayList;
@@ -20,6 +24,7 @@ import java.util.List;
 
 public class CourseFragment extends Fragment {
 
+    Button AddCourse;
     private ListView lvCourse;
     private List<Course> courseList;
     private CourseAdapter courseAdapter;
@@ -51,6 +56,25 @@ public class CourseFragment extends Fragment {
             startActivity(intent);
         });
 
+        AddCourse = view.findViewById(R.id.btn_Add_Course);
+        AddCourse.setOnClickListener(v -> {
+            Intent intent = new Intent(requireContext(), CreateCourse.class);
+            startActivityForResult(intent, 1);
+        });
+
         return view;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null) {
+            Course newCourse = (Course) data.getSerializableExtra("new_course");
+            if (newCourse != null) {
+                courseList.add(newCourse);
+                courseAdapter.notifyDataSetChanged();
+            }
+        }
     }
 }

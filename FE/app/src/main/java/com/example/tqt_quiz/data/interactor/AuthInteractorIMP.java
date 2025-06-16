@@ -11,7 +11,7 @@ import com.example.tqt_quiz.domain.dto.AccountInfo;
 import com.example.tqt_quiz.domain.dto.LoginRequest;
 import com.example.tqt_quiz.domain.dto.LoginResponse;
 import com.example.tqt_quiz.domain.dto.RegisterRequest;
-import com.example.tqt_quiz.domain.interactor.AuthInteract;
+import com.example.tqt_quiz.domain.interactor.IAuthInteract;
 
 import org.json.JSONObject;
 
@@ -19,10 +19,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AuthInteractorIMP implements AuthInteract {
+public class AuthInteractorIMP implements IAuthInteract {
     @Override
     public void Login(String Email, String PassWord, Context context, LoginCallBack callBack) {
-        TokenManager tokenManager=new TokenManager(context);
+        TokenManager tokenManager = new TokenManager(context);
         LoginService service= RetrofitClient.GetClient(tokenManager).create(LoginService.class);
         Call<LoginResponse> call=service.login(new LoginRequest(Email,PassWord));
         call.enqueue(new Callback<LoginResponse>() {
