@@ -15,19 +15,19 @@ public class LoginPresenter implements LoginContract.IPresenter {
 
     @Override
     public void LoginClick(Account account) {
-        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
-            view.showLoginError("Vui lòng điền đầy đủ thông tin");
-            return;
-        }
-
-        for (Account acc : account) {
-            if (acc.getEmail().equals(email) && acc.getPassword().equals(password)) {
-                view.loginSuccess(acc);
-                return;
-            }
-        }
-
-        view.showLoginError("Email hoặc mật khẩu không đúng");
+//        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
+//            view.showLoginError("Vui lòng điền đầy đủ thông tin");
+//            return;
+//        }
+//
+//        for (Account acc : account) {
+//            if (acc.getEmail().equals(email) && acc.getPassword().equals(password)) {
+//                view.loginSuccess(acc);
+//                return;
+//            }
+//        }
+//
+//        view.showLoginError("Email hoặc mật khẩu không đúng");
     }
 
     @Override

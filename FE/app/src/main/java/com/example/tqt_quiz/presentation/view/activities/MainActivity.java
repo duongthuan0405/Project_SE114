@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements MainActitvityCont
         mainActivityPresenter.onCreateActivity();
 
 
-        Intent intent = new Intent(this, MainHome.class);
+        Intent intent = new Intent(this, ViewCourse.class);
         startActivity(intent);
     }
 

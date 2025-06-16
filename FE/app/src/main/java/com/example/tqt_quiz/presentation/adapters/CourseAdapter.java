@@ -52,9 +52,9 @@ public class CourseAdapter extends ArrayAdapter<Course> {
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.item_course, parent, false);
             holder = new ViewHolder();
-            holder.imgCourseAvatar = convertView.findViewById(R.id.img_CourseAvatar_ViewCourse);
-            holder.tvCourseName = convertView.findViewById(R.id.tv_CourseName_ViewCourse);
-            holder.tvHostName = convertView.findViewById(R.id.tv_HostName_ViewCourse);
+            holder.imgCourseAvatar = convertView.findViewById(R.id.img_Avatar_CourseItem);
+            holder.tvCourseName = convertView.findViewById(R.id.tv_Name_CourseItem);
+            holder.tvHostName = convertView.findViewById(R.id.tv_Teacher_CourseItem);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
