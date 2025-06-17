@@ -20,7 +20,7 @@ namespace BE.Controller.APIService
         {
             DbContext = context;
         }
-        
+
 
         // --- Get all courses that this user has joined ------------------------------------------------
         [HttpGet("myself/joined")]
@@ -40,7 +40,7 @@ namespace BE.Controller.APIService
                 ).Join(DbContext.Accounts, c => c.HostId, a => a.Id, (c, a) => new CourseDTO(c.Id, c.Name, a.Id, a.LastMiddleName + " " + a.FirstName, c.IsPrivate, c.Avatar, c.Description))
                 .ToListAsync();
 
-                return Ok(courses);
+                return Ok(courses.OrderBy(c => c.Name).ToList());
             }
             catch (Exception ex)
             {
@@ -70,7 +70,7 @@ namespace BE.Controller.APIService
                 List<CourseDTO> courses = await DbContext.Courses.Where(c => c.HostId == requester)
                     .Join(DbContext.Accounts, c => c.HostId, a => a.Id, (c, a) => new CourseDTO(c.Id, c.Name, a.Id, a.LastMiddleName + " " + a.FirstName, c.IsPrivate, c.Avatar, c.Description))
                     .ToListAsync();
-                return Ok(courses);
+                return Ok(courses.OrderBy(c => c.Name).ToList());
             }
             catch (Exception ex)
             {
@@ -98,7 +98,7 @@ namespace BE.Controller.APIService
                 List<CourseDTO> courses = await DbContext.Courses.Where(c => DbContext.JoinCourses.Any(jc => jc.AccountID == requester && jc.CourseID == c.Id && jc.State == (int)JoinCourse.JoinCourseState.Pending))
                     .Join(DbContext.Accounts, c => c.HostId, a => a.Id, (c, a) => new CourseDTO(c.Id, c.Name, a.Id, a.LastMiddleName + " " + a.FirstName, c.IsPrivate, c.Avatar, c.Description))
                     .ToListAsync();
-                return Ok(courses);
+                return Ok(courses.OrderBy(c => c.Name).ToList());
             }
             catch (Exception ex)
             {
@@ -126,7 +126,7 @@ namespace BE.Controller.APIService
                 List<CourseDTO> courses = await DbContext.Courses.Where(c => DbContext.JoinCourses.Any(jc => jc.AccountID == requester && jc.CourseID == c.Id && jc.State == (int)JoinCourse.JoinCourseState.Denied))
                     .Join(DbContext.Accounts, c => c.HostId, a => a.Id, (c, a) => new CourseDTO(c.Id, c.Name, a.Id, a.LastMiddleName + " " + a.FirstName, c.IsPrivate, c.Avatar, c.Description))
                     .ToListAsync();
-                return Ok(courses);
+                return Ok(courses.OrderBy(c => c.Name).ToList());
             }
             catch (Exception ex)
             {
@@ -161,7 +161,7 @@ namespace BE.Controller.APIService
                     hostFullName = host.LastMiddleName + " " + host.FirstName;
                     hostId = host.Id;
                 }
-               
+
 
                 CourseDTO courseDTO = new CourseDTO(course.Id, course.Name, hostId, hostFullName, course.IsPrivate, course.Avatar, course.Description);
                 return Ok(courseDTO);
@@ -183,7 +183,7 @@ namespace BE.Controller.APIService
         public async Task<ActionResult<CourseDTO>> CreateCourse([FromBody] RequestCreateCourseDTO request)
         {
             var requester = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if(requester == null)
+            if (requester == null)
             {
                 return StatusCode(StatusCodes.Status404NotFound, new { Message = "Tài khoản không tồn tại" });
             }
@@ -216,7 +216,7 @@ namespace BE.Controller.APIService
                 {
                     Id = newCourse.Id,
                     Name = newCourse.Name,
-                    HostName= hostName,
+                    HostName = hostName,
                     IsPrivate = newCourse.IsPrivate,
                     Avatar = newCourse.Avatar,
                     Description = newCourse.Description,
@@ -234,6 +234,30 @@ namespace BE.Controller.APIService
             }
         }
 
-        
+        [HttpGet("{course_id}/members")]
+        [Authorize(Roles = StaticClass.RoleId.Teacher)]
+        public async Task<ActionResult<List<AccountInfoDTO>>> GetMembersInCourse([FromRoute] string course_id)
+        {
+            var requester = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (requester == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, new { Message = "Tài khoản không tồn tại" });
+            }
+            try
+            {
+                List<AccountInfoDTO> members = await DbContext.JoinCourses.Where(jc => jc.CourseID == course_id && jc.State == (int)JoinCourse.JoinCourseState.Joined)
+                    .Join(DbContext.Accounts, jc => jc.AccountID, a => a.Id, (jc, a) => new AccountInfoDTO(a.Id, "", a.LastMiddleName, a.FirstName, a.Avatar, a.AccountTypeId, ""))
+                    .ToListAsync();
+                return Ok(members.OrderBy(m => m.FirstName).ToList());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new
+                {
+                    Message = "Lỗi hệ thống khi lấy danh sách thành viên khóa học"
+                }
+                );
+            }
+        }
     }
 }

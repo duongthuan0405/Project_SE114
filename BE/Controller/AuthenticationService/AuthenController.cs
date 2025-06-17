@@ -145,6 +145,8 @@ namespace BE.Controller.AuthenticationService
                 {
                     Id = newAccount.Id,
                     FullName = newAccount.LastMiddleName + " " + newAccount.FirstName,
+                    FirstName = newAccount.FirstName,
+                    LastMiddleName = newAccount.LastMiddleName,
                     Email = newAuthen.Email,
                     Avatar = newAccount.Avatar,
                     AccountTypeId = newAccount.AccountTypeId,
