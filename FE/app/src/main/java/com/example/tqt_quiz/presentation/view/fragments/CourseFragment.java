@@ -42,9 +42,9 @@ public class CourseFragment extends Fragment {
         lvCourse = view.findViewById(R.id.lv_Course_Course);
 
         courseList = new ArrayList<>();
-        courseList.add(new Course("Lập trình Java", "Mô tả", false, R.drawable.resource_default, "Nguyễn Văn A"));
-        courseList.add(new Course("Phân tích hệ thống", "Mô tả", true, R.drawable.resource_default, "Trần Thị B"));
-        courseList.add(new Course("Cơ sở dữ liệu", "Mô tả", false, R.drawable.resource_default, "Lê Văn C"));
+        courseList.add(new Course("Lập trình Java", "Mô tả", false, R.drawable.resource_default, "Nguyễn Văn A", ""));
+        courseList.add(new Course("Phân tích hệ thống", "Mô tả", true, R.drawable.resource_default, "Trần Thị B", ""));
+        courseList.add(new Course("Cơ sở dữ liệu", "Mô tả", false, R.drawable.resource_default, "Lê Văn C", ""));
 
         courseAdapter = new CourseAdapter(requireContext(), R.layout.item_course, courseList);
         lvCourse.setAdapter(courseAdapter);

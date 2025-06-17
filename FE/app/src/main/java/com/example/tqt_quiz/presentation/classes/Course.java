@@ -8,13 +8,15 @@ public class Course implements Serializable {
     private boolean isPrivate;
     private int avatar;
     private String hostName;
+    private String avatarUri;
 
-    public Course(String name, String description, boolean isPrivate, int avatar, String hostName) {
+    public Course(String name, String description, boolean isPrivate, int avatar, String hostName, String avatarUri) {
         this.name = name;
         this.description = description;
         this.isPrivate = isPrivate;
         this.avatar = avatar;
         this.hostName = hostName;
+        this.avatarUri = avatarUri;
     }
 
     public Course(String name, String hostName, int img) {
@@ -31,4 +33,7 @@ public class Course implements Serializable {
     public void setPrivate(boolean aPrivate) { isPrivate = aPrivate; }
     public void setAvatar(int avatar) { this.avatar = avatar; }
     public void setHostName(String hostName) { this.hostName = hostName; }
+    public String getAvatarUri() { return avatarUri; }
+
+    public void setAvatarUri(String avatarUri) { this.avatarUri = avatarUri; }
 }

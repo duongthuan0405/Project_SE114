@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.bumptech.glide.Glide;
 import com.example.tqt_quiz.R;
 import com.example.tqt_quiz.presentation.classes.Course;
 
@@ -63,7 +64,14 @@ public class CourseAdapter extends ArrayAdapter<Course> {
         Course course = courses.get(position);
         holder.tvCourseName.setText(course.getName());
         holder.tvHostName.setText(course.getHostName());
-        holder.imgCourseAvatar.setImageResource(course.getAvatar());
+        if (course.getAvatarUri() != null && !course.getAvatarUri().isEmpty()) {
+            Glide.with(context)
+                    .load(android.net.Uri.parse(course.getAvatarUri()))
+                    .placeholder(course.getAvatar())
+                    .into(holder.imgCourseAvatar);
+        } else {
+            holder.imgCourseAvatar.setImageResource(course.getAvatar());
+        }
 
         return convertView;
     }
