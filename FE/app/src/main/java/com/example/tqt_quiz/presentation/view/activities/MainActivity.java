@@ -1,28 +1,31 @@
 package com.example.tqt_quiz.presentation.view.activities;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.content.Intent;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.tqt_quiz.R;
-import com.example.tqt_quiz.data.interactor.AuthInteractorIMP;
-import com.example.tqt_quiz.data.repository.Token.TokenManager;
-import com.example.tqt_quiz.domain.dto.LoginResponse;
-import com.example.tqt_quiz.domain.dto.RegisterInfo;
-import com.example.tqt_quiz.domain.interactor.AuthInteract;
-import com.example.tqt_quiz.presentation.contract_vp.MainActitvityContract;
+import com.example.tqt_quiz.presentation.contract_vp.IMainActivityContract;
 import com.example.tqt_quiz.presentation.presenter.MainActivityPresenter;
 
-public class MainActivity extends AppCompatActivity implements MainActitvityContract.IView {
-    private MainActitvityContract.IPresenter mainActivityPresenter = null;
-    private AuthInteractorIMP interactorIMP=new AuthInteractorIMP();
-    private LoginResponse info=null;
+public class MainActivity extends AppCompatActivity implements IMainActivityContract.IView
+{
+    ActivityResultLauncher<Intent> launcher_Main_Login;
+    ActivityResultLauncher<Intent> launcher_Main_MainHome;
+    IMainActivityContract.IPresenter mainPresenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,46 +37,52 @@ public class MainActivity extends AppCompatActivity implements MainActitvityCont
             return insets;
         });
 
-        mainActivityPresenter = new MainActivityPresenter(this);
-        mainActivityPresenter.onCreateActivity();
-        TokenManager tokenManager= new TokenManager(getApplicationContext());
-        interactorIMP.Login("1", "1", tokenManager, new AuthInteract.LoginCallBack() {
-            @Override
-            public void onSuccess(LoginResponse response) {
-                info=response;
-                Log.d("LOGIN","DANG NHAP THANH CONG");
-            }
+        mainPresenter = new MainActivityPresenter(this);
 
-            @Override
-            public void onUnAuthorized() {
-                Log.d("Login","Unauthorized");
-            }
+        launcher_Main_Login = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult o) {
 
-            @Override
-            public void FailedByNotResponse() {
-                Log.d("Login","CannotSendToServer");
-            }
-        });
-        interactorIMP.Register(new RegisterInfo("1", "1", "1", "1", "0000000001"), tokenManager, new AuthInteract.RegCallBack() {
-            @Override
-            public void onSuccess() {
-                Log.d("REG","DANG KY THANH CONG");
-            }
+                    }
+                }
+        );
 
-            @Override
-            public void onFailedRegister() {
-                Log.d("REG","DANG KY THAT BAI");
-            }
+        launcher_Main_MainHome = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult o) {
 
-            @Override
-            public void FailedByNotResponse() {
-                Log.d("REG","KHONG GUI TOI SERVER");
-            }
-        });
+                    }
+                }
+        );
+
+
+        mainPresenter.onDecideToNavigate();
+
     }
 
     @Override
-    public void showToast(String data) {
-        Toast.makeText(this, data, Toast.LENGTH_LONG).show();
+    public Context getTheContext() {
+        return MainActivity.this.getApplicationContext();
+    }
+
+    @Override
+    public void navigateToMainHome() {
+        Intent i = new Intent(MainActivity.this, MainHome.class);
+        launcher_Main_MainHome.launch(i);
+    }
+
+    @Override
+    public void navigateToLogin() {
+        Intent i = new Intent(MainActivity.this, Login.class);
+        launcher_Main_Login.launch(i);
+    }
+
+    @Override
+    public void showToast(String msg) {
+        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_LONG).show();
     }
 }

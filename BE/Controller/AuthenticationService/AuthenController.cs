@@ -136,7 +136,7 @@ namespace BE.Controller.AuthenticationService
                     Id = id,
                     FirstName = req.FirstName,
                     LastMiddleName = req.LastMiddleName,
-                    AccountTypeId = await DbContext.AccountTypes.Where(at => at.Name == StaticClass.RoleId.Student).Select(at => at.Id).FirstOrDefaultAsync() ?? ""
+                    AccountTypeId = StaticClass.RoleId.Student
                 };
                 DbContext.Accounts.Add(newAccount);
 

@@ -1,24 +1,58 @@
 package com.example.tqt_quiz.presentation.presenter;
 
-import com.example.tqt_quiz.data.interactor.AuthInteractorIMP;
-import com.example.tqt_quiz.data.interactor.MainInteractorImp;
-import com.example.tqt_quiz.presentation.contract_vp.MainActitvityContract;
+import com.example.tqt_quiz.data.interactor.AccountInteractorIMP;
+import com.example.tqt_quiz.domain.dto.AccountInfo;
+import com.example.tqt_quiz.domain.interactor.IAccountInteractor;
+import com.example.tqt_quiz.presentation.contract_vp.IMainActivityContract;
 
-public class MainActivityPresenter implements MainActitvityContract.IPresenter
+public class MainActivityPresenter implements IMainActivityContract.IPresenter
 {
-    MainActitvityContract.IView view = null;
-    MainInteractorImp interactor = null;
-    AuthInteractorIMP Authinteractor=null;
-    public MainActivityPresenter(MainActitvityContract.IView view)
-    {
-        this.view = view;
-        interactor = new MainInteractorImp();
-    }
-    @Override
-    public void onCreateActivity()
-    {
-        String data = interactor.getDataToShowView();
-        view.showToast(data);
+    public IMainActivityContract.IView mainView;
+    public IAccountInteractor accountInteractor;
 
+    public MainActivityPresenter(IMainActivityContract.IView view)
+    {
+        mainView = view;
+        accountInteractor = new AccountInteractorIMP();
+    }
+
+    @Override
+    public void onDecideToNavigate() {
+
+
+
+        accountInteractor.getAccountInfoMySelf(mainView.getTheContext(), new IAccountInteractor.GetAccountInfoCallBack() {
+            @Override
+            public void onSuccess(AccountInfo response) {
+
+                mainView.navigateToMainHome();
+
+            }
+
+            @Override
+            public void onFailureByExpiredToken(String msg) {
+                mainView.navigateToLogin();
+            }
+
+            @Override
+            public void onFailureByUnAcepptedRole(String msg) {
+                mainView.showToast(msg);
+            }
+
+            @Override
+            public void onFailureByNotExistAccount(String msg) {
+                mainView.showToast(msg);
+            }
+
+            @Override
+            public void onFailureByServerError(String msg) {
+                mainView.showToast(msg);
+            }
+
+            @Override
+            public void onFailureByCannotSendToServer(String msg) {
+                mainView.showToast(msg);
+            }
+        });
     }
 }
