@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/scrollView_Profile"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/AppBackground"
+    android:padding="16dp"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:id="@+id/layout_Profile_Profile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:id="@+id/tv_Profile_Profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:text="TÀI KHOẢN"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:textColor="@color/Primary" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/img_Avatar_Profile"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="24dp"
+            android:src="@drawable/resource_default"
+            android:scaleType="fitXY"
+            app:shapeAppearanceOverlay="@style/round_img"
+            android:contentDescription="Avatar"
+            android:elevation="4dp" />
+
+        <TextView
+            android:id="@+id/tv_Name_Profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="FullName"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_marginTop="16dp" />
+
+        <TextView
+            android:id="@+id/tv_AccountType_Profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Account type"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:layout_marginTop="4dp" />
+
+        <TextView
+            android:id="@+id/tv_Email_Profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="email@example.com"
+            android:textSize="16sp"
+            android:textColor="@color/dark_gray"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="24dp" />
+
+        <View
+            android:layout_width="80dp"
+            android:layout_height="1dp"
+            android:background="@color/gray"
+            android:layout_marginBottom="24dp" />
+
+        <Button
+            android:id="@+id/btn_EditInfo_Profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Chỉnh sửa thông tin"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:background="@drawable/btn_rectagle"
+            android:layout_marginBottom="16dp" />
+
+        <Button
+            android:id="@+id/btn_ChangePassword_Profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Đổi mật khẩu"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:background="@drawable/btn_rectagle"
+            android:layout_marginBottom="32dp" />
+
+        <Button
+            android:id="@+id/btn_Logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Đăng xuất"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:background="@drawable/btn_rectagle_red"
+            android:layout_marginBottom="32dp" />
+
+    </LinearLayout>
+
+</ScrollView>

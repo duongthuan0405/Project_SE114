@@ -1,21 +1,64 @@
 package com.example.tqt_quiz.presentation.presenter;
 
-import com.example.tqt_quiz.data.interactor.MainInteractorImp;
-import com.example.tqt_quiz.presentation.contract_vp.MainActitvityContract;
+import com.example.tqt_quiz.data.interactor.AccountInteractorIMP;
+import com.example.tqt_quiz.domain.dto.AccountInfo;
+import com.example.tqt_quiz.domain.interactor.IAccountInteractor;
+import com.example.tqt_quiz.presentation.contract_vp.IMainActivityContract;
+import com.example.tqt_quiz.staticclass.StaticClass;
 
-public class MainActivityPresenter implements MainActitvityContract.IPresenter
+public class MainActivityPresenter implements IMainActivityContract.IPresenter
 {
-    MainActitvityContract.IView view = null;
-    MainInteractorImp interactor = null;
-    public MainActivityPresenter(MainActitvityContract.IView view)
+    public IMainActivityContract.IView mainView;
+    public IAccountInteractor accountInteractor;
+
+    public MainActivityPresenter(IMainActivityContract.IView view)
     {
-        this.view = view;
-        interactor = new MainInteractorImp();
+        mainView = view;
+        accountInteractor = new AccountInteractorIMP();
     }
+
     @Override
-    public void onCreateActivity()
-    {
-        String data = interactor.getDataToShowView();
-        view.showToast(data);
+    public void onDecideToNavigate() {
+
+        accountInteractor.getAccountInfoMySelf(mainView.getTheContext(), new IAccountInteractor.GetAccountInfoCallBack() {
+            @Override
+            public void onSuccess(AccountInfo response) {
+
+                if(response.getAccountTypeId().equals(StaticClass.AccountTypeId.teacher))
+                    mainView.navigateToMainHomeForTeacher();
+                else if (response.getAccountTypeId().equals(StaticClass.AccountTypeId.student))
+                    mainView.navigateToMainHomeForStudent();
+                else if (response.getAccountTypeId().equals(StaticClass.AccountTypeId.admin))
+                    mainView.navigateToMainHomeForAdmin();
+                else
+                    mainView.showToast("Lỗi phân quyền");
+
+            }
+
+            @Override
+            public void onFailureByExpiredToken(String msg) {
+                mainView.navigateToLogin();
+            }
+
+            @Override
+            public void onFailureByUnAcepptedRole(String msg) {
+                mainView.showToast(msg);
+            }
+
+            @Override
+            public void onFailureByNotExistAccount(String msg) {
+                mainView.showToast(msg);
+            }
+
+            @Override
+            public void onFailureByServerError(String msg) {
+                mainView.showToast(msg);
+            }
+
+            @Override
+            public void onFailureByCannotSendToServer(String msg) {
+                mainView.showToast(msg);
+            }
+        });
     }
 }
