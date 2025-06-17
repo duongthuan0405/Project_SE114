@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 
 import com.example.tqt_quiz.R;
 import com.example.tqt_quiz.presentation.classes.Course;
+import com.example.tqt_quiz.staticclass.StaticClass;
 
 import java.util.List;
 
@@ -60,10 +61,10 @@ public class CourseAdapter extends ArrayAdapter<Course> {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        Course course = courses.get(position);
+        Course course = getItem(position);
         holder.tvCourseName.setText(course.getName());
         holder.tvHostName.setText(course.getHostName());
-        holder.imgCourseAvatar.setImageResource(course.getAvatar());
+        StaticClass.setImage(holder.imgCourseAvatar, course.getAvatar(), R.drawable.resource_default);
 
         return convertView;
     }

@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 
 import com.example.tqt_quiz.R;
 import com.example.tqt_quiz.presentation.classes.Member;
+import com.example.tqt_quiz.staticclass.StaticClass;
 
 import java.util.List;
 
@@ -62,7 +63,7 @@ public class MemberAdapter extends ArrayAdapter<Member> {
         }
 
         Member member = memberList.get(position);
-        holder.imgAvatar.setImageResource(member.getAvatar());
+        StaticClass.setImage(holder.imgAvatar, member.getAvatar(), R.drawable.resource_default);
         holder.tvFirstName.setText(member.getFirstName());
         holder.tvLastMiddleName.setText(member.getLastMiddleName());
 

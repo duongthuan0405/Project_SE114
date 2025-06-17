@@ -20,6 +20,7 @@ import com.example.tqt_quiz.presentation.classes.Course;
 import com.example.tqt_quiz.presentation.classes.Member;
 
 import com.example.tqt_quiz.R;
+import com.example.tqt_quiz.staticclass.StaticClass;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +55,7 @@ public class ViewCourse extends AppCompatActivity
         host = findViewById(R.id.tv_HostName_ViewCourse);
 
         if (course != null) {
-            avatar.setImageResource(course.getAvatar());
+            StaticClass.setImage(avatar, course.getAvatar(), R.drawable.resource_default);
             name.setText(course.getName());
             isPrivate.setText("Riêng tư: " + (course.isPrivate() ? "Có" : "Không"));
             description.setText(course.getDescription());
@@ -64,9 +65,9 @@ public class ViewCourse extends AppCompatActivity
         lvMembers = findViewById(R.id.lv_Members_ViewCourse);
 
         memberList = new ArrayList<>();
-        memberList.add(new Member(R.drawable.resource_default, "An", "Nguyễn Văn", "an@gmail.com"));
-        memberList.add(new Member(R.drawable.resource_default, "Bình", "Trần Thị", "binh@gmail.com"));
-        memberList.add(new Member(R.drawable.resource_default, "Cường", "Lê Văn", "cuong@gmail.com"));
+        memberList.add(new Member("", "An", "Nguyễn Văn", "an@gmail.com"));
+        memberList.add(new Member("", "Bình", "Trần Thị", "binh@gmail.com"));
+        memberList.add(new Member("", "Cường", "Lê Văn", "cuong@gmail.com"));
 
         memberAdapter = new MemberAdapter(this, R.layout.item_member, memberList);
         lvMembers.setAdapter(memberAdapter);

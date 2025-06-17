@@ -13,6 +13,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.tqt_quiz.R;
 import com.example.tqt_quiz.presentation.classes.Member;
+import com.example.tqt_quiz.staticclass.StaticClass;
 
 public class MemberInfo extends AppCompatActivity {
 
@@ -39,7 +40,7 @@ public class MemberInfo extends AppCompatActivity {
         Member member = (Member) getIntent().getSerializableExtra("selected_member");
 
         if (member != null) {
-            avatar.setImageResource(member.getAvatar());
+            StaticClass.setImage(avatar, member.getAvatar(), R.drawable.resource_default);
             firstname.setText(member.getFirstName());
             lastmiddlename.setText(member.getLastMiddleName());
             email.setText(member.getEmail());

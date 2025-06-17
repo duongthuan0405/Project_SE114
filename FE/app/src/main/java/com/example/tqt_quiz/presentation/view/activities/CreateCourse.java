@@ -32,7 +32,6 @@ public class CreateCourse extends AppCompatActivity {
     private Uri selectedImageUri = null;
 
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +68,7 @@ public class CreateCourse extends AppCompatActivity {
                 return;
             }
 
-            Course course = new Course(name, desc, isPrivate, R.drawable.resource_default, "Người tạo");
+            Course course = new Course(name, desc, isPrivate, "", "Người tạo");
 
             Intent resultIntent = new Intent();
             resultIntent.putExtra("new_course", course);
