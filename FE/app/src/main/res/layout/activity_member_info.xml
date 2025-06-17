@@ -36,20 +36,20 @@
                 android:elevation="4dp" />
 
             <TextView
-                android:id="@+id/tv_FirstName_MemInfo"
+                android:id="@+id/tv_Name_MemInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="First Name"
+                android:text="Họ và tên"
                 android:textSize="22sp"
                 android:textStyle="bold"
                 android:textColor="@color/Primary"
                 android:layout_marginBottom="8dp" />
 
             <TextView
-                android:id="@+id/tv_LastMiddleName_MemInfo"
+                android:id="@+id/tv_Type_MemInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Last + Middle Name"
+                android:text="Học sinh"
                 android:textSize="18sp"
                 android:textColor="@color/black"
                 android:layout_marginBottom="12dp" />

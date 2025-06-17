@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -31,8 +32,9 @@ public class ViewCourse extends AppCompatActivity
     ImageView avatar;
     TextView name, isPrivate, description, host;
     ListView lvMembers;
-    List<Member> memberList;
+    List<Member> memberList, pendingList;
     MemberAdapter memberAdapter;
+    RadioButton rdbMembers, rdbWaiting;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -53,6 +55,8 @@ public class ViewCourse extends AppCompatActivity
         isPrivate = findViewById(R.id.tv_IsPrivate_ViewCourse);
         description = findViewById(R.id.tv_DescriptionValue_ViewCourse);
         host = findViewById(R.id.tv_HostName_ViewCourse);
+        rdbMembers = findViewById(R.id.rdb_Members_ViewCourse);
+        rdbWaiting = findViewById(R.id.rdb_Waiting_ViewCourse);
 
         if (course != null) {
             StaticClass.setImage(avatar, course.getAvatar(), R.drawable.resource_default);
@@ -69,10 +73,26 @@ public class ViewCourse extends AppCompatActivity
         memberList.add(new Member("", "Bình", "Trần Thị", "binh@gmail.com"));
         memberList.add(new Member("", "Cường", "Lê Văn", "cuong@gmail.com"));
 
-        memberAdapter = new MemberAdapter(this, R.layout.item_member, memberList);
+        pendingList = new ArrayList<>();
+        pendingList.add(new Member("", "Dũng", "Phan Minh", "dung@gmail.com"));
+        pendingList.add(new Member("", "Hà", "Ngô Thị", "ha@gmail.com"));
+
+        memberAdapter = new MemberAdapter(this, R.layout.item_member, memberList, MemberAdapter.MODE_MEMBER);
         lvMembers.setAdapter(memberAdapter);
 
         setListViewHeightBasedOnChildren(lvMembers);
+
+        rdbMembers.setOnClickListener(v -> {
+            memberAdapter = new MemberAdapter(this, 0, memberList, MemberAdapter.MODE_MEMBER);
+            lvMembers.setAdapter(memberAdapter);
+            setListViewHeightBasedOnChildren(lvMembers);
+        });
+
+        rdbWaiting.setOnClickListener(v -> {
+            memberAdapter = new MemberAdapter(this, 0, pendingList, MemberAdapter.MODE_PENDING);
+            lvMembers.setAdapter(memberAdapter);
+            setListViewHeightBasedOnChildren(lvMembers);
+        });
 
         lvMembers.setOnItemClickListener((parent, view, position, id) -> {
             Member selectedMember = memberList.get(position);

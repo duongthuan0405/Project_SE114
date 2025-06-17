@@ -90,15 +90,49 @@
             android:textColor="@color/dark_gray"
             android:layout_marginBottom="16dp" />
 
-        <TextView
-            android:id="@+id/tv_MembersLabel_ViewCourse"
+        <RadioGroup
+            android:id="@+id/rdg_Type_ViewCourse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="📚 Danh sách thành viên"
-            android:textColor="@color/dark_gray"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginBottom="16dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal">
+
+            <RadioButton
+                android:id="@+id/rdb_Members_ViewCourse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Thành viên"
+                android:textColor="@color/dark_gray"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="20dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:paddingLeft="40dp"
+                android:paddingRight="40dp"
+                android:button="@android:color/transparent"
+                android:background="@drawable/radio_selector"
+                android:elevation="4dp" />
+
+            <RadioButton
+                android:id="@+id/rdb_Waiting_ViewCourse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chờ duyệt"
+                android:textColor="@color/dark_gray"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="20dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:paddingLeft="40dp"
+                android:paddingRight="40dp"
+                android:button="@android:color/transparent"
+                android:background="@drawable/radio_selector"
+                android:elevation="4dp" />
+        </RadioGroup>
 
         <ListView
             android:id="@+id/lv_Members_ViewCourse"
