@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.bumptech.glide.Glide;
 import com.example.tqt_quiz.R;
 import com.example.tqt_quiz.presentation.classes.Course;
 import com.example.tqt_quiz.staticclass.StaticClass;

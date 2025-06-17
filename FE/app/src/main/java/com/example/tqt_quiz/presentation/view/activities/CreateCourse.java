@@ -72,11 +72,6 @@ public class CreateCourse extends AppCompatActivity {
 
             Intent resultIntent = new Intent();
             resultIntent.putExtra("new_course", course);
-
-            if (selectedImageUri != null) {
-                resultIntent.putExtra("course_avatar_uri", selectedImageUri.toString());
-            }
-
             setResult(RESULT_OK, resultIntent);
             finish();
         });
