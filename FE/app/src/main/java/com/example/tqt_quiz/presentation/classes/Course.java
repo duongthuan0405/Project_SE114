@@ -42,7 +42,5 @@ public class Course implements Serializable {
     public void setPrivate(boolean aPrivate) { isPrivate = aPrivate; }
     public void setAvatar(String avatar) { this.avatar = avatar; }
     public void setHostName(String hostName) { this.hostName = hostName; }
-    public String getAvatarUri() { return avatarUri; }
 
-    public void setAvatarUri(String avatarUri) { this.avatarUri = avatarUri; }
 }

@@ -8,11 +8,15 @@ public interface IMainActivityContract {
 
         Context getTheContext();
 
-        void navigateToMainHome();
+        void navigateToMainHomeForTeacher();
 
         void navigateToLogin();
 
         void showToast(String msg);
+
+        void navigateToMainHomeForStudent();
+
+        void navigateToMainHomeForAdmin();
     }
     
     public interface IPresenter

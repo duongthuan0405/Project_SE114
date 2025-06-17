@@ -1,6 +1,5 @@
 package com.example.tqt_quiz.presentation.view.activities;
 
-import android.accounts.Account;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,13 +17,15 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.tqt_quiz.R;
+import com.example.tqt_quiz.domain.dto.LoginResponse;
 import com.example.tqt_quiz.presentation.contract_vp.LoginContract;
 import com.example.tqt_quiz.presentation.presenter.LoginPresenter;
+import com.example.tqt_quiz.staticclass.StaticClass;
 
 public class Login extends AppCompatActivity implements LoginContract.IView {
-    Button Login;
-    EditText Email, Password;
-    TextView Register, ForgotPw;
+    Button btn_Login;
+    EditText edt_Email, edt_Password;
+    TextView tv_Register, tv_ForgotPw;
     LoginPresenter presenter;
     ActivityResultLauncher<Intent> launcher_Login_Main;
     ActivityResultLauncher<Intent> getLauncher_Login_Register;
@@ -42,11 +43,11 @@ public class Login extends AppCompatActivity implements LoginContract.IView {
         });
 
         //Ánh xạ
-        Login = findViewById(R.id.btn_Login_Login);
-        Email = findViewById(R.id.edt_Email_ForgotPw);
-        Password = findViewById(R.id.edt_Pw_ForgotPw);
-        Register = findViewById(R.id.btn_Register_Login);
-        ForgotPw = findViewById(R.id.btn_ForgotPw_Login);
+        btn_Login = findViewById(R.id.btn_Login_Login);
+        edt_Email = findViewById(R.id.edt_Email_ForgotPw);
+        edt_Password = findViewById(R.id.edt_Pw_ForgotPw);
+        tv_Register = findViewById(R.id.btn_Register_Login);
+        tv_ForgotPw = findViewById(R.id.btn_ForgotPw_Login);
 
         presenter = new LoginPresenter(this);
 
@@ -68,33 +69,34 @@ public class Login extends AppCompatActivity implements LoginContract.IView {
         );
 
         //Thao tác Login Click
-        Login.setOnClickListener(v -> {
-            String email = Email.getText().toString();
-            String password = Password.getText().toString();
+        btn_Login.setOnClickListener(v -> {
+            String email = edt_Email.getText().toString();
+            String password = edt_Password.getText().toString();
             presenter.LoginClick(email, password);
         });
 
         //Thao tác Register Click
-        Register.setOnClickListener(v -> presenter.RegisterClick());
+        tv_Register.setOnClickListener(v -> presenter.RegisterClick());
 
         //Thao tác ForgotPw Click
-        ForgotPw.setOnClickListener(v -> presenter.ForgotPasswordClick());
+        tv_ForgotPw.setOnClickListener(v -> presenter.ForgotPasswordClick());
 
         
     }
 
     @Override
-    public void loginSuccess(String roleId) {
-        if(roleId.equals("0000000000"))
+    public void loginSuccess(LoginResponse loginResponse) {
+        if(loginResponse.getRoleId().equals(StaticClass.AccountTypeId.admin))
         {
 
         }
-        else if (roleId.equals("0000000001"))
+        else if (loginResponse.getRoleId().equals(StaticClass.AccountTypeId.teacher))
         {
             Intent i = new Intent(com.example.tqt_quiz.presentation.view.activities.Login.this, MainHome.class);
             launcher_Login_Main.launch(i);
+            finish();
         }
-        else if (roleId.equals("0000000002"))
+        else if (loginResponse.getRoleId().equals(StaticClass.AccountTypeId.student))
         {
 
         }
@@ -108,7 +110,8 @@ public class Login extends AppCompatActivity implements LoginContract.IView {
 
     @Override
     public void navigateToRegister() {
-
+        Intent i = new Intent(Login.this, Register.class);
+        getLauncher_Login_Register.launch(i);
     }
 
     @Override
