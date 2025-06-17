@@ -12,6 +12,8 @@ namespace BE.DTOs
         public string Email { get; set; } = "";
 
         public string? FullName { get; set; } = "";
+        public string? FirstName { get; set; } = "";
+        public string? LastMiddleName { get; set; } = "";
 
         public string? Avatar { get; set; } = "";
 
@@ -21,11 +23,13 @@ namespace BE.DTOs
         [Required]
         public string AccountTypeId { get; set; } = "";
 
-        public AccountInfoDTO(string userId, string email, string? fullName, string? avatar, string accountTypeId, string accountType)
+        public AccountInfoDTO(string userId, string email, string? lastMiddleName, string? firstName, string? avatar, string accountTypeId, string accountType)
         {
             Id = userId;
             Email = email;
-            FullName = fullName;
+            LastMiddleName = lastMiddleName ?? "";
+            FirstName = firstName ?? "";
+            FullName = LastMiddleName + " " + FirstName;
             Avatar = avatar;
             AccountType = accountType;
             AccountTypeId = accountTypeId;

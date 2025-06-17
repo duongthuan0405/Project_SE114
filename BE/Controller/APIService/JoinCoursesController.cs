@@ -188,11 +188,14 @@ namespace BE.Controller.APIService
 
                 var permissions = await DbContext.JoinCourses
                     .Where(jc => jc.CourseID == course_id && jc.State == (int)JoinCourse.JoinCourseState.Pending)
+                    .OrderBy(jc => jc.TimeJoin)
                     .Join(DbContext.Accounts, jc => jc.AccountID, a => a.Id, (jc, a) => new { jc, a })
                     .Join(DbContext.AccountAuthens, x => x.a.Id, aa => aa.Id, (x, aa) => new AccountInfoDTO()
                         {
                             Id = x.a.Id,
                             FullName = x.a.LastMiddleName + " " + x.a.FirstName,
+                            FirstName = x.a.FirstName,
+                            LastMiddleName = x.a.LastMiddleName,
                             Email = aa.Email,
                             Avatar = x.a.Avatar,
                             AccountTypeId = x.a.AccountTypeId,
