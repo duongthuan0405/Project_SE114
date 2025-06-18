@@ -37,6 +37,9 @@ namespace BE.Data.Entities
         [Required]
         public Course OCourse { get; set; }
 
+        [Required]
+        public bool IsPublished { get; set; } = false;
+
         public List<Question> Questions { get; set; } = new List<Question>();
 
         public List<AttemptQuiz> LAttemptQuizzes { get; set; } = new List<AttemptQuiz>();
