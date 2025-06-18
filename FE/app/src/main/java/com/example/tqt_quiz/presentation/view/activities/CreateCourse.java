@@ -68,6 +68,8 @@ public class CreateCourse extends AppCompatActivity {
                 return;
             }
 
+            String avatarUriStr = selectedImageUri != null ? selectedImageUri.toString() : "";
+
             Course course = new Course(name, desc, isPrivate, "", "Người tạo");
 
             Intent resultIntent = new Intent();

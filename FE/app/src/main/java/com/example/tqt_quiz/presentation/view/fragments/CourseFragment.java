@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -36,10 +38,22 @@ public class CourseFragment extends Fragment implements ICourseFragmentContract.
     private ListView lvCourse;
     private List<Course> courseList;
     private CourseAdapter courseAdapter;
+    private ActivityResultLauncher<Intent> addCourseLauncher;
 
     public CourseFragment() {
 
     }
+
+    private final ActivityResultLauncher<Intent> createCourseLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    Course newCourse = (Course) result.getData().getSerializableExtra("new_course");
+                    if (newCourse != null) {
+                        courseList.add(newCourse);
+                        courseAdapter.notifyDataSetChanged();
+                    }
+                }
+            });
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,6 +62,7 @@ public class CourseFragment extends Fragment implements ICourseFragmentContract.
         View view = inflater.inflate(R.layout.fragment_course, container, false);
 
         lvCourse = view.findViewById(R.id.lv_Course_Course);
+        AddCourse = view.findViewById(R.id.btn_Add_Course);
         presenter = new CourseFragmentPresenter(this);
 /*
         courseList = new ArrayList<>();
@@ -65,26 +80,13 @@ public class CourseFragment extends Fragment implements ICourseFragmentContract.
             startActivity(intent);
         });
 
-        AddCourse = view.findViewById(R.id.btn_Add_Course);
+
         AddCourse.setOnClickListener(v -> {
             Intent intent = new Intent(requireContext(), CreateCourse.class);
-            startActivityForResult(intent, 1);
+            createCourseLauncher.launch(intent);
         });
 
         return view;
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null) {
-            Course newCourse = (Course) data.getSerializableExtra("new_course");
-            if (newCourse != null) {
-                courseList.add(newCourse);
-                courseAdapter.notifyDataSetChanged();
-            }
-        }
     }
 
     @Override

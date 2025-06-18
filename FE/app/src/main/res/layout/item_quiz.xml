@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp"
+    android:background="@android:color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:gravity="center_vertical">
+
+        <!-- Icon -->
+        <ImageView
+            android:id="@+id/img_Icon_QuizItem"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="12dp"
+            android:src="@drawable/ic_test"
+            android:contentDescription="Quiz Icon"/>
+
+        <!-- Nội dung bên phải -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <!-- Tên bài kiểm tra -->
+            <TextView
+                android:id="@+id/tv_Name_QuizItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tên bài kiểm tra"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/Primary"
+                android:maxLines="1"
+                android:ellipsize="end" />
+
+            <!-- Thời gian bắt đầu -->
+            <TextView
+                android:id="@+id/tv_StartTime_QuizItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bắt đầu: 06/12/2021 07:05"
+                android:textSize="14sp"
+                android:textColor="@color/dark_gray"
+                android:layout_marginTop="4dp" />
+
+            <!-- Thời gian kết thúc -->
+            <TextView
+                android:id="@+id/tv_EndTime_QuizItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kết thúc: 06/12/2021 17:00"
+                android:textSize="14sp"
+                android:textColor="@color/dark_gray"
+                android:layout_marginTop="2dp" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
