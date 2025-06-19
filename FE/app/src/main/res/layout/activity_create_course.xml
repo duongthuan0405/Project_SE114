@@ -6,106 +6,119 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/AppBackground"
-    android:fitsSystemWindows="true"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:fitsSystemWindows="true">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView_CreateCourse"
-        android:layout_width="325dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:cardBackgroundColor="@android:color/white"
+        android:layout_marginBottom="24dp"
+        android:layout_gravity="center"
         app:cardCornerRadius="20dp"
         app:cardElevation="8dp"
-        android:layout_gravity="center">
+        app:cardBackgroundColor="@android:color/white">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:layout_gravity="center"
-            android:padding="15dp">
+            android:orientation="vertical"
+            android:padding="24dp">
 
+            <!-- Tiêu đề -->
+            <TextView
+                android:id="@+id/tv_Title_CreateCourse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tạo khóa học"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_gravity="center_horizontal"
+                android:paddingBottom="8dp" />
+
+            <!-- Ảnh đại diện -->
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/img_Avatar_CreateCourse"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="16dp"
-                android:src="@drawable/resource_default"
                 android:contentDescription="Avatar"
+                android:src="@drawable/resource_default"
                 android:scaleType="centerCrop"
-                app:shapeAppearanceOverlay="@style/rounded_border_img"
                 android:clickable="true"
                 android:focusable="true"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:shapeAppearanceOverlay="@style/round_img" />
 
-            <EditText
-                android:id="@+id/edt_CourseName_CreateCourse"
-                android:layout_width="0dp"
+            <!-- Tên khóa học -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_Name_CreateCourse"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Tên khóa học"
-                android:inputType="text"
                 android:layout_marginTop="24dp"
-                app:layout_constraintTop_toBottomOf="@id/img_Avatar_CreateCourse"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                android:hint="Tên khóa học">
 
-            <EditText
-                android:id="@+id/edt_Description_CreateCourse"
-                android:layout_width="0dp"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_Name_CreateCourse"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Mô tả khóa học -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_Description_CreateCourse"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Mô tả khóa học"
-                android:inputType="textMultiLine"
-                android:minLines="4"
-                android:maxLines="6"
-                android:gravity="top"
                 android:layout_marginTop="16dp"
-                app:layout_constraintTop_toBottomOf="@id/edt_CourseName_CreateCourse"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                android:hint="Mô tả khóa học">
 
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_Description_CreateCourse"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:minLines="4"
+                    android:maxLines="6"
+                    android:gravity="top" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Switch riêng tư -->
             <LinearLayout
-                android:id="@+id/ll_IsPrivate_CreateCourse"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="16dp"
-                app:layout_constraintTop_toBottomOf="@id/edt_Description_CreateCourse"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
+                android:layout_marginTop="20dp"
+                android:gravity="center_vertical">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="Khóa học riêng tư"
                     android:textSize="16sp"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black" />
 
                 <Switch
                     android:id="@+id/swt_IsPrivate_CreateCourse"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
                     tools:ignore="UseSwitchCompatOrMaterialXml" />
             </LinearLayout>
 
+            <!-- Nút tạo khóa học -->
             <Button
                 android:id="@+id/btn_CreateCourse_CreateCourse"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
                 android:text="Tạo khóa học"
-                android:textColor="@color/white"
+                android:textColor="@android:color/white"
                 android:textStyle="bold"
-                android:textSize="20dp"
-                android:layout_marginTop="24dp"
-                android:background="@drawable/btn_rectagle"
-                app:layout_constraintTop_toBottomOf="@id/ll_IsPrivate_CreateCourse"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                android:textSize="18sp"
+                android:background="@drawable/btn_rectagle" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
     </androidx.cardview.widget.CardView>
 
 </ScrollView>

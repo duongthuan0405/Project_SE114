@@ -1,6 +1,5 @@
 package com.example.tqt_quiz.presentation.view.activities;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,7 +11,8 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.Nullable;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -28,8 +28,8 @@ public class CreateCourse extends AppCompatActivity {
     Switch Private;
     Button Create;
 
-    private static final int REQUEST_IMAGE_PICK = 1001;
     private Uri selectedImageUri = null;
+    private ActivityResultLauncher<Intent> imagePickerLauncher;
 
 
     @Override
@@ -45,16 +45,28 @@ public class CreateCourse extends AppCompatActivity {
 
         //Ánh xạ
         Avatar = findViewById(R.id.img_Avatar_CreateCourse);
-        Name = findViewById(R.id.edt_CourseName_CreateCourse);
+        Name = findViewById(R.id.edt_Name_CreateCourse);
         Desc = findViewById(R.id.edt_Description_CreateCourse);
         Private = findViewById(R.id.swt_IsPrivate_CreateCourse);
-        Create = findViewById(R.id.btn_CreateCourse_CreateCourse);
+        Create = findViewById(R.id.btn_Create_CreateCourse);
+
+        imagePickerLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        selectedImageUri = result.getData().getData();
+                        if (selectedImageUri != null) {
+                            Avatar.setImageURI(selectedImageUri);
+                        }
+                    }
+                }
+        );
 
         //Xử lý thao tác thêm ảnh
         Avatar.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             intent.setType("image/*");
-            startActivityForResult(intent, REQUEST_IMAGE_PICK);
+            imagePickerLauncher.launch(intent);
         });
 
         //Xử lý thao tác Create
@@ -78,18 +90,4 @@ public class CreateCourse extends AppCompatActivity {
             finish();
         });
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == REQUEST_IMAGE_PICK && resultCode == RESULT_OK && data != null) {
-            selectedImageUri = data.getData();
-            if (selectedImageUri != null) {
-                ImageView imgAvatar = findViewById(R.id.img_Avatar_CreateCourse);
-                imgAvatar.setImageURI(selectedImageUri);
-            }
-        }
-    }
-
 }

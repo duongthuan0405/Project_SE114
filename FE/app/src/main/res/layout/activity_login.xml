@@ -9,21 +9,6 @@
     android:id="@+id/main"
     tools:context=".presentation.view.activities.Login">
 
-    <ImageButton
-        android:id="@+id/btn_Home_Login"
-        android:layout_width="115dp"
-        android:layout_height="58dp"
-        android:backgroundTint="#00FFFFFF"
-        android:contentDescription="@string/logo_description"
-        android:scaleType="fitXY"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.054"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.023"
-        app:srcCompat="@drawable/atoza" />
-
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView_Login"
         android:layout_width="325dp"
@@ -62,30 +47,39 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <EditText
-                android:id="@+id/edt_Email_ForgotPw"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_Email_Login"
                 android:layout_width="300dp"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="36dp"
-                android:ems="10"
                 android:hint="Nhập email"
-                android:inputType="textEmailAddress"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintTop_toBottomOf="@id/tv_ForgotPw_ForgotPw"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_ForgotPw_ForgotPw" />
+                app:layout_constraintEnd_toEndOf="parent">
 
-            <EditText
-                android:id="@+id/edt_Pw_ForgotPw"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_Email_Login"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_password_login"
                 android:layout_width="300dp"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="28dp"
-                android:ems="10"
                 android:hint="Mật khẩu"
-                android:inputType="textPassword"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/til_Email_Login"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edt_Email_ForgotPw" />
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_Pw_Login"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/btn_Login_Login"
@@ -140,7 +134,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.053"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edt_Pw_ForgotPw"
+                app:layout_constraintTop_toBottomOf="@+id/til_password_login"
                 app:layout_constraintVertical_bias="0.078" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
