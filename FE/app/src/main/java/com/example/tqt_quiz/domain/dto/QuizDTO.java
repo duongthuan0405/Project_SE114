@@ -35,6 +35,16 @@ public class QuizDTO {
 
     @SerializedName("isPublished")
     private String isPublished;
+    @SerializedName("statusOfAttempt")
+    private String statusOfAttempt;
+
+    public String getStatusOfAttempt() {
+        return statusOfAttempt;
+    }
+
+    public void setStatusOfAttempt(String statusOfAttempt) {
+        this.statusOfAttempt = statusOfAttempt;
+    }
 
     // Getters and Setters
     public String getId() {
