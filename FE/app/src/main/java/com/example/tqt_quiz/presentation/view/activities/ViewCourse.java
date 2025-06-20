@@ -3,6 +3,7 @@ package com.example.tqt_quiz.presentation.view.activities;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -33,7 +34,6 @@ public class ViewCourse extends AppCompatActivity
     List<Member> memberList;
     MemberAdapter memberAdapter;
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +45,8 @@ public class ViewCourse extends AppCompatActivity
             return insets;
         });
 
+
+
         Course course = (Course) getIntent().getSerializableExtra("selected_course");
 
         avatar = findViewById(R.id.img_CourseAvatar_ViewCourse);
@@ -52,7 +54,6 @@ public class ViewCourse extends AppCompatActivity
         isPrivate = findViewById(R.id.tv_IsPrivate_ViewCourse);
         description = findViewById(R.id.tv_DescriptionValue_ViewCourse);
         host = findViewById(R.id.tv_HostName_ViewCourse);
-
         if (course != null) {
             avatar.setImageResource(course.getAvatar());
             name.setText(course.getName());

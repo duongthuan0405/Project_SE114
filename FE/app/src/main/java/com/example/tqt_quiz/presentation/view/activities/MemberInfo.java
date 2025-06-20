@@ -32,8 +32,8 @@ public class MemberInfo extends AppCompatActivity {
         });
 
         avatar = findViewById(R.id.img_Avatar_MemInfo);
-        firstname = findViewById(R.id.tv_FirstName_MemInfo);
-        lastmiddlename = findViewById(R.id.tv_LastMiddleName_MemInfo);
+        //firstname = findViewById(R.id.tv_FirstName_MemInfo);
+        //lastmiddlename = findViewById(R.id.tv_LastMiddleName_MemInfo);
         email = findViewById(R.id.tv_Email_MemInfo);
 
         Member member = (Member) getIntent().getSerializableExtra("selected_member");
