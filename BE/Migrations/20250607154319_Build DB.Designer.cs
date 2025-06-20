@@ -91,7 +91,7 @@ namespace BE.Migrations
                     b.ToTable("AccountType");
                 });
 
-            modelBuilder.Entity("BE.Data.Entities.Answer", b =>
+            modelBuilder.Entity("BE.Data.Entities.AnswerDTO", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(10)
@@ -113,7 +113,7 @@ namespace BE.Migrations
 
                     b.HasIndex("QuestionID");
 
-                    b.ToTable("Answer");
+                    b.ToTable("AnswerDTO");
                 });
 
             modelBuilder.Entity("BE.Data.Entities.AttemptQuiz", b =>
@@ -214,7 +214,7 @@ namespace BE.Migrations
                     b.ToTable("JoinCourse");
                 });
 
-            modelBuilder.Entity("BE.Data.Entities.Question", b =>
+            modelBuilder.Entity("BE.Data.Entities.QuestionDTO", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(10)
@@ -232,7 +232,7 @@ namespace BE.Migrations
 
                     b.HasIndex("QuizId");
 
-                    b.ToTable("Question");
+                    b.ToTable("QuestionDTO");
                 });
 
             modelBuilder.Entity("BE.Data.Entities.Quiz", b =>
@@ -286,9 +286,9 @@ namespace BE.Migrations
                     b.Navigation("OAccountType");
                 });
 
-            modelBuilder.Entity("BE.Data.Entities.Answer", b =>
+            modelBuilder.Entity("BE.Data.Entities.AnswerDTO", b =>
                 {
-                    b.HasOne("BE.Data.Entities.Question", "OQuestion")
+                    b.HasOne("BE.Data.Entities.QuestionDTO", "OQuestion")
                         .WithMany("LAnswers")
                         .HasForeignKey("QuestionID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -327,7 +327,7 @@ namespace BE.Migrations
 
             modelBuilder.Entity("BE.Data.Entities.DetailResult", b =>
                 {
-                    b.HasOne("BE.Data.Entities.Answer", "OAnswer")
+                    b.HasOne("BE.Data.Entities.AnswerDTO", "OAnswer")
                         .WithMany("LDetailResults")
                         .HasForeignKey("AnswerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -363,7 +363,7 @@ namespace BE.Migrations
                     b.Navigation("OCourse");
                 });
 
-            modelBuilder.Entity("BE.Data.Entities.Question", b =>
+            modelBuilder.Entity("BE.Data.Entities.QuestionDTO", b =>
                 {
                     b.HasOne("BE.Data.Entities.Quiz", "OQuiz")
                         .WithMany("Questions")
@@ -397,7 +397,7 @@ namespace BE.Migrations
                     b.Navigation("LAccounts");
                 });
 
-            modelBuilder.Entity("BE.Data.Entities.Answer", b =>
+            modelBuilder.Entity("BE.Data.Entities.AnswerDTO", b =>
                 {
                     b.Navigation("LDetailResults");
                 });
@@ -414,7 +414,7 @@ namespace BE.Migrations
                     b.Navigation("LQuizes");
                 });
 
-            modelBuilder.Entity("BE.Data.Entities.Question", b =>
+            modelBuilder.Entity("BE.Data.Entities.QuestionDTO", b =>
                 {
                     b.Navigation("LAnswers");
                 });

@@ -11,5 +11,6 @@ namespace BE.DTOs
         public string CourseId { get; set; } = "";
         public string CourseName { get; set; } = "";
         public bool IsPublished { get; set; } = false;
+        public string StatusOfAttempt { get; set; } = ""; 
     }
 }

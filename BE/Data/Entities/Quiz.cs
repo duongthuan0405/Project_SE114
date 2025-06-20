@@ -43,5 +43,6 @@ namespace BE.Data.Entities
         public List<Question> Questions { get; set; } = new List<Question>();
 
         public List<AttemptQuiz> LAttemptQuizzes { get; set; } = new List<AttemptQuiz>();
+
     }
 }
