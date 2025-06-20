@@ -76,6 +76,7 @@ public class CourseFragment extends Fragment implements ICourseFragmentContract.
         lvCourse.setOnItemClickListener((parent, view1, position, id) -> {
             Course selectedCourse = courseList.get(position);
             Intent intent = new Intent(requireContext(), ViewCourse.class);
+            intent.putExtra("course_id", selectedCourse.getId());
             intent.putExtra("selected_course", selectedCourse);
             startActivity(intent);
         });

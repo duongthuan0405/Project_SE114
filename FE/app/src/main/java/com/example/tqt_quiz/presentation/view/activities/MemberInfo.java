@@ -18,7 +18,7 @@ import com.example.tqt_quiz.staticclass.StaticClass;
 public class MemberInfo extends AppCompatActivity {
 
     ImageView avatar;
-    TextView firstname, lastmiddlename, email;
+    TextView name, type,  email;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -33,16 +33,16 @@ public class MemberInfo extends AppCompatActivity {
         });
 
         avatar = findViewById(R.id.img_Avatar_MemInfo);
-        firstname = findViewById(R.id.tv_FirstName_MemInfo);
-        lastmiddlename = findViewById(R.id.tv_LastMiddleName_MemInfo);
+        name = findViewById(R.id.tv_Name_MemInfo);
+        type = findViewById(R.id.tv_Type_MemInfo);
         email = findViewById(R.id.tv_Email_MemInfo);
 
         Member member = (Member) getIntent().getSerializableExtra("selected_member");
 
         if (member != null) {
             StaticClass.setImage(avatar, member.getAvatar(), R.drawable.resource_default);
-            firstname.setText(member.getFirstName());
-            lastmiddlename.setText(member.getLastMiddleName());
+            name.setText(member.getName());
+            type.setText(member.getType());
             email.setText(member.getEmail());
         }
     }

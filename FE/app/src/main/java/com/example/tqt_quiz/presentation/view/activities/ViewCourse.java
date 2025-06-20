@@ -49,6 +49,7 @@ public class ViewCourse extends AppCompatActivity
         });
 
         Course course = (Course) getIntent().getSerializableExtra("selected_course");
+        String courseId = getIntent().getStringExtra("course_id");
 
         avatar = findViewById(R.id.img_CourseAvatar_ViewCourse);
         name = findViewById(R.id.tv_CourseName_ViewCourse);
@@ -69,13 +70,13 @@ public class ViewCourse extends AppCompatActivity
         lvMembers = findViewById(R.id.lv_Members_ViewCourse);
 
         memberList = new ArrayList<>();
-        memberList.add(new Member("", "An", "Nguyễn Văn", "an@gmail.com"));
-        memberList.add(new Member("", "Bình", "Trần Thị", "binh@gmail.com"));
-        memberList.add(new Member("", "Cường", "Lê Văn", "cuong@gmail.com"));
+        memberList.add(new Member("", "An", "Nguyễn Văn", "Học sinh", "an@gmail.com"));
+        memberList.add(new Member("", "Bình", "Trần Thị", "Giáo viên", "binh@gmail.com"));
+        memberList.add(new Member("", "Cường", "Lê Văn", "Học sinh", "cuong@gmail.com"));
 
         pendingList = new ArrayList<>();
-        pendingList.add(new Member("", "Dũng", "Phan Minh", "dung@gmail.com"));
-        pendingList.add(new Member("", "Hà", "Ngô Thị", "ha@gmail.com"));
+        pendingList.add(new Member("", "Dũng", "Phan Minh", "Học sinh", "dung@gmail.com"));
+        pendingList.add(new Member("", "Hà", "Ngô Thị", "Học sinh", "ha@gmail.com"));
 
         memberAdapter = new MemberAdapter(this, R.layout.item_member, memberList, MemberAdapter.MODE_MEMBER);
         lvMembers.setAdapter(memberAdapter);
@@ -100,7 +101,6 @@ public class ViewCourse extends AppCompatActivity
             intent.putExtra("selected_member", selectedMember);
             startActivity(intent);
         });
-
     }
 
     public static void setListViewHeightBasedOnChildren(ListView listView) {

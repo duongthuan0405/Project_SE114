@@ -49,8 +49,7 @@ public class MemberAdapter extends ArrayAdapter<Member> {
 
     static class ViewHolder {
         ImageView imgAvatar;
-        TextView tvFirstName;
-        TextView tvLastMiddleName;
+        TextView tvName;
         ImageView btnAccept, btnReject;
     }
 
@@ -68,8 +67,7 @@ public class MemberAdapter extends ArrayAdapter<Member> {
 
             holder = new ViewHolder();
             holder.imgAvatar = convertView.findViewById(R.id.img_Avatar_MemberItem);
-            holder.tvFirstName = convertView.findViewById(R.id.tv_FirstName_MemberItem);
-            holder.tvLastMiddleName = convertView.findViewById(R.id.tv_LastMiddleName_MemberItem);
+            holder.tvName = convertView.findViewById(R.id.tv_Name_MemberItem);
 
             if (mode == MODE_PENDING) {
                 holder.btnAccept = convertView.findViewById(R.id.btn_Accept_PendingMember);
@@ -82,8 +80,7 @@ public class MemberAdapter extends ArrayAdapter<Member> {
         }
 
         StaticClass.setImage(holder.imgAvatar, member.getAvatar(), R.drawable.resource_default);
-        holder.tvFirstName.setText(member.getFirstName());
-        holder.tvLastMiddleName.setText(member.getLastMiddleName());
+        holder.tvName.setText(member.getName());
 
         if (mode == MODE_PENDING) {
             holder.btnAccept.setOnClickListener(v -> {
