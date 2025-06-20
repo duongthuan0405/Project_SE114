@@ -160,7 +160,7 @@ namespace BE.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Question",
+                name: "QuestionDTO",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "Char(10)", maxLength: 10, nullable: false),
@@ -178,7 +178,7 @@ namespace BE.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Answer",
+                name: "AnswerDTO",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "Char(10)", maxLength: 10, nullable: false),
@@ -192,7 +192,7 @@ namespace BE.Migrations
                     table.ForeignKey(
                         name: "FK_Answer_Question_QuestionID",
                         column: x => x.QuestionID,
-                        principalTable: "Question",
+                        principalTable: "QuestionDTO",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -210,7 +210,7 @@ namespace BE.Migrations
                     table.ForeignKey(
                         name: "FK_DetailResults_Answer_AnswerId",
                         column: x => x.AnswerId,
-                        principalTable: "Answer",
+                        principalTable: "AnswerDTO",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -228,7 +228,7 @@ namespace BE.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Answer_QuestionID",
-                table: "Answer",
+                table: "AnswerDTO",
                 column: "QuestionID");
 
             migrationBuilder.CreateIndex(
@@ -258,7 +258,7 @@ namespace BE.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Question_QuizId",
-                table: "Question",
+                table: "QuestionDTO",
                 column: "QuizId");
 
             migrationBuilder.CreateIndex(
@@ -277,13 +277,13 @@ namespace BE.Migrations
                 name: "JoinCourse");
 
             migrationBuilder.DropTable(
-                name: "Answer");
+                name: "AnswerDTO");
 
             migrationBuilder.DropTable(
                 name: "AttemptQuiz");
 
             migrationBuilder.DropTable(
-                name: "Question");
+                name: "QuestionDTO");
 
             migrationBuilder.DropTable(
                 name: "Quiz");

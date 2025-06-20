@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BE.ConstanctValue;
+using System.ComponentModel.DataAnnotations;
 
 namespace BE.DTOs
 {
@@ -19,8 +20,9 @@ namespace BE.DTOs
         public string? Avatar { get; set; } = "";
 
         public string? Description { get;  set; } = "";
+        public string? StateOfJoining { get; set; } = "";
 
-        public CourseDTO(string id, string name, string hostId, string hostName, bool isPrivate, string? avatar, string? description)
+        public CourseDTO(string id, string name, string hostId, string hostName, bool isPrivate, string? avatar, string? description, string stateOfJoinCourse)
         {
             Id = id;
             Name = name;
@@ -29,6 +31,7 @@ namespace BE.DTOs
             Avatar = avatar;
             Description = description;
             HostId = hostId;
+            StateOfJoining = stateOfJoinCourse;
         }
 
         public CourseDTO() { }

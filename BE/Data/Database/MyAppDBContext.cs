@@ -53,6 +53,7 @@ namespace BE.Data.Database
         public DbSet<Answer> Answers { get; set; }
         public DbSet<AttemptQuiz> AttemptQuizzes { get; set; }
         public DbSet<DetailResult> DetailResults { get; set; }
+
         
     }
 }

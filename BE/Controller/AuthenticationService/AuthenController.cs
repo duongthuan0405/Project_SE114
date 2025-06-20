@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 namespace BE.Controller.AuthenticationService
 {
     [ApiController]
-    [Route(ConstantValue.AppName + "/[controller]")]
+    [Route(StaticClass.AppName + "/[controller]")]
     public class AuthenController : ControllerBase
     {
         private readonly MyAppDBContext DbContext;

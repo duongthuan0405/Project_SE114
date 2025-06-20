@@ -1,3 +1,4 @@
+using BE.ConstanctValue;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -26,6 +27,8 @@ namespace BE.Data.Entities
 
         [Required]
         public DateTime FinishTime { get; set; }
+        [Required]
+        public bool IsSubmitted { get; set; } = false; 
 
         [ForeignKey("QuizId")]
         [Required]
