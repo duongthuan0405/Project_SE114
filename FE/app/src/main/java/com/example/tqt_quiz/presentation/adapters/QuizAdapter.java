@@ -13,6 +13,9 @@ import androidx.annotation.NonNull;
 import com.example.tqt_quiz.R;
 import com.example.tqt_quiz.presentation.classes.Quiz;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class QuizAdapter extends ArrayAdapter<Quiz> {
@@ -42,7 +45,7 @@ public class QuizAdapter extends ArrayAdapter<Quiz> {
 
     static class ViewHolder {
         ImageView imgQuizIcon;
-        TextView tvQuizName, tvStartTime, tvEndTime;
+        TextView tvQuizName, tvStartTime, tvEndTime, tvStatus;
     }
 
     @Override
@@ -56,15 +59,49 @@ public class QuizAdapter extends ArrayAdapter<Quiz> {
             holder.tvQuizName = convertView.findViewById(R.id.tv_Name_QuizItem);
             holder.tvStartTime = convertView.findViewById(R.id.tv_StartTime_QuizItem);
             holder.tvEndTime = convertView.findViewById(R.id.tv_EndTime_QuizItem);
+            holder.tvStatus = convertView.findViewById(R.id.tv_Status_QuizItem);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
         Quiz quiz = getItem(position);
-        holder.tvQuizName.setText(quiz.getName());
-        holder.tvStartTime.setText("Bắt đầu: " + quiz.getStartTime());
-        holder.tvEndTime.setText("Kết thúc: " + quiz.getDueTime());
+        if (quiz != null) {
+            holder.tvQuizName.setText(quiz.getName());
+            holder.tvStartTime.setText("Bắt đầu: " + quiz.getStartTime());
+            holder.tvEndTime.setText("Kết thúc: " + quiz.getDueTime());
+
+            String startTimeStr = quiz.getStartTime();  // VD: "2025-06-19 14:00"
+            String endTimeStr = quiz.getDueTime();
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            try {
+                Date now = new Date();
+                Date start = sdf.parse(startTimeStr);
+                Date end = sdf.parse(endTimeStr);
+
+                String statusText;
+                int bgResId;
+
+                if (now.before(start)) {
+                    statusText = "Sắp diễn ra";
+                    bgResId = R.drawable.bg_status_upcoming;
+                } else if (now.after(end)) {
+                    statusText = "Đã kết thúc";
+                    bgResId = R.drawable.bg_status_ended;
+                } else {
+                    statusText = "Đang diễn ra";
+                    bgResId = R.drawable.bg_status_ongoing;
+                }
+
+                holder.tvStatus.setText(statusText);
+                holder.tvStatus.setBackgroundResource(bgResId);
+
+            } catch (ParseException e) {
+                holder.tvStatus.setText("Không rõ");
+                holder.tvStatus.setBackgroundResource(R.drawable.bg_status_upcoming);
+            }
+        }
 
         // Icon mặc định đã gán sẵn trong item_quiz.xml → không cần set lại ở đây
         // Nếu bạn muốn đảm bảo: holder.imgQuizIcon.setImageResource(R.drawable.ic_test);

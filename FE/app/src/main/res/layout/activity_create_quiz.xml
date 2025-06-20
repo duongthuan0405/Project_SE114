@@ -5,7 +5,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="@color/AppBackground">
+    android:background="@color/AppBackground"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".presentation.view.activities.CreateQuiz">
 
     <!-- Tiêu đề Quiz -->
     <EditText
@@ -28,6 +30,30 @@
         android:textSize="14sp"
         android:inputType="text"
         android:textColor="@android:color/darker_gray"
+        android:background="@android:color/transparent"
+        android:layout_marginTop="4dp" />
+
+    <!-- Thời gian bắt đầu -->
+    <EditText
+        android:id="@+id/edt_QuizStartTime_CreateQuiz"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Thời gian bắt đầu (ví dụ: 2025-06-20 08:00)"
+        android:textSize="14sp"
+        android:inputType="datetime"
+        android:textColor="@android:color/black"
+        android:background="@android:color/transparent"
+        android:layout_marginTop="8dp" />
+
+    <!-- Thời gian kết thúc -->
+    <EditText
+        android:id="@+id/edt_QuizDueTime_CreateQuiz"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Thời gian kết thúc (ví dụ: 2025-06-20 09:00)"
+        android:textSize="14sp"
+        android:inputType="datetime"
+        android:textColor="@android:color/black"
         android:background="@android:color/transparent"
         android:layout_marginTop="4dp" />
 
