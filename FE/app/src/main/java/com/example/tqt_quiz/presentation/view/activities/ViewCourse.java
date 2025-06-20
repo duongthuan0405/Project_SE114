@@ -92,7 +92,7 @@ public class ViewCourse extends AppCompatActivity
         });
 
         rdbWaiting.setOnClickListener(v -> {
-            memberAdapter = new MemberAdapter(this, 0, pendingList, MemberAdapter.MODE_PENDING);
+            memberAdapter = new MemberAdapter(this, R.layout.item_pending_member, pendingList, MemberAdapter.MODE_PENDING);
             lvMembers.setAdapter(memberAdapter);
             setListViewHeightBasedOnChildren(lvMembers);
         });

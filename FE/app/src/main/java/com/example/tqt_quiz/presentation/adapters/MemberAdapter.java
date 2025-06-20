@@ -1,6 +1,7 @@
 package com.example.tqt_quiz.presentation.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,6 +58,7 @@ public class MemberAdapter extends ArrayAdapter<Member> {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         Member member = memberList.get(position);
+        Log.d("Pending", "Null");
 
         if (convertView == null) {
             if (mode == MODE_MEMBER) {
@@ -69,7 +71,7 @@ public class MemberAdapter extends ArrayAdapter<Member> {
             holder.imgAvatar = convertView.findViewById(R.id.img_Avatar_MemberItem);
             holder.tvName = convertView.findViewById(R.id.tv_Name_MemberItem);
 
-            if (mode == MODE_PENDING) {
+            if (mode == MODE_PENDING){
                 holder.btnAccept = convertView.findViewById(R.id.btn_Accept_PendingMember);
                 holder.btnReject = convertView.findViewById(R.id.btn_Reject_PendingMember);
             }

@@ -23,17 +23,17 @@
 
             <!-- Avatar -->
             <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/img_Avatar_PendingMember"
+                android:id="@+id/img_Avatar_MemberItem"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:src="@drawable/resource_default"
                 android:scaleType="centerCrop"
-                app:shapeAppearanceOverlay="@style/rounded_border_img"
+                app:shapeAppearanceOverlay="@style/round_img"
                 android:contentDescription="Avatar" />
 
             <!-- Name -->
             <TextView
-                android:id="@+id/tv_Name_PendingMember"
+                android:id="@+id/tv_Name_MemberItem"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
