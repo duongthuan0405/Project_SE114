@@ -2,6 +2,8 @@ package com.example.tqt_quiz.presentation.contract_vp;
 
 import android.content.Context;
 
+import com.example.tqt_quiz.domain.dto.AccountInfo;
+
 public interface ProfileFragmentContract
 {
     public interface IView
@@ -12,10 +14,15 @@ public interface ProfileFragmentContract
         void navigationToLogin();
 
 
+        void showInfo(AccountInfo response);
+
+        void showError(String msg);
     }
 
     public interface IPresenter
     {
         void onLogoutClick();
+
+        void getMySelfAccountInfo();
     }
 }

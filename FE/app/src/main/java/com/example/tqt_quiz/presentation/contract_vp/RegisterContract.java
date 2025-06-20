@@ -1,12 +1,14 @@
 package com.example.tqt_quiz.presentation.contract_vp;
 
-import android.accounts.Account;
+import android.content.Context;
 
 public interface RegisterContract {
     public interface IView{
-        void navigateToLogin();
+        void returnLogin();
         void showRegisterSuccess();
         void showRegisterError(String message);
+
+        Context getTheContext();
     }
 
     public interface IPresenter{

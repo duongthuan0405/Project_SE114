@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -21,6 +22,7 @@ import com.example.tqt_quiz.presentation.classes.Course;
 import com.example.tqt_quiz.presentation.classes.Member;
 
 import com.example.tqt_quiz.R;
+import com.example.tqt_quiz.staticclass.StaticClass;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +33,9 @@ public class ViewCourse extends AppCompatActivity
     ImageView avatar;
     TextView name, isPrivate, description, host;
     ListView lvMembers;
-    List<Member> memberList;
+    List<Member> memberList, pendingList;
     MemberAdapter memberAdapter;
+    RadioButton rdbMembers, rdbWaiting;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,14 +51,18 @@ public class ViewCourse extends AppCompatActivity
 
 
         Course course = (Course) getIntent().getSerializableExtra("selected_course");
+        String courseId = getIntent().getStringExtra("course_id");
 
         avatar = findViewById(R.id.img_CourseAvatar_ViewCourse);
         name = findViewById(R.id.tv_CourseName_ViewCourse);
         isPrivate = findViewById(R.id.tv_IsPrivate_ViewCourse);
         description = findViewById(R.id.tv_DescriptionValue_ViewCourse);
         host = findViewById(R.id.tv_HostName_ViewCourse);
+        rdbMembers = findViewById(R.id.rdb_Members_ViewCourse);
+        rdbWaiting = findViewById(R.id.rdb_Waiting_ViewCourse);
+
         if (course != null) {
-            avatar.setImageResource(course.getAvatar());
+            StaticClass.setImage(avatar, course.getAvatar(), R.drawable.resource_default);
             name.setText(course.getName());
             isPrivate.setText("Riêng tư: " + (course.isPrivate() ? "Có" : "Không"));
             description.setText(course.getDescription());
@@ -65,14 +72,30 @@ public class ViewCourse extends AppCompatActivity
         lvMembers = findViewById(R.id.lv_Members_ViewCourse);
 
         memberList = new ArrayList<>();
-        memberList.add(new Member(R.drawable.resource_default, "An", "Nguyễn Văn", "an@gmail.com"));
-        memberList.add(new Member(R.drawable.resource_default, "Bình", "Trần Thị", "binh@gmail.com"));
-        memberList.add(new Member(R.drawable.resource_default, "Cường", "Lê Văn", "cuong@gmail.com"));
+        memberList.add(new Member("", "An", "Nguyễn Văn", "Học sinh", "an@gmail.com"));
+        memberList.add(new Member("", "Bình", "Trần Thị", "Giáo viên", "binh@gmail.com"));
+        memberList.add(new Member("", "Cường", "Lê Văn", "Học sinh", "cuong@gmail.com"));
 
-        memberAdapter = new MemberAdapter(this, R.layout.item_member, memberList);
+        pendingList = new ArrayList<>();
+        pendingList.add(new Member("", "Dũng", "Phan Minh", "Học sinh", "dung@gmail.com"));
+        pendingList.add(new Member("", "Hà", "Ngô Thị", "Học sinh", "ha@gmail.com"));
+
+        memberAdapter = new MemberAdapter(this, R.layout.item_member, memberList, MemberAdapter.MODE_MEMBER);
         lvMembers.setAdapter(memberAdapter);
 
         setListViewHeightBasedOnChildren(lvMembers);
+
+        rdbMembers.setOnClickListener(v -> {
+            memberAdapter = new MemberAdapter(this, 0, memberList, MemberAdapter.MODE_MEMBER);
+            lvMembers.setAdapter(memberAdapter);
+            setListViewHeightBasedOnChildren(lvMembers);
+        });
+
+        rdbWaiting.setOnClickListener(v -> {
+            memberAdapter = new MemberAdapter(this, 0, pendingList, MemberAdapter.MODE_PENDING);
+            lvMembers.setAdapter(memberAdapter);
+            setListViewHeightBasedOnChildren(lvMembers);
+        });
 
         lvMembers.setOnItemClickListener((parent, view, position, id) -> {
             Member selectedMember = memberList.get(position);
@@ -80,7 +103,6 @@ public class ViewCourse extends AppCompatActivity
             intent.putExtra("selected_member", selectedMember);
             startActivity(intent);
         });
-
     }
 
     public static void setListViewHeightBasedOnChildren(ListView listView) {

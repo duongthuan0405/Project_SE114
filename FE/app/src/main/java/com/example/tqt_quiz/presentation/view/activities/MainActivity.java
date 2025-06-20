@@ -70,19 +70,33 @@ public class MainActivity extends AppCompatActivity implements IMainActivityCont
     }
 
     @Override
-    public void navigateToMainHome() {
+    public void navigateToMainHomeForTeacher() {
         Intent i = new Intent(MainActivity.this, MainHome.class);
         launcher_Main_MainHome.launch(i);
+        finish();
     }
 
     @Override
     public void navigateToLogin() {
         Intent i = new Intent(MainActivity.this, Login.class);
         launcher_Main_Login.launch(i);
+        finish();
     }
 
     @Override
     public void showToast(String msg) {
         Toast.makeText(MainActivity.this, msg, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void navigateToMainHomeForStudent() {
+        showToast("Chưa hỗ trợ student activity");
+        navigateToLogin();
+    }
+
+    @Override
+    public void navigateToMainHomeForAdmin() {
+        showToast("Chưa hỗ trọ admin activity");
+        navigateToLogin();
     }
 }

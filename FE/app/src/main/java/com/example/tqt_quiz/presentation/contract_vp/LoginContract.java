@@ -2,10 +2,12 @@ package com.example.tqt_quiz.presentation.contract_vp;
 
 import android.content.Context;
 
+import com.example.tqt_quiz.domain.dto.LoginResponse;
+
 public interface LoginContract {
     public interface IView{
 
-        void loginSuccess(String role);
+        void loginSuccess(LoginResponse response);
         void showLoginError(String message);
         void navigateToRegister();
         void navigateToForgotPassword();
