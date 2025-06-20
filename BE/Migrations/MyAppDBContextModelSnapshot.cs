@@ -86,6 +86,23 @@ namespace BE.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AccountType");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "0000000000",
+                            Name = "Quản trị"
+                        },
+                        new
+                        {
+                            Id = "0000000001",
+                            Name = "Giáo viên"
+                        },
+                        new
+                        {
+                            Id = "0000000002",
+                            Name = "Học sinh"
+                        });
                 });
 
             modelBuilder.Entity("BE.Data.Entities.Answer", b =>
@@ -110,7 +127,7 @@ namespace BE.Migrations
 
                     b.HasIndex("QuestionID");
 
-                    b.ToTable("Answer");
+                    b.ToTable("AnswerDTO");
                 });
 
             modelBuilder.Entity("BE.Data.Entities.AttemptQuiz", b =>
@@ -128,6 +145,9 @@ namespace BE.Migrations
 
                     b.Property<DateTime>("FinishTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsSubmitted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("QuizId")
                         .IsRequired()
@@ -149,7 +169,6 @@ namespace BE.Migrations
                         .HasColumnType("Char(10)");
 
                     b.Property<string>("Avatar")
-                        .IsRequired()
                         .HasMaxLength(3000)
                         .HasColumnType("VarChar(3000)");
 
@@ -229,7 +248,7 @@ namespace BE.Migrations
 
                     b.HasIndex("QuizId");
 
-                    b.ToTable("Question");
+                    b.ToTable("QuestionDTO");
                 });
 
             modelBuilder.Entity("BE.Data.Entities.Quiz", b =>
@@ -248,6 +267,9 @@ namespace BE.Migrations
 
                     b.Property<DateTime>("DueTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsPublished")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()

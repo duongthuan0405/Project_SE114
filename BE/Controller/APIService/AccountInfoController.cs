@@ -37,7 +37,8 @@ namespace BE.Controller.APIService
                     .Select(x => new AccountInfoDTO(
                         x.a.Id,
                         x.aa.Email,
-                        x.a.LastMiddleName + " " + x.a.FirstName,
+                        x.a.LastMiddleName,
+                        x.a.FirstName,
                         x.a.Avatar,
                         x.a.AccountTypeId,
                         DbContext.AccountTypes.Where(at => at.Id == x.a.AccountTypeId)
@@ -68,7 +69,8 @@ namespace BE.Controller.APIService
                     .Select(x => new AccountInfoDTO(
                         x.a.Id,
                         x.aa.Email,
-                        x.a.LastMiddleName + " " + x.a.FirstName,
+                        x.a.LastMiddleName,
+                        x.a.FirstName,
                         x.a.Avatar,
                         x.a.AccountTypeId,
                         DbContext.AccountTypes.Where(at => at.Id == x.a.AccountTypeId)

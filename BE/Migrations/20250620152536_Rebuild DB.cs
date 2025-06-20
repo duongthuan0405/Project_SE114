@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace BE.Migrations
 {
     /// <inheritdoc />
-    public partial class BuildDB : Migration
+    public partial class RebuildDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -71,7 +73,7 @@ namespace BE.Migrations
                     Name = table.Column<string>(type: "NVarChar(20)", maxLength: 20, nullable: false),
                     Description = table.Column<string>(type: "NVarChar(100)", maxLength: 100, nullable: true),
                     IsPrivate = table.Column<bool>(type: "Bit", nullable: false),
-                    Avatar = table.Column<string>(type: "VarChar(3000)", maxLength: 3000, nullable: false),
+                    Avatar = table.Column<string>(type: "VarChar(3000)", maxLength: 3000, nullable: true),
                     HostId = table.Column<string>(type: "Char(10)", nullable: true)
                 },
                 constraints: table =>
@@ -119,7 +121,8 @@ namespace BE.Migrations
                     Description = table.Column<string>(type: "NVarChar(100)", maxLength: 100, nullable: true),
                     StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DueTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CourseID = table.Column<string>(type: "Char(10)", nullable: false)
+                    CourseID = table.Column<string>(type: "Char(10)", nullable: false),
+                    IsPublished = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -140,7 +143,8 @@ namespace BE.Migrations
                     QuizId = table.Column<string>(type: "Char(10)", nullable: false),
                     AccountId = table.Column<string>(type: "Char(10)", nullable: false),
                     AttemptTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    FinishTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    FinishTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsSubmitted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -160,7 +164,7 @@ namespace BE.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Question",
+                name: "QuestionDTO",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "Char(10)", maxLength: 10, nullable: false),
@@ -169,16 +173,16 @@ namespace BE.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Question", x => x.Id);
+                    table.PrimaryKey("PK_QuestionDTO", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Question_Quiz_QuizId",
+                        name: "FK_QuestionDTO_Quiz_QuizId",
                         column: x => x.QuizId,
                         principalTable: "Quiz",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "Answer",
+                name: "AnswerDTO",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "Char(10)", maxLength: 10, nullable: false),
@@ -188,11 +192,11 @@ namespace BE.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Answer", x => x.Id);
+                    table.PrimaryKey("PK_AnswerDTO", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Answer_Question_QuestionID",
+                        name: "FK_AnswerDTO_QuestionDTO_QuestionID",
                         column: x => x.QuestionID,
-                        principalTable: "Question",
+                        principalTable: "QuestionDTO",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -208,9 +212,9 @@ namespace BE.Migrations
                 {
                     table.PrimaryKey("PK_DetailResults", x => new { x.AnswerId, x.AttemptQuizId });
                     table.ForeignKey(
-                        name: "FK_DetailResults_Answer_AnswerId",
+                        name: "FK_DetailResults_AnswerDTO_AnswerId",
                         column: x => x.AnswerId,
-                        principalTable: "Answer",
+                        principalTable: "AnswerDTO",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -221,14 +225,24 @@ namespace BE.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "AccountType",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { "0000000000", "Quản trị" },
+                    { "0000000001", "Giáo viên" },
+                    { "0000000002", "Học sinh" }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Account_AccountTypeId",
                 table: "Account",
                 column: "AccountTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Answer_QuestionID",
-                table: "Answer",
+                name: "IX_AnswerDTO_QuestionID",
+                table: "AnswerDTO",
                 column: "QuestionID");
 
             migrationBuilder.CreateIndex(
@@ -257,8 +271,8 @@ namespace BE.Migrations
                 column: "CourseID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Question_QuizId",
-                table: "Question",
+                name: "IX_QuestionDTO_QuizId",
+                table: "QuestionDTO",
                 column: "QuizId");
 
             migrationBuilder.CreateIndex(
@@ -277,13 +291,13 @@ namespace BE.Migrations
                 name: "JoinCourse");
 
             migrationBuilder.DropTable(
-                name: "Answer");
+                name: "AnswerDTO");
 
             migrationBuilder.DropTable(
                 name: "AttemptQuiz");
 
             migrationBuilder.DropTable(
-                name: "Question");
+                name: "QuestionDTO");
 
             migrationBuilder.DropTable(
                 name: "Quiz");
