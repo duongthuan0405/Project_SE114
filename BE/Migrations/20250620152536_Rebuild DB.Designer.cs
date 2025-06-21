@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BE.Migrations
 {
     [DbContext(typeof(MyAppDBContext))]
-    [Migration("20250612034042_Update_AccountAuthen_HaveNoFK")]
-    partial class Update_AccountAuthen_HaveNoFK
+    [Migration("20250620152536_Rebuild DB")]
+    partial class RebuildDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -89,9 +89,26 @@ namespace BE.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AccountType");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "0000000000",
+                            Name = "Quản trị"
+                        },
+                        new
+                        {
+                            Id = "0000000001",
+                            Name = "Giáo viên"
+                        },
+                        new
+                        {
+                            Id = "0000000002",
+                            Name = "Học sinh"
+                        });
                 });
 
-            modelBuilder.Entity("BE.Data.Entities.AnswerDTO", b =>
+            modelBuilder.Entity("BE.Data.Entities.Answer", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(10)
@@ -132,6 +149,9 @@ namespace BE.Migrations
                     b.Property<DateTime>("FinishTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsSubmitted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("QuizId")
                         .IsRequired()
                         .HasColumnType("Char(10)");
@@ -152,7 +172,6 @@ namespace BE.Migrations
                         .HasColumnType("Char(10)");
 
                     b.Property<string>("Avatar")
-                        .IsRequired()
                         .HasMaxLength(3000)
                         .HasColumnType("VarChar(3000)");
 
@@ -214,7 +233,7 @@ namespace BE.Migrations
                     b.ToTable("JoinCourse");
                 });
 
-            modelBuilder.Entity("BE.Data.Entities.QuestionDTO", b =>
+            modelBuilder.Entity("BE.Data.Entities.Question", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(10)
@@ -252,6 +271,9 @@ namespace BE.Migrations
                     b.Property<DateTime>("DueTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsPublished")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(30)
@@ -286,9 +308,9 @@ namespace BE.Migrations
                     b.Navigation("OAccountType");
                 });
 
-            modelBuilder.Entity("BE.Data.Entities.AnswerDTO", b =>
+            modelBuilder.Entity("BE.Data.Entities.Answer", b =>
                 {
-                    b.HasOne("BE.Data.Entities.QuestionDTO", "OQuestion")
+                    b.HasOne("BE.Data.Entities.Question", "OQuestion")
                         .WithMany("LAnswers")
                         .HasForeignKey("QuestionID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -327,7 +349,7 @@ namespace BE.Migrations
 
             modelBuilder.Entity("BE.Data.Entities.DetailResult", b =>
                 {
-                    b.HasOne("BE.Data.Entities.AnswerDTO", "OAnswer")
+                    b.HasOne("BE.Data.Entities.Answer", "OAnswer")
                         .WithMany("LDetailResults")
                         .HasForeignKey("AnswerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -363,7 +385,7 @@ namespace BE.Migrations
                     b.Navigation("OCourse");
                 });
 
-            modelBuilder.Entity("BE.Data.Entities.QuestionDTO", b =>
+            modelBuilder.Entity("BE.Data.Entities.Question", b =>
                 {
                     b.HasOne("BE.Data.Entities.Quiz", "OQuiz")
                         .WithMany("Questions")
@@ -397,7 +419,7 @@ namespace BE.Migrations
                     b.Navigation("LAccounts");
                 });
 
-            modelBuilder.Entity("BE.Data.Entities.AnswerDTO", b =>
+            modelBuilder.Entity("BE.Data.Entities.Answer", b =>
                 {
                     b.Navigation("LDetailResults");
                 });
@@ -414,7 +436,7 @@ namespace BE.Migrations
                     b.Navigation("LQuizes");
                 });
 
-            modelBuilder.Entity("BE.Data.Entities.QuestionDTO", b =>
+            modelBuilder.Entity("BE.Data.Entities.Question", b =>
                 {
                     b.Navigation("LAnswers");
                 });

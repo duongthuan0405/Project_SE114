@@ -65,35 +65,7 @@ public class Program
                     RoleClaimType = ClaimTypes.Role
                     };
 
-                    options.Events = new JwtBearerEvents
-                    {
-                        OnAuthenticationFailed = context =>
-                        {
-                            context.NoResult();
-                            context.Response.StatusCode = 401;
-                            context.Response.ContentType = "application/json";
-
-                            var result = System.Text.Json.JsonSerializer.Serialize(new
-                            {
-                                message = "Đã hết một phiên đăng nhập"
-                            });
-
-                            return context.Response.WriteAsync(result);
-                        },
-
-                        OnForbidden = context =>
-                        {
-                            context.Response.StatusCode = 403;
-                            context.Response.ContentType = "application/json";
-
-                            var result = System.Text.Json.JsonSerializer.Serialize(new
-                            {
-                                message = "Tài khoản không có quyền truy cập tài nguyên này."
-                            });
-
-                            return context.Response.WriteAsync(result);
-                        }
-                    };
+                  
                 });
 
 

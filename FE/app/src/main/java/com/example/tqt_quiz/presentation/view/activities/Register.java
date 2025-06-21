@@ -1,5 +1,6 @@
 package com.example.tqt_quiz.presentation.view.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -71,7 +72,7 @@ public class Register extends AppCompatActivity implements RegisterContract.IVie
         });
 
         //Thao tác Login Click
-        Login.setOnClickListener(v -> navigateToLogin());
+        Login.setOnClickListener(v -> returnLogin());
     }
 
     private String getSelectedType() {
@@ -87,7 +88,7 @@ public class Register extends AppCompatActivity implements RegisterContract.IVie
     @Override
     public void showRegisterSuccess() {
         Toast.makeText(this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
-        navigateToLogin();
+        returnLogin();
     }
 
     @Override
@@ -96,8 +97,12 @@ public class Register extends AppCompatActivity implements RegisterContract.IVie
     }
 
     @Override
-    public void navigateToLogin() {
-        Intent intent = new Intent(Register.this, Login.class);
-        launcher.launch(intent);
+    public Context getTheContext() {
+        return getApplicationContext();
+    }
+
+    @Override
+    public void returnLogin() {
+        com.example.tqt_quiz.presentation.view.activities.Register.this.finish();
     }
 }

@@ -12,17 +12,24 @@ import androidx.annotation.NonNull;
 
 import com.example.tqt_quiz.R;
 import com.example.tqt_quiz.presentation.classes.Member;
+import com.example.tqt_quiz.staticclass.StaticClass;
 
 import java.util.List;
 
 public class MemberAdapter extends ArrayAdapter<Member> {
+
+    public static final int MODE_MEMBER = 0;
+    public static final int MODE_PENDING = 1;
+
     private Context context;
     private List<Member> memberList;
+    private int mode;
 
-    public MemberAdapter(@NonNull Context context, int resource, @NonNull List<Member> memberList) {
+    public MemberAdapter(@NonNull Context context, int resource, @NonNull List<Member> memberList, int mode) {
         super(context, resource, memberList);
         this.context = context;
         this.memberList = memberList;
+        this.mode = mode;
     }
 
     @Override
@@ -42,29 +49,48 @@ public class MemberAdapter extends ArrayAdapter<Member> {
 
     static class ViewHolder {
         ImageView imgAvatar;
-        TextView tvFirstName;
-        TextView tvLastMiddleName;
+        TextView tvName;
+        ImageView btnAccept, btnReject;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
+        Member member = memberList.get(position);
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_member, parent, false);
+            if (mode == MODE_MEMBER) {
+                convertView = LayoutInflater.from(context).inflate(R.layout.item_member, parent, false);
+            } else {
+                convertView = LayoutInflater.from(context).inflate(R.layout.item_pending_member, parent, false);
+            }
+
             holder = new ViewHolder();
             holder.imgAvatar = convertView.findViewById(R.id.img_Avatar_MemberItem);
-            holder.tvFirstName = convertView.findViewById(R.id.tv_FirstName_MemberItem);
-            holder.tvLastMiddleName = convertView.findViewById(R.id.tv_LastMiddleName_MemberItem);
+            holder.tvName = convertView.findViewById(R.id.tv_Name_MemberItem);
+
+            if (mode == MODE_PENDING) {
+                holder.btnAccept = convertView.findViewById(R.id.btn_Accept_PendingMember);
+                holder.btnReject = convertView.findViewById(R.id.btn_Reject_PendingMember);
+            }
+
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        Member member = memberList.get(position);
-        holder.imgAvatar.setImageResource(member.getAvatar());
-        holder.tvFirstName.setText(member.getFirstName());
-        holder.tvLastMiddleName.setText(member.getLastMiddleName());
+        StaticClass.setImage(holder.imgAvatar, member.getAvatar(), R.drawable.resource_default);
+        holder.tvName.setText(member.getName());
+
+        if (mode == MODE_PENDING) {
+            holder.btnAccept.setOnClickListener(v -> {
+                // TODO: xử lý chấp nhận
+            });
+
+            holder.btnReject.setOnClickListener(v -> {
+                // TODO: xử lý từ chối
+            });
+        }
 
         return convertView;
     }

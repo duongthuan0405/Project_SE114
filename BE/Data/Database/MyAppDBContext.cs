@@ -1,7 +1,8 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BE.ConstanctValue;
 using BE.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -39,6 +40,12 @@ namespace BE.Data.Database
                 {
                     b.HasKey(dr => new { dr.AnswerId, dr.AttemptQuizId });
                 }
+            );
+
+            modelBuilder.Entity<AccountType>().HasData(
+                new AccountType { Id = "0000000000", Name = "Quản trị" },
+                new AccountType { Id = "0000000001", Name = "Giáo viên" },
+                new AccountType { Id = "0000000002", Name = "Học sinh"}
             );
 
         }

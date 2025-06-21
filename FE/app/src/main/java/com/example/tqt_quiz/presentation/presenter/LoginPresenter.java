@@ -31,7 +31,7 @@ public class LoginPresenter implements LoginContract.IPresenter {
         authInteract.Login(email, password, view.getContext(), new IAuthInteract.LoginCallBack() {
             @Override
             public void onSuccess(LoginResponse response) {
-                view.loginSuccess(response.getRoleId());
+                view.loginSuccess(response);
             }
 
             @Override

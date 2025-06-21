@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="3dp"
+    app:cardBackgroundColor="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:gravity="center_vertical">
+
+        <!-- Ký hiệu A/B/C/D -->
+        <TextView
+            android:id="@+id/tv_Label_AnswerItem"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:gravity="center"
+            android:text="A"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/Primary"
+            android:layout_marginEnd="12dp" />
+
+        <!-- Nội dung câu trả lời -->
+        <EditText
+            android:id="@+id/edt_Content_AnswerItem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Nhập đáp án"
+            android:background="@android:color/transparent"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:inputType="text" />
+
+        <!-- RadioButton chọn đáp án đúng -->
+        <RadioButton
+            android:id="@+id/rdb_IsCorrect_AnswerItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:buttonTint="@color/Primary" />
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
