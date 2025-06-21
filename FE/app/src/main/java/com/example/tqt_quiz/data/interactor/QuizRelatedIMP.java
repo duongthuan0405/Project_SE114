@@ -6,9 +6,10 @@ import com.example.tqt_quiz.data.repository.token.RetrofitClient;
 import com.example.tqt_quiz.data.repository.token.TokenManager;
 import com.example.tqt_quiz.domain.APIService.CreateQuizService;
 import com.example.tqt_quiz.domain.APIService.FetchQuizService;
+import com.example.tqt_quiz.domain.APIService.PublishQuizService;
 import com.example.tqt_quiz.domain.dto.QuizCreateRequestDTO;
 import com.example.tqt_quiz.domain.dto.QuizDTO;
-import com.example.tqt_quiz.domain.interactor.QuizRelatedInteract;
+import com.example.tqt_quiz.domain.interactor.IQuizRelatedInteract;
 
 import org.json.JSONObject;
 
@@ -18,7 +19,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class QuizRelatedIMP implements QuizRelatedInteract {
+public class QuizRelatedIMP implements IQuizRelatedInteract {
 
     @Override
     public void SearchQuizById(String id, Context context, SearchQuizCallBack callBack) {
@@ -139,4 +140,45 @@ public class QuizRelatedIMP implements QuizRelatedInteract {
             }
         });
     }
+
+    @Override
+    public void PublishQuiz(String Quiz_id, Context context, PublishQuizCallBack callBack) {
+        TokenManager tokenManager=new TokenManager(context);
+        PublishQuizService service=RetrofitClient.GetClient(tokenManager).create(PublishQuizService.class);
+        Call<Void> call=service.QuizPublish(Quiz_id);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if(response.isSuccessful())
+                {
+                    callBack.onSuccess();
+                }
+                else{
+                    String rawJson="";
+                    try
+                    {
+                        rawJson=response.errorBody().string();
+                        JSONObject obj=new JSONObject(rawJson);
+                        String msg=obj.optString("message");
+                        callBack.onOtherFailure(msg);
+                    } catch (Exception e) {
+                        if(response.code()==401)
+                        {
+                            callBack.onFailureByExpiredToken();
+                        }
+                        else if(response.code()==403)
+                        {
+                            callBack.onFailureByUnAcceptedRole();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                callBack.onFailureByCannotSendToServer();
+            }
+        });
+    }
+
 }

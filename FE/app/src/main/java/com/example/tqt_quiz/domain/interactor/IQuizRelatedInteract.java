@@ -7,7 +7,7 @@ import com.example.tqt_quiz.domain.dto.QuizDTO;
 
 import java.util.List;
 
-public interface QuizRelatedInteract {
+public interface IQuizRelatedInteract {
     void SearchQuizById(String id,Context context,SearchQuizCallBack callBack);
     public interface SearchQuizCallBack
     {
@@ -35,5 +35,13 @@ public interface QuizRelatedInteract {
         void onOtherFailure(String msg);
         void onFailureByCannotSendToServer();
     }
-
+    void PublishQuiz(String Quiz_id,Context context,PublishQuizCallBack callBack);
+    public interface PublishQuizCallBack
+    {
+        void onSuccess();
+        void onFailureByExpiredToken();
+        void onFailureByUnAcceptedRole();
+        void onOtherFailure(String msg);
+        void onFailureByCannotSendToServer();
+    }
 }
