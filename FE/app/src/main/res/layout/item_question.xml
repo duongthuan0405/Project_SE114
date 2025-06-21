@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:background="@drawable/rounded_border"
+    android:layout_marginBottom="12dp">
+
+    <!-- Câu hỏi -->
+    <EditText
+        android:id="@+id/edt_Content_QuestionItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Câu hỏi"
+        android:background="@null"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:paddingBottom="8dp"/>
+
+    <!-- Danh sách câu trả lời -->
+    <LinearLayout
+        android:id="@+id/ll_AnswerList_QuestionItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" />
+
+    <!-- Nút xóa câu hỏi -->
+    <Button
+        android:id="@+id/btn_Delete_QuestionItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Xóa câu hỏi"
+        android:layout_gravity="end"
+        android:layout_marginTop="8dp"/>
+</LinearLayout>

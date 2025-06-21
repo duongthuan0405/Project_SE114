@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/AppBackground"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".presentation.view.activities.CreateQuiz">
+
+    <!-- Tiêu đề Quiz -->
+    <EditText
+        android:id="@+id/edt_QuizTitle_CreateQuiz"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nhập tiêu đề bài kiểm tra"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:inputType="text"
+        android:textColor="@android:color/black"
+        android:background="@android:color/transparent" />
+
+    <!-- Mô tả Quiz -->
+    <EditText
+        android:id="@+id/edt_QuizDescription_CreateQuiz"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nhập mô tả (tuỳ chọn)"
+        android:textSize="14sp"
+        android:inputType="text"
+        android:textColor="@android:color/darker_gray"
+        android:background="@android:color/transparent"
+        android:layout_marginTop="4dp" />
+
+    <!-- Thời gian bắt đầu -->
+    <EditText
+        android:id="@+id/edt_QuizStartTime_CreateQuiz"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Thời gian bắt đầu (ví dụ: 2025-06-20 08:00)"
+        android:textSize="14sp"
+        android:inputType="datetime"
+        android:textColor="@android:color/black"
+        android:background="@android:color/transparent"
+        android:layout_marginTop="8dp" />
+
+    <!-- Thời gian kết thúc -->
+    <EditText
+        android:id="@+id/edt_QuizDueTime_CreateQuiz"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Thời gian kết thúc (ví dụ: 2025-06-20 09:00)"
+        android:textSize="14sp"
+        android:inputType="datetime"
+        android:textColor="@android:color/black"
+        android:background="@android:color/transparent"
+        android:layout_marginTop="4dp" />
+
+    <!-- Danh sách câu hỏi -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="12dp">
+
+        <LinearLayout
+            android:id="@+id/ll_QuestionList_CreateQuiz"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
+
+    <!-- Nút điều hướng -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end"
+        android:layout_marginTop="12dp">
+
+        <Button
+            android:id="@+id/btn_Cancel_CreateQuiz"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hủy"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:background="@drawable/btn_rectagle_red"/>
+
+        <Space
+            android:layout_width="12dp"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btn_Finish_CreateQuiz"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hoàn thành"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:background="@drawable/btn_rectagle"
+            android:padding="10dp"/>
+    </LinearLayout>
+</LinearLayout>

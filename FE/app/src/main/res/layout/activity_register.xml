@@ -8,21 +8,6 @@
     android:background="@color/AppBackground"
     tools:context=".presentation.view.activities.Register">
 
-    <ImageButton
-        android:id="@+id/btn_Home_Register"
-        android:layout_width="115dp"
-        android:layout_height="58dp"
-        android:backgroundTint="#00FFFFFF"
-        android:scaleType="fitXY"
-        android:contentDescription="@string/logo_description"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.054"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.023"
-        app:srcCompat="@drawable/atoza" />
-
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView_CreateCourse"
         android:layout_width="325dp"
@@ -39,19 +24,19 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_Register_Register"
             android:layout_width="327dp"
-            android:layout_height="550dp"
+            android:layout_height="wrap_content"
             android:background="#FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.493"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            android:padding="15dp">
 
             <TextView
                 android:id="@+id/tv_Register_Register"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
                 android:text="Đăng ký"
                 android:textSize="24sp"
                 android:textStyle="bold"
@@ -101,67 +86,90 @@
                     android:elevation="4dp"/>
             </RadioGroup>
 
-            <EditText
-                android:id="@+id/edt_LastName_Register"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="300dp"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:ems="10"
                 android:hint="Họ"
-                android:inputType="text"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
+                android:id="@+id/til_LastName_Register"
+                app:layout_constraintTop_toBottomOf="@+id/rdg_Type_Register"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rdg_Type_Register" />
+                app:layout_constraintEnd_toEndOf="parent">
 
-            <EditText
-                android:id="@+id/edt_FirstName_Register"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_LastName_Register"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="300dp"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:ems="10"
                 android:hint="Tên"
-                android:inputType="text"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
+                android:id="@+id/til_FirstName_Register"
+                app:layout_constraintTop_toBottomOf="@+id/til_LastName_Register"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edt_LastName_Register" />
+                app:layout_constraintEnd_toEndOf="parent">
 
-            <EditText
-                android:id="@+id/edt_Email_Register"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_FirstName_Register"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="300dp"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:ems="10"
                 android:hint="Email"
-                android:inputType="textEmailAddress"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:id="@+id/til_Email_Register"
+                app:layout_constraintTop_toBottomOf="@+id/til_FirstName_Register"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edt_FirstName_Register" />
+                app:layout_constraintEnd_toEndOf="parent">
 
-            <EditText
-                android:id="@+id/edt_Pw_Register"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_Email_Register"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="300dp"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:ems="10"
                 android:hint="Mật khẩu"
-                android:inputType="textPassword"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:id="@+id/til_Pw_Register"
+                app:layout_constraintTop_toBottomOf="@+id/til_Email_Register"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edt_Email_Register" />
+                app:layout_constraintEnd_toEndOf="parent">
 
-            <EditText
-                android:id="@+id/edt_PwAgain_Register"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_Pw_Register"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="300dp"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:ems="10"
                 android:hint="Nhập lại mật khẩu"
-                android:inputType="textPassword"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:id="@+id/til_PwAgain_Register"
+                app:layout_constraintTop_toBottomOf="@+id/til_Pw_Register"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edt_Pw_Register" />
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_PwAgain_Register"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/btn_Register_Register"
@@ -175,9 +183,9 @@
                 android:textStyle="bold"
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.578"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edt_PwAgain_Register" />
+                app:layout_constraintTop_toBottomOf="@+id/til_PwAgain_Register" />
 
             <TextView
                 android:id="@+id/tv_HaveAccount_Register"

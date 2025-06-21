@@ -6,4 +6,6 @@
     <color name="gray">#D6DBDF</color>
     <color name="Primary">#113483</color>
     <color name="dark_gray">#7b7d7d</color>
+    <color name="success">#4CAF50</color>
+    <color name="error">#F44336</color>
 </resources>

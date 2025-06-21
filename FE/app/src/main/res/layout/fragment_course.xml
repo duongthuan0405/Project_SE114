@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/AppBackground"
     android:padding="16dp"
-    tools:context=".presentation.fragments.CourseFragment">
+    tools:context=".presentation.view.fragments.CourseFragment">
 
     <LinearLayout
         android:id="@+id/ll_Content_Course"
@@ -50,8 +50,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:divider="@android:color/darker_gray"
-            android:dividerHeight="1dp"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="4dp"
             android:padding="4dp"
             android:clipToPadding="false" />
     </LinearLayout>
