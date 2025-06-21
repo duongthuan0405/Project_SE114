@@ -10,12 +10,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import com.bumptech.glide.Glide;
 import com.example.tqt_quiz.R;
 import com.example.tqt_quiz.presentation.classes.Course;
 import com.example.tqt_quiz.staticclass.StaticClass;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class CourseAdapter extends ArrayAdapter<Course> {
     private Context context;
@@ -24,23 +25,23 @@ public class CourseAdapter extends ArrayAdapter<Course> {
     public CourseAdapter(@NonNull Context context, int resource, @NonNull List<Course> courses) {
         super(context, resource, courses);
         this.context = context;
-        this.courses = courses;
+        this.courses = new ArrayList<>(courses);
     }
 
-    @Override
-    public int getCount() {
-        return courses.size();
-    }
-
-    @Override
-    public Course getItem(int position) {
-        return courses.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
+//    @Override
+//    public int getCount() {
+//        return courses.size();
+//    }
+//
+//    @Override
+//    public Course getItem(int position) {
+//        return courses.get(position);
+//    }
+//
+//    @Override
+//    public long getItemId(int position) {
+//        return position;
+//    }
 
     static class ViewHolder {
         ImageView imgCourseAvatar;
@@ -50,7 +51,6 @@ public class CourseAdapter extends ArrayAdapter<Course> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
-
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.item_course, parent, false);
             holder = new ViewHolder();
@@ -68,6 +68,31 @@ public class CourseAdapter extends ArrayAdapter<Course> {
         StaticClass.setImage(holder.imgCourseAvatar, course.getAvatar(), R.drawable.resource_default);
 
         return convertView;
+    }
+
+    public void filtCourse(String keyWord)
+    {
+        keyWord = keyWord.toLowerCase(Locale.ROOT).trim();
+        List<Course> filtedList = new ArrayList<>();
+        if(keyWord.isEmpty())
+        {
+            filtedList.addAll(courses);
+        }
+        else
+        {
+            for(Course c : courses)
+            {
+                if(c.getName().toLowerCase(Locale.getDefault()).trim().contains(keyWord))
+                {
+                    filtedList.add(c);
+                }
+            }
+        }
+
+        clear();
+        addAll(filtedList);
+        notifyDataSetChanged();
+
     }
 
 }

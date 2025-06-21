@@ -5,14 +5,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -36,19 +40,30 @@ public class CourseFragment extends Fragment implements ICourseFragmentContract.
     private ListView lvCourse;
     private List<Course> courseList;
     private CourseAdapter courseAdapter;
+    private ActivityResultLauncher<Intent> addCourseLauncher;
+    private EditText edTx_FindCourse;
 
     public CourseFragment() {
 
     }
 
+    private final ActivityResultLauncher<Intent> createCourseLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    presenter.showAllMyCourse();
+                }
+            });
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        presenter = new CourseFragmentPresenter(this);
         View view = inflater.inflate(R.layout.fragment_course, container, false);
 
         lvCourse = view.findViewById(R.id.lv_Course_Course);
-        presenter = new CourseFragmentPresenter(this);
+        AddCourse = view.findViewById(R.id.btn_Add_Course);
+        edTx_FindCourse = view.findViewById(R.id.edt_Find_Course);
 /*
         courseList = new ArrayList<>();
         courseList.add(new Course("Lập trình Java", "Mô tả", false, "", "Nguyễn Văn A"));
@@ -61,30 +76,35 @@ public class CourseFragment extends Fragment implements ICourseFragmentContract.
         lvCourse.setOnItemClickListener((parent, view1, position, id) -> {
             Course selectedCourse = courseList.get(position);
             Intent intent = new Intent(requireContext(), ViewCourse.class);
+            intent.putExtra("course_id", selectedCourse.getId());
             intent.putExtra("selected_course", selectedCourse);
             startActivity(intent);
         });
 
-        AddCourse = view.findViewById(R.id.btn_Add_Course);
+
         AddCourse.setOnClickListener(v -> {
-            Intent intent = new Intent(requireContext(), CreateCourse.class);
-            startActivityForResult(intent, 1);
+            presenter.onAddCourseClick();
+
+        });
+
+        edTx_FindCourse.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                ((CourseAdapter)lvCourse.getAdapter()).filtCourse(s.toString());
+            }
         });
 
         return view;
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null) {
-            Course newCourse = (Course) data.getSerializableExtra("new_course");
-            if (newCourse != null) {
-                courseList.add(newCourse);
-                courseAdapter.notifyDataSetChanged();
-            }
-        }
     }
 
     @Override
@@ -120,5 +140,11 @@ public class CourseFragment extends Fragment implements ICourseFragmentContract.
     @Override
     public void showError(String s) {
         Toast.makeText(getTheContext(), s, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void navigateToAddCourse() {
+        Intent intent = new Intent(requireContext(), CreateCourse.class);
+        createCourseLauncher.launch(intent);
     }
 }

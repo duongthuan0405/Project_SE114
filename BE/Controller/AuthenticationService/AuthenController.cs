@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 namespace BE.Controller.AuthenticationService
 {
     [ApiController]
-    [Route(ConstantValue.AppName + "/[controller]")]
+    [Route(StaticClass.AppName + "/[controller]")]
     public class AuthenController : ControllerBase
     {
         private readonly MyAppDBContext DbContext;
@@ -145,11 +145,12 @@ namespace BE.Controller.AuthenticationService
                 {
                     Id = newAccount.Id,
                     FullName = newAccount.LastMiddleName + " " + newAccount.FirstName,
+                    FirstName = newAccount.FirstName,
+                    LastMiddleName = newAccount.LastMiddleName,
                     Email = newAuthen.Email,
                     Avatar = newAccount.Avatar,
                     AccountTypeId = newAccount.AccountTypeId,
-                    AccountType = await DbContext.AccountTypes.Where(at => at.Id == newAccount.AccountTypeId)
-                                                                .Select(at => at.Name).FirstOrDefaultAsync() ?? "Chưa xác định"
+                    AccountType = StaticClass.RoleId.Student
                 });
             }
             catch (Exception ex)

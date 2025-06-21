@@ -2,6 +2,7 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.TQT_Quiz" parent="Theme.AppCompat.DayNight.DarkActionBar">
         <item name="fontFamily">@font/roboto_condensed_regular</item>
+        <item name="colorPrimary">@android:color/transparent</item>
     </style>
 
     <style name="Theme.TQT_Quiz" parent="Base.Theme.TQT_Quiz" />

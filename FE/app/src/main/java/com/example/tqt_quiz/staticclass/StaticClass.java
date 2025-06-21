@@ -1,9 +1,12 @@
 package com.example.tqt_quiz.staticclass;
 
+
 import android.widget.ImageView;
 
+import androidx.appcompat.app.ActionBar;
+
 import com.bumptech.glide.Glide;
-import com.google.android.material.color.ColorRoles;
+
 
 public class StaticClass
 {
@@ -18,4 +21,11 @@ public class StaticClass
         public static String teacher    = "0000000001";
         public static String student    = "0000000002";
     }
+    public static void customActionBar(ActionBar ab, int layout_custom)
+    {
+        ab.setDisplayShowCustomEnabled(true);
+        ab.setDisplayShowTitleEnabled(false);
+        ab.setCustomView(layout_custom);
+    }
+
 }

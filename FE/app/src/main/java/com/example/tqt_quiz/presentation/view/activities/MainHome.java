@@ -11,6 +11,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.tqt_quiz.R;
 import com.example.tqt_quiz.data.repository.token.TokenManager;
 import com.example.tqt_quiz.presentation.adapters.ViewPagerAdapter;
+import com.example.tqt_quiz.staticclass.StaticClass;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -28,7 +29,7 @@ public class MainHome extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main_home);
 
-        Log.d("KKK", new TokenManager(getApplicationContext()).GetToken());
+        StaticClass.customActionBar(getSupportActionBar(), R.layout.custom_action_bar_2);
 
         tabLayout = findViewById(R.id.tb_Tabbar_MainHome);
         viewPager2 = findViewById(R.id.viewpager_MainHome);

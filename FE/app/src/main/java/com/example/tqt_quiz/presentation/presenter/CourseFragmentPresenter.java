@@ -51,4 +51,9 @@ public class CourseFragmentPresenter implements ICourseFragmentContract.IPresent
             }
         });
     }
+
+    @Override
+    public void onAddCourseClick() {
+        view.navigateToAddCourse();
+    }
 }

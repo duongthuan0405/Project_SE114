@@ -1,6 +1,7 @@
 package com.example.tqt_quiz.presentation.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,18 +13,27 @@ import androidx.annotation.NonNull;
 
 import com.example.tqt_quiz.R;
 import com.example.tqt_quiz.presentation.classes.Member;
+import com.example.tqt_quiz.presentation.interfaces.OnPendingMemberAction;
 import com.example.tqt_quiz.staticclass.StaticClass;
 
 import java.util.List;
 
 public class MemberAdapter extends ArrayAdapter<Member> {
+
+    public static final int MODE_MEMBER = 0;
+    public static final int MODE_PENDING = 1;
+
     private Context context;
     private List<Member> memberList;
+    private int mode;
+    private OnPendingMemberAction onPendingMemberAction;
 
-    public MemberAdapter(@NonNull Context context, int resource, @NonNull List<Member> memberList) {
+    public MemberAdapter(@NonNull Context context, int resource, @NonNull List<Member> memberList, int mode, OnPendingMemberAction onPendingMemberAction) {
         super(context, resource, memberList);
         this.context = context;
         this.memberList = memberList;
+        this.mode = mode;
+        this.onPendingMemberAction = onPendingMemberAction;
     }
 
     @Override
@@ -43,29 +53,49 @@ public class MemberAdapter extends ArrayAdapter<Member> {
 
     static class ViewHolder {
         ImageView imgAvatar;
-        TextView tvFirstName;
-        TextView tvLastMiddleName;
+        TextView tvName;
+        ImageView btnAccept, btnReject;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
+        Member member = memberList.get(position);
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_member, parent, false);
+            if (mode == MODE_MEMBER) {
+                convertView = LayoutInflater.from(context).inflate(R.layout.item_member, parent, false);
+            } else {
+                convertView = LayoutInflater.from(context).inflate(R.layout.item_pending_member, parent, false);
+            }
+
             holder = new ViewHolder();
             holder.imgAvatar = convertView.findViewById(R.id.img_Avatar_MemberItem);
-            holder.tvFirstName = convertView.findViewById(R.id.tv_FirstName_MemberItem);
-            holder.tvLastMiddleName = convertView.findViewById(R.id.tv_LastMiddleName_MemberItem);
+            holder.tvName = convertView.findViewById(R.id.tv_Name_MemberItem);
+
+            if (mode == MODE_PENDING){
+                holder.btnAccept = convertView.findViewById(R.id.btn_Accept_PendingMember);
+                holder.btnReject = convertView.findViewById(R.id.btn_Reject_PendingMember);
+            }
+
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        Member member = memberList.get(position);
         StaticClass.setImage(holder.imgAvatar, member.getAvatar(), R.drawable.resource_default);
-        holder.tvFirstName.setText(member.getFirstName());
-        holder.tvLastMiddleName.setText(member.getLastMiddleName());
+        holder.tvName.setText(member.getName());
+
+        if (mode == MODE_PENDING) {
+            holder.btnAccept.setOnClickListener(v -> {
+                Log.d("MYBUG", member.toString());
+                onPendingMemberAction.onAcceptClick(member.getId());
+            });
+
+            holder.btnReject.setOnClickListener(v -> {
+                onPendingMemberAction.onDenyClick(member.getId());
+            });
+        }
 
         return convertView;
     }
