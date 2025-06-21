@@ -1,5 +1,6 @@
 package com.example.tqt_quiz.presentation.view.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,18 +20,24 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.tqt_quiz.R;
+import com.example.tqt_quiz.data.interactor.CourseRelatedInteractIMP;
+import com.example.tqt_quiz.domain.dto.CourseCreateInfo;
+import com.example.tqt_quiz.domain.interactor.ICourseRelatedInteract;
 import com.example.tqt_quiz.presentation.classes.Course;
+import com.example.tqt_quiz.presentation.contract_vp.CreateCourseContract;
+import com.example.tqt_quiz.presentation.presenter.CreateCoursePresenter;
+import com.example.tqt_quiz.staticclass.StaticClass;
 
-public class CreateCourse extends AppCompatActivity {
+public class CreateCourse extends AppCompatActivity implements CreateCourseContract.IView
+{
 
     ImageView Avatar;
     EditText Name, Desc;
     Switch Private;
     Button Create;
-
     private Uri selectedImageUri = null;
     private ActivityResultLauncher<Intent> imagePickerLauncher;
-
+    CreateCourseContract.IPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +49,8 @@ public class CreateCourse extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        StaticClass.customActionBar(getSupportActionBar(), R.layout.custom_action_bar_2);
+        presenter = new CreateCoursePresenter(this);
 
         //Ánh xạ
         Avatar = findViewById(R.id.img_Avatar_CreateCourse);
@@ -82,12 +91,29 @@ public class CreateCourse extends AppCompatActivity {
 
             String avatarUriStr = selectedImageUri != null ? selectedImageUri.toString() : "";
 
-            Course course = new Course("", name, desc, isPrivate, "", "Người tạo");
+            //Course course = new Course("", name, desc, isPrivate, "", "Người tạo");
 
-            Intent resultIntent = new Intent();
-            resultIntent.putExtra("new_course", course);
-            setResult(RESULT_OK, resultIntent);
-            finish();
+            CourseCreateInfo course = new CourseCreateInfo(name, desc, isPrivate, avatarUriStr);
+            presenter.onCreateClick(course);
+
+
         });
+    }
+
+    @Override
+    public Context getTheContext() {
+        return CreateCourse.this.getApplicationContext();
+    }
+
+    @Override
+    public void showSuccess() {
+        Toast.makeText(CreateCourse.this, "Thêm khóa học mới thành công", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void finishAddCourse() {
+        Intent resultIntent = new Intent();
+        setResult(RESULT_OK, resultIntent);
+        finish();
     }
 }

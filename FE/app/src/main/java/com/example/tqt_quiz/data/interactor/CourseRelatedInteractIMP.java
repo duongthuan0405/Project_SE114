@@ -1,13 +1,13 @@
 package com.example.tqt_quiz.data.interactor;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.example.tqt_quiz.data.repository.token.RetrofitClient;
 import com.example.tqt_quiz.data.repository.token.TokenManager;
 import com.example.tqt_quiz.domain.APIService.CreateNewCourseService;
 import com.example.tqt_quiz.domain.APIService.FetchAllUserCourseService;
 import com.example.tqt_quiz.domain.APIService.FindCourseService;
+import com.example.tqt_quiz.domain.dto.AccountInfo;
 import com.example.tqt_quiz.domain.dto.CourseCreateInfo;
 import com.example.tqt_quiz.domain.dto.CourseDTO;
 import com.example.tqt_quiz.domain.interactor.ICourseRelatedInteract;
@@ -295,6 +295,46 @@ public class CourseRelatedInteractIMP implements ICourseRelatedInteract {
 
             @Override
             public void onFailure(Call<CourseDTO> call, Throwable t) {
+                callBack.onFailureByCannotSendToServer();
+            }
+        });
+    }
+
+    @Override
+    public void GetAllMemberInCourse(String course_id, Context context, GetAllMemberInCourseCallBack callBack) {
+        TokenManager tokenManager = new TokenManager(context);
+        FetchAllUserCourseService retrofitClient = RetrofitClient.GetClient(tokenManager).create(FetchAllUserCourseService.class);
+        retrofitClient.FetchAllMember(course_id).enqueue(new Callback<List<AccountInfo>>() {
+            @Override
+            public void onResponse(Call<List<AccountInfo>> call, Response<List<AccountInfo>> response) {
+                if(response.isSuccessful())
+                {
+                    callBack.onSuccess(response.body());
+                }
+                else
+                {
+                    String rawJson = "";
+                    try
+                    {
+                        int code = response.code();
+                        rawJson=response.errorBody().string();
+                        JSONObject obj=new JSONObject(rawJson);
+                        String msg=response.errorBody().string();
+                        callBack.onFailureByOtherError(msg);
+                    }
+                    catch (Exception e)
+                    {
+                        if(response.code() == 401)
+                            callBack.onFailureByExpiredToken();
+                        else if(response.code() == 403)
+                            callBack.onFailureByUnAcepptedRole();
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<AccountInfo>> call, Throwable t) {
                 callBack.onFailureByCannotSendToServer();
             }
         });

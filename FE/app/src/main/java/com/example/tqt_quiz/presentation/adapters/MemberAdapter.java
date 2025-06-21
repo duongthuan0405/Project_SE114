@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 
 import com.example.tqt_quiz.R;
 import com.example.tqt_quiz.presentation.classes.Member;
+import com.example.tqt_quiz.presentation.interfaces.OnPendingMemberAction;
 import com.example.tqt_quiz.staticclass.StaticClass;
 
 import java.util.List;
@@ -25,12 +26,14 @@ public class MemberAdapter extends ArrayAdapter<Member> {
     private Context context;
     private List<Member> memberList;
     private int mode;
+    private OnPendingMemberAction onPendingMemberAction;
 
-    public MemberAdapter(@NonNull Context context, int resource, @NonNull List<Member> memberList, int mode) {
+    public MemberAdapter(@NonNull Context context, int resource, @NonNull List<Member> memberList, int mode, OnPendingMemberAction onPendingMemberAction) {
         super(context, resource, memberList);
         this.context = context;
         this.memberList = memberList;
         this.mode = mode;
+        this.onPendingMemberAction = onPendingMemberAction;
     }
 
     @Override
@@ -58,7 +61,6 @@ public class MemberAdapter extends ArrayAdapter<Member> {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         Member member = memberList.get(position);
-        Log.d("Pending", "Null");
 
         if (convertView == null) {
             if (mode == MODE_MEMBER) {
@@ -86,11 +88,12 @@ public class MemberAdapter extends ArrayAdapter<Member> {
 
         if (mode == MODE_PENDING) {
             holder.btnAccept.setOnClickListener(v -> {
-                // TODO: xử lý chấp nhận
+                Log.d("MYBUG", member.toString());
+                onPendingMemberAction.onAcceptClick(member.getId());
             });
 
             holder.btnReject.setOnClickListener(v -> {
-                // TODO: xử lý từ chối
+                onPendingMemberAction.onDenyClick(member.getId());
             });
         }
 

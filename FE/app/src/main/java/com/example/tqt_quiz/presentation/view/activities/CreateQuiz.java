@@ -16,6 +16,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.tqt_quiz.R;
+import com.example.tqt_quiz.staticclass.StaticClass;
 
 public class CreateQuiz extends AppCompatActivity {
 
@@ -37,6 +38,7 @@ public class CreateQuiz extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        StaticClass.customActionBar(getSupportActionBar(), R.layout.custom_action_bar_2);
 
         // Ánh xạ view
         Title = findViewById(R.id.edt_QuizTitle_CreateQuiz);

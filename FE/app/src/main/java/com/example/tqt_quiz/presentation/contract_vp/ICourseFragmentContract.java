@@ -17,11 +17,15 @@ public interface ICourseFragmentContract {
         void navigateToLogin();
 
         void showError(String s);
+
+        void navigateToAddCourse();
     }
 
     public interface IPresenter
     {
 
         void showAllMyCourse();
+
+        void onAddCourseClick();
     }
 }

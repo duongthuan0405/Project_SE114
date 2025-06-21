@@ -7,14 +7,16 @@ import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -39,6 +41,7 @@ public class CourseFragment extends Fragment implements ICourseFragmentContract.
     private List<Course> courseList;
     private CourseAdapter courseAdapter;
     private ActivityResultLauncher<Intent> addCourseLauncher;
+    private EditText edTx_FindCourse;
 
     public CourseFragment() {
 
@@ -47,11 +50,7 @@ public class CourseFragment extends Fragment implements ICourseFragmentContract.
     private final ActivityResultLauncher<Intent> createCourseLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
                 if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
-                    Course newCourse = (Course) result.getData().getSerializableExtra("new_course");
-                    if (newCourse != null) {
-                        courseList.add(newCourse);
-                        courseAdapter.notifyDataSetChanged();
-                    }
+                    presenter.showAllMyCourse();
                 }
             });
 
@@ -59,11 +58,12 @@ public class CourseFragment extends Fragment implements ICourseFragmentContract.
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        presenter = new CourseFragmentPresenter(this);
         View view = inflater.inflate(R.layout.fragment_course, container, false);
 
         lvCourse = view.findViewById(R.id.lv_Course_Course);
         AddCourse = view.findViewById(R.id.btn_Add_Course);
-        presenter = new CourseFragmentPresenter(this);
+        edTx_FindCourse = view.findViewById(R.id.edt_Find_Course);
 /*
         courseList = new ArrayList<>();
         courseList.add(new Course("Lập trình Java", "Mô tả", false, "", "Nguyễn Văn A"));
@@ -83,8 +83,25 @@ public class CourseFragment extends Fragment implements ICourseFragmentContract.
 
 
         AddCourse.setOnClickListener(v -> {
-            Intent intent = new Intent(requireContext(), CreateCourse.class);
-            createCourseLauncher.launch(intent);
+            presenter.onAddCourseClick();
+
+        });
+
+        edTx_FindCourse.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                ((CourseAdapter)lvCourse.getAdapter()).filtCourse(s.toString());
+            }
         });
 
         return view;
@@ -123,5 +140,11 @@ public class CourseFragment extends Fragment implements ICourseFragmentContract.
     @Override
     public void showError(String s) {
         Toast.makeText(getTheContext(), s, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void navigateToAddCourse() {
+        Intent intent = new Intent(requireContext(), CreateCourse.class);
+        createCourseLauncher.launch(intent);
     }
 }

@@ -19,6 +19,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.tqt_quiz.R;
 import com.example.tqt_quiz.presentation.contract_vp.IMainActivityContract;
 import com.example.tqt_quiz.presentation.presenter.MainActivityPresenter;
+import com.example.tqt_quiz.staticclass.StaticClass;
 
 public class MainActivity extends AppCompatActivity implements IMainActivityContract.IView
 {
@@ -36,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements IMainActivityCont
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        StaticClass.customActionBar(getSupportActionBar(), R.layout.custom_action_bar_2);
 
         mainPresenter = new MainActivityPresenter(this);
 

@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 import org.jetbrains.annotations.NotNull;
 
 public class AccountInfo {
-    @SerializedName("userId")
+    @SerializedName("id")
     @NotNull
     private String UserID;
 
@@ -17,6 +17,12 @@ public class AccountInfo {
 
     @SerializedName("fullName")
     private String FullName;
+
+    @SerializedName("firstName")
+    private String firstName;
+
+    @SerializedName("lastMiddleName")
+    private String lastMiddleName;
 
     @SerializedName("avatar")
     private String Avatar;
@@ -80,6 +86,35 @@ public class AccountInfo {
 
     public void setAccountTypeId(@NotNull String accountTypeId) {
         AccountTypeId = accountTypeId;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastMiddleName() {
+        return lastMiddleName;
+    }
+    public void setLastMiddleName(String lastMiddleName) {
+        this.lastMiddleName = lastMiddleName;
+    }
+
+    @Override
+    public String toString() {
+        return "AccountInfo{" +
+                "UserID='" + UserID + '\'' +
+                ", Email='" + Email + '\'' +
+                ", FullName='" + FullName + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastMiddleName='" + lastMiddleName + '\'' +
+                ", Avatar='" + Avatar + '\'' +
+                ", AccountType='" + AccountType + '\'' +
+                ", AccountTypeId='" + AccountTypeId + '\'' +
+                '}';
     }
 }
 

@@ -13,7 +13,7 @@ public class CourseCreateInfo {
     private String description;
 
     @SerializedName("isPrivate")
-    private String isPrivate;
+    private boolean isPrivate;
 
     @SerializedName("avatar")
     private String avatar;
@@ -38,11 +38,11 @@ public class CourseCreateInfo {
     }
 
     // Getter and Setter for isPrivate
-    public String getIsPrivate() {
+    public boolean getIsPrivate() {
         return isPrivate;
     }
 
-    public void setIsPrivate(String isPrivate) {
+    public void setIsPrivate(boolean isPrivate) {
         this.isPrivate = isPrivate;
     }
 
@@ -52,6 +52,13 @@ public class CourseCreateInfo {
     }
 
     public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public CourseCreateInfo(@NonNull String name, String description, boolean isPrivate, String avatar) {
+        this.name = name;
+        this.description = description;
+        this.isPrivate = isPrivate;
         this.avatar = avatar;
     }
 }
