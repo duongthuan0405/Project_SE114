@@ -35,19 +35,19 @@
 
     <!-- Thời gian bắt đầu -->
     <EditText
-        android:id="@+id/edt_QuizStartTime_CreateQuiz"
+        android:id="@+id/edt_StartTime_CreateQuiz"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/transparent"
         android:hint="Thời gian bắt đầu (ví dụ: 2025-06-20 08:00)"
-        android:textSize="14sp"
         android:inputType="datetime"
         android:textColor="@android:color/black"
-        android:background="@android:color/transparent"
-        android:layout_marginTop="8dp" />
+        android:textSize="14sp" />
 
     <!-- Thời gian kết thúc -->
     <EditText
-        android:id="@+id/edt_QuizDueTime_CreateQuiz"
+        android:id="@+id/edt_DueTime_CreateQuiz"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Thời gian kết thúc (ví dụ: 2025-06-20 09:00)"
@@ -78,6 +78,25 @@
         android:orientation="horizontal"
         android:gravity="end"
         android:layout_marginTop="12dp">
+
+        <Switch
+            android:id="@+id/switch_IsPublish_CreateQuiz"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Công khai"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_gravity="start"
+            android:layout_weight="0"
+            android:layout_marginEnd="16dp"
+            tools:ignore="UseSwitchCompatOrMaterialXml"
+            android:gravity="center_vertical"/>
+
+        <!-- Spacer để đẩy 2 nút ra phải -->
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
 
         <Button
             android:id="@+id/btn_Cancel_CreateQuiz"

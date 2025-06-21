@@ -3,16 +3,32 @@ package com.example.tqt_quiz.presentation.classes;
 import java.io.Serializable;
 
 public class Quiz implements Serializable {
+    private int id;
     private String name;
     private String description;
     private String startTime;
     private String dueTime;
+    private boolean isPublished;
 
-    public Quiz(String name, String description, String startTime, String dueTime) {
+    public Quiz(String name, String description, String startTime, String dueTime, boolean isPublished) {
         this.name = name;
         this.description = description;
         this.startTime = startTime;
         this.dueTime = dueTime;
+        this.isPublished = isPublished;
+    }
+
+    public Quiz(int id, String name, String description, String startTime, String dueTime, boolean isPublished) {
+        this(name, description, startTime, dueTime, isPublished);
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setName(String name) {
@@ -45,5 +61,13 @@ public class Quiz implements Serializable {
 
     public String getDueTime() {
         return dueTime;
+    }
+
+    public boolean isPublished() {
+        return isPublished;
+    }
+
+    public void setPublished(boolean published) {
+        isPublished = published;
     }
 }
