@@ -11,11 +11,13 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.tqt_quiz.R;
 import com.example.tqt_quiz.presentation.adapters.QuizAdapter;
 import com.example.tqt_quiz.presentation.classes.Quiz;
+import com.example.tqt_quiz.presentation.view.activities.CreateQuiz;
 import com.example.tqt_quiz.presentation.view.activities.ViewQuiz;
 
 import java.util.ArrayList;
@@ -26,7 +28,8 @@ public class QuizFragment extends Fragment {
     private List<Quiz> quizList;
     private QuizAdapter quizAdapter;
     private ListView lvQuiz;
-    private ActivityResultLauncher<Intent> viewQuizLauncher;
+    private ActivityResultLauncher<Intent> viewQuizLauncher, createQuizLauncher;
+    private Button btnAddQuiz;
 
 
     public QuizFragment() {
@@ -39,6 +42,12 @@ public class QuizFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_quiz, container, false);
 
         lvQuiz = view.findViewById(R.id.lv_Quiz_Quiz);
+        btnAddQuiz = view.findViewById(R.id.btn_Add_Quiz);
+
+        createQuizLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {}
+        );
 
         quizList = new ArrayList<>();
         quizList.add(new Quiz("Quiz 1", "Mô tả 1", "2025-06-10 08:00", "2025-06-10 10:00"));
@@ -62,6 +71,11 @@ public class QuizFragment extends Fragment {
             intent.putExtra("quiz_due", quiz.getDueTime());
 
             viewQuizLauncher.launch(intent);
+        });
+
+        btnAddQuiz.setOnClickListener(v -> {
+            Intent intent = new Intent(requireContext(), CreateQuiz.class);
+            createQuizLauncher.launch(intent);
         });
 
         return view;
