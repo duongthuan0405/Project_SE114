@@ -34,7 +34,7 @@ public class QuizDTO {
     private String courseName;
 
     @SerializedName("isPublished")
-    private String isPublished;
+    private boolean isPublished;
     @SerializedName("statusOfAttempt")
     private String statusOfAttempt;
 
@@ -96,10 +96,10 @@ public class QuizDTO {
         this.courseName = courseName;
     }
 
-    public String getIsPublished() {
+    public boolean getIsPublished() {
         return isPublished;
     }
-    public void setIsPublished(String isPublished) {
+    public void setIsPublished(boolean isPublished) {
         this.isPublished = isPublished;
     }
 }
