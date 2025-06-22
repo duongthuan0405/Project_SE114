@@ -31,7 +31,7 @@ namespace BE.Controller.APIService
 
             try
             {
-                var account = await DbContext.Accounts
+                var account = await DbContext.Accounts.AsNoTracking()
                     .Where(a => a.Id == requester)
                     .Join(DbContext.AccountAuthens, a => a.Id, aa => aa.Id, (a, aa) => new { a, aa })
                     .Select(x => new AccountInfoDTO(
@@ -63,7 +63,7 @@ namespace BE.Controller.APIService
         {
             try
             {
-                var account = await DbContext.Accounts
+                var account = await DbContext.Accounts.AsNoTracking()
                     .Where(a => a.Id == account_id)
                     .Join(DbContext.AccountAuthens, a => a.Id, aa => aa.Id, (a, aa) => new { a, aa })
                     .Select(x => new AccountInfoDTO(
