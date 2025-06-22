@@ -1,6 +1,7 @@
 package com.example.tqt_quiz.data.interactor;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.tqt_quiz.data.repository.token.RetrofitClient;
 import com.example.tqt_quiz.data.repository.token.TokenManager;
@@ -33,6 +34,7 @@ public class QuestionrealatedIMP implements IQuestionrelatedInteract {
                     callback.onSuccess();
                 }
                 else{
+                    Log.d("MY_BUG", response.code() + "");
                     String rawJson="";
                     try
                     {

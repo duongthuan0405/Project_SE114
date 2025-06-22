@@ -102,4 +102,19 @@ public class QuizDTO {
     public void setIsPublished(boolean isPublished) {
         this.isPublished = isPublished;
     }
+
+    @Override
+    public String toString() {
+        return "QuizDTO{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", startTime=" + startTime +
+                ", dueTime=" + dueTime +
+                ", courseId='" + courseId + '\'' +
+                ", courseName='" + courseName + '\'' +
+                ", isPublished=" + isPublished +
+                ", statusOfAttempt='" + statusOfAttempt + '\'' +
+                '}';
+    }
 }

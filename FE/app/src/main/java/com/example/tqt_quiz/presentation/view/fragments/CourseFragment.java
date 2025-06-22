@@ -84,7 +84,6 @@ public class CourseFragment extends Fragment implements ICourseFragmentContract.
 
         AddCourse.setOnClickListener(v -> {
             presenter.onAddCourseClick();
-
         });
 
         edTx_FindCourse.addTextChangedListener(new TextWatcher() {

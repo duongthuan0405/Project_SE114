@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.tqt_quiz.R;
 import com.example.tqt_quiz.presentation.adapters.QuizAdapter;
@@ -32,12 +33,11 @@ import java.util.List;
 public class QuizFragment extends Fragment implements QuizFragmentContract.IView
 {
     QuizFragmentContract.IPresenter presenter;
-    private List<Quiz> quizList;
+    private List<Quiz> quizList = new ArrayList<>();
     private QuizAdapter quizAdapter;
     private ListView lvQuiz;
     private ActivityResultLauncher<Intent> viewQuizLauncher, createQuizLauncher;
     private Button btnAddQuiz;
-    private DatabaseHelper dbHelper;
 
 
     public QuizFragment() {
@@ -53,12 +53,6 @@ public class QuizFragment extends Fragment implements QuizFragmentContract.IView
         lvQuiz = view.findViewById(R.id.lv_Quiz_Quiz);
         btnAddQuiz = view.findViewById(R.id.btn_Add_Quiz);
 
-        dbHelper = new DatabaseHelper(requireContext());
-
-        quizList = dbHelper.getAllQuizzes();
-
-        quizAdapter = new QuizAdapter(requireContext(), R.layout.item_quiz, quizList);
-        lvQuiz.setAdapter(quizAdapter);
 
         viewQuizLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -69,9 +63,7 @@ public class QuizFragment extends Fragment implements QuizFragmentContract.IView
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == AppCompatActivity.RESULT_OK) {
-                        quizList.clear();
-                        quizList.addAll(dbHelper.getAllQuizzes());
-                        quizAdapter.notifyDataSetChanged();
+                        Toast.makeText(getContext(), "Thêm quiz Ok", Toast.LENGTH_LONG).show();
                     }
                 }
         );
@@ -79,25 +71,7 @@ public class QuizFragment extends Fragment implements QuizFragmentContract.IView
         lvQuiz.setOnItemClickListener((parent, view1, position, id) -> {
             Quiz quiz = quizList.get(position);
 
-            // ----- GHI CHÚ: Đoạn này dùng để mở ViewQuiz (đã tắt) -----
-            /*
-            Intent intent = new Intent(requireContext(), ViewQuiz.class);
-            intent.putExtra("quiz_name", quiz.getName());
-            intent.putExtra("quiz_description", quiz.getDescription());
-            intent.putExtra("quiz_start", quiz.getStartTime());
-            intent.putExtra("quiz_due", quiz.getDueTime());
-            viewQuizLauncher.launch(intent);
 
-
-            // ----- Mở CreateCourse thay thế -----
-            Intent intent = new Intent(requireContext(), CreateQuiz.class);
-            intent.putExtra("quiz_name", quiz.getName());
-            intent.putExtra("quiz_description", quiz.getDescription());
-            intent.putExtra("quiz_start", quiz.getStartTime());
-            intent.putExtra("quiz_due", quiz.getDueTime());
-            intent.putExtra("quiz_is_public", quiz.isPublished());
-
-             */
             Intent intent = new Intent(requireContext(), CreateQuiz.class);
             String quiz_id = ((Quiz)lvQuiz.getAdapter().getItem(position)).getId();
             intent.putExtra("quizId", quiz_id);
@@ -106,9 +80,11 @@ public class QuizFragment extends Fragment implements QuizFragmentContract.IView
 
 
         btnAddQuiz.setOnClickListener(v -> {
+
             Intent intent = new Intent(requireContext(), CreateQuiz.class);
             createQuizLauncher.launch(intent);
         });
+
 
         return view;
     }

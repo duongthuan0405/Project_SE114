@@ -1,6 +1,7 @@
 package com.example.tqt_quiz.data.interactor;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.tqt_quiz.data.repository.token.RetrofitClient;
 import com.example.tqt_quiz.data.repository.token.TokenManager;
@@ -103,12 +104,16 @@ public class QuizRelatedIMP implements IQuizRelatedInteract {
 
     @Override
     public void CreateQuiz(QuizCreateRequestDTO quiz, Context context, CreateQuizCallBack callBack) {
+
         TokenManager tokenManager=new TokenManager(context);
         CreateQuizService service= RetrofitClient.GetClient(tokenManager).create(CreateQuizService.class);
-        Call<QuizDTO> call= service.CreateQuiz(quiz);
+        Call<QuizDTO> call = null;
+        call = service.CreateQuiz(quiz);
+
         call.enqueue(new Callback<QuizDTO>() {
             @Override
             public void onResponse(Call<QuizDTO> call, Response<QuizDTO> response) {
+
                 if(response.isSuccessful())
                 {
                     callBack.onSuccess(response.body());

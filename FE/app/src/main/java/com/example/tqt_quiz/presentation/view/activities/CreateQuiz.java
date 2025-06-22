@@ -1,5 +1,6 @@
 package com.example.tqt_quiz.presentation.view.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,8 +19,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.FragmentActivity;
 
 import com.example.tqt_quiz.R;
+import com.example.tqt_quiz.domain.dto.AnswerDTO;
+import com.example.tqt_quiz.domain.dto.CreateAnswerRequest;
+import com.example.tqt_quiz.domain.dto.CreateQuestionRequest;
+import com.example.tqt_quiz.domain.dto.QuestionDTO;
+import com.example.tqt_quiz.domain.dto.QuizCreateRequestDTO;
+import com.example.tqt_quiz.domain.interactor.IQuizRelatedInteract;
 import com.example.tqt_quiz.presentation.classes.Answer;
 import com.example.tqt_quiz.presentation.classes.Question;
 import com.example.tqt_quiz.presentation.classes.Quiz;
@@ -28,6 +36,8 @@ import com.example.tqt_quiz.presentation.database.DatabaseHelper;
 import com.example.tqt_quiz.presentation.presenter.CreateQuizPresenter;
 import com.example.tqt_quiz.staticclass.StaticClass;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +51,7 @@ public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.
     private String quiz_id = "";
 
     private LayoutInflater inflater;
-    private DatabaseHelper dbHelper;
+
 
     private static final int TOTAL_ANSWERS = 4;
     private char[] labels = {'A', 'B', 'C', 'D'};
@@ -56,10 +66,18 @@ public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         StaticClass.customActionBar(getSupportActionBar(), R.layout.custom_action_bar_2);
         presenter = new CreateQuizPresenter(this);
 
-        quiz_id = getIntent().getExtras().getString("quizId", "");
+        try {
+            quiz_id = getIntent().getExtras().getString("quizId", "");
+        } catch (Exception e) {
+
+        }
+
+
+
         Title = findViewById(R.id.edt_QuizTitle_CreateQuiz);
         Description = findViewById(R.id.edt_QuizDescription_CreateQuiz);
         questionListContainer = findViewById(R.id.ll_QuestionList_CreateQuiz);
@@ -69,46 +87,29 @@ public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.
         Finish = findViewById(R.id.btn_Finish_CreateQuiz);
         Cancel = findViewById(R.id.btn_Cancel_CreateQuiz);
 
+        DueTime.setText("2025-07-20 09:30");
+        StartTime.setText("2025-07-20 09:15");
+        Title.setText("TITLE");
+        Description.setText("Description");
+
         if(!quiz_id.equals(""))
         {
             presenter.showOldQuestion(quiz_id);
         }
 
-        Log.d("CreateQuiz", "onCreate called");        // Ánh xạ view
-
-
-        inflater = LayoutInflater.from(this);
-        dbHelper = new DatabaseHelper(this);
-// -- Đây là đoạn test thử của người thiết kế UI ---------
-        Intent intent = getIntent();
-        if (intent != null) {
-            String name = intent.getStringExtra("quiz_name");
-            String description = intent.getStringExtra("quiz_description");
-            String start = intent.getStringExtra("quiz_start");
-            String due = intent.getStringExtra("quiz_due");
-            boolean isPublic = intent.getBooleanExtra("quiz_is_public", false);
-
-            if (name != null) Title.setText(name);
-            if (description != null) Description.setText(description);
-            if (start != null) StartTime.setText(start);
-            if (due != null) DueTime.setText(due);
-            isPublishSwitch.setChecked(isPublic);
-        }
-
-        // Thêm 1 câu hỏi mặc định ban đầu
         addNewQuestion();
-
-        // Xử lý nút hoàn thành hoặc hủy
         Cancel.setOnClickListener(v -> finish());
         Finish.setOnClickListener(v -> handleSubmit());
 
     }
 
     private void addNewQuestion() {
+        LayoutInflater inflater = LayoutInflater.from(getTheContext());
         View questionView = inflater.inflate(R.layout.item_question, questionListContainer, false);
-
         LinearLayout answerList = questionView.findViewById(R.id.rg_AnswerList_QuestionItem);
         RadioButton[] radioButtons = new RadioButton[TOTAL_ANSWERS];
+
+
 
         for (int i = 0; i < TOTAL_ANSWERS; i++) {
             View answerView = inflater.inflate(R.layout.item_answer, answerList, false);
@@ -128,6 +129,8 @@ public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.
                     }
                 }
             });
+
+            radioButtons[0].setChecked(true);
 
             answerList.addView(answerView);
         }
@@ -176,72 +179,52 @@ public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.
         questionListContainer.addView(questionView);
     }
 
-    private void handleSubmit() {
-        String title = Title.getText().toString().trim();
-        String description = Description.getText().toString().trim();
-        String startTime = StartTime.getText().toString().trim();
-        String dueTime = DueTime.getText().toString().trim();
-        boolean isPublished = isPublishSwitch.isChecked();
+    private void handleSubmit()
+    {
+        if(quiz_id.equals(""))
+        {
+            String title = "";
+            String description = "";
+            String startTime = "";
+            String dueTime = "";
+            boolean isPublished = false;
+            String course_id;
 
-        if (title.isEmpty() || startTime.isEmpty() || dueTime.isEmpty()) {
-            Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin bắt buộc", Toast.LENGTH_SHORT).show();
-            return;
-        }
+            title = Title.getText().toString().trim();
+            description = Description.getText().toString().trim();
+            startTime = StartTime.getText().toString().trim();
+            dueTime = DueTime.getText().toString().trim();
+            isPublished = isPublishSwitch.isChecked();
+            course_id = "836e796a4e";
 
-        List<Question> questionList = new ArrayList<>();
+            QuizCreateRequestDTO quizCreateRequestDTO;
 
-        for (int i = 0; i < questionListContainer.getChildCount(); i++) {
-            View questionView = questionListContainer.getChildAt(i);
-            EditText edtQuestionContent = questionView.findViewById(R.id.edt_Content_QuestionItem);
-            LinearLayout answerListLayout = questionView.findViewById(R.id.rg_AnswerList_QuestionItem);
-
-            String questionContent = edtQuestionContent.getText().toString().trim();
-            List<Answer> answers = new ArrayList<>();
-
-            for (int j = 0; j < answerListLayout.getChildCount(); j++) {
-                View answerView = answerListLayout.getChildAt(j);
-                EditText edtAnswerContent = answerView.findViewById(R.id.edt_Content_AnswerItem);
-                RadioButton rdbIsCorrect = answerView.findViewById(R.id.rdb_IsCorrect_AnswerItem);
-
-                String answerContent = edtAnswerContent.getText().toString().trim();
-                boolean isCorrect = rdbIsCorrect.isChecked();
-
-                if (!answerContent.isEmpty()) {
-                    answers.add(new Answer(answerContent, isCorrect));
-                }
+            try {
+                LocalDateTime lcDt_startTime = LocalDateTime.parse(startTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+                LocalDateTime lcDt_dueTime = LocalDateTime.parse(dueTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+                quizCreateRequestDTO = new QuizCreateRequestDTO(title, description, lcDt_startTime, lcDt_dueTime, course_id);
+            }
+            catch (Exception e)
+            {
+                Toast.makeText(CreateQuiz.this.getTheContext(), "Định dạng ngày sai", Toast.LENGTH_LONG).show();
+                return;
             }
 
-            if (!questionContent.isEmpty() && answers.size() == 4) {
-                questionList.add(new Question(questionContent, answers));
+
+            if (title.isEmpty() || startTime.isEmpty() || dueTime.isEmpty()) {
+                Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin bắt buộc", Toast.LENGTH_SHORT).show();
+                return;
             }
+
+
+            presenter.createQuiz(quizCreateRequestDTO);
+        }
+        else
+        {
+
         }
 
-        if (questionList.isEmpty()) {
-            Toast.makeText(this, "Vui lòng thêm ít nhất 1 câu hỏi hợp lệ", Toast.LENGTH_SHORT).show();
-            return;
-        }
 
-        Quiz newQuiz = new Quiz(title, description, startTime, dueTime, isPublished);
-
-        // Lưu xuống database
-        dbHelper = new DatabaseHelper(this);
-        long quizId = dbHelper.insertQuiz(newQuiz);
-
-        if (quizId == -1) {
-            Toast.makeText(this, "Lỗi khi lưu bài kiểm tra", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        for (Question q : questionList) {
-            long questionId = dbHelper.insertQuestion(quizId, q);
-            for (Answer a : q.getAnswers()) {
-                dbHelper.insertAnswer(questionId, a);
-            }
-        }
-
-        Toast.makeText(this, "Lưu bài kiểm tra thành công", Toast.LENGTH_SHORT).show();
-        setResult(RESULT_OK);
-        finish();
     }
 
     @Override
@@ -251,5 +234,89 @@ public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.
             addOldQuestion(q);
         }
         addNewQuestion();
+    }
+
+    @Override
+    public Context getTheContext() {
+        return CreateQuiz.this.getApplicationContext();
+    }
+
+    @Override
+    public void CreateQuestionAnswer()
+    {
+        List<CreateQuestionRequest> questionList = new ArrayList<>();
+
+        List<View> inValidQuestion = new ArrayList<>();
+
+        for (int i = 0; i < questionListContainer.getChildCount(); i++) {
+            View questionView = questionListContainer.getChildAt(i);
+            EditText edtQuestionContent = questionView.findViewById(R.id.edt_Content_QuestionItem);
+            LinearLayout answerListLayout = questionView.findViewById(R.id.rg_AnswerList_QuestionItem);
+
+            String questionContent = edtQuestionContent.getText().toString().trim();
+            if(questionContent.isEmpty())
+            {
+                inValidQuestion.add(questionView);
+            }
+            else {
+                List<CreateAnswerRequest> answers = new ArrayList<>();
+
+                for (int j = 0; j < answerListLayout.getChildCount(); j++) {
+                    View answerView = answerListLayout.getChildAt(j);
+                    EditText edtAnswerContent = answerView.findViewById(R.id.edt_Content_AnswerItem);
+                    RadioButton rdbIsCorrect = answerView.findViewById(R.id.rdb_IsCorrect_AnswerItem);
+
+                    String answerContent = edtAnswerContent.getText().toString().trim();
+                    if (answerContent.isEmpty()) {
+                        inValidQuestion.add(questionView);
+                    } else {
+                        boolean isCorrect = rdbIsCorrect.isChecked();
+
+                        if (!answerContent.isEmpty()) {
+                            answers.add(new CreateAnswerRequest(answerContent, isCorrect));
+                        }
+                    }
+                }
+
+                questionList.add(new CreateQuestionRequest(questionContent, quiz_id, answers));
+            }
+        }
+
+        if(inValidQuestion.isEmpty())
+        {
+            presenter.addQuestionAnswer(questionList);
+        }
+        else
+        {
+            Toast.makeText(CreateQuiz.this, "Vui lòng nhập đủ nội dung câu hỏi", Toast.LENGTH_LONG).show();
+        }
+
+
+    }
+
+    @Override
+    public void navigateToLogin() {
+        Intent i = new Intent(CreateQuiz.this, Login.class);
+        i.setFlags(
+                Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK
+        );
+        startActivity(i);
+    }
+
+    @Override
+    public void showMessage(String s) {
+        Toast.makeText(CreateQuiz.this, s, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void finishAddQuiz() {
+        Intent i = new Intent();
+        setResult(RESULT_OK, i);
+        CreateQuiz.this.finish();
+    }
+
+    @Override
+    public void initQuizIdInView(String id) {
+        quiz_id = id;
     }
 }

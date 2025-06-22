@@ -14,6 +14,10 @@ public interface CreateCourseContract
         void showSuccess();
 
         void finishAddCourse();
+
+        void navigateToLogin();
+
+        void showMessage(String s);
     }
 
     public interface IPresenter

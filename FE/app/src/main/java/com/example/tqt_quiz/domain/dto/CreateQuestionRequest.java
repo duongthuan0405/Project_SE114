@@ -33,4 +33,10 @@ public class CreateQuestionRequest {
     public void setQuizId(String quizId) {
         this.quizId = quizId;
     }
+
+    public CreateQuestionRequest(String content, String quizId, List<CreateAnswerRequest> lAnswers) {
+        this.content = content;
+        this.quizId = quizId;
+        this.lAnswers = lAnswers;
+    }
 }

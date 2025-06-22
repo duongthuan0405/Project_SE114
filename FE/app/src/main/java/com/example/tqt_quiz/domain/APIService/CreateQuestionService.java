@@ -7,8 +7,9 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 
 public interface CreateQuestionService {
-    @POST("/tqtquiz/Questions_Answers/create")
+    @PUT("/tqtquiz/Questions_Answers/create")
     Call<Void> CreateQuestion(@Body List<CreateQuestionRequest> questionRequest);
 }
