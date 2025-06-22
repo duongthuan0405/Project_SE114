@@ -16,7 +16,7 @@ import java.util.List;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "quiz.db";
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
 
     // Bảng Quiz
     public static final String TABLE_QUIZ = "Quiz";
@@ -54,7 +54,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COLUMN_QUIZ_START_TIME + " TEXT, " +
                 COLUMN_QUIZ_DUE_TIME + " TEXT, " +
                 COLUMN_QUIZ_IS_PUBLIC + " INTEGER, " +
-                COLUMN_QUIZ_COURSE_ID + " TEXT)";
+                "id_course TEXT)";
 
         String createQuestionTable = "CREATE TABLE " + TABLE_QUESTION + " (" +
                 COLUMN_QUESTION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -142,5 +142,50 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         return quizList;
+    }
+
+    public Quiz getQuizById(long id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM Quiz WHERE Id = ?", new String[]{String.valueOf(id)});
+
+        if (cursor.moveToFirst()) {
+            String quizId = cursor.getString(cursor.getColumnIndexOrThrow("id"));
+            String name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
+            String description = cursor.getString(cursor.getColumnIndexOrThrow("description"));
+            String startTime = cursor.getString(cursor.getColumnIndexOrThrow("start_time"));
+            String dueTime = cursor.getString(cursor.getColumnIndexOrThrow("due_time"));
+            boolean isPublished = cursor.getInt(cursor.getColumnIndexOrThrow("is_public")) == 1;
+            String courseID = cursor.getString(cursor.getColumnIndexOrThrow("id_course"));
+
+            cursor.close();
+            return new Quiz(quizId, name, description, startTime, dueTime, isPublished, courseID);
+        }
+
+        cursor.close();
+        return null;
+    }
+
+    public void updateQuiz(Quiz quiz) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_QUIZ_NAME, quiz.getName());
+        values.put(COLUMN_QUIZ_DESCRIPTION, quiz.getDescription());
+        values.put(COLUMN_QUIZ_START_TIME, quiz.getStartTime());
+        values.put(COLUMN_QUIZ_DUE_TIME, quiz.getDueTime());
+        values.put(COLUMN_QUIZ_IS_PUBLIC, quiz.isPublished() ? 1 : 0);
+        values.put(COLUMN_QUIZ_COURSE_ID, quiz.getCourseID());
+
+        db.update(TABLE_QUIZ, values, COLUMN_QUIZ_ID + " = ?", new String[]{String.valueOf(quiz.getId())});
+    }
+
+    public void deleteQuestionsAndAnswers(long quizId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT " + COLUMN_QUESTION_ID + " FROM " + TABLE_QUESTION + " WHERE " + COLUMN_QUESTION_QUIZ_ID + " = ?", new String[]{String.valueOf(quizId)});
+        while (cursor.moveToNext()) {
+            long questionId = cursor.getLong(0);
+            db.delete(TABLE_ANSWER, COLUMN_ANSWER_QUESTION_ID + " = ?", new String[]{String.valueOf(questionId)});
+        }
+        cursor.close();
+        db.delete("Question", "QuizID = ?", new String[]{String.valueOf(quizId)});
     }
 }

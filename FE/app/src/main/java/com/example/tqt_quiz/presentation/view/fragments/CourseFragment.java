@@ -100,7 +100,9 @@ public class CourseFragment extends Fragment implements ICourseFragmentContract.
 
             @Override
             public void afterTextChanged(Editable s) {
-                ((CourseAdapter)lvCourse.getAdapter()).filtCourse(s.toString());
+                if (courseAdapter != null) {
+                    courseAdapter.filtCourse(s.toString());
+                }
             }
         });
 

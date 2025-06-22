@@ -1,6 +1,8 @@
 package com.example.tqt_quiz.presentation.view.activities;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,12 +11,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -32,12 +34,13 @@ import java.util.List;
 public class CreateQuiz extends AppCompatActivity {
 
     private LinearLayout questionListContainer;
-    private Button Finish, Cancel;
-    private EditText Title, Description, StartTime, DueTime;
+    private Button Finish, Cancel, btnDelete;
+    private EditText Title, Description, StartTime, DueTime, CourseId;
     private Switch isPublishSwitch;
 
     private LayoutInflater inflater;
     private DatabaseHelper dbHelper;
+    private String editingQuizId = null;
 
     private static final int TOTAL_ANSWERS = 4;
     private char[] labels = {'A', 'B', 'C', 'D'};
@@ -54,14 +57,16 @@ public class CreateQuiz extends AppCompatActivity {
         });
         StaticClass.customActionBar(getSupportActionBar(), R.layout.custom_action_bar_2);
 
-        Log.d("CreateQuiz", "onCreate called");        // Ánh xạ view
+        // Ánh xạ
         Title = findViewById(R.id.edt_QuizTitle_CreateQuiz);
         Description = findViewById(R.id.edt_QuizDescription_CreateQuiz);
         questionListContainer = findViewById(R.id.ll_QuestionList_CreateQuiz);
         StartTime = findViewById(R.id.edt_StartTime_CreateQuiz);
         DueTime = findViewById(R.id.edt_DueTime_CreateQuiz);
+        CourseId = findViewById(R.id.edt_CourseID_CreateQuiz);
         isPublishSwitch = findViewById(R.id.switch_IsPublish_CreateQuiz);
         Finish = findViewById(R.id.btn_Finish_CreateQuiz);
+        btnDelete = findViewById(R.id.btn_Delete_CreateQuiz);
         Cancel = findViewById(R.id.btn_Cancel_CreateQuiz);
 
         inflater = LayoutInflater.from(this);
@@ -69,10 +74,12 @@ public class CreateQuiz extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent != null) {
+            editingQuizId = intent.getStringExtra("quiz_id");
             String name = intent.getStringExtra("quiz_name");
             String description = intent.getStringExtra("quiz_description");
             String start = intent.getStringExtra("quiz_start");
             String due = intent.getStringExtra("quiz_due");
+            String courseID = intent.getStringExtra("quiz_course_id");
             boolean isPublic = intent.getBooleanExtra("quiz_is_public", false);
 
             if (name != null) Title.setText(name);
@@ -80,6 +87,31 @@ public class CreateQuiz extends AppCompatActivity {
             if (start != null) StartTime.setText(start);
             if (due != null) DueTime.setText(due);
             isPublishSwitch.setChecked(isPublic);
+            if (courseID != null) CourseId.setText(courseID);
+        }
+
+        if (intent != null && intent.hasExtra("quiz_id")) {
+            // Được mở từ QuizFragment bằng cách chọn item
+            btnDelete.setEnabled(true);
+            btnDelete.setBackgroundResource(R.drawable.btn_rectagle_red); // hoặc custom màu đỏ
+
+            btnDelete.setOnClickListener(v -> {
+                long quizId = Long.parseLong(intent.getStringExtra("quiz_id"));
+                DatabaseHelper db = new DatabaseHelper(this);
+                db.deleteQuestionsAndAnswers(quizId);
+                db.getWritableDatabase().delete(DatabaseHelper.TABLE_QUIZ, DatabaseHelper.COLUMN_QUIZ_ID + " = ?", new String[]{String.valueOf(quizId)});
+                Toast.makeText(this, "Đã xóa bài kiểm tra", Toast.LENGTH_SHORT).show();
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("quiz_id", quizId);
+                setResult(Activity.RESULT_OK, resultIntent);
+                finish();
+
+                finish();
+            });
+        } else {
+            // Mở từ nút "Thêm"
+            btnDelete.setEnabled(false);
+            btnDelete.setBackgroundColor(ContextCompat.getColor(this, R.color.dark_gray));
         }
 
         // Thêm 1 câu hỏi mặc định ban đầu
@@ -134,6 +166,7 @@ public class CreateQuiz extends AppCompatActivity {
         String description = Description.getText().toString().trim();
         String startTime = StartTime.getText().toString().trim();
         String dueTime = DueTime.getText().toString().trim();
+        String courseId = CourseId.getText().toString().trim();
         boolean isPublished = isPublishSwitch.isChecked();
 
         if (title.isEmpty() || startTime.isEmpty() || dueTime.isEmpty()) {
@@ -174,11 +207,19 @@ public class CreateQuiz extends AppCompatActivity {
             return;
         }
 
-        Quiz newQuiz = new Quiz(title, description, startTime, dueTime, isPublished);
+        Quiz quiz = new Quiz(null, title, description, startTime, dueTime, isPublished, courseId);
 
         // Lưu xuống database
         dbHelper = new DatabaseHelper(this);
-        long quizId = dbHelper.insertQuiz(newQuiz);
+        long quizId;
+        if (editingQuizId != null && !editingQuizId.equals("-1")) {
+            quiz.setId(editingQuizId);
+            dbHelper.updateQuiz(quiz);
+            dbHelper.deleteQuestionsAndAnswers(Long.parseLong(editingQuizId)); // cần ép về long
+            quizId = Long.parseLong(editingQuizId);
+        } else {
+            quizId = dbHelper.insertQuiz(quiz);
+        }
 
         if (quizId == -1) {
             Toast.makeText(this, "Lỗi khi lưu bài kiểm tra", Toast.LENGTH_SHORT).show();
@@ -193,7 +234,9 @@ public class CreateQuiz extends AppCompatActivity {
         }
 
         Toast.makeText(this, "Lưu bài kiểm tra thành công", Toast.LENGTH_SHORT).show();
-        setResult(RESULT_OK);
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("quiz_id", quizId);
+        setResult(RESULT_OK, resultIntent);
         finish();
     }
 }
