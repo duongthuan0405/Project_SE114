@@ -164,6 +164,18 @@ namespace BE.Controller.APIService
             {
                 return BadRequest(new { Message = "Thông tin Quiz không hợp lệ" });
             }
+            if (quizCreateRequest.StartTime >= quizCreateRequest.DueTime)
+            {
+                return BadRequest(new { Message = "Thời gian bắt đầu phải trước thời gian kết thúc" });
+            }
+            var course = await DbContext.Courses
+                .Where(c => c.Id == quizCreateRequest.CourseId && c.HostId == requester)
+                .FirstOrDefaultAsync();
+
+            if (course == null)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, new { Message = "Bạn không có quyền tạo Quiz cho khóa học này" });
+            }
             try
             {
                 var newQuiz = new Data.Entities.Quiz
@@ -218,6 +230,7 @@ namespace BE.Controller.APIService
         public async Task<ActionResult> PublishQuiz([FromRoute] string quiz_id)
         {
             var requester = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            
             try
             {
                 var quiz = await DbContext.Quizzes.FindAsync(quiz_id);
@@ -225,7 +238,7 @@ namespace BE.Controller.APIService
                 {
                     return StatusCode(StatusCodes.Status404NotFound, new { Message = "Quiz không tồn tại" });
                 }
-                var c = await DbContext.Courses.Where(c => c.Id == quiz_id && c.HostId == requester).FirstOrDefaultAsync();
+                var c = await DbContext.Courses.Where(c => quiz.CourseID == c.Id && c.HostId == requester).FirstOrDefaultAsync();
                 if(c == null)
                 {
                     return StatusCode(StatusCodes.Status403Forbidden, new { Message = "Bạn không có quyền công bố Quiz này" });

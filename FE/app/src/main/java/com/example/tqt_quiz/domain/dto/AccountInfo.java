@@ -35,6 +35,25 @@ public class AccountInfo {
     @NotNull
     private String AccountTypeId;
 
+    @SerializedName("firstName")
+    private String firstName;
+    @SerializedName("lastMiddleName")
+    private String lastMiddleName;
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastMiddleName() {
+        return lastMiddleName;
+    }
+
+    public void setLastMiddleName(String lastMiddleName) {
+        this.lastMiddleName = lastMiddleName;
+    }
     // Getter and Setter for UserID
     public String getUserID() {
         return UserID;
