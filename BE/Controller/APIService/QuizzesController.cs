@@ -156,28 +156,30 @@ namespace BE.Controller.APIService
         }
 
         [HttpPost("create")]
-        [Authorize(StaticClass.RoleId.Teacher)]
+        [Authorize(Roles = StaticClass.RoleId.Teacher)]
         public async Task<ActionResult<QuizDTO>> CreateQuiz([FromBody] QuizCreateRequestDTO quizCreateRequest)
         {
-            var requester = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (quizCreateRequest == null || string.IsNullOrEmpty(quizCreateRequest.Name) || string.IsNullOrEmpty(quizCreateRequest.CourseId))
-            {
-                return BadRequest(new { Message = "Thông tin Quiz không hợp lệ" });
-            }
-            if (quizCreateRequest.StartTime >= quizCreateRequest.DueTime)
-            {
-                return BadRequest(new { Message = "Thời gian bắt đầu phải trước thời gian kết thúc" });
-            }
-            var course = await DbContext.Courses
-                .Where(c => c.Id == quizCreateRequest.CourseId && c.HostId == requester)
-                .FirstOrDefaultAsync();
-
-            if (course == null)
-            {
-                return StatusCode(StatusCodes.Status403Forbidden, new { Message = "Bạn không có quyền tạo Quiz cho khóa học này" });
-            }
             try
             {
+
+                var requester = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (quizCreateRequest == null || string.IsNullOrEmpty(quizCreateRequest.Name) || string.IsNullOrEmpty(quizCreateRequest.CourseId))
+                {
+                    return BadRequest(new { Message = "Thông tin Quiz không hợp lệ" });
+                }
+                if (quizCreateRequest.StartTime >= quizCreateRequest.DueTime)
+                {
+                    return BadRequest(new { Message = "Thời gian bắt đầu phải trước thời gian kết thúc" });
+                }
+                Course? course = await DbContext.Courses
+                    .Where(c => c.Id == quizCreateRequest.CourseId && c.HostId == requester)
+                    .FirstOrDefaultAsync();
+
+                if (course == null)
+                {
+                    return StatusCode(StatusCodes.Status403Forbidden, new { Message = "Bạn không có quyền tạo Quiz cho khóa học này" });
+                }
+            
                 var newQuiz = new Data.Entities.Quiz
                 {
                     Name = quizCreateRequest.Name,
@@ -219,6 +221,7 @@ namespace BE.Controller.APIService
 
                 return StatusCode(StatusCodes.Status201Created, quizDTO);
             }
+
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "Lỗi server khi tạo Quiz" });
