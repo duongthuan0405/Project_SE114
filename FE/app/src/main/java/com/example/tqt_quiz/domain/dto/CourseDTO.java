@@ -27,6 +27,16 @@ public class CourseDTO {
 
     @SerializedName("description")
     private String description;
+    @SerializedName("stateOfJoining")
+    private String stateOfJoining;
+
+    public String getStateOfJoining() {
+        return stateOfJoining;
+    }
+
+    public void setStateOfJoining(String userID) {
+        this.stateOfJoining = stateOfJoining;
+    }
 
     // Getter and Setter for id
     @NonNull

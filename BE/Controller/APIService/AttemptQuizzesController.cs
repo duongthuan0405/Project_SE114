@@ -29,12 +29,12 @@ namespace BE.Controller.APIService
                 return StatusCode(StatusCodes.Status404NotFound, new { Message = "Quiz không tồn tại hoặc chưa được phát hành" });
             }
 
-            if (await db.Quizzes.AnyAsync(q => q.Id == quiz_id && q.DueTime < DateTime.UtcNow))
+            if (await db.Quizzes.AnyAsync(q => q.Id == quiz_id && q.DueTime < DateTime.Now))
             {
                 return StatusCode(StatusCodes.Status403Forbidden, new { Message = "Quiz đã hết thời gian làm bài" });
             }
 
-            if(await db.Quizzes.AnyAsync(q => q.Id == quiz_id && q.StartTime > DateTime.UtcNow))
+            if(await db.Quizzes.AnyAsync(q => q.Id == quiz_id && q.StartTime > DateTime.Now))
             {
                 return StatusCode(StatusCodes.Status403Forbidden, new { Message = "Quiz chưa bắt đầu" });
             }
@@ -70,7 +70,7 @@ namespace BE.Controller.APIService
                 Id = id,
                 AccountId = requester,
                 QuizId = quiz_id,
-                AttemptTime = DateTime.UtcNow,
+                AttemptTime = DateTime.Now,
                 FinishTime = db.Quizzes.Where(q => q.Id == quiz_id)
                     .Select(q => q.DueTime)
                     .FirstOrDefault(),
@@ -106,13 +106,13 @@ namespace BE.Controller.APIService
             {
                 return StatusCode(StatusCodes.Status404NotFound, new { Message = "Không tìm thấy bài làm" });
             }
-            if (DateTime.UtcNow > deadline)
+            if (DateTime.Now > deadline)
             {
                 return StatusCode(StatusCodes.Status403Forbidden, new { Message = "Quiz đã hết thời gian làm bài, bài làm của bạn đã tự động nộp" });
             }
 
             attemptQuiz.IsSubmitted = true;
-            attemptQuiz.FinishTime = DateTime.UtcNow;
+            attemptQuiz.FinishTime = DateTime.Now;
             await db.SaveChangesAsync();
             return Ok();
         }
