@@ -60,7 +60,7 @@ namespace BE.Controller.APIService
                 {
                     CourseID = course_id,
                     AccountID = requester,
-                    TimeJoin = DateTime.UtcNow
+                    TimeJoin = DateTime.Now
                 };
 
                 if(course.IsPrivate == true)

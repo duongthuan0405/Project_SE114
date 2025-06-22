@@ -20,7 +20,7 @@ namespace BE.Controller.APIService
             db = dbContext;
         }
 
-        [HttpPost("create")]
+        [HttpPut("create")]
         [Authorize(Roles = StaticClass.RoleId.Teacher)]
         public async Task<ActionResult> CreateQuestion([FromBody] List<CreateQuestionRequest> questionsDTO)
         {
@@ -29,6 +29,7 @@ namespace BE.Controller.APIService
             {
                 return StatusCode(StatusCodes.Status400BadRequest, "Danh sách câu hỏi không được để trống");
             }
+
             var c = await db.Quizzes.Join(db.Courses, q => q.CourseID, c => c.Id, (q, c) => new { q, c })
                 .Where(x => x.q.Id == questionsDTO[0].QuizId && x.c.HostId == requester)
                 .Select(x => x.c)
@@ -53,7 +54,22 @@ namespace BE.Controller.APIService
 
             await using var tx = await db.Database.BeginTransactionAsync();
             try
-            { 
+            {
+                string quiz_id = questionsDTO[0]?.QuizId ?? "";
+                Quiz? q = await db.Quizzes.Where(q => q.Id == quiz_id).FirstOrDefaultAsync();
+                if(q == null)
+                {
+                    return StatusCode(StatusCodes.Status403Forbidden, new { Message = "Bài quiz không tồn tại" });
+                }    
+
+                if(DateTime.Now > q.StartTime)
+                {
+                    return StatusCode(StatusCodes.Status403Forbidden, new { Message = "Không thể sửa câu hỏi khi quiz đã bắt đầu" });
+                }    
+
+                db.Questions.RemoveRange(await db.Questions.Where(q => q.QuizId == quiz_id).ToListAsync());
+                await db.SaveChangesAsync();
+
                 foreach (var questionDTO in questionsDTO)
                 {
                     string id = "";
@@ -153,11 +169,11 @@ namespace BE.Controller.APIService
             {
                 var deadline = await db.Quizzes.Where(q => q.Id == quizId).Select(q => q.DueTime).FirstOrDefaultAsync();
                 var startTime = await db.Quizzes.Where(q => q.Id == quizId).Select(q => q.StartTime).FirstOrDefaultAsync();
-                if (DateTime.UtcNow < startTime)
+                if (DateTime.Now < startTime)
                 {
                     return StatusCode(StatusCodes.Status403Forbidden, new { Message = "Quiz chưa bắt đầu" });
                 }    
-                if(DateTime.UtcNow > deadline)
+                if(DateTime.Now > deadline)
                 {
                     var atqId = await db.AttemptQuizzes
                         .Where(at => at.AccountId == requester && at.QuizId == quizId)
