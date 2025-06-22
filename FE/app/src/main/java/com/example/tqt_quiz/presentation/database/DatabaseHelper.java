@@ -26,6 +26,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_QUIZ_START_TIME = "start_time";
     public static final String COLUMN_QUIZ_DUE_TIME = "due_time";
     public static final String COLUMN_QUIZ_IS_PUBLIC = "is_public";
+    public static final String COLUMN_QUIZ_COURSE_ID = "id_course";
 
     // Bảng Question
     public static final String TABLE_QUESTION = "Question";
@@ -52,7 +53,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COLUMN_QUIZ_DESCRIPTION + " TEXT, " +
                 COLUMN_QUIZ_START_TIME + " TEXT, " +
                 COLUMN_QUIZ_DUE_TIME + " TEXT, " +
-                COLUMN_QUIZ_IS_PUBLIC + " INTEGER)";
+                COLUMN_QUIZ_IS_PUBLIC + " INTEGER, " +
+                COLUMN_QUIZ_COURSE_ID + " TEXT)";
 
         String createQuestionTable = "CREATE TABLE " + TABLE_QUESTION + " (" +
                 COLUMN_QUESTION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -91,6 +93,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_QUIZ_START_TIME, quiz.getStartTime());
         values.put(COLUMN_QUIZ_DUE_TIME, quiz.getDueTime());
         values.put(COLUMN_QUIZ_IS_PUBLIC, quiz.isPublished() ? 1 : 0);
+        values.put(COLUMN_QUIZ_COURSE_ID, quiz.getCourseID());
 
         return db.insert(TABLE_QUIZ, null, values);
     }
@@ -124,14 +127,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if (cursor != null && cursor.moveToFirst()) {
             do {
-                int id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_QUIZ_ID));
+                String id = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_QUIZ_ID));
                 String name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_QUIZ_NAME));
                 String description = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_QUIZ_DESCRIPTION));
                 String start = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_QUIZ_START_TIME));
                 String due = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_QUIZ_DUE_TIME));
                 boolean isPublic = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_QUIZ_IS_PUBLIC)) == 1;
+                String idCourse = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_QUIZ_COURSE_ID));
 
-                Quiz quiz = new Quiz(id, name, description, start, due, isPublic);
+                Quiz quiz = new Quiz(id, name, description, start, due, isPublic, idCourse);
                 quizList.add(quiz);
             } while (cursor.moveToNext());
             cursor.close();
@@ -139,5 +143,4 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return quizList;
     }
-
 }
