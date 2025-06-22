@@ -186,7 +186,7 @@ namespace BE.Controller.APIService
                     return StatusCode(StatusCodes.Status403Forbidden, new { Message = "Bạn không có quyền xem danh sách yêu cầu tham gia khóa học này" });
                 }
 
-                var permissions = await DbContext.JoinCourses
+                var permissions = await DbContext.JoinCourses.AsNoTracking()
                     .Where(jc => jc.CourseID == course_id && jc.State == (int)JoinCourse.JoinCourseState.Pending)
                     .OrderBy(jc => jc.TimeJoin)
                     .Join(DbContext.Accounts, jc => jc.AccountID, a => a.Id, (jc, a) => new { jc, a })

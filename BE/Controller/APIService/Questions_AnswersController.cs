@@ -22,9 +22,23 @@ namespace BE.Controller.APIService
 
         [HttpPost("create")]
         [Authorize(Roles = StaticClass.RoleId.Teacher)]
-        public async Task<ActionResult> CreateQuestion([FromBody] CreateQuestionRequest questionDTO)
+        public async Task<ActionResult> CreateQuestion([FromBody] List<CreateQuestionRequest> questionsDTO)
         {
-            try
+            string requester = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "";
+            if (questionsDTO == null || questionsDTO.Count == 0)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, "Danh sách câu hỏi không được để trống");
+            }
+            var c = await db.Quizzes.Join(db.Courses, q => q.CourseID, c => c.Id, (q, c) => new { q, c })
+                .Where(x => x.q.Id == questionsDTO[0].QuizId && x.c.HostId == requester)
+                .Select(x => x.c)
+                .FirstOrDefaultAsync();
+            if (c == null)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, "Bạn không có quyền tạo câu hỏi cho khóa học này");
+            }
+
+            foreach (CreateQuestionRequest questionDTO in questionsDTO)
             {
                 if (questionDTO.LAnswers.Count < 2)
                 {
@@ -34,54 +48,61 @@ namespace BE.Controller.APIService
                 {
                     return StatusCode(StatusCodes.Status400BadRequest, "Câu hỏi chỉ 1 đáp án đúng");
                 }
-                if (!await db.Quizzes.AnyAsync(q => q.Id == questionDTO.QuizId && q.IsPublished == true))
+                   
+            }
+
+            await using var tx = await db.Database.BeginTransactionAsync();
+            try
+            { 
+                foreach (var questionDTO in questionsDTO)
                 {
-                    return StatusCode(StatusCodes.Status404NotFound, "Quiz không tồn tại hoặc chưa được phát hành");
-                }
-
-                string id = "";
-                do
-                {
-                    id = StaticClass.CreateId();
-                } while (db.Questions.Any(q => q.Id == id));
-
-                var question = new Data.Entities.Question
-                {
-                    Id = id,
-                    Content = questionDTO.Content,
-                    QuizId = questionDTO.QuizId
-                };
-
-                db.Questions.Add(question);            
-
-                Answer answer = null;
-
-                foreach (CreateAnswerRequest ans in questionDTO.LAnswers)
-                {
-                    string idans = "";
+                    string id = "";
                     do
                     {
-                        idans = StaticClass.CreateId();
-                    } while (db.Answers.Any(a => a.Id == idans));
+                        id = StaticClass.CreateId();
+                    } while (await db.Questions.AnyAsync(q => q.Id == id));
 
-                    answer = new Answer
+                    var question = new Data.Entities.Question
                     {
-                        Id = idans,
-                        Content = ans.Content,
-                        IsTrue = ans.IsCorrect,
-                        QuestionID = question.Id
+                        Id = id,
+                        Content = questionDTO.Content,
+                        QuizId = questionDTO.QuizId
                     };
 
-                    db.Answers.Add(answer);
+                    db.Questions.Add(question);
+
+                    List<Answer> answers = new List<Answer>();
+
+                    foreach (CreateAnswerRequest ans in questionDTO.LAnswers)
+                    {
+                        string idans = "";
+                        do
+                        {
+                            idans = StaticClass.CreateId();
+                        } while (db.Answers.Any(a => a.Id == idans));
+
+                        answers.Add
+                            (new Answer
+                                {
+                                    Id = idans,
+                                    Content = ans.Content,
+                                    IsTrue = ans.IsCorrect,
+                                    QuestionID = question.Id
+                                }
+                            );
+                    }
+
+                    db.Answers.AddRange(answers);
+
                 }
-
                 await db.SaveChangesAsync();
+                await tx.CommitAsync();
 
-
-                return Created();
+                return Ok();
             }
             catch (Exception ex)
             {
+                await tx.RollbackAsync();
                 return StatusCode(StatusCodes.Status500InternalServerError, "Lỗi server khi tạo câu hỏi");
             }
         }
@@ -92,7 +113,17 @@ namespace BE.Controller.APIService
         {
             try
             {
-                var questions = await db.Questions
+                string requester = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "";
+                var isHosted = await db.Quizzes.Join(db.Courses, q => q.CourseID, c => c.Id, (q, c) => new { q, c })
+                    .AnyAsync(x => x.q.Id == quizId && x.c.HostId == requester);
+                  
+
+                if (!isHosted)
+                {
+                    return StatusCode(StatusCodes.Status403Forbidden, "Bạn không có quyền truy cập vào khóa học này");
+                }
+
+                var questions = await db.Questions.AsNoTracking()
                     .Where(q => q.QuizId == quizId)
                     .Select(q => new QuestionDTO
                     {
