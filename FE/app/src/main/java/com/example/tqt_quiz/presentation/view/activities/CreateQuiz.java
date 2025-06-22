@@ -23,18 +23,22 @@ import com.example.tqt_quiz.R;
 import com.example.tqt_quiz.presentation.classes.Answer;
 import com.example.tqt_quiz.presentation.classes.Question;
 import com.example.tqt_quiz.presentation.classes.Quiz;
+import com.example.tqt_quiz.presentation.contract_vp.CreateQuizContract;
 import com.example.tqt_quiz.presentation.database.DatabaseHelper;
+import com.example.tqt_quiz.presentation.presenter.CreateQuizPresenter;
 import com.example.tqt_quiz.staticclass.StaticClass;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CreateQuiz extends AppCompatActivity {
-
+public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.IView
+{
+    CreateQuizContract.IPresenter presenter;
     private LinearLayout questionListContainer;
     private Button Finish, Cancel;
     private EditText Title, Description, StartTime, DueTime;
     private Switch isPublishSwitch;
+    private String quiz_id = "";
 
     private LayoutInflater inflater;
     private DatabaseHelper dbHelper;
@@ -53,8 +57,9 @@ public class CreateQuiz extends AppCompatActivity {
             return insets;
         });
         StaticClass.customActionBar(getSupportActionBar(), R.layout.custom_action_bar_2);
+        presenter = new CreateQuizPresenter(this);
 
-        Log.d("CreateQuiz", "onCreate called");        // Ánh xạ view
+        quiz_id = getIntent().getExtras().getString("quizId", "");
         Title = findViewById(R.id.edt_QuizTitle_CreateQuiz);
         Description = findViewById(R.id.edt_QuizDescription_CreateQuiz);
         questionListContainer = findViewById(R.id.ll_QuestionList_CreateQuiz);
@@ -64,9 +69,17 @@ public class CreateQuiz extends AppCompatActivity {
         Finish = findViewById(R.id.btn_Finish_CreateQuiz);
         Cancel = findViewById(R.id.btn_Cancel_CreateQuiz);
 
+        if(!quiz_id.equals(""))
+        {
+            presenter.showOldQuestion(quiz_id);
+        }
+
+        Log.d("CreateQuiz", "onCreate called");        // Ánh xạ view
+
+
         inflater = LayoutInflater.from(this);
         dbHelper = new DatabaseHelper(this);
-
+// -- Đây là đoạn test thử của người thiết kế UI ---------
         Intent intent = getIntent();
         if (intent != null) {
             String name = intent.getStringExtra("quiz_name");
@@ -88,6 +101,7 @@ public class CreateQuiz extends AppCompatActivity {
         // Xử lý nút hoàn thành hoặc hủy
         Cancel.setOnClickListener(v -> finish());
         Finish.setOnClickListener(v -> handleSubmit());
+
     }
 
     private void addNewQuestion() {
@@ -114,6 +128,39 @@ public class CreateQuiz extends AppCompatActivity {
                     }
                 }
             });
+
+            answerList.addView(answerView);
+        }
+
+        // Nút xóa câu hỏi
+        Button btnDelete = questionView.findViewById(R.id.btn_Delete_QuestionItem);
+        btnDelete.setOnClickListener(v -> questionListContainer.removeView(questionView));
+
+        // Nút thêm câu hỏi (nằm trong mỗi câu hỏi)
+        Button btnAdd = questionView.findViewById(R.id.btn_Add_QuestionItem);
+        btnAdd.setOnClickListener(v -> addNewQuestion());
+
+        questionListContainer.addView(questionView);
+    }
+
+    private void addOldQuestion(Question q)
+    {
+        View questionView = inflater.inflate(R.layout.item_question, questionListContainer, false);
+        LinearLayout answerList = questionView.findViewById(R.id.rg_AnswerList_QuestionItem);
+        EditText edTx_ContentQuestion = questionView.findViewById(R.id.edt_Content_QuestionItem);
+        edTx_ContentQuestion.setText(q.getContent().toString());
+        RadioButton[] radioButtons = new RadioButton[TOTAL_ANSWERS];
+        for (int i = 0; i < TOTAL_ANSWERS; i++) {
+            View answerView = inflater.inflate(R.layout.item_answer, answerList, false);
+
+            EditText edtAnswer = answerView.findViewById(R.id.edt_Content_AnswerItem);
+            RadioButton radioButton = answerView.findViewById(R.id.rdb_IsCorrect_AnswerItem);
+
+            edtAnswer.setText(q.getAnswers().get(i).getContent());
+            ((android.widget.TextView) answerView.findViewById(R.id.tv_Label_AnswerItem)).setText(String.valueOf(labels[i]));
+
+            radioButtons[i] = radioButton;
+            radioButtons[i].setChecked(q.getAnswers().get(i).isCorrect());
 
             answerList.addView(answerView);
         }
@@ -195,5 +242,14 @@ public class CreateQuiz extends AppCompatActivity {
         Toast.makeText(this, "Lưu bài kiểm tra thành công", Toast.LENGTH_SHORT).show();
         setResult(RESULT_OK);
         finish();
+    }
+
+    @Override
+    public void showOldQuestionOnUI(List<Question> oldQuestion) {
+        for(Question q : oldQuestion)
+        {
+            addOldQuestion(q);
+        }
+        addNewQuestion();
     }
 }

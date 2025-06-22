@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 
 public class Question implements Serializable {
-    private int id;
-    private int quizId;
+    private String id;
+    private String quizId;
     private String content;
     private List<Answer> answers;
 
@@ -14,25 +14,25 @@ public class Question implements Serializable {
         this.answers = answers;
     }
 
-    public Question(int id, int quizId, String content, List<Answer> answers) {
+    public Question(String id, String quizId, String content, List<Answer> answers) {
         this(content, answers);
         this.id = id;
         this.quizId = quizId;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public int getQuizId() {
+    public String getQuizId() {
         return quizId;
     }
 
-    public void setQuizId(int quizId) {
+    public void setQuizId(String quizId) {
         this.quizId = quizId;
     }
 

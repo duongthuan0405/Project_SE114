@@ -19,7 +19,9 @@ import android.widget.ListView;
 import com.example.tqt_quiz.R;
 import com.example.tqt_quiz.presentation.adapters.QuizAdapter;
 import com.example.tqt_quiz.presentation.classes.Quiz;
+import com.example.tqt_quiz.presentation.contract_vp.QuizFragmentContract;
 import com.example.tqt_quiz.presentation.database.DatabaseHelper;
+import com.example.tqt_quiz.presentation.presenter.QuizFragmentPresenter;
 import com.example.tqt_quiz.presentation.view.activities.CreateCourse;
 import com.example.tqt_quiz.presentation.view.activities.CreateQuiz;
 import com.example.tqt_quiz.presentation.view.activities.ViewQuiz;
@@ -27,8 +29,9 @@ import com.example.tqt_quiz.presentation.view.activities.ViewQuiz;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QuizFragment extends Fragment {
-
+public class QuizFragment extends Fragment implements QuizFragmentContract.IView
+{
+    QuizFragmentContract.IPresenter presenter;
     private List<Quiz> quizList;
     private QuizAdapter quizAdapter;
     private ListView lvQuiz;
@@ -45,6 +48,7 @@ public class QuizFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_quiz, container, false);
+        presenter = new QuizFragmentPresenter(this);
 
         lvQuiz = view.findViewById(R.id.lv_Quiz_Quiz);
         btnAddQuiz = view.findViewById(R.id.btn_Add_Quiz);
@@ -83,7 +87,7 @@ public class QuizFragment extends Fragment {
             intent.putExtra("quiz_start", quiz.getStartTime());
             intent.putExtra("quiz_due", quiz.getDueTime());
             viewQuizLauncher.launch(intent);
-            */
+
 
             // ----- Mở CreateCourse thay thế -----
             Intent intent = new Intent(requireContext(), CreateQuiz.class);
@@ -93,6 +97,10 @@ public class QuizFragment extends Fragment {
             intent.putExtra("quiz_due", quiz.getDueTime());
             intent.putExtra("quiz_is_public", quiz.isPublished());
 
+             */
+            Intent intent = new Intent(requireContext(), CreateQuiz.class);
+            String quiz_id = ((Quiz)lvQuiz.getAdapter().getItem(position)).getId();
+            intent.putExtra("quizId", quiz_id);
             createQuizLauncher.launch(intent);
         });
 

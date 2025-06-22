@@ -3,8 +3,8 @@ package com.example.tqt_quiz.presentation.classes;
 import java.io.Serializable;
 
 public class Answer implements Serializable {
-    private int id;
-    private int questionId;
+    private String id;
+    private String questionId;
     private String content;
     private boolean isCorrect;
 
@@ -13,7 +13,7 @@ public class Answer implements Serializable {
         this.isCorrect = isCorrect;
     }
 
-    public Answer(int id, int questionId, String content, boolean isCorrect) {
+    public Answer(String id, String questionId, String content, boolean isCorrect) {
         this(content, isCorrect);
         this.id = id;
         this.questionId = questionId;

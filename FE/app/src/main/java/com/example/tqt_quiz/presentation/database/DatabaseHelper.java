@@ -131,7 +131,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 String due = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_QUIZ_DUE_TIME));
                 boolean isPublic = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_QUIZ_IS_PUBLIC)) == 1;
 
-                Quiz quiz = new Quiz(id, name, description, start, due, isPublic);
+                Quiz quiz = new Quiz("", name, description, start, due, isPublic);
                 quizList.add(quiz);
             } while (cursor.moveToNext());
             cursor.close();
