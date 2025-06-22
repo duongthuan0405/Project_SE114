@@ -25,29 +25,32 @@ namespace BE.Controller.APIService
         public async Task<ActionResult> CreateQuestion([FromBody] List<CreateQuestionRequest> questionsDTO)
         {
             string requester = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "";
+            Console.WriteLine($"Requester: {requester}");
+            Console.WriteLine($"CourseId: {questionsDTO[0].QuizId}");
             if (questionsDTO == null || questionsDTO.Count == 0)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, "Danh sách câu hỏi không được để trống");
+                return StatusCode(StatusCodes.Status400BadRequest, new { Message = "Danh sách câu hỏi không được để trống" });
             }
 
             var c = await db.Quizzes.Join(db.Courses, q => q.CourseID, c => c.Id, (q, c) => new { q, c })
                 .Where(x => x.q.Id == questionsDTO[0].QuizId && x.c.HostId == requester)
                 .Select(x => x.c)
                 .FirstOrDefaultAsync();
+
             if (c == null)
             {
-                return StatusCode(StatusCodes.Status403Forbidden, "Bạn không có quyền tạo câu hỏi cho khóa học này");
+                return StatusCode(StatusCodes.Status403Forbidden, new { Message = "Bạn không có quyền tạo câu hỏi cho khóa học này" });
             }
 
             foreach (CreateQuestionRequest questionDTO in questionsDTO)
             {
                 if (questionDTO.LAnswers.Count < 2)
                 {
-                    return StatusCode(StatusCodes.Status400BadRequest, "Câu hỏi phải có ít nhất 2 đáp án");
+                    return StatusCode(StatusCodes.Status400BadRequest, new { Message = "Câu hỏi phải có ít nhất 2 đáp án" });
                 }
                 if (questionDTO.LAnswers.Count(a => a.IsCorrect) != 1)
                 {
-                    return StatusCode(StatusCodes.Status400BadRequest, "Câu hỏi chỉ 1 đáp án đúng");
+                    return StatusCode(StatusCodes.Status400BadRequest, new {Massage = "Câu hỏi chỉ 1 đáp án đúng"});
                 }
                    
             }
@@ -59,7 +62,7 @@ namespace BE.Controller.APIService
                 Quiz? q = await db.Quizzes.Where(q => q.Id == quiz_id).FirstOrDefaultAsync();
                 if(q == null)
                 {
-                    return StatusCode(StatusCodes.Status403Forbidden, new { Message = "Bài quiz không tồn tại" });
+                    return StatusCode(StatusCodes.Status404NotFound, new { Message = "Bài quiz không tồn tại" });
                 }    
 
                 if(DateTime.Now > q.StartTime)
@@ -119,7 +122,7 @@ namespace BE.Controller.APIService
             catch (Exception ex)
             {
                 await tx.RollbackAsync();
-                return StatusCode(StatusCodes.Status500InternalServerError, "Lỗi server khi tạo câu hỏi");
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "Lỗi server khi tạo câu hỏi" });
             }
         }
 
@@ -136,7 +139,7 @@ namespace BE.Controller.APIService
 
                 if (!isHosted)
                 {
-                    return StatusCode(StatusCodes.Status403Forbidden, "Bạn không có quyền truy cập vào khóa học này");
+                    return StatusCode(StatusCodes.Status403Forbidden, new { Message = "Bạn không có quyền truy cập vào khóa học này" });
                 }
 
                 var questions = await db.Questions.AsNoTracking()
@@ -156,7 +159,7 @@ namespace BE.Controller.APIService
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Lỗi server khi lấy danh sách câu hỏi");
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "Lỗi server khi lấy danh sách câu hỏi" });
             }
         }
 
@@ -229,7 +232,7 @@ namespace BE.Controller.APIService
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Lỗi server khi lấy danh sách câu hỏi");
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "Lỗi server khi lấy danh sách câu hỏi" });
             }
         }
     }
