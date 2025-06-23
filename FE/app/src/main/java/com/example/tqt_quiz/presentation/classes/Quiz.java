@@ -9,6 +9,7 @@ public class Quiz implements Serializable {
     private String startTime;
     private String dueTime;
     private boolean isPublished;
+    private String courseID;
 
     public Quiz(String name, String description, String startTime, String dueTime, boolean isPublished) {
         this.name = name;
@@ -18,9 +19,10 @@ public class Quiz implements Serializable {
         this.isPublished = isPublished;
     }
 
-    public Quiz(String id, String name, String description, String startTime, String dueTime, boolean isPublished) {
+    public Quiz(String id, String name, String description, String startTime, String dueTime, boolean isPublished, String courseID) {
         this(name, description, startTime, dueTime, isPublished);
         this.id = id;
+        this.courseID = courseID;
     }
 
     public String getId() {
@@ -69,5 +71,13 @@ public class Quiz implements Serializable {
 
     public void setPublished(boolean published) {
         isPublished = published;
+    }
+
+    public String getCourseID() {
+        return courseID;
+    }
+
+    public void setCourseID(String idCourse) {
+        this.courseID = idCourse;
     }
 }

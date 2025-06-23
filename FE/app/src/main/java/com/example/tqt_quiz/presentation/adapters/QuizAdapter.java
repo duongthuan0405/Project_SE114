@@ -45,7 +45,7 @@ public class QuizAdapter extends ArrayAdapter<Quiz> {
 
     static class ViewHolder {
         ImageView imgQuizIcon;
-        TextView tvQuizName, tvStartTime, tvEndTime, tvStatus;
+        TextView tvQuizName, tvStartTime, tvEndTime, tvStatus, tvCourseId;
     }
 
     @Override
@@ -60,6 +60,7 @@ public class QuizAdapter extends ArrayAdapter<Quiz> {
             holder.tvStartTime = convertView.findViewById(R.id.tv_StartTime_QuizItem);
             holder.tvEndTime = convertView.findViewById(R.id.tv_EndTime_QuizItem);
             holder.tvStatus = convertView.findViewById(R.id.tv_Status_QuizItem);
+            holder.tvCourseId = convertView.findViewById(R.id.tv_Course_QuizItem);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -70,6 +71,7 @@ public class QuizAdapter extends ArrayAdapter<Quiz> {
             holder.tvQuizName.setText(quiz.getName());
             holder.tvStartTime.setText("Bắt đầu: " + quiz.getStartTime());
             holder.tvEndTime.setText("Kết thúc: " + quiz.getDueTime());
+            holder.tvCourseId.setText("Khóa học: " + quiz.getCourseID());
 
             String startTimeStr = quiz.getStartTime();  // VD: "2025-06-19 14:00"
             String endTimeStr = quiz.getDueTime();

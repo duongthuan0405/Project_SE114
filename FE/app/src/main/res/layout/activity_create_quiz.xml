@@ -35,6 +35,18 @@
         android:background="@android:color/transparent"
         android:layout_marginTop="4dp" />
 
+    <!-- Course ID -->
+    <EditText
+        android:id="@+id/edt_CourseID_CreateQuiz"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nhập ID khóa học"
+        android:inputType="text"
+        android:textSize="14sp"
+        android:textColor="@android:color/black"
+        android:background="@android:color/transparent"
+        android:layout_marginTop="4dp" />
+
     <!-- Thời gian bắt đầu -->
     <EditText
         android:id="@+id/edt_StartTime_CreateQuiz"
@@ -102,12 +114,26 @@
 
         <Button
             android:id="@+id/btn_Cancel_CreateQuiz"
-            android:layout_width="wrap_content"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:text="Hủy"
             android:textColor="@color/white"
             android:textStyle="bold"
             android:background="@drawable/btn_rectagle_red"/>
+
+        <Space
+            android:layout_width="12dp"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btn_Delete_CreateQuiz"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:text="Xóa"
+            android:enabled="false"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:background="@drawable/btn_rectangle_gray" />
 
         <Space
             android:layout_width="12dp"

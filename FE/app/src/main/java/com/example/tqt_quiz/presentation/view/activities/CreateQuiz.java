@@ -1,7 +1,9 @@
 package com.example.tqt_quiz.presentation.view.activities;
 
 import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,12 +12,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -45,13 +47,12 @@ public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.
 {
     CreateQuizContract.IPresenter presenter;
     private LinearLayout questionListContainer;
-    private Button Finish, Cancel;
-    private EditText Title, Description, StartTime, DueTime;
+    private Button Finish, Cancel, btnDelete;
+    private EditText Title, Description, StartTime, DueTime, CourseId;
     private Switch isPublishSwitch;
     private String quiz_id = "";
 
     private LayoutInflater inflater;
-
 
     private static final int TOTAL_ANSWERS = 4;
     private char[] labels = {'A', 'B', 'C', 'D'};
@@ -83,8 +84,10 @@ public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.
         questionListContainer = findViewById(R.id.ll_QuestionList_CreateQuiz);
         StartTime = findViewById(R.id.edt_StartTime_CreateQuiz);
         DueTime = findViewById(R.id.edt_DueTime_CreateQuiz);
+        CourseId = findViewById(R.id.edt_CourseID_CreateQuiz);
         isPublishSwitch = findViewById(R.id.switch_IsPublish_CreateQuiz);
         Finish = findViewById(R.id.btn_Finish_CreateQuiz);
+        btnDelete = findViewById(R.id.btn_Delete_CreateQuiz);
         Cancel = findViewById(R.id.btn_Cancel_CreateQuiz);
 
         DueTime.setText("2025-07-20 09:30");
