@@ -26,7 +26,7 @@ public interface IQuizRelatedInteract {
         void onOtherFailure(String msg);
         void onFailureByCannotSendToServer();
     }
-    void CreateQuiz(QuizCreateRequestDTO quiz,Context context,CreateQuizCallBack callBack);
+    void CreateQuiz(QuizCreateRequestDTO quiz, Context context, CreateQuizCallBack callBack);
     public interface CreateQuizCallBack
     {
         void onSuccess(QuizDTO response);

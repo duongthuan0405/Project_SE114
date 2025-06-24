@@ -21,7 +21,7 @@ import retrofit2.Response;
 public class QuestionrealatedIMP implements IQuestionrelatedInteract {
 
     @Override
-    public void CreateQuestion(CreateQuestionRequest questionRequest, Context context, CreateQuestionCallBack callback) {
+    public void CreateQuestion(List<CreateQuestionRequest> questionRequest, Context context, CreateQuestionCallBack callback) {
         TokenManager tokenManager=new TokenManager(context);
         CreateQuestionService service= RetrofitClient.GetClient(tokenManager).create(CreateQuestionService.class);
         Call<Void> call= service.CreateQuestion(questionRequest);
