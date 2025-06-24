@@ -29,7 +29,25 @@ namespace BE.Controller.APIService
             var role = User.FindFirstValue(ClaimTypes.Role);
             try
             {
-                if(role == StaticClass.RoleId.Student)
+                var quiz = await DbContext.Quizzes
+                    .Where(q => q.Id == quiz_id)
+                    .Select(q => new QuizDTO
+                    {
+                        Id = q.Id,
+                        Name = q.Name,
+                        Description = q.Description,
+                        StartTime = q.StartTime,
+                        DueTime = q.DueTime,
+                        CourseId = q.CourseID,
+                        IsPublished = q.IsPublished
+                    }).FirstOrDefaultAsync();
+
+                if (quiz == null || (role == StaticClass.RoleId.Student && !quiz.IsPublished))
+                {
+                    return StatusCode(StatusCodes.Status404NotFound, new { Message = "Quiz không tồn tại" });
+                }
+
+                if (role == StaticClass.RoleId.Student)
                 {
                     // Kiểm tra xem người dùng có tham gia khóa học chứa quiz này không
                     var isEnrolled = await DbContext.JoinCourses
@@ -52,23 +70,7 @@ namespace BE.Controller.APIService
                         return StatusCode(StatusCodes.Status403Forbidden, new { Message = "Bạn không có quyền truy cập Quiz này" });
                     }
                 }
-                var quiz = await DbContext.Quizzes
-                    .Where(q => q.Id == quiz_id)
-                    .Select(q => new QuizDTO
-                    {
-                        Id = q.Id,
-                        Name = q.Name,
-                        Description = q.Description,
-                        StartTime = q.StartTime,
-                        DueTime = q.DueTime,
-                        CourseId = q.CourseID,
-                        IsPublished = q.IsPublished
-                    }).FirstOrDefaultAsync();
 
-                if (quiz == null || (role == StaticClass.RoleId.Student && !quiz.IsPublished))
-                {
-                    return StatusCode(StatusCodes.Status404NotFound, new { Message = "Quiz không tồn tại" });
-                }
 
                 if (role == StaticClass.RoleId.Student)
                 {
@@ -201,7 +203,10 @@ namespace BE.Controller.APIService
         {
             try
             {
-
+                if (DateTime.Now >= quizCreateRequest.StartTime)
+                {
+                    return BadRequest(new { Message = "Thời gian bắt đầu phải sau thời điểm hiện tại" });
+                }
                 var requester = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 if (quizCreateRequest == null || string.IsNullOrEmpty(quizCreateRequest.Name) || string.IsNullOrEmpty(quizCreateRequest.CourseId))
                 {
@@ -305,6 +310,10 @@ namespace BE.Controller.APIService
 
             try
             {
+                if (DateTime.Now >= quizUpdateRequest.StartTime)
+                {
+                    return BadRequest(new { Message = "Thời gian bắt đầu phải sau thời điểm hiện tại" });
+                }
                 if (quizUpdateRequest == null || string.IsNullOrEmpty(quizUpdateRequest.Name) || string.IsNullOrEmpty(quizUpdateRequest.CourseId))
                 {
                     return BadRequest(new { Message = "Thông tin Quiz không hợp lệ" });
@@ -400,7 +409,7 @@ namespace BE.Controller.APIService
                             }
                         ).ToListAsync();
                 }
-                else if(role == StaticClass.RoleId.Teacher)
+                else if (role == StaticClass.RoleId.Teacher)
                 {
                     quizzes = await DbContext.Quizzes
                         .Where(q => DbContext.Courses.Any(c => c.HostId == requester && c.Id == q.CourseID))
@@ -448,5 +457,50 @@ namespace BE.Controller.APIService
             }
         }
 
+
+        [HttpDelete("{quiz_id}/delete")]
+        [Authorize(Roles = StaticClass.RoleId.Teacher)]
+        public async Task<ActionResult> DeleteQuiz([FromRoute] string quiz_id)
+        {
+            var requester = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var tx = await DbContext.Database.BeginTransactionAsync();
+
+            try
+            {
+                var quiz = await DbContext.Quizzes.FindAsync(quiz_id);
+                if (quiz == null)
+                {
+                    return StatusCode(StatusCodes.Status404NotFound, new { Message = "Quiz không tồn tại" });
+                }
+
+                var course = await DbContext.Courses
+                    .Where(c => c.Id == quiz.CourseID && c.HostId == requester)
+                    .FirstOrDefaultAsync();
+
+                if (course == null)
+                {
+                    return StatusCode(StatusCodes.Status403Forbidden, new { Message = "Bạn không có quyền xóa Quiz này" });
+                }
+
+                var questions = await DbContext.Questions
+                    .Where(q => q.QuizId == quiz_id)
+                    .ToListAsync();
+                DbContext.Questions.RemoveRange(questions);
+                await DbContext.SaveChangesAsync();
+
+                DbContext.Quizzes.Remove(quiz);
+                await DbContext.SaveChangesAsync();
+
+                await tx.CommitAsync();
+
+                return Ok(new { Message = "Quiz đã được xóa thành công" });
+            }
+            catch (Exception ex)
+            {
+                await tx.RollbackAsync();
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "Lỗi server khi xóa Quiz" });
+            }
+        }
     }
 }
