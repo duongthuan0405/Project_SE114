@@ -1,6 +1,10 @@
 package com.example.tqt_quiz.presentation.classes;
 
+import com.example.tqt_quiz.domain.dto.AnswerDTO;
+import com.example.tqt_quiz.domain.dto.QuestionDTO;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Question implements Serializable {
@@ -18,6 +22,17 @@ public class Question implements Serializable {
         this(content, answers);
         this.id = id;
         this.quizId = quizId;
+    }
+
+    public Question(QuestionDTO q) {
+        this.id = q.getId();
+        this.quizId = q.getQuizId();
+        this.content = q.getContent();
+        this.answers = new ArrayList<>();
+        for(AnswerDTO a : q.getLAnswers())
+        {
+            this.answers.add(new Answer(a.getId(), "", a.getContent(), a.isCorrect(), a.isSelected()));
+        }
     }
 
     public String getId() {

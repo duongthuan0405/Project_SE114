@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
@@ -24,8 +25,10 @@ import com.example.tqt_quiz.R;
 import com.example.tqt_quiz.domain.dto.CourseDTO;
 import com.example.tqt_quiz.presentation.adapters.CourseAdapter;
 import com.example.tqt_quiz.presentation.classes.Course;
+import com.example.tqt_quiz.presentation.classes.IReloadableTab;
 import com.example.tqt_quiz.presentation.contract_vp.ICourseFragmentContract;
 import com.example.tqt_quiz.presentation.presenter.CourseFragmentPresenter;
+import com.example.tqt_quiz.presentation.presenter.QuizFragmentPresenter;
 import com.example.tqt_quiz.presentation.view.activities.CreateCourse;
 import com.example.tqt_quiz.presentation.view.activities.Login;
 import com.example.tqt_quiz.presentation.view.activities.ViewCourse;
@@ -33,7 +36,7 @@ import com.example.tqt_quiz.presentation.view.activities.ViewCourse;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CourseFragment extends Fragment implements ICourseFragmentContract.IView
+public class CourseFragment extends Fragment implements ICourseFragmentContract.IView, IReloadableTab
 {
     ICourseFragmentContract.IPresenter presenter;
     Button AddCourse;
@@ -42,11 +45,11 @@ public class CourseFragment extends Fragment implements ICourseFragmentContract.
     private CourseAdapter courseAdapter;
     private ActivityResultLauncher<Intent> addCourseLauncher;
     private EditText edTx_FindCourse;
+    private boolean loaded = false;
 
     public CourseFragment() {
 
     }
-
     private final ActivityResultLauncher<Intent> createCourseLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
                 if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
@@ -55,29 +58,27 @@ public class CourseFragment extends Fragment implements ICourseFragmentContract.
             });
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        presenter = new CourseFragmentPresenter(this);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        presenter = new CourseFragmentPresenter(this);
         View view = inflater.inflate(R.layout.fragment_course, container, false);
 
         lvCourse = view.findViewById(R.id.lv_Course_Course);
         AddCourse = view.findViewById(R.id.btn_Add_Course);
         edTx_FindCourse = view.findViewById(R.id.edt_Find_Course);
-/*
-        courseList = new ArrayList<>();
-        courseList.add(new Course("Lập trình Java", "Mô tả", false, "", "Nguyễn Văn A"));
-        courseList.add(new Course("Phân tích hệ thống", "Mô tả", true, "", "Trần Thị B"));
-        courseList.add(new Course("Cơ sở dữ liệu", "Mô tả", false, "", "Lê Văn C"));
 
- */
         presenter.showAllMyCourse();
 
         lvCourse.setOnItemClickListener((parent, view1, position, id) -> {
             Course selectedCourse = courseList.get(position);
             Intent intent = new Intent(requireContext(), ViewCourse.class);
             intent.putExtra("course_id", selectedCourse.getId());
-            intent.putExtra("selected_course", selectedCourse);
             startActivity(intent);
         });
 
@@ -147,5 +148,11 @@ public class CourseFragment extends Fragment implements ICourseFragmentContract.
     public void navigateToAddCourse() {
         Intent intent = new Intent(requireContext(), CreateCourse.class);
         createCourseLauncher.launch(intent);
+    }
+
+    @Override
+    public void onTabVisible(boolean firstTime) {
+        presenter.showAllMyCourse();
+        loaded = true;
     }
 }

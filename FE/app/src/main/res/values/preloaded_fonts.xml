@@ -3,4 +3,12 @@
     <array name="Main_font" translatable="false">
         <item>@font/roboto_condensed_regular</item>
     </array>
+
+    <array name="Main_font2">
+        <item>@font/roboto</item>
+    </array>
+    <array name="font3">
+        <item>@font/agbalumo</item>
+    </array>
+
 </resources>

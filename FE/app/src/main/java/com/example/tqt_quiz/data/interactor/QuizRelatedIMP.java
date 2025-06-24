@@ -19,6 +19,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.Path;
 
 public class QuizRelatedIMP implements IQuizRelatedInteract {
 
@@ -26,50 +27,10 @@ public class QuizRelatedIMP implements IQuizRelatedInteract {
     public void SearchQuizById(String id, Context context, SearchQuizCallBack callBack) {
         TokenManager tokenManager=new TokenManager(context);
         FetchQuizService service= RetrofitClient.GetClient(tokenManager).create(FetchQuizService.class);
-        Call<QuizDTO> call= service.FetchQuizByQuizID();
+        Call<QuizDTO> call= service.FetchQuizByQuizID(id);
         call.enqueue(new Callback<QuizDTO>() {
             @Override
             public void onResponse(Call<QuizDTO> call, Response<QuizDTO> response) {
-                    if(response.isSuccessful())
-                    {
-                        callBack.onSuccess(response.body());
-                    }
-                    else{
-                        String rawJson="";
-                        try
-                        {
-                            rawJson=response.errorBody().string();
-                            JSONObject obj=new JSONObject(rawJson);
-                            String msg=obj.optString("message");
-                            callBack.onOtherFailure(msg);
-                        } catch (Exception e) {
-                            if(response.code()==401)
-                            {
-                                callBack.onFailureByExpiredToken();
-                            }
-                            else if(response.code()==403)
-                            {
-                                callBack.onFailureByUnAcceptedRole();
-                            }
-                        }
-                    }
-            }
-
-            @Override
-            public void onFailure(Call<QuizDTO> call, Throwable t) {
-                    callBack.onFailureByCannotSendToServer();
-            }
-        });
-    }
-
-    @Override
-    public void FetchALlQuizOfACourse(String Course_ID, Context context, FetchALlQuizOfACourseCallBack callBack) {
-        TokenManager tokenManager=new TokenManager(context);
-        FetchQuizService service= RetrofitClient.GetClient(tokenManager).create(FetchQuizService.class);
-        Call<List<QuizDTO>> call= service.FetchAllQuizByCourseID(Course_ID);
-        call.enqueue(new Callback<List<QuizDTO>>() {
-            @Override
-            public void onResponse(Call<List<QuizDTO>> call, Response<List<QuizDTO>> response) {
                 if(response.isSuccessful())
                 {
                     callBack.onSuccess(response.body());
@@ -96,7 +57,45 @@ public class QuizRelatedIMP implements IQuizRelatedInteract {
             }
 
             @Override
-            public void onFailure(Call<List<QuizDTO>> call, Throwable t) {
+            public void onFailure(Call<QuizDTO> call, Throwable t) {
+                    callBack.onFailureByCannotSendToServer();
+            }
+        });
+    }
+
+    @Override
+    public void FetchALlQuizOfACourse(String Course_ID, Context context, FetchALlQuizOfACourseCallBack callBack) {
+        TokenManager tokenManager=new TokenManager(context);
+        FetchQuizService service= RetrofitClient.GetClient(tokenManager).create(FetchQuizService.class);
+        Call<List<QuizDTO>> call= service.FetchAllQuizByCourseID(Course_ID);
+
+        call.enqueue(new Callback<List<QuizDTO>>() {
+            @Override
+            public void onResponse(Call<List<QuizDTO>> call, Response<List<QuizDTO>> response) {
+                if (response.isSuccessful()) {
+                    callBack.onSuccess(response.body());
+                }
+                else {
+                    String rawJson = "";
+                    try {
+                        rawJson = response.errorBody().string();
+                        JSONObject obj = new JSONObject(rawJson);
+                        String msg = obj.optString("message");
+                        callBack.onOtherFailure(msg);
+                    } catch (Exception e) {
+                        if (response.code() == 401) {
+                            callBack.onFailureByExpiredToken();
+                        } else if (response.code() == 403) {
+                            callBack.onFailureByUnAcceptedRole();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<QuizDTO>> call, Throwable t)
+            {
+                Log.e("THUAN", "onFailure – Retrofit call failed", t);
                 callBack.onFailureByCannotSendToServer();
             }
         });

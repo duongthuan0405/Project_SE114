@@ -12,11 +12,11 @@
         android:id="@+id/edt_Content_QuestionItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Câu hỏi"
         android:background="@null"
+        android:hint="Câu hỏi"
+        android:paddingBottom="8dp"
         android:textSize="16sp"
-        android:textStyle="bold"
-        android:paddingBottom="8dp"/>
+        android:textStyle="bold" />
 
     <!-- Danh sách câu trả lời -->
     <RadioGroup

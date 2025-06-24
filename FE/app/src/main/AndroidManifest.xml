@@ -55,9 +55,6 @@
             </intent-filter>
         </activity>
 
-        <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/Main_font" />
     </application>
 
 </manifest>

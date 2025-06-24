@@ -33,20 +33,16 @@
         android:inputType="text"
         android:textColor="@android:color/darker_gray"
         android:background="@android:color/transparent"
-        android:layout_marginTop="4dp" />
+        android:layout_marginTop="5dp" />
 
     <!-- Course ID -->
-    <EditText
-        android:id="@+id/edt_CourseID_CreateQuiz"
-        android:layout_width="match_parent"
+    <Spinner
+        android:id="@+id/spn_Course"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:hint="Nhập ID khóa học"
-        android:inputType="text"
-        android:textSize="14sp"
-        android:textColor="@android:color/black"
-        android:background="@android:color/transparent"
-        android:layout_marginTop="4dp" />
-
+        android:layout_marginTop="5dp"
+        android:background="@drawable/rounded_border">
+    </Spinner>
     <!-- Thời gian bắt đầu -->
     <EditText
         android:id="@+id/edt_StartTime_CreateQuiz"

@@ -2,10 +2,12 @@ package com.example.tqt_quiz.presentation.contract_vp;
 
 import android.content.Context;
 
+import com.example.tqt_quiz.domain.dto.CourseDTO;
 import com.example.tqt_quiz.domain.dto.CreateQuestionRequest;
+import com.example.tqt_quiz.domain.dto.QuestionDTO;
 import com.example.tqt_quiz.domain.dto.QuizCreateRequestDTO;
+import com.example.tqt_quiz.domain.dto.QuizDTO;
 import com.example.tqt_quiz.presentation.classes.Question;
-import com.example.tqt_quiz.presentation.classes.Quiz;
 
 import java.util.List;
 
@@ -13,9 +15,7 @@ public interface CreateQuizContract {
     public interface IView
     {
 
-        void showOldQuestionOnUI(List<Question> oldQuestions);
-
-        Context getTheContext();
+       Context getTheContext();
 
         void CreateQuestionAnswer();
 
@@ -26,15 +26,27 @@ public interface CreateQuizContract {
         void finishAddQuiz();
 
         void initQuizIdInView(String id);
+
+        void showQuizInfo(QuizDTO response);
+
+        void showQuestion(List<QuestionDTO> response);
+
+        void loadOnSpinner(List<CourseDTO> response);
     }
 
     public interface IPresenter
     {
 
-        void showOldQuestion(String quizId);
+        void onDetailOldQuiz(String quizId);
 
         void createQuiz(QuizCreateRequestDTO quizCreateRequestDTO);
 
         void addQuestionAnswer(List<CreateQuestionRequest> questionList);
+
+        void onGetOldQuestion(String id);
+
+        void updateQuiz(String quizId, QuizCreateRequestDTO quizCreateRequestDTO);
+
+        void loadCourseList();
     }
 }

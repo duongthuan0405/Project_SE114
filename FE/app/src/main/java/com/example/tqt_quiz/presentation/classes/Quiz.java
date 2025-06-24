@@ -1,6 +1,11 @@
 package com.example.tqt_quiz.presentation.classes;
 
+import com.example.tqt_quiz.domain.dto.QuizDTO;
+import com.example.tqt_quiz.staticclass.StaticClass;
+
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Quiz implements Serializable {
     private String id;
@@ -23,6 +28,17 @@ public class Quiz implements Serializable {
         this(name, description, startTime, dueTime, isPublished);
         this.id = id;
         this.courseID = courseID;
+    }
+
+    public Quiz(QuizDTO quizDTO)
+    {
+        this.name = quizDTO.getName();
+        this.description = quizDTO.getDescription();
+        this.startTime = quizDTO.getStartTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        this.dueTime = quizDTO.getDueTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        this.isPublished = quizDTO.getIsPublished();
+        this.id = quizDTO.getId();
+        this.courseID = quizDTO.getCourseId();
     }
 
     public String getId() {
@@ -79,5 +95,15 @@ public class Quiz implements Serializable {
 
     public void setCourseID(String idCourse) {
         this.courseID = idCourse;
+    }
+
+    public LocalDateTime getLCDT_StartTime()
+    {
+        return LocalDateTime.parse(startTime, DateTimeFormatter.ofPattern(StaticClass.DateTimeFormat));
+    }
+
+    public LocalDateTime getLCDT_DueTime()
+    {
+        return LocalDateTime.parse(dueTime, DateTimeFormatter.ofPattern(StaticClass.DateTimeFormat));
     }
 }

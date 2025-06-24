@@ -1,5 +1,6 @@
 package com.example.tqt_quiz.domain.JasonAdapters;
 
+import com.example.tqt_quiz.staticclass.StaticClass;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
@@ -8,8 +9,9 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class LocalDateTimeAdapter extends  TypeAdapter<LocalDateTime>{
-    private final DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+public class LocalDateTimeAdapter extends TypeAdapter<LocalDateTime>
+{
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(StaticClass.DateTimeFormat);
 
     @Override
     public void write(JsonWriter out, LocalDateTime value) throws IOException {

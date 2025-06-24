@@ -1,5 +1,6 @@
 package com.example.tqt_quiz.presentation.view.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import android.content.Intent;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.fragment.app.FragmentActivity;
 
 
 import android.util.Log;
@@ -21,14 +23,17 @@ import android.widget.Toast;
 import android.widget.Spinner;
 
 import com.example.tqt_quiz.R;
+import com.example.tqt_quiz.domain.dto.QuizDTO;
+import com.example.tqt_quiz.presentation.adapters.CourseAdapterForSpinner;
 import com.example.tqt_quiz.presentation.adapters.QuizAdapter;
+import com.example.tqt_quiz.presentation.classes.Course;
+import com.example.tqt_quiz.presentation.classes.IReloadableTab;
 import com.example.tqt_quiz.presentation.classes.Quiz;
 import com.example.tqt_quiz.presentation.contract_vp.QuizFragmentContract;
-import com.example.tqt_quiz.presentation.database.DatabaseHelper;
 import com.example.tqt_quiz.presentation.presenter.QuizFragmentPresenter;
-import com.example.tqt_quiz.presentation.view.activities.CreateCourse;
 import com.example.tqt_quiz.presentation.view.activities.CreateQuiz;
-import com.example.tqt_quiz.presentation.view.activities.ViewQuiz;
+import com.example.tqt_quiz.presentation.view.activities.Login;
+import com.example.tqt_quiz.staticclass.StaticClass;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -36,7 +41,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class QuizFragment extends Fragment implements QuizFragmentContract.IView
+public class QuizFragment extends Fragment implements QuizFragmentContract.IView, IReloadableTab
 {
     QuizFragmentContract.IPresenter presenter;
     private List<Quiz> quizList = new ArrayList<>();
@@ -45,9 +50,10 @@ public class QuizFragment extends Fragment implements QuizFragmentContract.IView
     private ActivityResultLauncher<Intent> viewQuizLauncher, createQuizLauncher;
     private Button btnAddQuiz;
     private Spinner spnFilterCourse, spnFilterStatus;
-    private List<String> courseIds;
     private List<String> statusOptions;
-    private DatabaseHelper dbHelper;
+    private List<Quiz> allQuizList;
+    private List<Course> listCourse;
+    private boolean loaded = false;
 
 
     public QuizFragment() {
@@ -66,61 +72,6 @@ public class QuizFragment extends Fragment implements QuizFragmentContract.IView
         spnFilterCourse = view.findViewById(R.id.spn_FilterCourse_Quiz);
         spnFilterStatus = view.findViewById(R.id.spn_FilterStatus_Quiz);
 
-        dbHelper = new DatabaseHelper(requireContext());
-        allQuizList = dbHelper.getAllQuizzes();
-        quizList = new ArrayList<>(allQuizList);
-
-        // Lấy danh sách courseID duy nhất từ quizList
-        courseIds = new ArrayList<>();
-        courseIds.add("Tất cả");
-
-        for (Quiz quiz : quizList) {
-            String cid = quiz.getCourseID();
-            if (cid != null && !cid.isEmpty() && !courseIds.contains(cid)) {
-                courseIds.add(cid);
-            }
-        }
-
-        // Lựa chọn lọc theo tình trạng
-        statusOptions = new ArrayList<>();
-        statusOptions.add("Tất cả");
-        statusOptions.add("Sắp diễn ra");
-        statusOptions.add("Đang diễn ra");
-        statusOptions.add("Đã kết thúc");
-
-        // Set adapter cho spinners
-        ArrayAdapter<String> courseAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, courseIds);
-        courseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spnFilterCourse.setAdapter(courseAdapter);
-
-        ArrayAdapter<String> statusAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, statusOptions);
-        statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spnFilterStatus.setAdapter(statusAdapter);
-
-        //Set adapter cho 2 Spinner
-        spnFilterCourse.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                filterQuizList();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
-        });
-
-        spnFilterStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                filterQuizList();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
-        });
-
-        quizAdapter = new QuizAdapter(requireContext(), R.layout.item_quiz, quizList);
-        lvQuiz.setAdapter(quizAdapter);
-
         //Khai báo launcher
         viewQuizLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -131,10 +82,39 @@ public class QuizFragment extends Fragment implements QuizFragmentContract.IView
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == AppCompatActivity.RESULT_OK) {
-                        Toast.makeText(getContext(), "Thêm quiz Ok", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Thêm/Sửa Quiz thành công", Toast.LENGTH_LONG).show();
+                        filterQuizList();
                     }
                 }
         );
+
+        loadSpinner();
+
+        AdapterView.OnItemSelectedListener lsn = new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                filterQuizList();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        };
+
+
+        //Set adapter cho 2 Spinner
+        spnFilterCourse.setOnItemSelectedListener(lsn);
+        spnFilterStatus.setOnItemSelectedListener(lsn);
+
+
+
+        btnAddQuiz.setOnClickListener(v -> {
+            Intent intent = new Intent(requireContext(), CreateQuiz.class);
+            createQuizLauncher.launch(intent);
+        });
+
+
 
         lvQuiz.setOnItemClickListener((parent, view1, position, id) -> {
             Intent intent = new Intent(requireContext(), CreateQuiz.class);
@@ -144,37 +124,45 @@ public class QuizFragment extends Fragment implements QuizFragmentContract.IView
         });
 
 
-        btnAddQuiz.setOnClickListener(v -> {
-            Intent intent = new Intent(requireContext(), CreateQuiz.class);
-            createQuizLauncher.launch(intent);
-        });
-
-
         return view;
     }
 
-    //Lọc theo courseID
+    private void loadSpinner()
+    {
+        statusOptions = new ArrayList<>();
+        statusOptions.add(StaticClass.StateOfQuiz.SOON);
+        statusOptions.add(StaticClass.StateOfQuiz.NOW);
+        statusOptions.add(StaticClass.StateOfQuiz.END);
+        ArrayAdapter<String> statusAdt = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, statusOptions);
+        statusAdt.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spnFilterStatus.setAdapter(statusAdt);
+        spnFilterStatus.setSelection(0);
+
+        // Lọc course
+        presenter.loadCourseToSpinner();
+    }
+
     private void filterQuizList() {
-        String selectedCourse = spnFilterCourse.getSelectedItem().toString();
-        String selectedStatus = spnFilterStatus.getSelectedItem().toString();
 
-        List<Quiz> filteredList = new ArrayList<>();
-
-        for (Quiz quiz : allQuizList) {
-            boolean matchCourse = selectedCourse.equals("Tất cả") ||
-                    (quiz.getCourseID() != null && quiz.getCourseID().equals(selectedCourse));
-
-            String quizStatus = getQuizStatus(quiz);
-            boolean matchStatus = selectedStatus.equals("Tất cả") || selectedStatus.equals(quizStatus);
-
-            if (matchCourse && matchStatus) {
-                filteredList.add(quiz);
-            }
+        if(spnFilterCourse.getSelectedItem() == null || spnFilterStatus.getSelectedItem() == null )
+        {
+            return;
         }
 
-        quizList.clear();
-        quizList.addAll(filteredList);
-        quizAdapter.notifyDataSetChanged();
+        String quizId = ((Course)spnFilterCourse.getSelectedItem()).getId();
+        String status = spnFilterStatus.getSelectedItem().toString();
+
+        if(quizId.equals(""))
+        {
+            return;
+        }
+
+        else
+        {
+            presenter.getQuizByFilter(quizId, status);
+        }
+
+
     }
 
     // Lọc trạng thái
@@ -185,13 +173,59 @@ public class QuizFragment extends Fragment implements QuizFragmentContract.IView
             Date start = sdf.parse(quiz.getStartTime());
             Date end = sdf.parse(quiz.getDueTime());
 
-            if (now.before(start)) return "Sắp diễn ra";
-            else if (now.after(end)) return "Đã kết thúc";
-            else return "Đang diễn ra";
+            if (now.before(start)) return StaticClass.StateOfQuiz.SOON;
+            else if (now.after(end)) return StaticClass.StateOfQuiz.END;
+            else return StaticClass.StateOfQuiz.NOW;
         } catch (ParseException e) {
             return "Không rõ";
         }
     }
 
 
+    @Override
+    public Context getTheContext() {
+        return getActivity().getApplicationContext();
+    }
+
+    @Override
+    public void navigateToLogin() {
+        FragmentActivity parent = getActivity();
+        Intent i = new Intent(getTheContext(), Login.class);
+        i.setFlags(
+                Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK
+        );
+        startActivity(i);
+    }
+
+    @Override
+    public void showMessage(String s) {
+        Toast.makeText(getTheContext(), s, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showOnSpinnerCourse(List<Course> courses) {
+        listCourse = courses;
+        CourseAdapterForSpinner courseAdapterForSpinner = new CourseAdapterForSpinner(getTheContext(), courses);
+        spnFilterCourse.setAdapter(courseAdapterForSpinner);
+        spnFilterCourse.setSelection(0);
+    }
+
+    @Override
+    public void showQuiz(List<QuizDTO> quizzes) {
+        allQuizList = new ArrayList<>();
+        for(QuizDTO quizDTO : quizzes)
+        {
+            allQuizList.add(new Quiz(quizDTO));
+        }
+
+        quizAdapter = new QuizAdapter(getTheContext(), R.layout.item_quiz, allQuizList);
+        lvQuiz.setAdapter(quizAdapter);
+
+    }
+
+    @Override
+    public void onTabVisible(boolean firstTime) {
+        presenter.loadCourseToSpinner();
+        loaded = true;
+    }
 }

@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 
 import com.example.tqt_quiz.R;
 import com.example.tqt_quiz.presentation.classes.Quiz;
+import com.example.tqt_quiz.staticclass.StaticClass;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -86,13 +87,13 @@ public class QuizAdapter extends ArrayAdapter<Quiz> {
                 int bgResId;
 
                 if (now.before(start)) {
-                    statusText = "Sắp diễn ra";
+                    statusText = StaticClass.StateOfQuiz.SOON;
                     bgResId = R.drawable.bg_status_upcoming;
                 } else if (now.after(end)) {
-                    statusText = "Đã kết thúc";
+                    statusText = StaticClass.StateOfQuiz.END;
                     bgResId = R.drawable.bg_status_ended;
                 } else {
-                    statusText = "Đang diễn ra";
+                    statusText = StaticClass.StateOfQuiz.NOW;
                     bgResId = R.drawable.bg_status_ongoing;
                 }
 

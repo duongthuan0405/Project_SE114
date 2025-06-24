@@ -1,6 +1,7 @@
 package com.example.tqt_quiz.data.interactor;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.tqt_quiz.data.repository.token.RetrofitClient;
 import com.example.tqt_quiz.data.repository.token.TokenManager;
@@ -29,7 +30,6 @@ public class CourseRelatedInteractIMP implements ICourseRelatedInteract {
         Call<List<CourseDTO>> call= service.FetchAllCoruseJoined();
         call.enqueue(new Callback<List<CourseDTO>>()
         {
-
             @Override
             public void onResponse(Call<List<CourseDTO>> call, Response<List<CourseDTO>> response) {
                 if(response.isSuccessful())
@@ -76,20 +76,23 @@ public class CourseRelatedInteractIMP implements ICourseRelatedInteract {
     {
         TokenManager tokenManager=new TokenManager(context);
         FetchAllUserCourseService service= RetrofitClient.GetClient(tokenManager).create(FetchAllUserCourseService.class);
-        Call<List<CourseDTO>> call= service.FetchAllCourseHosted();
-        call.enqueue(new Callback<List<CourseDTO>>() {
 
+
+        Call<List<CourseDTO>> call = service.FetchAllCourseHosted();
+
+        call.enqueue(new Callback<List<CourseDTO>>() {
             @Override
             public void onResponse(Call<List<CourseDTO>> call, Response<List<CourseDTO>> response) {
+
                 if (response.isSuccessful()) {
                     callBack.onSuccess(response.body());
                 } else {
-                    String rawJson="";
+                    String rawJson = "";
                     try {
-                        int code= response.code();
-                        rawJson=response.errorBody().string();
-                        JSONObject obj=new JSONObject(rawJson);
-                        String msg=obj.optString("message");
+                        int code = response.code();
+                        rawJson = response.errorBody().string();
+                        JSONObject obj = new JSONObject(rawJson);
+                        String msg = obj.optString("message");
                         switch (code) {
                             case 404:
                                 callBack.onFailureByNotExistAccount(msg);
@@ -100,9 +103,9 @@ public class CourseRelatedInteractIMP implements ICourseRelatedInteract {
 
                         }
                     } catch (Exception e) {
-                        if(response.code() == 401)
+                        if (response.code() == 401)
                             callBack.onFailureByExpiredToken("");
-                        else if(response.code() == 403)
+                        else if (response.code() == 403)
                             callBack.onFailureByUnAcepptedRole("");
 
                         e.printStackTrace();
@@ -115,6 +118,7 @@ public class CourseRelatedInteractIMP implements ICourseRelatedInteract {
                 callBack.onFailureByCannotSendToServer();
             }
         });
+
     }
     public void FetchAllCoursePending(Context context,FetchAllPendingCallBack callBack)
     {

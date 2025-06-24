@@ -10,7 +10,7 @@ import retrofit2.http.Path;
 
 public interface FetchQuizService {
     @GET("/tqtquiz/Quiz/{quiz_id}")
-    Call<QuizDTO> FetchQuizByQuizID();
+    Call<QuizDTO> FetchQuizByQuizID(@Path("quiz_id") String quiz_id);
     @GET("/tqtquiz/Quiz/course/{course_id}")
     Call<List<QuizDTO>> FetchAllQuizByCourseID(@Path("course_id") String Course_id);
 }
