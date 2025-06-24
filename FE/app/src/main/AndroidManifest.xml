@@ -16,6 +16,12 @@
         android:theme="@style/Theme.TQT_Quiz"
         tools:targetApi="31">
         <activity
+            android:name=".presentation.view.activities.ViewResult"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.view.activities.DoQuiz"
+            android:exported="false" />
+        <activity
             android:name=".presentation.view.activities.ViewQuiz"
             android:exported="false" />
         <activity
@@ -54,7 +60,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>

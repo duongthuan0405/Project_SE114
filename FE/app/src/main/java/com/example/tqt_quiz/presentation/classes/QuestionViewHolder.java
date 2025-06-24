@@ -30,6 +30,8 @@ public class QuestionViewHolder
     private final EditText[] edtAnswers = new EditText[TOTAL_ANSWERS];
     private RadioButton[] rdbAnswers = new RadioButton[TOTAL_ANSWERS];
     private final Button btn_Add, btn_Delete;
+    private final TextView tvCorrectAnswer;
+    private final LinearLayout layoutQuestionContainer;
 
     public QuestionViewHolder(View root, boolean isSetChooseDefault)
     {
@@ -40,6 +42,8 @@ public class QuestionViewHolder
         answerList = root.findViewById(R.id.rg_AnswerList_QuestionItem);
         btn_Add = root.findViewById(R.id.btn_Add_QuestionItem);
         btn_Delete = root.findViewById(R.id.btn_Delete_QuestionItem);
+        tvCorrectAnswer = root.findViewById(R.id.tv_CorrectAnswer_QuestionItem);
+        layoutQuestionContainer = root.findViewById(R.id.layout_question_item);
 
         for (int i = 0; i < TOTAL_ANSWERS; i++) {
             View answerView = LayoutInflater.from(root.getContext()).inflate(R.layout.item_answer, answerList, false);
@@ -80,6 +84,17 @@ public class QuestionViewHolder
         }
     }
 
+    public void setReadOnly() {
+        edtQuestion.setEnabled(false);
+        btn_Add.setVisibility(View.GONE);
+        btn_Delete.setVisibility(View.GONE);
+        for (int i = 0; i < TOTAL_ANSWERS; i++) {
+            edtAnswers[i].setEnabled(false);
+            rdbAnswers[i].setEnabled(false);
+        }
+    }
+
+
     public void setDataWithSelectedAnswer(Question dto) {
         data = dto;
         edtQuestion.setText(dto.getContent());
@@ -108,6 +123,34 @@ public class QuestionViewHolder
         }
         dto.setAnswers(answers);
         return dto;
+    }
+
+    public void showResultFeedback() {
+        String correctAnswer = "";
+        String selectedAnswer = getIdAnswerSelected();
+
+        boolean isCorrect = false;
+
+        for (int i = 0; i < TOTAL_ANSWERS; i++) {
+            Answer ans = data.getAnswers().get(i);
+            if (ans.isCorrect()) {
+                correctAnswer = labels[i] + ". " + ans.getContent();
+            }
+            if (ans.isCorrect() && ans.getId().equals(selectedAnswer)) {
+                isCorrect = true;
+            }
+        }
+
+        if (!isCorrect) {
+            // Câu sai → viền đỏ + hiện đáp án đúng
+            layoutQuestionContainer.setBackgroundResource(R.drawable.rounded_border_red);
+            tvCorrectAnswer.setText("Đáp án đúng: " + correctAnswer);
+            tvCorrectAnswer.setVisibility(View.VISIBLE);
+        } else {
+            // Câu đúng → viền bình thường
+            layoutQuestionContainer.setBackgroundResource(R.drawable.rounded_border);
+            tvCorrectAnswer.setVisibility(View.GONE);
+        }
     }
 
     public String getIdAnswerSelected()
