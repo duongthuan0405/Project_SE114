@@ -6,6 +6,7 @@ import android.util.Log;
 import com.example.tqt_quiz.data.repository.token.RetrofitClient;
 import com.example.tqt_quiz.data.repository.token.TokenManager;
 import com.example.tqt_quiz.domain.APIService.CreateNewCourseService;
+import com.example.tqt_quiz.domain.APIService.DeleteCourseService;
 import com.example.tqt_quiz.domain.APIService.FetchAllUserCourseService;
 import com.example.tqt_quiz.domain.APIService.FindCourseService;
 import com.example.tqt_quiz.domain.dto.CourseCreateInfo;
@@ -296,6 +297,46 @@ public class CourseRelatedInteractIMP implements ICourseRelatedInteract {
             @Override
             public void onFailure(Call<CourseDTO> call, Throwable t) {
                 callBack.onFailureByCannotSendToServer();
+            }
+        });
+    }
+
+    @Override
+    public void DeleteCourse(String CourseID, Context context, DeleteCourseCallBack callback) {
+        TokenManager tokenManager=new TokenManager(context);
+        DeleteCourseService service=RetrofitClient.GetClient(tokenManager).create(DeleteCourseService.class);
+        Call<Void> call= service.DeleteCourse(CourseID);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if(response.isSuccessful())
+                {
+                    callback.onSuccess();
+                }
+                else
+                {
+                    try
+                    {
+                        String rawJSON="";
+                        rawJSON=response.errorBody().string();
+                        JSONObject obj=new JSONObject(rawJSON);
+                        String msg=obj.optString("message");
+                        callback.onOtherFailure(msg);
+                    }
+                    catch (Exception e)
+                    {
+                        if(response.code() == 401)
+                            callback.onFailureByExpiredToken();
+                        else if(response.code() == 403)
+                            callback.onFailureByUnAcceptedRole();
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                    callback.onFailureByCannotSendToServer();
             }
         });
     }

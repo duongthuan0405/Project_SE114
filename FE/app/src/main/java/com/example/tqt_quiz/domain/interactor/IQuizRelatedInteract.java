@@ -62,4 +62,13 @@ public interface IQuizRelatedInteract {
         void onOtherFailure(String msg);
         void onFailureByCannotSendToServer();
     }
+    void DeleteQuiz(String QuizID,Context context,DeleteQuizCallBack callback);
+    public interface DeleteQuizCallBack
+    {
+        void onSuccess();
+        void onFailureByExpiredToken();
+        void onFailureByUnAcceptedRole();
+        void onOtherFailure(String msg);
+        void onFailureByCannotSendToServer();
+    }
 }
