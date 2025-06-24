@@ -39,21 +39,25 @@ public class ViewCoursePresenter implements ViewCourseContract.IPresenter
             @Override
             public void onFailureByUnAcepptedRole(String msg) {
                 view.showToast("Tài khoản không có quyền truy cập tài nguyên này");
+                view.Finish();
             }
 
             @Override
             public void onFailureByNotExistCourse(String msg) {
                 view.showToast(msg);
+                view.Finish();
             }
 
             @Override
             public void onFailureByServerError(String msg) {
                 view.showToast(msg);
+                view.Finish();
             }
 
             @Override
             public void onFailureByCannotSendToServer() {
                 view.showToast("Không thể kết nối đến server");
+                view.Finish();
             }
         });
     }

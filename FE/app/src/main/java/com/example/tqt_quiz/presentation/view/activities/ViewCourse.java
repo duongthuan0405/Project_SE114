@@ -60,8 +60,7 @@ public class ViewCourse extends AppCompatActivity implements ViewCourseContract.
 
         presenter = new ViewCoursePresenter(this);
 
-        Course course = (Course) getIntent().getSerializableExtra("selected_course");
-        courseId = getIntent().getStringExtra("course_id");
+        courseId = getIntent().getStringExtra("courseId");
 
         avatar = findViewById(R.id.img_CourseAvatar_ViewCourse);
         name = findViewById(R.id.tv_CourseName_ViewCourse);
@@ -73,25 +72,7 @@ public class ViewCourse extends AppCompatActivity implements ViewCourseContract.
         lvMembers = findViewById(R.id.lv_Members_ViewCourse);
         tv_CourseId = findViewById(R.id.tv_CourseID_ViewCourse);
 
-//        if (course != null) {
-//            StaticClass.setImage(avatar, course.getAvatar(), R.drawable.resource_default);
-//            name.setText(course.getName());
-//            isPrivate.setText("Riêng tư: " + (course.isPrivate() ? "Có" : "Không"));
-//            description.setText(course.getDescription());
-//            host.setText("👤Tên giáo viên: " + course.getHostName());
-//        }
-
         presenter.showCourseInfo(courseId);
-
-//        memberList = new ArrayList<>();
-//        memberList.add(new Member("", "An", "Nguyễn Văn", "Học sinh", "an@gmail.com"));
-//        memberList.add(new Member("", "Bình", "Trần Thị", "Giáo viên", "binh@gmail.com"));
-//        memberList.add(new Member("", "Cường", "Lê Văn", "Học sinh", "cuong@gmail.com"));
-//
-//        pendingList = new ArrayList<>();
-//        pendingList.add(new Member("", "Dũng", "Phan Minh", "Học sinh", "dung@gmail.com"));
-//        pendingList.add(new Member("", "Hà", "Ngô Thị", "Học sinh", "ha@gmail.com"));
-
 
         rdbMembers.setOnCheckedChangeListener(
                 (buttonView, isChecked) -> {
@@ -108,19 +89,13 @@ public class ViewCourse extends AppCompatActivity implements ViewCourseContract.
                         presenter.showListMemberPending(courseId);
                     }
 
-//            memberAdapter = new MemberAdapter(this, R.layout.item_pending_member, pendingList, MemberAdapter.MODE_PENDING);
-//            lvMembers.setAdapter(memberAdapter);
-//            setListViewHeightBasedOnChildren(lvMembers);
-//
-//            presenter.showListMemberPending(courseId);
         });
 
         lvMembers.setOnItemClickListener((parent, view, position, id) -> {
 
             Member selectedMember =  (Member) lvMembers.getAdapter().getItem(position);
             Intent intent = new Intent(ViewCourse.this, MemberInfo.class);
-            intent.putExtra("selected_member", selectedMember);
-            intent.putExtra("member_id", selectedMember.getId());
+            intent.putExtra("memberId", selectedMember.getId());
             startActivity(intent);
         });
 
@@ -208,6 +183,11 @@ public class ViewCourse extends AppCompatActivity implements ViewCourseContract.
     @Override
     public void reloadList() {
         presenter.showListMemberPending(courseId);
+    }
+
+    @Override
+    public void Finish() {
+        finish();
     }
 
     @Override

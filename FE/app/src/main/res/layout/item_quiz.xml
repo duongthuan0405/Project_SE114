@@ -51,6 +51,16 @@
                     android:maxLines="1"
                     android:ellipsize="end" />
 
+                <!-- Khóa học -->
+                <TextView
+                    android:id="@+id/tv_Course_QuizItem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Khóa học: IT101"
+                    android:textSize="14sp"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="2dp" />
+
                 <!-- Thời gian bắt đầu -->
                 <TextView
                     android:id="@+id/tv_StartTime_QuizItem"

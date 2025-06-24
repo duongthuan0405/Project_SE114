@@ -28,4 +28,13 @@ public class StaticClass
         ab.setCustomView(layout_custom);
     }
 
+    public static class StateOfQuiz
+    {
+        public static String SOON = "Chưa diễn ra";
+        public static String NOW = "Đang diễn ra";
+        public static String END = "Đã kết thúc";
+    }
+
+    public static String DateTimeFormat = "yyyy-MM-dd HH:mm";
+
 }

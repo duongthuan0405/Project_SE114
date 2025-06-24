@@ -35,7 +35,7 @@ namespace BE.Controller.APIService
                     return StatusCode(StatusCodes.Status404NotFound, new { Message = "Tài khoản không tồn tại" });
                 }
 
-                List<CourseDTO> courses = await db.Courses.Where(
+                List<CourseDTO> courses = await db.Courses.AsNoTracking().Where(
                     (c) => db.JoinCourses.Any(jc => jc.AccountID == requester && jc.CourseID == c.Id && jc.State == (int)JoinCourse.JoinCourseState.Joined)
                 ).Join(db.Accounts, c => c.HostId, a => a.Id, (c, a) => new CourseDTO(c.Id, c.Name, a.Id, a.LastMiddleName + " " + a.FirstName, c.IsPrivate, c.Avatar, c.Description, StaticClass.StateOfJoinCourse.Joined))
                 .ToListAsync();
@@ -67,7 +67,7 @@ namespace BE.Controller.APIService
 
             try
             {
-                List<CourseDTO> courses = await db.Courses.Where(c => c.HostId == requester)
+                List<CourseDTO> courses = await db.Courses.AsNoTracking().Where(c => c.HostId == requester)
                     .Join(db.Accounts, c => c.HostId, a => a.Id, (c, a) => new CourseDTO(c.Id, c.Name, a.Id, a.LastMiddleName + " " + a.FirstName, c.IsPrivate, c.Avatar, c.Description, ""))
                     .ToListAsync();
                 return Ok(courses.OrderBy(c => c.Name).ToList());
@@ -95,7 +95,7 @@ namespace BE.Controller.APIService
             }
             try
             {
-                List<CourseDTO> courses = await db.Courses.Where(c => db.JoinCourses.Any(jc => jc.AccountID == requester && jc.CourseID == c.Id && jc.State == (int)JoinCourse.JoinCourseState.Pending))
+                List<CourseDTO> courses = await db.Courses.AsNoTracking().Where(c => db.JoinCourses.Any(jc => jc.AccountID == requester && jc.CourseID == c.Id && jc.State == (int)JoinCourse.JoinCourseState.Pending))
                     .Join(db.Accounts, c => c.HostId, a => a.Id, (c, a) => new CourseDTO(c.Id, c.Name, a.Id, a.LastMiddleName + " " + a.FirstName, c.IsPrivate, c.Avatar, c.Description, StaticClass.StateOfJoinCourse.Requested))
                     .ToListAsync();
                 return Ok(courses.OrderBy(c => c.Name).ToList());
@@ -123,7 +123,7 @@ namespace BE.Controller.APIService
             }
             try
             {
-                List<CourseDTO> courses = await db.Courses.Where(c => db.JoinCourses.Any(jc => jc.AccountID == requester && jc.CourseID == c.Id && jc.State == (int)JoinCourse.JoinCourseState.Denied))
+                List<CourseDTO> courses = await db.Courses.AsNoTracking().Where(c => db.JoinCourses.Any(jc => jc.AccountID == requester && jc.CourseID == c.Id && jc.State == (int)JoinCourse.JoinCourseState.Denied))
                     .Join(db.Accounts, c => c.HostId, a => a.Id, (c, a) => new CourseDTO(c.Id, c.Name, a.Id, a.LastMiddleName + " " + a.FirstName, c.IsPrivate, c.Avatar, c.Description, ""))
                     .ToListAsync();
                 return Ok(courses.OrderBy(c => c.Name).ToList());
@@ -264,9 +264,15 @@ namespace BE.Controller.APIService
             {
                 return StatusCode(StatusCodes.Status404NotFound, new { Message = "Tài khoản không tồn tại" });
             }
+            Course? course = await db.Courses.FindAsync(course_id);
+            if (course == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, new { Message = "Khóa học không tồn tại" });
+            }
+            
             try
             {
-                List<AccountInfoDTO> members = await db.JoinCourses.Where(jc => jc.CourseID == course_id && jc.State == (int)JoinCourse.JoinCourseState.Joined)
+                List<AccountInfoDTO> members = await db.JoinCourses.AsNoTracking().Where(jc => jc.CourseID == course_id && jc.State == (int)JoinCourse.JoinCourseState.Joined)
                     .Join(db.Accounts, jc => jc.AccountID, a => a.Id, (jc, a) => new AccountInfoDTO(a.Id, "", a.LastMiddleName, a.FirstName, a.Avatar, a.AccountTypeId, ""))
                     .ToListAsync();
                 return Ok(members.OrderBy(m => m.FirstName).ToList());
@@ -280,5 +286,56 @@ namespace BE.Controller.APIService
                 );
             }
         }
+
+        [HttpDelete("{course_id}/delete")]
+        [Authorize(Roles = StaticClass.RoleId.Teacher)]
+        public async Task<ActionResult> DeleteCourse([FromRoute] string course_id)
+        {
+            var requester = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (requester == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, new { Message = "Tài khoản không tồn tại" });
+            }
+
+            var course = await db.Courses.FindAsync(course_id);
+            if (course == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, new { Message = "Khóa học không tồn tại" });
+            }
+
+            if (course.HostId != requester)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, new { Message = "Bạn không có quyền xóa khóa học này" });
+            }
+
+            var tx = await db.Database.BeginTransactionAsync();
+
+            try
+            {
+
+                var questions = await db.Questions.Join(db.Quizzes, qs => qs.QuizId, qz => qz.Id, (qs, qz) => new { qs, qz })
+                    .Where(x => x.qz.CourseID == course_id)
+                    .Select(x => x.qs).ToListAsync();
+
+                db.Questions.RemoveRange(questions);
+                await db.SaveChangesAsync();
+                db.Courses.Remove(course);
+
+                await db.SaveChangesAsync();
+                await tx.CommitAsync();
+
+                return Ok(new { Message = "Xóa khóa học thành công" });
+            }
+            catch (Exception ex)
+            {
+                await tx.RollbackAsync();
+                return StatusCode(StatusCodes.Status500InternalServerError, new
+                {
+                    Message = "Lỗi hệ thống khi xóa khóa học",
+                    Error = ex.Message
+                });
+            }
+        }
+
     }
 }

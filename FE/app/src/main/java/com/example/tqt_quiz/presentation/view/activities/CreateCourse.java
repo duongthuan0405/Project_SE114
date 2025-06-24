@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.FragmentActivity;
 
 import com.example.tqt_quiz.R;
 import com.example.tqt_quiz.data.interactor.CourseRelatedInteractIMP;
@@ -115,5 +116,19 @@ public class CreateCourse extends AppCompatActivity implements CreateCourseContr
         Intent resultIntent = new Intent();
         setResult(RESULT_OK, resultIntent);
         finish();
+    }
+
+    @Override
+    public void navigateToLogin() {
+        Intent i = new Intent(CreateCourse.this, Login.class);
+        i.setFlags(
+                Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK
+        );
+        startActivity(i);
+    }
+
+    @Override
+    public void showMessage(String s) {
+        Toast.makeText(CreateCourse.this, s, Toast.LENGTH_LONG).show();
     }
 }

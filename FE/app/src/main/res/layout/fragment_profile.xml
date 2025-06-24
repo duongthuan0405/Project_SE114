@@ -21,10 +21,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
+            android:fontFamily="@font/roboto"
             android:text="TÀI KHOẢN"
+            android:textColor="@color/Primary"
             android:textSize="25dp"
-            android:textStyle="bold"
-            android:textColor="@color/Primary" />
+            android:textStyle="bold" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/img_Avatar_Profile"

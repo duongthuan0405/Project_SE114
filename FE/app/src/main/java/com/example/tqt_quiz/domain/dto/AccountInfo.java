@@ -35,6 +35,21 @@ public class AccountInfo {
     @NotNull
     private String AccountTypeId;
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastMiddleName() {
+        return lastMiddleName;
+    }
+
+    public void setLastMiddleName(String lastMiddleName) {
+        this.lastMiddleName = lastMiddleName;
+    }
     // Getter and Setter for UserID
     public String getUserID() {
         return UserID;
@@ -86,21 +101,6 @@ public class AccountInfo {
 
     public void setAccountTypeId(@NotNull String accountTypeId) {
         AccountTypeId = accountTypeId;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastMiddleName() {
-        return lastMiddleName;
-    }
-    public void setLastMiddleName(String lastMiddleName) {
-        this.lastMiddleName = lastMiddleName;
     }
 
     @Override

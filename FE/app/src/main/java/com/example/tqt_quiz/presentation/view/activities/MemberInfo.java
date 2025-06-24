@@ -49,17 +49,8 @@ public class MemberInfo extends AppCompatActivity implements MemberInfoContract.
         type = findViewById(R.id.tv_Type_MemInfo);
         email = findViewById(R.id.tv_Email_MemInfo);
 
-//        Member member = (Member) getIntent().getSerializableExtra("selected_member");
-//
-//
-//        if (member != null) {
-//            StaticClass.setImage(avatar, member.getAvatar(), R.drawable.resource_default);
-//            name.setText(member.getName());
-//            type.setText(member.getType());
-//            email.setText(member.getEmail());
-//        }
 
-        memberId = getIntent().getStringExtra("member_id");
+        memberId = getIntent().getStringExtra("memberId");
         presenter.showInfo(memberId);
     }
 
@@ -74,7 +65,6 @@ public class MemberInfo extends AppCompatActivity implements MemberInfoContract.
         {
 
             Member member = new Member(response);
-            Log.d("MY_BUG", member.toString());
             StaticClass.setImage(avatar, member.getAvatar(), R.drawable.resource_default);
             name.setText(member.getName());
             type.setText(member.getType());
