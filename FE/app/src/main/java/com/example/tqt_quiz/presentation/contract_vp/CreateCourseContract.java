@@ -1,6 +1,7 @@
 package com.example.tqt_quiz.presentation.contract_vp;
 
 import android.content.Context;
+import android.net.Uri;
 
 import com.example.tqt_quiz.domain.dto.CourseCreateInfo;
 
@@ -24,5 +25,6 @@ public interface CreateCourseContract
     {
 
         void onCreateClick(CourseCreateInfo courseCreateInfo);
+
     }
 }
