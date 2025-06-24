@@ -1,7 +1,5 @@
 package com.example.tqt_quiz.presentation.presenter;
 
-import android.util.Log;
-
 import com.example.tqt_quiz.data.interactor.CourseRelatedInteractIMP;
 import com.example.tqt_quiz.data.interactor.QuizRelatedIMP;
 import com.example.tqt_quiz.domain.dto.CourseDTO;
@@ -135,5 +133,69 @@ public class QuizFragmentPresenter implements QuizFragmentContract.IPresenter
         });
 
 
+    }
+
+    @Override
+    public void getAllQuizByFilter(String selectedStatus) {
+        quizRelatedInteract.GetAllQuiz(view.getTheContext(), new IQuizRelatedInteract.GetAllQuizCallBack() {
+            @Override
+            public void onSuccess(List<QuizDTO> response) {
+                List<QuizDTO> quizzes;
+                if(selectedStatus.equals(StaticClass.StateOfQuiz.SOON))
+                {
+                    quizzes = new ArrayList<>();
+                    for(QuizDTO q : response)
+                    {
+                        if(LocalDateTime.now().isBefore(q.getStartTime()))
+                        {
+                            quizzes.add(q);
+                        }
+                    }
+                }
+                else if (selectedStatus.equals(StaticClass.StateOfQuiz.NOW)) {
+                    quizzes = new ArrayList<>();
+                    for(QuizDTO q : response)
+                    {
+                        if(LocalDateTime.now().isAfter(q.getStartTime()) && LocalDateTime.now().isBefore(q.getDueTime()))
+                        {
+                            quizzes.add(q);
+                        }
+                    }
+                }
+                else
+                {
+                    quizzes = new ArrayList<>();
+                    for(QuizDTO q : response)
+                    {
+                        if(LocalDateTime.now().isAfter(q.getDueTime()))
+                        {
+                            quizzes.add(q);
+                        }
+                    }
+                }
+
+                view.showQuiz(quizzes);
+            }
+
+            @Override
+            public void onFailureByExpiredToken() {
+                view.navigateToLogin();
+            }
+
+            @Override
+            public void onFailureByUnAcceptedRole() {
+                view.showMessage("Tài khoản không thể truy cập tài nguyên này");
+            }
+
+            @Override
+            public void onOtherFailure(String msg) {
+                view.showMessage(msg);
+            }
+
+            @Override
+            public void onFailureByCannotSendToServer() {
+                view.showMessage("Không thể kết nối đến server");
+            }
+        });
     }
 }

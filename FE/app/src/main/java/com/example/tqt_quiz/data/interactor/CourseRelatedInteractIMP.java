@@ -16,6 +16,7 @@ import com.example.tqt_quiz.domain.interactor.ICourseRelatedInteract;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -90,9 +91,9 @@ public class CourseRelatedInteractIMP implements ICourseRelatedInteract {
                     String rawJson = "";
                     try {
                         int code = response.code();
-                        rawJson = response.errorBody().string();
-                        JSONObject obj = new JSONObject(rawJson);
-                        String msg = obj.optString("message");
+                        rawJson=response.errorBody().string();
+                        JSONObject obj=new JSONObject(rawJson);
+                        String msg=obj.optString("message");
                         switch (code) {
                             case 404:
                                 callBack.onFailureByNotExistAccount(msg);
@@ -137,7 +138,7 @@ public class CourseRelatedInteractIMP implements ICourseRelatedInteract {
                         int code= response.code();
                         rawJson=response.errorBody().string();
                         JSONObject obj=new JSONObject(rawJson);
-                        String msg= obj.optString("message");
+                        String msg=obj.optString("message");
                         switch (code) {
                             case 404:
                                 callBack.onFailureByNotExistAccount(msg);
@@ -216,6 +217,7 @@ public class CourseRelatedInteractIMP implements ICourseRelatedInteract {
         call.enqueue(new Callback<CourseDTO>() {
             @Override
             public void onResponse(Call<CourseDTO> call, Response<CourseDTO> response) {
+                Log.d("THUAN", response.code() + "");
                 if(response.isSuccessful())
                 {
                     callBack.onSuccess(response.body());
@@ -227,7 +229,7 @@ public class CourseRelatedInteractIMP implements ICourseRelatedInteract {
                         int code= response.code();
                         rawJson=response.errorBody().string();
                         JSONObject obj=new JSONObject(rawJson);
-                        String msg= obj.optString(rawJson);
+                        String msg=obj.optString("message");
                         switch (code)
                         {
                             case 404:
@@ -276,7 +278,7 @@ public class CourseRelatedInteractIMP implements ICourseRelatedInteract {
                         int code = response.code();
                         rawJson=response.errorBody().string();
                         JSONObject obj=new JSONObject(rawJson);
-                        String msg=response.errorBody().string();
+                        String msg=obj.optString("message");
                         switch (code) {
                             case 404:
                                 callBack.onFailureByNotExistAccount(msg);
@@ -323,7 +325,7 @@ public class CourseRelatedInteractIMP implements ICourseRelatedInteract {
                         int code = response.code();
                         rawJson=response.errorBody().string();
                         JSONObject obj=new JSONObject(rawJson);
-                        String msg=response.errorBody().string();
+                        String msg=obj.optString("message");
                         callBack.onFailureByOtherError(msg);
                     }
                     catch (Exception e)

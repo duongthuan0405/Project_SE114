@@ -32,6 +32,8 @@ public interface CreateQuizContract {
         void showQuestion(List<QuestionDTO> response);
 
         void loadOnSpinner(List<CourseDTO> response);
+
+        void Finish();
     }
 
     public interface IPresenter

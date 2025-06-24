@@ -60,8 +60,7 @@ public class ViewCourse extends AppCompatActivity implements ViewCourseContract.
 
         presenter = new ViewCoursePresenter(this);
 
-        Course course = (Course) getIntent().getSerializableExtra("selected_course");
-        courseId = getIntent().getStringExtra("course_id");
+        courseId = getIntent().getStringExtra("courseId");
 
         avatar = findViewById(R.id.img_CourseAvatar_ViewCourse);
         name = findViewById(R.id.tv_CourseName_ViewCourse);
@@ -96,8 +95,7 @@ public class ViewCourse extends AppCompatActivity implements ViewCourseContract.
 
             Member selectedMember =  (Member) lvMembers.getAdapter().getItem(position);
             Intent intent = new Intent(ViewCourse.this, MemberInfo.class);
-            intent.putExtra("selected_member", selectedMember);
-            intent.putExtra("member_id", selectedMember.getId());
+            intent.putExtra("memberId", selectedMember.getId());
             startActivity(intent);
         });
 
@@ -185,6 +183,11 @@ public class ViewCourse extends AppCompatActivity implements ViewCourseContract.
     @Override
     public void reloadList() {
         presenter.showListMemberPending(courseId);
+    }
+
+    @Override
+    public void Finish() {
+        finish();
     }
 
     @Override

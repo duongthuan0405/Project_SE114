@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Nhập tiêu đề bài kiểm tra"
-        android:textSize="20sp"
+        android:textSize="25sp"
         android:textStyle="bold"
         android:inputType="text"
         android:textColor="@android:color/black"
@@ -29,43 +29,99 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Nhập mô tả (tuỳ chọn)"
-        android:textSize="14sp"
+        android:textSize="15sp"
         android:inputType="text"
         android:textColor="@android:color/darker_gray"
         android:background="@android:color/transparent"
         android:layout_marginTop="5dp" />
 
     <!-- Course ID -->
-    <Spinner
-        android:id="@+id/spn_Course"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="25sp"
         android:layout_marginTop="5dp"
-        android:background="@drawable/rounded_border">
-    </Spinner>
-    <!-- Thời gian bắt đầu -->
-    <EditText
-        android:id="@+id/edt_StartTime_CreateQuiz"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="@android:color/transparent"
-        android:hint="Thời gian bắt đầu (ví dụ: 2025-06-20 08:00)"
-        android:inputType="datetime"
-        android:textColor="@android:color/black"
-        android:textSize="14sp" />
+        android:orientation="horizontal">
 
-    <!-- Thời gian kết thúc -->
-    <EditText
-        android:id="@+id/edt_DueTime_CreateQuiz"
+        <TextView
+            android:id="@+id/tv_Course"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="center_vertical"
+            android:text="Khóa học: "
+            android:textColor="@color/black"
+            android:textSize="15sp">
+
+        </TextView>
+
+        <Spinner
+            android:id="@+id/spn_Course"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:background="@drawable/rounded_border">
+        </Spinner>
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Thời gian kết thúc (ví dụ: 2025-06-20 09:00)"
-        android:textSize="14sp"
-        android:inputType="datetime"
-        android:textColor="@android:color/black"
-        android:background="@android:color/transparent"
-        android:layout_marginTop="4dp" />
+        android:layout_height="25sp"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal"
+        android:weightSum="6">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:text="Thời gian bắt đầu: "
+            android:textColor="@android:color/black"
+            android:gravity="center_vertical"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/edt_StartTime_CreateQuiz"
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:textColor="@android:color/black"
+            android:textSize="15sp"
+            android:gravity="center_vertical"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="25sp"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal"
+        android:weightSum="6">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:text="Thời gian kết thúc: "
+            android:textColor="@android:color/black"
+            android:gravity="center_vertical"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/edt_DueTime_CreateQuiz"
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:textSize="15sp"
+            android:inputType="datetime"
+            android:textColor="@android:color/black"
+            android:background="@android:color/transparent"/>
+
+    </LinearLayout>
 
     <!-- Danh sách câu hỏi -->
     <ScrollView

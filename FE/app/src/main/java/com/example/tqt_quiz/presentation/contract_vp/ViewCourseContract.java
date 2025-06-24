@@ -25,6 +25,8 @@ public interface ViewCourseContract
         void showListMemberPending(List<AccountInfo> response);
 
         void reloadList();
+
+        void Finish();
     }
 
     public interface IPresenter

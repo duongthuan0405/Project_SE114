@@ -1,5 +1,7 @@
 package com.example.tqt_quiz.presentation.view.activities;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,10 +9,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -35,20 +40,26 @@ import com.example.tqt_quiz.presentation.contract_vp.CreateQuizContract;
 import com.example.tqt_quiz.presentation.presenter.CreateQuizPresenter;
 import com.example.tqt_quiz.staticclass.StaticClass;
 
+import java.sql.Time;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.IView
 {
     CreateQuizContract.IPresenter presenter;
     private LinearLayout questionListContainer;
     private Button Finish, Cancel, btnDelete;
-    private EditText Title, Description, StartTime, DueTime;
+    private EditText Title, Description;
+    private TextView StartTime, DueTime;
     private Spinner CourseId;
     private Switch isPublishSwitch;
     private String quiz_id = "";
+    LocalDateTime selectedDate;
+    private int d, M, y, H, m;
+    private QuizDTO oldQuiz;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +85,11 @@ public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.
         Finish = findViewById(R.id.btn_Finish_CreateQuiz);
         btnDelete = findViewById(R.id.btn_Delete_CreateQuiz);
         Cancel = findViewById(R.id.btn_Cancel_CreateQuiz);
+
+        StartTime.setOnClickListener(v -> onClickTimeTextView(v));
+        DueTime.setOnClickListener(v -> onClickTimeTextView(v));
+        StartTime.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern(StaticClass.DateTimeFormat)));
+        DueTime.setText(LocalDateTime.now().plusHours(1).format(DateTimeFormatter.ofPattern(StaticClass.DateTimeFormat)));
 
         presenter.loadCourseList();
 
@@ -115,6 +131,14 @@ public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.
 
     private void handleSubmit()
     {
+        if(oldQuiz != null && !LocalDateTime.now().isBefore(oldQuiz.getStartTime()))
+        {
+            Intent i = new Intent();
+            setResult(RESULT_CANCELED, i);
+            showMessage("Bài quiz đang diễn ra hoặc đã kết thúc, không thể chỉnh sửa");
+            finish();
+            return;
+        }
         String title = "";
         String description = "";
         String startTime = "";
@@ -239,7 +263,11 @@ public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.
         StartTime.setText(response.getStartTime().format(DateTimeFormatter.ofPattern(StaticClass.DateTimeFormat)));
         Title.setText(response.getName());
         Description.setText(response.getDescription());
+        CourseId.setVisibility(View.GONE);
+        TextView tv = CreateQuiz.this.findViewById(R.id.tv_Course);
+        tv.append(" " + response.getCourseName());
         presenter.onGetOldQuestion(response.getId());
+        oldQuiz = response;
     }
 
     @Override
@@ -282,5 +310,40 @@ public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.
         CourseAdapterForSpinner adt = new CourseAdapterForSpinner(getTheContext(), list);
         CourseId.setAdapter(adt);
         CourseId.setSelection(0);
+    }
+
+    @Override
+    public void Finish() {
+        finish();
+    }
+
+    private void onClickTimeTextView(View v)
+    {
+        TextView tv = (TextView)v;
+        DatePickerDialog date = new DatePickerDialog(CreateQuiz.this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                d = dayOfMonth;
+                M = month;
+                y = year;
+
+                TimePickerDialog time = new TimePickerDialog(CreateQuiz.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        H = hourOfDay;
+                        m = minute;
+                        selectedDate = LocalDateTime.of(y, M, d, H, m);
+                        tv.setText(selectedDate.format(DateTimeFormatter.ofPattern(StaticClass.DateTimeFormat)));
+                    }
+                }, LocalDateTime.now().getHour(), LocalDateTime.now().getMinute(), true);
+
+                time.show();
+            }
+        }, LocalDateTime.now().getYear(), LocalDateTime.now().getMonth().getValue(), LocalDateTime.now().getDayOfMonth());
+
+        date.show();
+
+
+
     }
 }
