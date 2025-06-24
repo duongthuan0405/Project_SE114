@@ -7,9 +7,11 @@ import com.example.tqt_quiz.data.repository.token.TokenManager;
 import com.example.tqt_quiz.domain.APIService.CreateQuizService;
 import com.example.tqt_quiz.domain.APIService.FetchQuizService;
 import com.example.tqt_quiz.domain.APIService.PublishQuizService;
+import com.example.tqt_quiz.domain.APIService.UpdateQuizService;
 import com.example.tqt_quiz.domain.dto.QuizCreateRequestDTO;
 import com.example.tqt_quiz.domain.dto.QuizDTO;
 import com.example.tqt_quiz.domain.interactor.IQuizRelatedInteract;
+import com.example.tqt_quiz.domain.repository.token.ITokenManager;
 
 import org.json.JSONObject;
 
@@ -177,6 +179,86 @@ public class QuizRelatedIMP implements IQuizRelatedInteract {
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 callBack.onFailureByCannotSendToServer();
+            }
+        });
+    }
+
+    @Override
+    public void UpdateQuiz(String Quiz_id, QuizCreateRequestDTO updatedquiz, Context context, UpdateQuizCallBack callback) {
+        TokenManager tokenManager=new TokenManager(context);
+        UpdateQuizService service=RetrofitClient.GetClient(tokenManager).create(UpdateQuizService.class);
+        Call<QuizDTO> call=service.UpdateQuiz(Quiz_id,updatedquiz);
+        call.enqueue(new Callback<QuizDTO>() {
+            @Override
+            public void onResponse(Call<QuizDTO> call, Response<QuizDTO> response) {
+                if(response.isSuccessful())
+                {
+                    callback.onSuccess(response.body());
+                }
+                else{
+                    String rawJson="";
+                    try
+                    {
+                        rawJson=response.errorBody().string();
+                        JSONObject obj=new JSONObject(rawJson);
+                        String msg=obj.optString("message");
+                        callback.onOtherFailure(msg);
+                    } catch (Exception e) {
+                        if(response.code()==401)
+                        {
+                            callback.onFailureByExpiredToken();
+                        }
+                        else if(response.code()==403)
+                        {
+                            callback.onFailureByUnAcceptedRole();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<QuizDTO> call, Throwable t) {
+                callback.onFailureByCannotSendToServer();
+            }
+        });
+    }
+
+    @Override
+    public void GetAllQuiz(Context context, GetAllQuizCallBack callback) {
+        TokenManager tokenManager=new TokenManager(context);
+        FetchQuizService service=RetrofitClient.GetClient(tokenManager).create(FetchQuizService.class);
+        Call<List<QuizDTO>> call= service.FetchAllQuiz();
+        call.enqueue(new Callback<List<QuizDTO>>() {
+            @Override
+            public void onResponse(Call<List<QuizDTO>> call, Response<List<QuizDTO>> response) {
+                if(response.isSuccessful())
+                {
+                    callback.onSuccess(response.body());
+                }
+                else{
+                    String rawJson="";
+                    try
+                    {
+                        rawJson=response.errorBody().string();
+                        JSONObject obj=new JSONObject(rawJson);
+                        String msg=obj.optString("message");
+                        callback.onOtherFailure(msg);
+                    } catch (Exception e) {
+                        if(response.code()==401)
+                        {
+                            callback.onFailureByExpiredToken();
+                        }
+                        else if(response.code()==403)
+                        {
+                            callback.onFailureByUnAcceptedRole();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<QuizDTO>> call, Throwable t) {
+                callback.onFailureByCannotSendToServer();
             }
         });
     }
