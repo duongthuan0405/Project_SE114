@@ -2,7 +2,9 @@ package com.example.tqt_quiz.presentation.view.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -29,6 +33,7 @@ import com.example.tqt_quiz.presentation.contract_vp.ViewCourseContract;
 import com.example.tqt_quiz.presentation.interfaces.OnPendingMemberAction;
 import com.example.tqt_quiz.presentation.presenter.ViewCoursePresenter;
 import com.example.tqt_quiz.staticclass.StaticClass;
+import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +48,9 @@ public class ViewCourse extends AppCompatActivity implements ViewCourseContract.
     MemberAdapter memberAdapter;
     RadioButton rdbMembers, rdbWaiting;
     ViewCourseContract.IPresenter presenter;
+    ShapeableImageView logo;
     String courseId;
+    private ActivityResultLauncher<Intent> imagePickerLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +106,28 @@ public class ViewCourse extends AppCompatActivity implements ViewCourseContract.
             startActivity(intent);
         });
 
+        imagePickerLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        Uri selectedImageUri = result.getData().getData();
+                        if (selectedImageUri != null) {
+                            avatar.setImageURI(selectedImageUri);
+                            presenter.saveLogo(selectedImageUri, courseId);
+                        }
+                    }
+                }
+        );
+
+        avatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                intent.setType("image/*");
+                imagePickerLauncher.launch(intent);
+            }
+        });
+
 
 
         rdbMembers.setChecked(true);
@@ -133,6 +162,7 @@ public class ViewCourse extends AppCompatActivity implements ViewCourseContract.
     public void showCourseInfo(CourseDTO response) {
         Course course = new Course(response);
         if (course != null) {
+            Log.d("THUAN___", course.getAvatar());
             StaticClass.setImage(avatar, course.getAvatar(), R.drawable.resource_default);
             name.setText(course.getName());
             isPrivate.setText("Riêng tư: " + (course.isPrivate() ? "Có" : "Không"));

@@ -45,14 +45,14 @@ namespace BE.Data.Database
             modelBuilder.Entity<AccountType>().HasData(
                 new AccountType { Id = "0000000000", Name = "Quản trị" },
                 new AccountType { Id = "0000000001", Name = "Giáo viên" },
-                new AccountType { Id = "0000000002", Name = "Học sinh"}
+                new AccountType { Id = "0000000002", Name = "Học sinh" }
             );
 
         }
 
         public DbSet<AccountType> AccountTypes { get; set; }
         public DbSet<Account> Accounts { get; set; }
-        public DbSet<AccountAuthen> AccountAuthens  { get; set; }
+        public DbSet<AccountAuthen> AccountAuthens { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<JoinCourse> JoinCourses { get; set; }
         public DbSet<Quiz> Quizzes { get; set; }
@@ -60,7 +60,7 @@ namespace BE.Data.Database
         public DbSet<Answer> Answers { get; set; }
         public DbSet<AttemptQuiz> AttemptQuizzes { get; set; }
         public DbSet<DetailResult> DetailResults { get; set; }
-
+        public DbSet<PasswordResetToken> PasswordResetTokens { get; set; }
         
     }
 }
