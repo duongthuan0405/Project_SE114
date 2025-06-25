@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_question_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -24,6 +25,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" />
+
+    <!-- Hiển thị đáp án đúng (chỉ hiển thị khi sai) -->
+    <TextView
+        android:id="@+id/tv_CorrectAnswer_QuestionItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Đáp án đúng: ... "
+        android:textColor="@android:color/holo_red_dark"
+        android:textStyle="italic"
+        android:textSize="14sp"
+        android:visibility="gone"
+        android:layout_marginTop="6dp" />
 
     <!-- Nút xóa câu hỏi -->
     <LinearLayout

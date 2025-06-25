@@ -6,6 +6,7 @@ import android.util.Log;
 import com.example.tqt_quiz.data.repository.token.RetrofitClient;
 import com.example.tqt_quiz.data.repository.token.TokenManager;
 import com.example.tqt_quiz.domain.APIService.CreateNewCourseService;
+import com.example.tqt_quiz.domain.APIService.DeleteCourseService;
 import com.example.tqt_quiz.domain.APIService.FetchAllUserCourseService;
 import com.example.tqt_quiz.domain.APIService.FindCourseService;
 import com.example.tqt_quiz.domain.dto.AccountInfo;
@@ -22,7 +23,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CourseRelatedInteractIMP implements ICourseRelatedInteract {
+public class CourseRelatedInteractIMP implements ICourseRelatedInteract 
+{
     @Override
     public void FetchAllCourseJoined(Context context, FetchJoinedCallBack callBack)
     {
@@ -307,12 +309,56 @@ public class CourseRelatedInteractIMP implements ICourseRelatedInteract {
     }
 
     @Override
-    public void GetAllMemberInCourse(String course_id, Context context, GetAllMemberInCourseCallBack callBack) {
+    public void DeleteCourse(String CourseID, Context context, DeleteCourseCallBack callback) {
+        TokenManager tokenManager=new TokenManager(context);
+        DeleteCourseService service=RetrofitClient.GetClient(tokenManager).create(DeleteCourseService.class);
+        Call<Void> call= service.DeleteCourse(CourseID);
+        call.enqueue(new Callback<Void>() 
+        {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) 
+            {
+                if(response.isSuccessful())
+                {
+                    callback.onSuccess();
+                }
+                else
+                {
+                    try
+                    {
+                        String rawJSON="";
+                        rawJSON=response.errorBody().string();
+                        JSONObject obj=new JSONObject(rawJSON);
+                        String msg=obj.optString("message");
+                        callback.onOtherFailure(msg);
+                    }
+                    catch (Exception e)
+                    {
+                        if(response.code() == 401)
+                            callback.onFailureByExpiredToken();
+                        else if(response.code() == 403)
+                            callback.onFailureByUnAcceptedRole();
+                            e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                    callback.onFailureByCannotSendToServer();
+            }
+        });
+    }
+
+    public void GetAllMemberInCourse(String course_id, Context context, GetAllMemberInCourseCallBack callBack)
+    {
         TokenManager tokenManager = new TokenManager(context);
         FetchAllUserCourseService retrofitClient = RetrofitClient.GetClient(tokenManager).create(FetchAllUserCourseService.class);
-        retrofitClient.FetchAllMember(course_id).enqueue(new Callback<List<AccountInfo>>() {
+        retrofitClient.FetchAllMember(course_id).enqueue(new Callback<List<AccountInfo>>()
+        {
             @Override
-            public void onResponse(Call<List<AccountInfo>> call, Response<List<AccountInfo>> response) {
+            public void onResponse(Call<List<AccountInfo>> call, Response<List<AccountInfo>> response) 
+            {
                 if(response.isSuccessful())
                 {
                     callBack.onSuccess(response.body());
@@ -327,10 +373,10 @@ public class CourseRelatedInteractIMP implements ICourseRelatedInteract {
                         JSONObject obj=new JSONObject(rawJson);
                         String msg=obj.optString("message");
                         callBack.onFailureByOtherError(msg);
-                    }
+                        }
                     catch (Exception e)
                     {
-                        if(response.code() == 401)
+                        if(response.code() == 401)                       
                             callBack.onFailureByExpiredToken();
                         else if(response.code() == 403)
                             callBack.onFailureByUnAcepptedRole();

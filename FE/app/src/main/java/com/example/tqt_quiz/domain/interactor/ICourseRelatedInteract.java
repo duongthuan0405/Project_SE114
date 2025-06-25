@@ -74,6 +74,15 @@ public interface ICourseRelatedInteract {
 
         public void onFailureByCannotSendToServer();
     }
+    void DeleteCourse(String CourseID,Context context,DeleteCourseCallBack callback);
+    public interface DeleteCourseCallBack
+    {
+        void onSuccess();
+        void onFailureByExpiredToken();
+        void onFailureByUnAcceptedRole();
+        void onOtherFailure(String msg);
+        void onFailureByCannotSendToServer();
+    }
 
     public void GetAllMemberInCourse(String course_id, Context context, GetAllMemberInCourseCallBack callBack);
     public interface GetAllMemberInCourseCallBack {

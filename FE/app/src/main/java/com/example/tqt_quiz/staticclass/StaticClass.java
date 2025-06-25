@@ -1,6 +1,7 @@
 package com.example.tqt_quiz.staticclass;
 
 
+import android.util.Log;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.ActionBar;
@@ -12,7 +13,8 @@ public class StaticClass
 {
     public static void setImage(ImageView imageView, String imgURL, int ic_default)
     {
-        Glide.with(imageView.getContext()).load(imgURL).error(ic_default).into(imageView);
+        Glide.with(imageView.getContext()).load(BareUrl + imgURL).error(ic_default).into(imageView);
+        Log.d("THUAN", BareUrl + imgURL);
     }
 
     public static class AccountTypeId
@@ -36,5 +38,7 @@ public class StaticClass
     }
 
     public static String DateTimeFormat = "yyyy-MM-dd HH:mm";
+
+    public static String BareUrl = "http://10.0.2.2:5027";
 
 }
