@@ -62,7 +62,6 @@ public class MainActivity extends AppCompatActivity implements IMainActivityCont
                 }
         );
 
-
         mainPresenter.onDecideToNavigate();
 
     }
@@ -73,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements IMainActivityCont
     }
 
     @Override
-    public void navigateToMainHomeForTeacher() {
+    public void navigateToMainHome() {
         Intent i = new Intent(MainActivity.this, MainHome.class);
         launcher_Main_MainHome.launch(i);
         finish();
@@ -89,17 +88,5 @@ public class MainActivity extends AppCompatActivity implements IMainActivityCont
     @Override
     public void showToast(String msg) {
         Toast.makeText(MainActivity.this, msg, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void navigateToMainHomeForStudent() {
-        showToast("Chưa hỗ trợ student activity");
-        navigateToLogin();
-    }
-
-    @Override
-    public void navigateToMainHomeForAdmin() {
-        showToast("Chưa hỗ trọ admin activity");
-        navigateToLogin();
     }
 }

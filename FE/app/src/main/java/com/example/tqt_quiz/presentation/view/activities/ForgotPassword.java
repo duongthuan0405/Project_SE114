@@ -22,7 +22,7 @@ import com.example.tqt_quiz.R;
 import com.example.tqt_quiz.presentation.contract_vp.ForgotPasswordContract;
 import com.example.tqt_quiz.presentation.presenter.ForgotPasswordPresenter;
 
-public class ForgotPassword2 extends AppCompatActivity implements ForgotPasswordContract.IView
+public class ForgotPassword extends AppCompatActivity implements ForgotPasswordContract.IView
 {
     Button btnNext;
     EditText editTextMail;
@@ -71,12 +71,12 @@ public class ForgotPassword2 extends AppCompatActivity implements ForgotPassword
 
     @Override
     public Context getTheContext() {
-        return ForgotPassword2.this.getApplicationContext();
+        return ForgotPassword.this.getApplicationContext();
     }
 
     @Override
     public void navigateToResetPassword() {
-        Intent i = new Intent(ForgotPassword2.this, ResetPassword.class);
+        Intent i = new Intent(ForgotPassword.this, ResetPassword.class);
         i.putExtra("email", editTextMail.getText().toString());
         launcher.launch(i);
     }

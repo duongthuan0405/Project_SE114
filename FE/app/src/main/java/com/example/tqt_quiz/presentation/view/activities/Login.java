@@ -3,7 +3,6 @@ package com.example.tqt_quiz.presentation.view.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -99,20 +98,9 @@ public class Login extends AppCompatActivity implements LoginContract.IView {
 
     @Override
     public void loginSuccess(LoginResponse loginResponse) {
-        if(loginResponse.getRoleId().equals(StaticClass.AccountTypeId.admin))
-        {
-
-        }
-        else if (loginResponse.getRoleId().equals(StaticClass.AccountTypeId.teacher))
-        {
-            Intent i = new Intent(com.example.tqt_quiz.presentation.view.activities.Login.this, MainHome.class);
-            launcher_Login_Main.launch(i);
-            finish();
-        }
-        else if (loginResponse.getRoleId().equals(StaticClass.AccountTypeId.student))
-        {
-
-        }
+        Intent i = new Intent(com.example.tqt_quiz.presentation.view.activities.Login.this, MainHome.class);
+        launcher_Login_Main.launch(i);
+        finish();
 
     }
 
@@ -130,7 +118,7 @@ public class Login extends AppCompatActivity implements LoginContract.IView {
     @Override
     public void navigateToForgotPassword()
     {
-        Intent i = new Intent(Login.this, ForgotPassword2.class);
+        Intent i = new Intent(Login.this, ForgotPassword.class);
         launcher_Login_ForgotPass.launch(i);
     }
 

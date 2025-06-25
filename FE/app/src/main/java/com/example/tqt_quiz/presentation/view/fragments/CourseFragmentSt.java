@@ -7,9 +7,12 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.Toast;
@@ -33,6 +36,7 @@ public class CourseFragmentSt extends Fragment implements ICourseFragmentStContr
     private List<Course> courseList = new ArrayList<>();
     private CourseAdapter courseAdapter;
     private ICourseFragmentStContract.IPresenter presenter;
+    private EditText edTx_FindCourse;
 
     public CourseFragmentSt() {
     }
@@ -51,6 +55,7 @@ public class CourseFragmentSt extends Fragment implements ICourseFragmentStContr
         rdbMembers = view.findViewById(R.id.rdb_Members_ViewCourseSt);
         rdbPending = view.findViewById(R.id.rdb_Pending_ViewCourseSt);
         lvCourses = view.findViewById(R.id.lv_Course_CourseSt);
+        edTx_FindCourse = view.findViewById(R.id.edt_Find_CourseSt);
 
         // Mặc định chọn "Khóa học"
         rdbMembers.setChecked(true);
@@ -74,6 +79,26 @@ public class CourseFragmentSt extends Fragment implements ICourseFragmentStContr
             intent.putExtra("courseId", selectedCourse.getId());
             startActivity(intent);
         });
+
+        edTx_FindCourse.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (courseAdapter != null) {
+                    courseAdapter.filtCourse(s.toString());
+                }
+            }
+        });
+
 
         return view;
     }

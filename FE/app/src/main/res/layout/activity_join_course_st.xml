@@ -8,212 +8,172 @@
     android:background="@color/AppBackground"
     tools:context=".presentation.view.activities.Register">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView_CreateCourse"
-        android:layout_width="325dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:cardBackgroundColor="@android:color/white"
-        app:cardCornerRadius="20dp"
-        app:cardElevation="8dp"
+    <LinearLayout
+        android:id="@+id/ll_Content_CourseSt"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginVertical="30dp"
+        android:layout_marginHorizontal="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_Register_Register"
-            android:layout_width="327dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#FFFFFF"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:padding="15dp">
+            app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/tv_Register_Register"
-                android:layout_width="wrap_content"
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_weight="2"
                 android:layout_height="wrap_content"
-                android:text="Đăng ký"
-                android:textSize="24sp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp">
+
+                <EditText
+                    android:id="@+id/edt_Find_CourseSt"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@android:color/transparent"
+                    android:hint="Nhập mã khóa học"
+                    android:inputType="text"
+                    android:padding="12dp"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+            </androidx.cardview.widget.CardView>
+
+            <Button
+                android:id="@+id/btn_Find"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:background="@drawable/btn_rectagle"
+                android:backgroundTint="#113483"
+                android:text="Tìm"
+                android:textSize="20sp"
+                android:textColor="@color/white"
                 android:textStyle="bold"
+                android:layout_marginStart="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <RadioGroup
-                android:id="@+id/rdg_Type_Register"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_Register_Register">
+        </LinearLayout>
 
-                <RadioButton
-                    android:id="@+id/rdb_Student_Register"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="12dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/btn_rectagle"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/img_CourseAvatar_ViewCourse"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/resource_default"
+                app:shapeAppearanceOverlay="@style/rounded_border_img"
+                android:scaleType="fitXY"
+                android:layout_marginEnd="12dp" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_CourseName_ViewCourse"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:text="Học sinh"
-                    android:textSize="16sp"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    android:paddingLeft="40dp"
-                    android:paddingRight="40dp"
-                    android:button="@android:color/transparent"
-                    android:background="@drawable/radio_selector"
-                    android:elevation="4dp"/>
+                    android:text="Lập trình Android cơ bản"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/gray" />
 
-                <RadioButton
-                    android:id="@+id/rdb_Teacher_Register"
+                <TextView
+                    android:id="@+id/tv_CourseID_ViewCourse"
+                    android:layout_marginTop="4dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:text="Giáo viên"
-                    android:textSize="16sp"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    android:paddingLeft="40dp"
-                    android:paddingRight="40dp"
-                    android:button="@android:color/transparent"
-                    android:background="@drawable/radio_selector"
-                    android:elevation="4dp"/>
-            </RadioGroup>
+                    android:text="- ID -"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/gray" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:hint="Họ"
-                android:id="@+id/til_LastName_Register"
-                app:layout_constraintTop_toBottomOf="@+id/rdg_Type_Register"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edt_LastName_Register"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/tv_IsPrivate_ViewCourse"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:text="Riêng tư: Có"
+                    android:textSize="14sp"
+                    android:textColor="@color/gray"
+                    android:layout_marginTop="4dp" />
+            </LinearLayout>
+        </LinearLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:hint="Tên"
-                android:id="@+id/til_FirstName_Register"
-                app:layout_constraintTop_toBottomOf="@+id/til_LastName_Register"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
+        <TextView
+            android:id="@+id/tv_Description_ViewCourse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="📌 Mô tả khóa học"
+            android:textColor="@color/dark_gray"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginBottom="4dp" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edt_FirstName_Register"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
+        <TextView
+            android:id="@+id/tv_DescriptionValue_ViewCourse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Khóa học dành cho người mới bắt đầu học lập trình Android."
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:inputType="textMultiLine"
+            android:minLines="4"
+            android:maxLines="6"
+            android:background="@drawable/rounded_border"
+            android:padding="12dp"
+            android:layout_marginBottom="16dp"/>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:hint="Email"
-                android:id="@+id/til_Email_Register"
-                app:layout_constraintTop_toBottomOf="@+id/til_FirstName_Register"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
+        <TextView
+            android:id="@+id/tv_HostName_ViewCourse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="👤 Tên giáo viên: "
+            android:textSize="16sp"
+            android:textColor="@color/dark_gray"
+            android:layout_marginBottom="16dp" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edt_Email_Register"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress" />
-            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:hint="Mật khẩu"
-                android:id="@+id/til_Pw_Register"
-                app:layout_constraintTop_toBottomOf="@+id/til_Email_Register"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
+        <Button
+            android:id="@+id/btn_Join"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_rectagle"
+            android:backgroundTint="#113483"
+            android:text="Tham gia"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edt_Pw_Register"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPassword" />
-            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:hint="Nhập lại mật khẩu"
-                android:id="@+id/til_PwAgain_Register"
-                app:layout_constraintTop_toBottomOf="@+id/til_Pw_Register"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
+    </LinearLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edt_PwAgain_Register"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPassword" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <Button
-                android:id="@+id/btn_Register_Register"
-                android:layout_width="200dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/btn_rectagle"
-                android:backgroundTint="#113483"
-                android:text="Đăng ký"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/til_PwAgain_Register" />
-
-            <TextView
-                android:id="@+id/tv_HaveAccount_Register"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="Bạn đã có tài khoản?"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.36"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_Register_Register"
-                app:layout_constraintVertical_bias="0.105" />
-
-            <TextView
-                android:id="@+id/btn_Login_Register"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="Đăng nhập"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.09"
-                app:layout_constraintStart_toEndOf="@+id/tv_HaveAccount_Register"
-                app:layout_constraintTop_toBottomOf="@+id/btn_Register_Register"
-                app:layout_constraintVertical_bias="0.113" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
