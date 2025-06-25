@@ -3,6 +3,7 @@ package com.example.tqt_quiz.data.interactor;
 import android.content.Context;
 import android.util.Log;
 
+import com.example.tqt_quiz.data.repository.RoleManager;
 import com.example.tqt_quiz.data.repository.token.RetrofitClient;
 import com.example.tqt_quiz.data.repository.token.TokenManager;
 import com.example.tqt_quiz.domain.APIService.LoginService;
@@ -23,6 +24,7 @@ public class AuthInteractorIMP implements IAuthInteract {
     @Override
     public void Login(String Email, String PassWord, Context context, IAuthInteract.LoginCallBack callBack) {
         TokenManager tokenManager = new TokenManager(context);
+        RoleManager roleManager=new RoleManager(context);
         LoginService service= RetrofitClient.GetClient(tokenManager).create(LoginService.class);
         Call<LoginResponse> call=service.login(new LoginRequest(Email,PassWord));
         call.enqueue(new Callback<LoginResponse>() {
@@ -31,6 +33,7 @@ public class AuthInteractorIMP implements IAuthInteract {
                 if(response.isSuccessful())
                 {
                     tokenManager.SaveToken(response.body().getToken());
+                    roleManager.SaveRole(response.body().getRoleId());
                     callBack.onSuccess(response.body());
                 }
                 else {
