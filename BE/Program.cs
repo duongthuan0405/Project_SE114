@@ -116,6 +116,7 @@ public class Program
         
 
         var app = builder.Build();
+        app.UseStaticFiles();
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
@@ -125,10 +126,10 @@ public class Program
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Project_SE114 BE API V1");
-                
+
             });
 
-            
+
         }
 
         //app.UseHttpsRedirection();
