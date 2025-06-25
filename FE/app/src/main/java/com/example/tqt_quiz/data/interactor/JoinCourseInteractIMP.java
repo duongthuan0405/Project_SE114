@@ -1,13 +1,12 @@
 package com.example.tqt_quiz.data.interactor;
 
 import android.content.Context;
-import android.util.Log;
 
 
 import com.example.tqt_quiz.data.repository.token.RetrofitClient;
 import com.example.tqt_quiz.data.repository.token.TokenManager;
 import com.example.tqt_quiz.domain.APIService.JoinCourseRelatedService;
-import com.example.tqt_quiz.domain.dto.LoginResponse;
+import com.example.tqt_quiz.domain.dto.AccountInfo;
 import com.example.tqt_quiz.domain.dto.JoinCourseResponseDTO;
 import com.example.tqt_quiz.domain.interactor.IJoinCourseInteract;
 
@@ -21,10 +20,10 @@ import retrofit2.Response;
 
 public class JoinCourseInteractIMP implements IJoinCourseInteract {
     @Override
-    public void JoinCourse(Context context, JoinCourseCallBack callBack) {
+    public void JoinCourse(String course_id, Context context, JoinCourseCallBack callBack) {
         TokenManager tokenManager = new TokenManager(context);
         JoinCourseRelatedService service = RetrofitClient.GetClient(tokenManager).create(JoinCourseRelatedService.class);
-        Call<JoinCourseResponseDTO> call = service.CreateJoinRequest();
+        Call<JoinCourseResponseDTO> call = service.CreateJoinRequest(course_id);
         call.enqueue(new Callback<JoinCourseResponseDTO>() {
             @Override
             public void onResponse(Call<JoinCourseResponseDTO> call, Response<JoinCourseResponseDTO> response) {
@@ -67,11 +66,11 @@ public class JoinCourseInteractIMP implements IJoinCourseInteract {
     }
 
     @Override
-    public void AcceptCourseJoinRequest(Context context, AcceptCourseCallBack callBack)
+    public void AcceptCourseJoinRequest(String account_id, String course_id, Context context, AcceptCourseCallBack callBack)
     {
         TokenManager tokenManager=new TokenManager(context);
         JoinCourseRelatedService service=RetrofitClient.GetClient(tokenManager).create(JoinCourseRelatedService.class);
-        Call<Void> call= service.ApproveRequest();
+        Call<Void> call= service.ApproveRequest(account_id, course_id);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -112,10 +111,10 @@ public class JoinCourseInteractIMP implements IJoinCourseInteract {
     }
 
     @Override
-    public void DenyCourseJoinRequest(Context context, DenyCourseCallBack callBack) {
+    public void DenyCourseJoinRequest(String account_id, String course_id, Context context, DenyCourseCallBack callBack) {
         TokenManager tokenManager=new TokenManager(context);
         JoinCourseRelatedService service=RetrofitClient.GetClient(tokenManager).create(JoinCourseRelatedService.class);
-        Call<Void> call= service.DenyJoinRequest();
+        Call<Void> call= service.DenyJoinRequest(account_id, course_id);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -164,15 +163,13 @@ public class JoinCourseInteractIMP implements IJoinCourseInteract {
     }
 
     @Override
-    public void ViewAllAccountPendingThisCourse(Context context, ViewAllAccountPendingThisCourse callBack) {
+    public void ViewAllAccountPendingThisCourse(String course_id, Context context, ViewAllAccountPendingThisCourse callBack) {
         TokenManager tokenManager = new TokenManager(context);
         JoinCourseRelatedService service = RetrofitClient.GetClient(tokenManager).create(JoinCourseRelatedService.class);
-        Call<List<LoginResponse>> call = service.ViewAllAccountPendingThisCourse();
-        call.enqueue(new Callback<List<LoginResponse>>() {
-
-
+        Call<List<AccountInfo>> call = service.ViewAllAccountPendingThisCourse(course_id);
+        call.enqueue(new Callback<List<AccountInfo>>() {
             @Override
-            public void onResponse(Call<List<LoginResponse>> call, Response<List<LoginResponse>> response) {
+            public void onResponse(Call<List<AccountInfo>> call, Response<List<AccountInfo>> response) {
                 if(response.isSuccessful())
                 {
                     callBack.onSuccess(response.body());
@@ -205,7 +202,7 @@ public class JoinCourseInteractIMP implements IJoinCourseInteract {
             }
 
             @Override
-            public void onFailure(Call<List<LoginResponse>> call, Throwable t) {
+            public void onFailure(Call<List<AccountInfo>> call, Throwable t) {
                 callBack.onCannotContactWithServer();
             }
         });

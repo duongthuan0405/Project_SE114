@@ -47,6 +47,17 @@
                     android:textColor="@color/gray" />
 
                 <TextView
+                    android:id="@+id/tv_CourseID_ViewCourse"
+                    android:layout_marginTop="4dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="- ID -"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/gray" />
+
+
+                <TextView
                     android:id="@+id/tv_IsPrivate_ViewCourse"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

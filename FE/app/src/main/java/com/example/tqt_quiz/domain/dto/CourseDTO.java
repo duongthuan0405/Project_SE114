@@ -34,7 +34,7 @@ public class CourseDTO {
         return stateOfJoining;
     }
 
-    public void setStateOfJoining(String userID) {
+    public void setStateOfJoining(String stateOfJoining) {
         this.stateOfJoining = stateOfJoining;
     }
 

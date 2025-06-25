@@ -1,12 +1,14 @@
 package com.example.tqt_quiz.domain.dto;
 
 import com.example.tqt_quiz.domain.JasonAdapters.LocalDateTimeAdapter;
+import com.example.tqt_quiz.staticclass.StaticClass;
 import com.google.gson.annotations.SerializedName;
 
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.annotations.JsonAdapter;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class QuizDTO {
 
@@ -101,5 +103,19 @@ public class QuizDTO {
     }
     public void setIsPublished(boolean isPublished) {
         this.isPublished = isPublished;
+    }
+    @Override
+    public String toString() {
+        return "QuizDTO{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", startTime=" + startTime +
+                ", dueTime=" + dueTime +
+                ", courseId='" + courseId + '\'' +
+                ", courseName='" + courseName + '\'' +
+                ", isPublished=" + isPublished +
+                ", statusOfAttempt='" + statusOfAttempt + '\'' +
+                '}';
     }
 }

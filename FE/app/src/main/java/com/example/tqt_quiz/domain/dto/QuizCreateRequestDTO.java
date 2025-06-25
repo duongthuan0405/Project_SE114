@@ -68,5 +68,25 @@ public class QuizCreateRequestDTO {
     public void setCourseId(String courseId) {
         this.courseId = courseId;
     }
+
+
+    public QuizCreateRequestDTO(String name, String description, LocalDateTime startTime, LocalDateTime dueTime, String courseId) {
+        this.name = name;
+        this.description = description;
+        this.startTime = startTime;
+        this.dueTime = dueTime;
+        this.courseId = courseId;
+    }
+
+    @Override
+    public String toString() {
+        return "QuizCreateRequestDTO{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", startTime=" + startTime +
+                ", dueTime=" + dueTime +
+                ", courseId='" + courseId + '\'' +
+                '}';
+    }
 }
 

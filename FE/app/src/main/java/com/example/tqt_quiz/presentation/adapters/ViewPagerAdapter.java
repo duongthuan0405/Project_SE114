@@ -10,25 +10,33 @@ import com.example.tqt_quiz.presentation.view.fragments.NotificationFragment;
 import com.example.tqt_quiz.presentation.view.fragments.ProfileFragment;
 import com.example.tqt_quiz.presentation.view.fragments.QuizFragment;
 
+import java.util.ArrayList;
+
 public class ViewPagerAdapter extends FragmentStateAdapter {
+    ArrayList<Fragment> list;
     public ViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
+        list = new ArrayList<>();
+        list.add(new CourseFragment());
+        list.add(new QuizFragment());
+        list.add(new NotificationFragment());
+        list.add(new ProfileFragment());
     }
 
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        switch (position){
-            case 0: return new CourseFragment();
-            case 1: return new QuizFragment();
-            case 2: return new NotificationFragment();
-            case 3: return new ProfileFragment();
-            default: return new CourseFragment();
-        }
+        return list.get(position);
     }
 
     @Override
     public int getItemCount() {
         return 4;
     }
+
+    public Fragment getFragmentAt(int i)
+    {
+        return list.get(i);
+    }
+
 }

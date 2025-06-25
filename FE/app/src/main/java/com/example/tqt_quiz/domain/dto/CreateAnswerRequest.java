@@ -22,4 +22,9 @@ public class CreateAnswerRequest {
     public void setIsCorrect(boolean isCorrect) {
         this.isCorrect = isCorrect;
     }
+
+    public CreateAnswerRequest(String content, boolean isCorrect) {
+        this.content = content;
+        this.isCorrect = isCorrect;
+    }
 }

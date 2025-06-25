@@ -54,5 +54,12 @@ public class CourseCreateInfo {
     public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
+
+    public CourseCreateInfo(@NonNull String name, String description, boolean isPrivate, String avatar) {
+        this.name = name;
+        this.description = description;
+        this.isPrivate = isPrivate;
+        this.avatar = avatar;
+    }
 }
 

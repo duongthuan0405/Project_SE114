@@ -20,6 +20,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.tqt_quiz.R;
 import com.example.tqt_quiz.presentation.contract_vp.RegisterContract;
 import com.example.tqt_quiz.presentation.presenter.RegisterPresenter;
+import com.example.tqt_quiz.staticclass.StaticClass;
 
 public class Register extends AppCompatActivity implements RegisterContract.IView {
     private EditText LastName, FirstName, Email, Pw, PwAgain;
@@ -40,7 +41,7 @@ public class Register extends AppCompatActivity implements RegisterContract.IVie
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
+        StaticClass.customActionBar(getSupportActionBar(), R.layout.custom_action_bar_2);
         //Ánh xạ
         LastName = findViewById(R.id.edt_LastName_Register);
         FirstName = findViewById(R.id.edt_FirstName_Register);

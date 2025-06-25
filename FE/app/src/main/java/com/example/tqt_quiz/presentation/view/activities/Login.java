@@ -42,6 +42,8 @@ public class Login extends AppCompatActivity implements LoginContract.IView {
             return insets;
         });
 
+        StaticClass.customActionBar(getSupportActionBar(), R.layout.custom_action_bar_2);
+
         //Ánh xạ
         btn_Login = findViewById(R.id.btn_Login_Login);
         edt_Email = findViewById(R.id.edt_Email_Login);

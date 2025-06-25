@@ -4,12 +4,11 @@ import android.content.Context;
 
 import com.example.tqt_quiz.domain.dto.AccountInfo;
 import com.example.tqt_quiz.domain.dto.JoinCourseResponseDTO;
-import com.example.tqt_quiz.domain.dto.LoginResponse;
 
 import java.util.List;
 
 public interface IJoinCourseInteract {
-    public void JoinCourse(Context context, JoinCourseCallBack callBack);
+    public void JoinCourse(String course_id, Context context, JoinCourseCallBack callBack);
     public interface JoinCourseCallBack
     {
         public void onSuccess(JoinCourseResponseDTO response);
@@ -21,7 +20,7 @@ public interface IJoinCourseInteract {
     }
 
 
-    public void AcceptCourseJoinRequest(Context context,AcceptCourseCallBack callBack);
+    public void AcceptCourseJoinRequest(String account_id, String course_id, Context context, AcceptCourseCallBack callBack);
     public interface AcceptCourseCallBack
     {
         public void onSuccess(String msg);
@@ -31,7 +30,7 @@ public interface IJoinCourseInteract {
         public void onCannotConnectToServer(String msg);
     }
 
-    public void DenyCourseJoinRequest(Context context,DenyCourseCallBack callBack);
+    public void DenyCourseJoinRequest(String account_id, String course_id, Context context, DenyCourseCallBack callBack);
     public interface DenyCourseCallBack
     {
         public void onSuccess(String msg);
@@ -42,10 +41,10 @@ public interface IJoinCourseInteract {
     }
 
 
-    public void ViewAllAccountPendingThisCourse(Context context,ViewAllAccountPendingThisCourse callBack);
+    public void ViewAllAccountPendingThisCourse(String course_id, Context context, ViewAllAccountPendingThisCourse callBack);
     public interface ViewAllAccountPendingThisCourse
     {
-        public void onSuccess(List<LoginResponse> response);
+        public void onSuccess(List<AccountInfo> response);
         public void onFailureByExpiredToken(String msg);
         public void onFailureByUnacceptedRole(String msg);
         public void onFailureByNotExistCourse(String msg);

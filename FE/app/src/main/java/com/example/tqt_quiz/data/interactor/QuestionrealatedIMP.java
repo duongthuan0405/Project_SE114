@@ -1,6 +1,7 @@
 package com.example.tqt_quiz.data.interactor;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.tqt_quiz.data.repository.token.RetrofitClient;
 import com.example.tqt_quiz.data.repository.token.TokenManager;
@@ -33,6 +34,7 @@ public class QuestionrealatedIMP implements IQuestionrelatedInteract {
                     callback.onSuccess();
                 }
                 else{
+                    Log.d("MY_BUG", response.code() + "");
                     String rawJson="";
                     try
                     {
@@ -65,6 +67,7 @@ public class QuestionrealatedIMP implements IQuestionrelatedInteract {
         TokenManager tokenManager=new TokenManager(context);
         FetchQuestionService service= RetrofitClient.GetClient(tokenManager).create(FetchQuestionService.class);
         Call<List<QuestionDTO>> call= service.FetchQuizQuestionForTeacher(quizId);
+
         call.enqueue(new Callback<List<QuestionDTO>>() {
             @Override
             public void onResponse(Call<List<QuestionDTO>> call, Response<List<QuestionDTO>> response) {

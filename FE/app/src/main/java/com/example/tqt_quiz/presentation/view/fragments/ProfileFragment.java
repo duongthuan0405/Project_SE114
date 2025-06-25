@@ -18,13 +18,14 @@ import android.widget.TextView;
 
 import com.example.tqt_quiz.R;
 import com.example.tqt_quiz.domain.dto.AccountInfo;
+import com.example.tqt_quiz.presentation.classes.IReloadableTab;
 import com.example.tqt_quiz.presentation.contract_vp.ProfileFragmentContract;
 import com.example.tqt_quiz.presentation.presenter.ProfileFragmentPresenter;
 import com.example.tqt_quiz.presentation.view.activities.Login;
 import com.example.tqt_quiz.staticclass.StaticClass;
 import com.google.android.material.imageview.ShapeableImageView;
 
-public class ProfileFragment extends Fragment implements ProfileFragmentContract.IView
+public class ProfileFragment extends Fragment implements ProfileFragmentContract.IView, IReloadableTab
 {
     ProfileFragmentContract.IPresenter presenter;
     Button btn_Logout;
@@ -88,6 +89,11 @@ public class ProfileFragment extends Fragment implements ProfileFragmentContract
 
     @Override
     public void showError(String msg) {
+
+    }
+
+    @Override
+    public void onTabVisible(boolean firstTime) {
 
     }
 }
