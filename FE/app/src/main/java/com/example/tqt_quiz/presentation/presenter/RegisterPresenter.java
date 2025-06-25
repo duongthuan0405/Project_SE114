@@ -16,7 +16,7 @@ public class RegisterPresenter implements RegisterContract.IPresenter {
     }
 
     @Override
-    public void handleRegister(String type, String lastName, String firstName, String email, String password, String confirmPassword) {
+    public void handleRegister(String type, String lastName, String firstName, String email, String password, String confirmPassword, String accountType) {
         if (TextUtils.isEmpty(lastName) || TextUtils.isEmpty(firstName) ||
                 TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword)) {
             view.showRegisterError("Vui lòng điền đầy đủ thông tin.");
@@ -28,7 +28,7 @@ public class RegisterPresenter implements RegisterContract.IPresenter {
             return;
         }
 
-        authInteract.Register(new RegisterRequest(email, password, firstName, lastName), view.getTheContext(), new IAuthInteract.RegCallBack() {
+        authInteract.Register(new RegisterRequest(email, password, firstName, lastName, accountType), view.getTheContext(), new IAuthInteract.RegCallBack() {
             @Override
             public void onSuccess() {
                 view.showRegisterSuccess();

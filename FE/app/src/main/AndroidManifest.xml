@@ -16,6 +16,9 @@
         android:theme="@style/Theme.TQT_Quiz"
         tools:targetApi="31">
         <activity
+            android:name=".presentation.view.activities.ForgotPassword2"
+            android:exported="false" />
+        <activity
             android:name=".presentation.view.activities.ViewQuiz"
             android:exported="false" />
         <activity
@@ -31,9 +34,6 @@
             android:name=".presentation.view.activities.CreateCourse"
             android:exported="false" />
         <activity
-            android:name=".presentation.view.activities.ForgotPassword"
-            android:exported="false" />
-        <activity
             android:name=".presentation.view.activities.MainHome"
             android:exported="false" />
         <activity
@@ -45,16 +45,26 @@
         <activity
             android:name=".presentation.view.activities.Register"
             android:exported="false" />
+
+        <activity
+            android:name=".presentation.view.activities.ResetPassword"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="tqtquiz" android:host="reset-password" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".presentation.view.activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>

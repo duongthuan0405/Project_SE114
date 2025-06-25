@@ -1,10 +1,15 @@
 package com.example.tqt_quiz.presentation.presenter;
 
+import android.net.Uri;
+
 import com.example.tqt_quiz.data.interactor.CourseRelatedInteractIMP;
+import com.example.tqt_quiz.data.interactor.ImageRelatedInteract;
 import com.example.tqt_quiz.data.interactor.JoinCourseInteractIMP;
 import com.example.tqt_quiz.domain.dto.AccountInfo;
 import com.example.tqt_quiz.domain.dto.CourseDTO;
+import com.example.tqt_quiz.domain.dto.UploadResponse;
 import com.example.tqt_quiz.domain.interactor.ICourseRelatedInteract;
+import com.example.tqt_quiz.domain.interactor.IImageRelatedInteract;
 import com.example.tqt_quiz.domain.interactor.IJoinCourseInteract;
 import com.example.tqt_quiz.presentation.contract_vp.ViewCourseContract;
 
@@ -15,11 +20,13 @@ public class ViewCoursePresenter implements ViewCourseContract.IPresenter
     ViewCourseContract.IView view;
     ICourseRelatedInteract courseRelatedInteract;
     IJoinCourseInteract joinCourseInteract;
+    IImageRelatedInteract imageRelatedInteract;
     public ViewCoursePresenter(ViewCourseContract.IView view)
     {
         this.view = view;
         courseRelatedInteract = new CourseRelatedInteractIMP();
         joinCourseInteract = new JoinCourseInteractIMP();
+        imageRelatedInteract = new ImageRelatedInteract();
     }
 
     @Override
@@ -185,6 +192,36 @@ public class ViewCoursePresenter implements ViewCourseContract.IPresenter
 
             @Override
             public void onCannotConnectToServer(String msg) {
+                view.showToast("Không thể kết nối đến server");
+            }
+        });
+    }
+
+    @Override
+    public void saveLogo(Uri selectedImageUri, String courseId) {
+        imageRelatedInteract.uploadLogo(selectedImageUri, courseId, view.getTheContext(), new IImageRelatedInteract.UploadImageCallBack() {
+            @Override
+            public void onSuccess(UploadResponse response) {
+                view.showToast("Lưu ảnh thành công");
+            }
+
+            @Override
+            public void onFailureByExpiredToken() {
+                view.navigateToLogin();
+            }
+
+            @Override
+            public void onFailureByUnAcepptedRole() {
+                view.showToast("Tài khoản không thể truy cập tài nguyên này");
+            }
+
+            @Override
+            public void onFailureByOther(String msg) {
+                view.showToast(msg);
+            }
+
+            @Override
+            public void onFailureByCannotConnectToServer() {
                 view.showToast("Không thể kết nối đến server");
             }
         });

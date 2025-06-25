@@ -12,6 +12,6 @@ public interface RegisterContract {
     }
 
     public interface IPresenter{
-        void handleRegister(String type, String lastName, String firstName, String email, String password, String confirmPassword);
+        void handleRegister(String type, String lastName, String firstName, String email, String password, String confirmPassword, String accountType);
     }
 }
