@@ -60,14 +60,15 @@ namespace BE.Controller.APIService
             {
                 string quiz_id = questionsDTO[0]?.QuizId ?? "";
                 Quiz? q = await db.Quizzes.Where(q => q.Id == quiz_id).FirstOrDefaultAsync();
-                if(q == null)
+                
+                if (DateTime.Now >= q.StartTime)
                 {
-                    return StatusCode(StatusCodes.Status404NotFound, new { Message = "Bài quiz không tồn tại" });
+                    return StatusCode(StatusCodes.Status403Forbidden, new { Message = "Không thể thêm/ sửa câu hỏi khi quiz đã bắt đầu" });
                 }    
 
-                if(DateTime.Now > q.StartTime)
+                if (q == null)
                 {
-                    return StatusCode(StatusCodes.Status403Forbidden, new { Message = "Không thể sửa câu hỏi khi quiz đã bắt đầu" });
+                    return StatusCode(StatusCodes.Status404NotFound, new { Message = "Bài quiz không tồn tại" });
                 }    
 
                 db.Questions.RemoveRange(await db.Questions.Where(q => q.QuizId == quiz_id).ToListAsync());

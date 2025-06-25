@@ -28,5 +28,7 @@ public interface QuizFragmentContract
         void loadCourseToSpinner();
 
         void getQuizByFilter(String selectedCourse, String selectedStatus);
+
+        void getAllQuizByFilter(String status);
     }
 }

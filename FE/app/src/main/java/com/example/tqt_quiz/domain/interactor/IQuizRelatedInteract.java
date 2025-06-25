@@ -44,4 +44,22 @@ public interface IQuizRelatedInteract {
         void onOtherFailure(String msg);
         void onFailureByCannotSendToServer();
     }
+    void UpdateQuiz(String Quiz_id,QuizCreateRequestDTO updatedquiz,Context context,UpdateQuizCallBack callback);
+    public interface UpdateQuizCallBack
+    {
+        void onSuccess(QuizDTO response);
+        void onFailureByExpiredToken();
+        void onFailureByUnAcceptedRole();
+        void onOtherFailure(String msg);
+        void onFailureByCannotSendToServer();
+    }
+    void GetAllQuiz(Context context,GetAllQuizCallBack callback);
+    public interface GetAllQuizCallBack
+    {
+        void onSuccess(List<QuizDTO> response);
+        void onFailureByExpiredToken();
+        void onFailureByUnAcceptedRole();
+        void onOtherFailure(String msg);
+        void onFailureByCannotSendToServer();
+    }
 }

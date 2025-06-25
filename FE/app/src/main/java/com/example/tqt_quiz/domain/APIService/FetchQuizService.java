@@ -13,4 +13,6 @@ public interface FetchQuizService {
     Call<QuizDTO> FetchQuizByQuizID(@Path("quiz_id") String quiz_id);
     @GET("/tqtquiz/Quiz/course/{course_id}")
     Call<List<QuizDTO>> FetchAllQuizByCourseID(@Path("course_id") String Course_id);
+    @GET("/tqtquiz/Quiz/all")
+    Call<List<QuizDTO>> FetchAllQuiz();
 }

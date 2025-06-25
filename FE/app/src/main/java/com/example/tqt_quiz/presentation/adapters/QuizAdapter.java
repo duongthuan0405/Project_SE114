@@ -72,7 +72,7 @@ public class QuizAdapter extends ArrayAdapter<Quiz> {
             holder.tvQuizName.setText(quiz.getName());
             holder.tvStartTime.setText("Bắt đầu: " + quiz.getStartTime());
             holder.tvEndTime.setText("Kết thúc: " + quiz.getDueTime());
-            holder.tvCourseId.setText("Khóa học: " + quiz.getCourseID());
+            holder.tvCourseId.setText("Khóa học: " + quiz.getCourseName());
 
             String startTimeStr = quiz.getStartTime();  // VD: "2025-06-19 14:00"
             String endTimeStr = quiz.getDueTime();

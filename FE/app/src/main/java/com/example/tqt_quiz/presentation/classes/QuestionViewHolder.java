@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.example.tqt_quiz.R;
 import com.example.tqt_quiz.domain.dto.AnswerDTO;
 import com.example.tqt_quiz.domain.dto.QuestionDTO;
+import com.example.tqt_quiz.domain.dto.QuizDTO;
 
 import java.util.ArrayList;
 import java.util.List;

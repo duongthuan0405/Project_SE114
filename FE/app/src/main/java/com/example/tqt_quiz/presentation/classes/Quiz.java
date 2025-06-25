@@ -15,6 +15,7 @@ public class Quiz implements Serializable {
     private String dueTime;
     private boolean isPublished;
     private String courseID;
+    private String courseName;
 
     public Quiz(String name, String description, String startTime, String dueTime, boolean isPublished) {
         this.name = name;
@@ -39,6 +40,7 @@ public class Quiz implements Serializable {
         this.isPublished = quizDTO.getIsPublished();
         this.id = quizDTO.getId();
         this.courseID = quizDTO.getCourseId();
+        this.courseName = quizDTO.getCourseName();
     }
 
     public String getId() {
@@ -105,5 +107,13 @@ public class Quiz implements Serializable {
     public LocalDateTime getLCDT_DueTime()
     {
         return LocalDateTime.parse(dueTime, DateTimeFormatter.ofPattern(StaticClass.DateTimeFormat));
+    }
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
     }
 }

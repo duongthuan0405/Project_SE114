@@ -154,7 +154,7 @@ public class QuizFragment extends Fragment implements QuizFragmentContract.IView
 
         if(quizId.equals(""))
         {
-            return;
+            presenter.getAllQuizByFilter(status);
         }
 
         else
@@ -164,8 +164,6 @@ public class QuizFragment extends Fragment implements QuizFragmentContract.IView
 
 
     }
-
-    // Lọc trạng thái
     private String getQuizStatus(Quiz quiz) {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");

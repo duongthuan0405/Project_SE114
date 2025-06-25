@@ -20,6 +20,8 @@ import com.example.tqt_quiz.presentation.classes.Question;
 import com.example.tqt_quiz.presentation.classes.Quiz;
 import com.example.tqt_quiz.presentation.contract_vp.CreateQuizContract;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -164,7 +166,32 @@ public class CreateQuizPresenter implements CreateQuizContract.IPresenter
 
     @Override
     public void updateQuiz(String quizId, QuizCreateRequestDTO quizCreateRequestDTO) {
-        
+        quizRelatedInteract.UpdateQuiz(quizId, quizCreateRequestDTO, view.getTheContext(), new IQuizRelatedInteract.UpdateQuizCallBack() {
+            @Override
+            public void onSuccess(QuizDTO response) {
+                view.CreateQuestionAnswer();
+            }
+
+            @Override
+            public void onFailureByExpiredToken() {
+                view.navigateToLogin();
+            }
+
+            @Override
+            public void onFailureByUnAcceptedRole() {
+                view.showMessage("Tài khoản không thể truy cập tài nguyên này");
+            }
+
+            @Override
+            public void onOtherFailure(String msg) {
+                view.showMessage(msg);
+            }
+
+            @Override
+            public void onFailureByCannotSendToServer() {
+                view.showMessage("Không thể kết nối đến server");
+            }
+        });
     }
 
     @Override
@@ -182,7 +209,7 @@ public class CreateQuizPresenter implements CreateQuizContract.IPresenter
 
             @Override
             public void onFailureByUnAcepptedRole(String msg) {
-                view.showMessage("Tài khoản không thể truy cập tài nguyên này");
+                view.showMessage("Tài khoản không thể truy cập tài nguyên này");;
             }
 
             @Override
