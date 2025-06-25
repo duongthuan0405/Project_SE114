@@ -8,14 +8,19 @@ import androidx.appcompat.app.ActionBar;
 
 import com.bumptech.glide.Glide;
 import com.example.tqt_quiz.domain.dto.AccountInfo;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 
 public class StaticClass
 {
     public static void setImage(ImageView imageView, String imgURL, int ic_default)
     {
-        Glide.with(imageView.getContext()).load(BareUrl + imgURL).error(ic_default).into(imageView);
-        Log.d("THUAN", BareUrl + imgURL);
+        Glide.with(imageView.getContext())
+                .load(BareUrl + imgURL)
+                .error(ic_default)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .into(imageView);
     }
 
     public static class AccountTypeId
