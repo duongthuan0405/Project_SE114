@@ -1,6 +1,7 @@
 
 using BE.Adapter;
 using BE.Data.Database;
+using BE.Email;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -113,7 +114,10 @@ public class Program
             });
            
         });
-        
+
+        builder.Services.Configure<EmailSetting>(builder.Configuration.GetSection("Email"));
+        builder.Services.AddScoped<IEmailService, EmailService>();
+
 
         var app = builder.Build();
         app.UseStaticFiles();
