@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/AppBackground"
+    android:padding="16dp"
+    tools:context=".presentation.view.fragments.CourseFragmentSt">
+
+    <LinearLayout
+        android:id="@+id/ll_Content_CourseSt"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_Course_CourseSt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/roboto_mono"
+            android:gravity="center"
+            android:text="KHÓA HỌC"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardElevation="4dp"
+            app:cardCornerRadius="12dp">
+
+            <EditText
+                android:id="@+id/edt_Find_CourseSt"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="Tìm kiếm khóa học"
+                android:padding="12dp"
+                android:background="@android:color/transparent"
+                android:inputType="text"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+        </androidx.cardview.widget.CardView>
+
+        <!-- Radio Group -->
+        <RadioGroup
+            android:id="@+id/rdg_Type_ViewCourseSt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_gravity="center">
+
+            <RadioButton
+                android:id="@+id/rdb_Members_ViewCourseSt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Khóa học"
+                android:textColor="@color/dark_gray"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="20dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:paddingLeft="40dp"
+                android:paddingRight="40dp"
+                android:button="@android:color/transparent"
+                android:background="@drawable/radio_selector"
+                android:elevation="4dp" />
+
+            <RadioButton
+                android:id="@+id/rdb_Pending_ViewCourseSt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chờ duyệt"
+                android:textColor="@color/dark_gray"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginStart="20dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:paddingLeft="40dp"
+                android:paddingRight="40dp"
+                android:button="@android:color/transparent"
+                android:background="@drawable/radio_selector"
+                android:elevation="4dp" />
+        </RadioGroup>
+
+
+        <ListView
+            android:id="@+id/lv_Course_CourseSt"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="4dp"
+            android:padding="4dp"
+            android:clipToPadding="false" />
+
+    </LinearLayout>
+</FrameLayout>
