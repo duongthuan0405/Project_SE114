@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import androidx.appcompat.app.ActionBar;
 
 import com.bumptech.glide.Glide;
+import com.example.tqt_quiz.domain.dto.AccountInfo;
 
 
 public class StaticClass
@@ -36,6 +37,8 @@ public class StaticClass
         public static String NOW = "Đang diễn ra";
         public static String END = "Đã kết thúc";
     }
+
+    public static AccountInfo accountInfo;
 
     public static String DateTimeFormat = "yyyy-MM-dd HH:mm";
 

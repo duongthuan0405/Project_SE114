@@ -1,7 +1,5 @@
 package com.example.tqt_quiz.presentation.presenter;
 
-import android.util.Log;
-
 import com.example.tqt_quiz.data.interactor.CourseRelatedInteractIMP;
 import com.example.tqt_quiz.domain.dto.CourseDTO;
 import com.example.tqt_quiz.domain.interactor.ICourseRelatedInteract;
@@ -10,7 +8,6 @@ import com.example.tqt_quiz.presentation.contract_vp.ICourseFragmentStContract;
 import java.util.List;
 
 public class CourseFragmentStPresenter implements ICourseFragmentStContract.IPresenter {
-
     private final ICourseFragmentStContract.IView view;
     private final ICourseRelatedInteract courseRelatedInteract;
 
@@ -21,60 +18,70 @@ public class CourseFragmentStPresenter implements ICourseFragmentStContract.IPre
 
     @Override
     public void loadJoinedCourses() {
-        courseRelatedInteract.getCourses_Joined(view.getTheContext(), new ICourseRelatedInteract.GetCourseListCallBack() {
+        courseRelatedInteract.FetchAllCourseJoined(view.getTheContext(), new ICourseRelatedInteract.FetchJoinedCallBack() {
             @Override
             public void onSuccess(List<CourseDTO> response) {
                 view.showCourseList(response);
             }
 
             @Override
-            public void onFailureByExpiredToken() {
+            public void onFailureByExpiredToken(String msg) {
                 view.navigateToLogin();
             }
 
             @Override
-            public void onFailureByUnAcepptedRole() {
-                view.showError("Bạn không có quyền truy cập.");
+            public void onFailureByUnAcepptedRole(String msg) {
+                view.showError("Bạn không có quyền truy cập chức năng này.");
             }
 
             @Override
-            public void onFailureByOther(String msg) {
+            public void onFailureByNotExistAccount(String msg) {
                 view.showError(msg);
             }
 
             @Override
-            public void onFailureByCannotConnectToServer() {
-                view.showError("Không thể kết nối đến server.");
+            public void onFailureByServerError(String msg) {
+                view.showError("Lỗi máy chủ: " + msg);
+            }
+
+            @Override
+            public void onFailureByCannotSendToServer() {
+                view.showError("Không thể kết nối tới server.");
             }
         });
     }
 
     @Override
     public void loadPendingCourses() {
-        courseRelatedInteract.getCourses_Pending(view.getTheContext(), new ICourseRelatedInteract.GetCourseListCallBack() {
+        courseRelatedInteract.FetchAllCoursePending(view.getTheContext(), new ICourseRelatedInteract.FetchAllPendingCallBack() {
             @Override
             public void onSuccess(List<CourseDTO> response) {
                 view.showCourseList(response);
             }
 
             @Override
-            public void onFailureByExpiredToken() {
+            public void onFailureByExpiredToken(String msg) {
                 view.navigateToLogin();
             }
 
             @Override
-            public void onFailureByUnAcepptedRole() {
-                view.showError("Bạn không có quyền truy cập.");
+            public void onFailureByUnAcepptedRole(String msg) {
+                view.showError("Bạn không có quyền truy cập chức năng này.");
             }
 
             @Override
-            public void onFailureByOther(String msg) {
+            public void onFailureByNotExistAccount(String msg) {
                 view.showError(msg);
             }
 
             @Override
-            public void onFailureByCannotConnectToServer() {
-                view.showError("Không thể kết nối đến server.");
+            public void onFailureByServerError(String msg) {
+                view.showError("Lỗi máy chủ: " + msg);
+            }
+
+            @Override
+            public void onFailureByCannotSendToServer() {
+                view.showError("Không thể kết nối tới server.");
             }
         });
     }
