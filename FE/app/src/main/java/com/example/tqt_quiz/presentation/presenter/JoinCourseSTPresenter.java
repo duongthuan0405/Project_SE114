@@ -65,7 +65,7 @@ public class JoinCourseSTPresenter implements JoinCourseSTContract.IPresentor {
         joinCourseInteractIMP.JoinCourse(Id, view.GetContext(), new IJoinCourseInteract.JoinCourseCallBack() {
             @Override
             public void onSuccess(JoinCourseResponseDTO response) {
-                view.ShowToast("Gui yeu cau -tham gia thanh cong khoa hoc voi Id: "+response.getCourseID());
+                view.ShowToast(response.getState());
             }
 
             @Override

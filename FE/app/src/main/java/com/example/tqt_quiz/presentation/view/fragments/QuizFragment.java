@@ -11,7 +11,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.FragmentActivity;
 
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,7 +52,6 @@ public class QuizFragment extends Fragment implements QuizFragmentContract.IView
     private List<String> statusOptions;
     private List<Quiz> allQuizList;
     private List<Course> listCourse;
-    private boolean loaded = false;
 
 
     public QuizFragment() {
@@ -222,8 +220,7 @@ public class QuizFragment extends Fragment implements QuizFragmentContract.IView
     }
 
     @Override
-    public void onTabVisible(boolean firstTime) {
+    public void onTabReload() {
         presenter.loadCourseToSpinner();
-        loaded = true;
     }
 }

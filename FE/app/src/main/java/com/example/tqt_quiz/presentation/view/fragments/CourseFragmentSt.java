@@ -21,6 +21,7 @@ import com.example.tqt_quiz.R;
 import com.example.tqt_quiz.domain.dto.CourseDTO;
 import com.example.tqt_quiz.presentation.adapters.CourseAdapter;
 import com.example.tqt_quiz.presentation.classes.Course;
+import com.example.tqt_quiz.presentation.classes.IReloadableTab;
 import com.example.tqt_quiz.presentation.contract_vp.ICourseFragmentStContract;
 import com.example.tqt_quiz.presentation.presenter.CourseFragmentStPresenter;
 import com.example.tqt_quiz.presentation.view.activities.Login;
@@ -29,7 +30,7 @@ import com.example.tqt_quiz.presentation.view.activities.ViewCourse;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CourseFragmentSt extends Fragment implements ICourseFragmentStContract.IView {
+public class CourseFragmentSt extends Fragment implements ICourseFragmentStContract.IView, IReloadableTab {
 
     private RadioButton rdbMembers, rdbPending;
     private ListView lvCourses;
@@ -129,5 +130,17 @@ public class CourseFragmentSt extends Fragment implements ICourseFragmentStContr
     @Override
     public void showError(String message) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onTabReload() {
+        if(rdbMembers.isChecked())
+        {
+            presenter.loadJoinedCourses();
+        }
+        else
+        {
+            presenter.loadPendingCourses();
+        }
     }
 }

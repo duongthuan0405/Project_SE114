@@ -1,7 +1,6 @@
 package com.example.tqt_quiz.presentation.view.activities;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -14,7 +13,6 @@ import androidx.viewpager2.widget.ViewPager2;
 
 
 import com.example.tqt_quiz.R;
-import com.example.tqt_quiz.data.repository.token.TokenManager;
 import com.example.tqt_quiz.presentation.adapters.ViewPagerAdapter;
 import com.example.tqt_quiz.presentation.classes.IReloadableTab;
 import com.example.tqt_quiz.staticclass.StaticClass;
@@ -88,7 +86,7 @@ public class MainHome extends AppCompatActivity {
 
         // Đã STARTED hoặc RESUMED ⇒ view chắc chắn đã inflate xong
         if (f.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
-            ((IReloadableTab) f).onTabVisible(b);
+            ((IReloadableTab) f).onTabReload();
             return;
         }
 
@@ -97,7 +95,7 @@ public class MainHome extends AppCompatActivity {
             @Override
             public void onStateChanged(@NonNull LifecycleOwner lifecycleOwner, @NonNull Lifecycle.Event event) {
                 if (event == Lifecycle.Event.ON_START) {
-                    ((IReloadableTab) f).onTabVisible(b);
+                    ((IReloadableTab) f).onTabReload();
                     f.getLifecycle().removeObserver(this);   // chỉ chạy 1 lần
                 }
             }
