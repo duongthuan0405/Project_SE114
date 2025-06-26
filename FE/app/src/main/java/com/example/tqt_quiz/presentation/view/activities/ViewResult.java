@@ -1,5 +1,6 @@
 package com.example.tqt_quiz.presentation.view.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -26,25 +27,26 @@ public class ViewResult extends AppCompatActivity {
     private TextView tvTitle, tvDescription, tvTime, tvCourseId, tvResultSummary;
     private LinearLayout llQuestionList;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_do_quiz);
+        setContentView(R.layout.activity_view_result);
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.layout_root_do_quiz), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.layout_root_view_result), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
         // Ánh xạ view
-        tvTitle = findViewById(R.id.tv_Title_DoQuiz);
-        tvDescription = findViewById(R.id.tv_Description_DoQuiz);
-        tvTime = findViewById(R.id.tv_Time_DoQuiz);
-        tvCourseId = findViewById(R.id.tv_CourseId_DoQuiz);
-        tvResultSummary = findViewById(R.id.tv_ResultSummary_DoQuiz);
-        llQuestionList = findViewById(R.id.ll_QuestionList_DoQuiz);
+        tvTitle = findViewById(R.id.tv_Title_ViewResult);
+        tvDescription = findViewById(R.id.tv_Description_ViewResult);
+        tvTime = findViewById(R.id.tv_Time_ViewResult);
+        tvCourseId = findViewById(R.id.tv_CourseId_ViewResult);
+        tvResultSummary = findViewById(R.id.tv_ResultSummary_ViewResult);
+        llQuestionList = findViewById(R.id.ll_QuestionList_ViewResult);
 
         // Nhận dữ liệu từ intent
         Intent intent = getIntent();
