@@ -1,78 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/AppBackground"
-    tools:context=".presentation.view.activities.Register">
+    android:fitsSystemWindows="true">
 
     <LinearLayout
-        android:id="@+id/ll_Content_CourseSt"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginVertical="30dp"
-        android:layout_marginHorizontal="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:padding="16dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp">
-
-                <EditText
-                    android:id="@+id/edt_Find_CourseSt"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="@android:color/transparent"
-                    android:hint="Nhập mã khóa học"
-                    android:inputType="text"
-                    android:padding="12dp"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
-            </androidx.cardview.widget.CardView>
-
-            <Button
-                android:id="@+id/btn_Find"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:background="@drawable/btn_rectagle"
-                android:backgroundTint="#113483"
-                android:text="Tìm"
-                android:textSize="20sp"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:layout_marginStart="20dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </LinearLayout>
-
+        <!-- Thông tin khóa học -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="12dp"
-            android:layout_marginTop="30dp"
             android:background="@drawable/btn_rectagle"
             android:gravity="center_vertical"
             android:layout_marginBottom="16dp">
@@ -103,14 +49,13 @@
 
                 <TextView
                     android:id="@+id/tv_CourseID_ViewCourseSt"
-                    android:layout_marginTop="4dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
                     android:text="- ID -"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     android:textColor="@color/gray" />
-
 
                 <TextView
                     android:id="@+id/tv_IsPrivate_ViewCourseSt"
@@ -123,6 +68,7 @@
             </LinearLayout>
         </LinearLayout>
 
+        <!-- Mô tả -->
         <TextView
             android:id="@+id/tv_Description_ViewCourseSt"
             android:layout_width="match_parent"
@@ -147,6 +93,7 @@
             android:padding="12dp"
             android:layout_marginBottom="16dp"/>
 
+        <!-- Giáo viên -->
         <TextView
             android:id="@+id/tv_HostName_ViewCourseSt"
             android:layout_width="match_parent"
@@ -156,24 +103,32 @@
             android:textColor="@color/dark_gray"
             android:layout_marginBottom="16dp" />
 
-
-        <Button
-            android:id="@+id/btn_Join"
-            android:layout_width="200dp"
+        <!-- Thành viên -->
+        <TextView
+            android:id="@+id/tv_Members_ViewCourseSt"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/btn_rectagle"
-            android:backgroundTint="#113483"
-            android:text="Tham gia"
-            android:textSize="20sp"
-            android:textColor="@color/white"
+            android:text="Thành viên"
+            android:textColor="@color/dark_gray"
             android:textStyle="bold"
-            android:layout_gravity="center_horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textSize="18sp"
+            android:paddingRight="40dp"
+            android:paddingLeft="40dp"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:background="@drawable/rounded_border"
+            android:layout_marginBottom="12dp"
+            android:layout_gravity="center"/>
 
-
+        <!-- Danh sách thành viên -->
+        <ListView
+            android:id="@+id/lv_Members_ViewCourseSt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="4dp"
+            android:background="@color/white"
+            android:nestedScrollingEnabled="true"
+            android:scrollbars="vertical" />
     </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

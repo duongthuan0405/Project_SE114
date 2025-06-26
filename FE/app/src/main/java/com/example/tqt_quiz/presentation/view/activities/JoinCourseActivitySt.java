@@ -3,12 +3,10 @@ package com.example.tqt_quiz.presentation.view.activities;
 import static android.widget.Toast.LENGTH_SHORT;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,8 +22,6 @@ import com.example.tqt_quiz.presentation.contract_vp.JoinCourseSTContract;
 import com.example.tqt_quiz.presentation.presenter.JoinCourseSTPresenter;
 import com.example.tqt_quiz.staticclass.StaticClass;
 import com.google.android.material.imageview.ShapeableImageView;
-
-import org.w3c.dom.Text;
 
 public class JoinCourseActivitySt extends AppCompatActivity implements JoinCourseSTContract.IView {
 
@@ -89,12 +85,12 @@ public class JoinCourseActivitySt extends AppCompatActivity implements JoinCours
     @Override
     public void BindingUI() {
         FindText=findViewById(R.id.edt_Find_CourseSt);
-        CourseName=findViewById(R.id.tv_CourseName_ViewCourse);
-        CourseImage=findViewById(R.id.img_CourseAvatar_ViewCourse);
-        CourseId=findViewById(R.id.tv_CourseID_ViewCourse);
-        Private=findViewById(R.id.tv_IsPrivate_ViewCourse);
-        Description=findViewById(R.id.tv_DescriptionValue_ViewCourse);
-        TeacherName=findViewById(R.id.tv_HostName_ViewCourse);
+        CourseName=findViewById(R.id.tv_CourseName_ViewCourseSt);
+        CourseImage=findViewById(R.id.img_CourseAvatar_ViewCourseSt);
+        CourseId=findViewById(R.id.tv_CourseID_ViewCourseSt);
+        Private=findViewById(R.id.tv_IsPrivate_ViewCourseSt);
+        Description=findViewById(R.id.tv_DescriptionValue_ViewCourseSt);
+        TeacherName=findViewById(R.id.tv_HostName_ViewCourseSt);
         JoinButton=findViewById(R.id.btn_Join);
         FindButton=findViewById(R.id.btn_Find);
     }

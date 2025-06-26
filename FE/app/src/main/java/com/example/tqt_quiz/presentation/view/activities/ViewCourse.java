@@ -69,15 +69,15 @@ public class ViewCourse extends AppCompatActivity implements ViewCourseContract.
 
         courseId = getIntent().getStringExtra("courseId");
 
-        avatar = findViewById(R.id.img_CourseAvatar_ViewCourse);
-        name = findViewById(R.id.tv_CourseName_ViewCourse);
-        isPrivate = findViewById(R.id.tv_IsPrivate_ViewCourse);
-        description = findViewById(R.id.tv_DescriptionValue_ViewCourse);
-        host = findViewById(R.id.tv_HostName_ViewCourse);
+        avatar = findViewById(R.id.img_CourseAvatar_ViewCourseSt);
+        name = findViewById(R.id.tv_CourseName_ViewCourseSt);
+        isPrivate = findViewById(R.id.tv_IsPrivate_ViewCourseSt);
+        description = findViewById(R.id.tv_DescriptionValue_ViewCourseSt);
+        host = findViewById(R.id.tv_HostName_ViewCourseSt);
         rdbMembers = findViewById(R.id.rdb_Members_ViewCourse);
         rdbWaiting = findViewById(R.id.rdb_Waiting_ViewCourse);
-        lvMembers = findViewById(R.id.lv_Members_ViewCourse);
-        tv_CourseId = findViewById(R.id.tv_CourseID_ViewCourse);
+        lvMembers = findViewById(R.id.lv_Members_ViewCourseSt);
+        tv_CourseId = findViewById(R.id.tv_CourseID_ViewCourseSt);
 
         presenter.showCourseInfo(courseId);
 

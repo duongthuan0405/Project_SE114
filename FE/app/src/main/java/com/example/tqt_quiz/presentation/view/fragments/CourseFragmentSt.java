@@ -1,9 +1,12 @@
 package com.example.tqt_quiz.presentation.view.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
@@ -12,6 +15,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
@@ -24,6 +28,7 @@ import com.example.tqt_quiz.presentation.classes.Course;
 import com.example.tqt_quiz.presentation.classes.IReloadableTab;
 import com.example.tqt_quiz.presentation.contract_vp.ICourseFragmentStContract;
 import com.example.tqt_quiz.presentation.presenter.CourseFragmentStPresenter;
+import com.example.tqt_quiz.presentation.view.activities.JoinCourseActivitySt;
 import com.example.tqt_quiz.presentation.view.activities.Login;
 import com.example.tqt_quiz.presentation.view.activities.ViewCourse;
 
@@ -38,6 +43,7 @@ public class CourseFragmentSt extends Fragment implements ICourseFragmentStContr
     private CourseAdapter courseAdapter;
     private ICourseFragmentStContract.IPresenter presenter;
     private EditText edTx_FindCourse;
+    private Button btnJoinCourse;
 
     public CourseFragmentSt() {
     }
@@ -48,15 +54,23 @@ public class CourseFragmentSt extends Fragment implements ICourseFragmentStContr
         presenter = new CourseFragmentStPresenter(this);
     }
 
+    private final ActivityResultLauncher<Intent> joinCourseLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    onTabReload(); // Reload lại danh sách khi tham gia khóa học xong
+                }
+            });
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_course_st, container, false);
 
-        rdbMembers = view.findViewById(R.id.rdb_Members_ViewCourseSt);
+        rdbMembers = view.findViewById(R.id.rdb_Course_ViewCourseSt);
         rdbPending = view.findViewById(R.id.rdb_Pending_ViewCourseSt);
         lvCourses = view.findViewById(R.id.lv_Course_CourseSt);
         edTx_FindCourse = view.findViewById(R.id.edt_Find_CourseSt);
+        btnJoinCourse = view.findViewById(R.id.btn_Join_CourseSt);
 
         // Mặc định chọn "Khóa học"
         rdbMembers.setChecked(true);
@@ -79,6 +93,11 @@ public class CourseFragmentSt extends Fragment implements ICourseFragmentStContr
             Intent intent = new Intent(requireContext(), ViewCourse.class);
             intent.putExtra("courseId", selectedCourse.getId());
             startActivity(intent);
+        });
+
+        btnJoinCourse.setOnClickListener(v -> {
+            Intent intent = new Intent(requireContext(), JoinCourseActivitySt.class);
+            joinCourseLauncher.launch(intent);
         });
 
         edTx_FindCourse.addTextChangedListener(new TextWatcher() {
