@@ -269,7 +269,7 @@ namespace BE.Controller.APIService
             {
                 return StatusCode(StatusCodes.Status404NotFound, new { Message = "Khóa học không tồn tại" });
             }
-            
+
             try
             {
                 List<AccountInfoDTO> members = await db.JoinCourses.AsNoTracking().Where(jc => jc.CourseID == course_id && jc.State == (int)JoinCourse.JoinCourseState.Joined)
@@ -337,5 +337,6 @@ namespace BE.Controller.APIService
             }
         }
 
+        
     }
 }
