@@ -26,22 +26,23 @@ import com.example.tqt_quiz.domain.dto.CourseDTO;
 import com.example.tqt_quiz.presentation.adapters.CourseAdapter;
 import com.example.tqt_quiz.presentation.classes.Course;
 import com.example.tqt_quiz.presentation.classes.IReloadableTab;
-import com.example.tqt_quiz.presentation.contract_vp.ICourseFragmentStContract;
+import com.example.tqt_quiz.presentation.contract_vp.CourseFragmentStContract;
 import com.example.tqt_quiz.presentation.presenter.CourseFragmentStPresenter;
 import com.example.tqt_quiz.presentation.view.activities.JoinCourseActivitySt;
 import com.example.tqt_quiz.presentation.view.activities.Login;
 import com.example.tqt_quiz.presentation.view.activities.ViewCourse;
+import com.example.tqt_quiz.presentation.view.activities.ViewCourseSt;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CourseFragmentSt extends Fragment implements ICourseFragmentStContract.IView, IReloadableTab {
+public class CourseFragmentSt extends Fragment implements CourseFragmentStContract.IView, IReloadableTab {
 
     private RadioButton rdbMembers, rdbPending;
     private ListView lvCourses;
     private List<Course> courseList = new ArrayList<>();
     private CourseAdapter courseAdapter;
-    private ICourseFragmentStContract.IPresenter presenter;
+    private CourseFragmentStContract.IPresenter presenter;
     private EditText edTx_FindCourse;
     private Button btnJoinCourse;
 
@@ -90,7 +91,7 @@ public class CourseFragmentSt extends Fragment implements ICourseFragmentStContr
 
         lvCourses.setOnItemClickListener((parent, view1, position, id) -> {
             Course selectedCourse = courseList.get(position);
-            Intent intent = new Intent(requireContext(), ViewCourse.class);
+            Intent intent = new Intent(requireContext(), ViewCourseSt.class);
             intent.putExtra("courseId", selectedCourse.getId());
             startActivity(intent);
         });

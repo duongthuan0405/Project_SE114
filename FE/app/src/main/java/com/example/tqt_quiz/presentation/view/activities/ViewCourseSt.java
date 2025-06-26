@@ -22,14 +22,17 @@ import com.example.tqt_quiz.presentation.adapters.MemberAdapter;
 import com.example.tqt_quiz.presentation.classes.Course;
 import com.example.tqt_quiz.presentation.classes.Member;
 import com.example.tqt_quiz.presentation.contract_vp.ViewCourseContract;
+import com.example.tqt_quiz.presentation.contract_vp.ViewCourseStContract;
 import com.example.tqt_quiz.presentation.presenter.ViewCoursePresenter;
+import com.example.tqt_quiz.presentation.presenter.ViewCourseStPresenter;
 import com.example.tqt_quiz.staticclass.StaticClass;
 import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ViewCourseSt extends AppCompatActivity {
+public class ViewCourseSt extends AppCompatActivity implements ViewCourseStContract.IView
+{
 
     TextView name, isPrivate, description, host, tv_CourseId;
     ListView lvMembers;
@@ -38,7 +41,7 @@ public class ViewCourseSt extends AppCompatActivity {
     ShapeableImageView avatar;
     String courseId;
 
-    ViewCourseContract.IPresenter presenter;
+    ViewCourseStContract.IPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +65,10 @@ public class ViewCourseSt extends AppCompatActivity {
         tv_CourseId = findViewById(R.id.tv_CourseID_ViewCourseSt);
         lvMembers = findViewById(R.id.lv_Members_ViewCourseSt);
 
+        presenter = new ViewCourseStPresenter(this);
+
+        // ĐỂ ĐÂY CÓ DÙNG LẠI THÌ DÙNG
+        /*
         // Khởi tạo presenter
         presenter = new ViewCoursePresenter(new ViewCourseContract.IView() {
             @Override
@@ -112,7 +119,9 @@ public class ViewCourseSt extends AppCompatActivity {
             public void Finish() { finish(); }
         });
 
-        // Lấy ID và load dữ liệu
+ */
+
+        // Lấy ID khóa và load dữ liệu để show
         courseId = getIntent().getStringExtra("courseId");
         presenter.showCourseInfo(courseId);
         presenter.showListMemberOfCourse(courseId);

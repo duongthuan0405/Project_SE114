@@ -1,19 +1,17 @@
 package com.example.tqt_quiz.presentation.presenter;
 
-import android.util.Log;
-
 import com.example.tqt_quiz.data.interactor.CourseRelatedInteractIMP;
 import com.example.tqt_quiz.domain.dto.CourseDTO;
 import com.example.tqt_quiz.domain.interactor.ICourseRelatedInteract;
-import com.example.tqt_quiz.presentation.contract_vp.ICourseFragmentContract;
+import com.example.tqt_quiz.presentation.contract_vp.CourseFragmentContract;
 
 import java.util.List;
 
-public class CourseFragmentPresenter implements ICourseFragmentContract.IPresenter
+public class CourseFragmentPresenter implements CourseFragmentContract.IPresenter
 {
-    public ICourseFragmentContract.IView view;
+    public CourseFragmentContract.IView view;
     public ICourseRelatedInteract courseRelatedInteract;
-    public CourseFragmentPresenter(ICourseFragmentContract.IView view)
+    public CourseFragmentPresenter(CourseFragmentContract.IView view)
     {
         this.view = view;
         courseRelatedInteract = new CourseRelatedInteractIMP();

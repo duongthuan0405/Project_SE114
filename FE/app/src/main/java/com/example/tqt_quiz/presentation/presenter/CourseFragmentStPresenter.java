@@ -3,15 +3,15 @@ package com.example.tqt_quiz.presentation.presenter;
 import com.example.tqt_quiz.data.interactor.CourseRelatedInteractIMP;
 import com.example.tqt_quiz.domain.dto.CourseDTO;
 import com.example.tqt_quiz.domain.interactor.ICourseRelatedInteract;
-import com.example.tqt_quiz.presentation.contract_vp.ICourseFragmentStContract;
+import com.example.tqt_quiz.presentation.contract_vp.CourseFragmentStContract;
 
 import java.util.List;
 
-public class CourseFragmentStPresenter implements ICourseFragmentStContract.IPresenter {
-    private final ICourseFragmentStContract.IView view;
+public class CourseFragmentStPresenter implements CourseFragmentStContract.IPresenter {
+    private final CourseFragmentStContract.IView view;
     private final ICourseRelatedInteract courseRelatedInteract;
 
-    public CourseFragmentStPresenter(ICourseFragmentStContract.IView view) {
+    public CourseFragmentStPresenter(CourseFragmentStContract.IView view) {
         this.view = view;
         this.courseRelatedInteract = new CourseRelatedInteractIMP();
     }
