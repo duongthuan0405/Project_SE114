@@ -153,4 +153,24 @@ public class ViewCourseSt extends AppCompatActivity implements ViewCourseStContr
         listView.setLayoutParams(params);
         listView.requestLayout();
     }
+
+    @Override
+    public Context GetTheContext() {
+        return this;
+    }
+
+    @Override
+    public void ShowCourse(CourseDTO courseDTO) {
+
+    }
+
+    @Override
+    public void ShowAllMemBerInCourse(List<AccountInfo> MemberList) {
+
+    }
+
+    @Override
+    public void ShowToast(String msg) {
+
+    }
 }
