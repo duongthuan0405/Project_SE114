@@ -23,9 +23,9 @@ import java.util.List;
 
 public class DoQuiz extends AppCompatActivity {
 
-    private TextView tvTitle, tvDescription, tvTime, tvCourseId;
-    private LinearLayout llQuestionList;
-    private Button btnFinish;
+    private TextView Title, Description, StartTime, DueTime, CourseId;
+    private LinearLayout QuestionList;
+    private Button Finish;
 
     private List<Question> questionList;
     private final QuestionViewHolder[] questionViewHolders = new QuestionViewHolder[20];
@@ -42,12 +42,13 @@ public class DoQuiz extends AppCompatActivity {
         });
 
         // Ánh xạ view
-        tvTitle = findViewById(R.id.tv_Title_DoQuiz);
-        tvDescription = findViewById(R.id.tv_Description_DoQuiz);
-        tvTime = findViewById(R.id.tv_Time_DoQuiz);
-        tvCourseId = findViewById(R.id.tv_CourseId_DoQuiz);
-        llQuestionList = findViewById(R.id.ll_QuestionList_DoQuiz);
-        btnFinish = findViewById(R.id.btn_Finish_DoQuiz);
+        Title = findViewById(R.id.tv_Title_DoQuiz);
+        Description = findViewById(R.id.tv_Description_DoQuiz);
+        StartTime = findViewById(R.id.tv_StartTime_DoQuiz);
+        DueTime = findViewById(R.id.tv_DueTime_DoQuiz);
+        CourseId = findViewById(R.id.tv_CourseId_DoQuiz);
+        QuestionList = findViewById(R.id.ll_QuestionList_DoQuiz);
+        Finish = findViewById(R.id.btn_Finish_DoQuiz);
 
         // Nhận dữ liệu từ intent
         Intent intent = getIntent();
@@ -58,10 +59,11 @@ public class DoQuiz extends AppCompatActivity {
         String courseId = intent.getStringExtra("quiz_courseId");
 
         // Hiển thị lên UI
-        tvTitle.setText(title != null ? title : "Chưa có tiêu đề");
-        tvDescription.setText(description != null ? description : "Không có mô tả");
-        tvTime.setText("Thời gian: " + start + " - " + due);
-        tvCourseId.setText("Course ID: " + (courseId != null ? courseId : "--"));
+        Title.setText(title != null ? title : "Chưa có tiêu đề");
+        Description.setText(description != null ? description : "Không có mô tả");
+        StartTime.setText("Bắt đầu: " + start);
+        DueTime.setText("Kết thúc: " + due);
+        CourseId.setText("Course ID: " + (courseId != null ? courseId : "--"));
 
         // Load câu hỏi (Dùng tạm thời – sau này thay bằng API hoặc gì đó, đại loại vậy)
         questionList = DummyQuizGenerator.getSampleQuestions(); // bạn có thể thay bằng dữ liệu thực tế
@@ -70,17 +72,17 @@ public class DoQuiz extends AppCompatActivity {
         LayoutInflater inflater = LayoutInflater.from(this);
         int index = 0;
         for (Question question : questionList) {
-            View questionView = inflater.inflate(R.layout.item_question, llQuestionList, false);
+            View questionView = inflater.inflate(R.layout.item_question, QuestionList, false);
             QuestionViewHolder viewHolder = new QuestionViewHolder(questionView, true);
             questionView.setTag(viewHolder);
             viewHolder.setDataWithSelectedAnswer(question);
             viewHolder.getRoot().findViewById(R.id.btn_Add_QuestionItem).setVisibility(View.GONE);
             viewHolder.getRoot().findViewById(R.id.btn_Delete_QuestionItem).setVisibility(View.GONE);
-            llQuestionList.addView(viewHolder.getRoot());
+            QuestionList.addView(viewHolder.getRoot());
             questionViewHolders[index++] = viewHolder;
         }
 
-        btnFinish.setOnClickListener(v -> {
+        Finish.setOnClickListener(v -> {
             int score = 0;
             for (int i = 0; i < questionList.size(); i++) {
                 QuestionViewHolder holder = questionViewHolders[i];
