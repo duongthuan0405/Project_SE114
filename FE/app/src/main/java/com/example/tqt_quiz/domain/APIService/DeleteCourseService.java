@@ -6,5 +6,5 @@ import retrofit2.http.Path;
 
 public interface DeleteCourseService {
     @DELETE("/tqtquiz/Courses/{course_id}/delete")
-    Call<Void> DeleteCourse(@Path("courseid") String courseid);
+    Call<Void> DeleteCourse(@Path("course_id") String courseid);
 }
