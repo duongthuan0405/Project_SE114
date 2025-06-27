@@ -186,6 +186,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.delete(TABLE_ANSWER, COLUMN_ANSWER_QUESTION_ID + " = ?", new String[]{String.valueOf(questionId)});
         }
         cursor.close();
-        db.delete("Question", "QuizID = ?", new String[]{String.valueOf(quizId)});
+        db.delete(TABLE_QUESTION, COLUMN_QUESTION_QUIZ_ID + " = ?", new String[]{String.valueOf(quizId)});
     }
 }

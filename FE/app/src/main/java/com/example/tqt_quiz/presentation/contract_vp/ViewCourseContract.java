@@ -1,6 +1,7 @@
 package com.example.tqt_quiz.presentation.contract_vp;
 
 import android.content.Context;
+import android.net.Uri;
 
 import com.example.tqt_quiz.domain.dto.AccountInfo;
 import com.example.tqt_quiz.domain.dto.CourseDTO;
@@ -41,5 +42,7 @@ public interface ViewCourseContract
         void onAcceptAccount(String accountId, String courseId);
 
         void onDenyAccount(String accountId, String courseId);
+
+        void saveLogo(Uri selectedImageUri, String courseId);
     }
 }

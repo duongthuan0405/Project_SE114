@@ -13,6 +13,10 @@ public class Question implements Serializable {
     private String content;
     private List<Answer> answers;
 
+    public Question() {
+        this.answers = new ArrayList<>();
+    }
+
     public Question(String content, List<Answer> answers) {
         this.content = content;
         this.answers = answers;
@@ -65,5 +69,15 @@ public class Question implements Serializable {
 
     public void setAnswers(List<Answer> answers) {
         this.answers = answers;
+    }
+
+    public String getCorrectAnswerId() {
+        if (answers == null) return "";
+        for (Answer a : answers) {
+            if (a.isCorrect()) {
+                return a.getId() != null ? a.getId() : "";
+            }
+        }
+        return "";
     }
 }

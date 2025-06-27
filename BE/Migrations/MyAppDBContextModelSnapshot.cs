@@ -230,6 +230,27 @@ namespace BE.Migrations
                     b.ToTable("JoinCourse");
                 });
 
+            modelBuilder.Entity("BE.Data.Entities.PasswordResetToken", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ExpiredAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PasswordResetTokens");
+                });
+
             modelBuilder.Entity("BE.Data.Entities.Question", b =>
                 {
                     b.Property<string>("Id")

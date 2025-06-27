@@ -50,9 +50,9 @@ namespace BE.Controller.APIService
                 }
                 if (questionDTO.LAnswers.Count(a => a.IsCorrect) != 1)
                 {
-                    return StatusCode(StatusCodes.Status400BadRequest, new {Massage = "Câu hỏi chỉ 1 đáp án đúng"});
+                    return StatusCode(StatusCodes.Status400BadRequest, new { Massage = "Câu hỏi chỉ 1 đáp án đúng" });
                 }
-                   
+
             }
 
             await using var tx = await db.Database.BeginTransactionAsync();
@@ -60,16 +60,16 @@ namespace BE.Controller.APIService
             {
                 string quiz_id = questionsDTO[0]?.QuizId ?? "";
                 Quiz? q = await db.Quizzes.Where(q => q.Id == quiz_id).FirstOrDefaultAsync();
-                
+
                 if (DateTime.Now >= q.StartTime)
                 {
                     return StatusCode(StatusCodes.Status403Forbidden, new { Message = "Không thể thêm/ sửa câu hỏi khi quiz đã bắt đầu" });
-                }    
+                }
 
                 if (q == null)
                 {
                     return StatusCode(StatusCodes.Status404NotFound, new { Message = "Bài quiz không tồn tại" });
-                }    
+                }
 
                 db.Questions.RemoveRange(await db.Questions.Where(q => q.QuizId == quiz_id).ToListAsync());
                 await db.SaveChangesAsync();
@@ -103,12 +103,12 @@ namespace BE.Controller.APIService
 
                         answers.Add
                             (new Answer
-                                {
-                                    Id = idans,
-                                    Content = ans.Content,
-                                    IsTrue = ans.IsCorrect,
-                                    QuestionID = question.Id
-                                }
+                            {
+                                Id = idans,
+                                Content = ans.Content,
+                                IsTrue = ans.IsCorrect,
+                                QuestionID = question.Id
+                            }
                             );
                     }
 
@@ -136,7 +136,7 @@ namespace BE.Controller.APIService
                 string requester = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "";
                 var isHosted = await db.Quizzes.Join(db.Courses, q => q.CourseID, c => c.Id, (q, c) => new { q, c })
                     .AnyAsync(x => x.q.Id == quizId && x.c.HostId == requester);
-                  
+
 
                 if (!isHosted)
                 {
@@ -176,8 +176,8 @@ namespace BE.Controller.APIService
                 if (DateTime.Now < startTime)
                 {
                     return StatusCode(StatusCodes.Status403Forbidden, new { Message = "Quiz chưa bắt đầu" });
-                }    
-                if(DateTime.Now > deadline)
+                }
+                if (DateTime.Now > deadline)
                 {
                     var atqId = await db.AttemptQuizzes
                         .Where(at => at.AccountId == requester && at.QuizId == quizId)
@@ -229,11 +229,47 @@ namespace BE.Controller.APIService
                     ).ToListAsync();
 
                     return Ok(questions);
-                }    
+                }
             }
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "Lỗi server khi lấy danh sách câu hỏi" });
+            }
+        }
+
+        [HttpPut("{attempt_id}/select-answer/{answerId}")]
+        [Authorize(Roles = StaticClass.RoleId.Student)]
+        public async Task<ActionResult> SelectAnswer([FromRoute] string attempt_id, [FromRoute] string answerId)
+        {
+            string requester = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "";
+            if (string.IsNullOrEmpty(attempt_id) || string.IsNullOrEmpty(answerId))
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new { Message = "Yêu cầu không hợp lệ" });
+            }
+
+            var attemptQuiz = await db.AttemptQuizzes
+                .Where(aq => aq.Id == attempt_id && aq.AccountId == requester)
+                .FirstOrDefaultAsync();
+
+            if (attemptQuiz == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, new { Message = "Bài làm không tồn tại" });
+            }
+
+            if (attemptQuiz.IsSubmitted)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, new { Message = "Bạn đã nộp bài làm cho quiz này" });
+            }
+
+            try
+            {
+                
+                
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "Lỗi server khi cập nhật lựa chọn câu trả lời" });
             }
         }
     }

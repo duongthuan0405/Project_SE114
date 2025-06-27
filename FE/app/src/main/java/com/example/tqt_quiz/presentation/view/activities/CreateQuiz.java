@@ -60,6 +60,7 @@ public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.
     LocalDateTime selectedDate;
     private int d, M, y, H, m;
     private QuizDTO oldQuiz;
+    LocalDateTime defaultDateTime = LocalDateTime.now().plusHours(1);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,8 +89,8 @@ public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.
 
         StartTime.setOnClickListener(v -> onClickTimeTextView(v));
         DueTime.setOnClickListener(v -> onClickTimeTextView(v));
-        StartTime.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern(StaticClass.DateTimeFormat)));
-        DueTime.setText(LocalDateTime.now().plusHours(1).format(DateTimeFormatter.ofPattern(StaticClass.DateTimeFormat)));
+        StartTime.setText(defaultDateTime.format(DateTimeFormatter.ofPattern(StaticClass.DateTimeFormat)));
+        DueTime.setText(defaultDateTime.plusHours(1).format(DateTimeFormatter.ofPattern(StaticClass.DateTimeFormat)));
 
         presenter.loadCourseList();
 
@@ -320,6 +321,8 @@ public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.
     private void onClickTimeTextView(View v)
     {
         TextView tv = (TextView)v;
+
+        Log.d("THUAN", defaultDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
         DatePickerDialog date = new DatePickerDialog(CreateQuiz.this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -335,11 +338,11 @@ public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.
                         selectedDate = LocalDateTime.of(y, M, d, H, m);
                         tv.setText(selectedDate.format(DateTimeFormatter.ofPattern(StaticClass.DateTimeFormat)));
                     }
-                }, LocalDateTime.now().getHour(), LocalDateTime.now().getMinute(), true);
+                }, defaultDateTime.getHour(), defaultDateTime.getMinute(), true);
 
                 time.show();
             }
-        }, LocalDateTime.now().getYear(), LocalDateTime.now().getMonth().getValue(), LocalDateTime.now().getDayOfMonth());
+        }, defaultDateTime.getYear(), defaultDateTime.getMonthValue(), defaultDateTime.getDayOfMonth());
 
         date.show();
 

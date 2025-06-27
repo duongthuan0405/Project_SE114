@@ -1,11 +1,14 @@
 package com.example.tqt_quiz.presentation.view.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -23,6 +26,8 @@ public class ViewQuiz extends AppCompatActivity {
 
     TextView tvTitle, tvDescription, tvStart, tvDue, tvScore;
     Button btnAction;
+    ActivityResultLauncher<Intent> doQuizLauncher, viewResultLauncher;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +72,52 @@ public class ViewQuiz extends AppCompatActivity {
             btnAction.setVisibility(View.VISIBLE);
             btnAction.setText("Xem bài làm");
         }
+
+        //Đăng ký Launcher
+        doQuizLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        String newScore = result.getData().getStringExtra("quiz_score");
+                        if (newScore != null) {
+                            tvScore.setText("Điểm số: " + newScore + " / 10");
+                            btnAction.setEnabled(false);
+                            btnAction.setText("Đã hoàn thành");
+                        }
+                    }
+                }
+        );
+
+        viewResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {}
+        );
+
+        //Xử lý Navigate
+        btnAction.setOnClickListener(v -> {
+            if (status.equals("Đang diễn ra")) {
+                Intent intent = new Intent(ViewQuiz.this, DoQuiz.class);
+                intent.putExtra("quiz_id", getIntent().getStringExtra("quiz_id"));
+                intent.putExtra("quiz_name", title);
+                intent.putExtra("quiz_description", description);
+                intent.putExtra("quiz_start", startTime);
+                intent.putExtra("quiz_due", dueTime);
+                intent.putExtra("course_id", getIntent().getStringExtra("course_id"));
+
+                doQuizLauncher.launch(intent);
+            } else if (status.equals("Đã kết thúc")) {
+                Intent intent = new Intent(ViewQuiz.this, ViewResult.class);
+                intent.putExtra("quiz_id", getIntent().getStringExtra("quiz_id"));
+                intent.putExtra("quiz_name", title);
+                intent.putExtra("quiz_description", description);
+                intent.putExtra("quiz_start", startTime);
+                intent.putExtra("quiz_due", dueTime);
+                intent.putExtra("course_id", getIntent().getStringExtra("course_id"));
+                intent.putExtra("quiz_score", tvScore.getText().toString());
+
+                viewResultLauncher.launch(intent);
+            }
+        });
     }
 
     private String getStatus(String startTimeStr, String dueTimeStr) {
