@@ -107,15 +107,6 @@ namespace BE.Controller.APIService
                 account.LastMiddleName = string.IsNullOrEmpty(accountInfo.LastMiddleName) || string.IsNullOrWhiteSpace(accountInfo.LastMiddleName) ? account.LastMiddleName : accountInfo.LastMiddleName;
                 account.FirstName = string.IsNullOrEmpty(accountInfo.FirstName) || string.IsNullOrWhiteSpace(accountInfo.FirstName) ? account.FirstName : accountInfo.FirstName;
 
-                if (string.IsNullOrWhiteSpace(accountInfo.NewPassword))
-                {
-                    var accountAth = await DbContext.AccountAuthens.FindAsync(account_id);
-                    if (accountAth == null)
-                    {
-                        return StatusCode(StatusCodes.Status404NotFound, new { Message = "Thông tin xác thực tài khoản không tồn tại" });
-                    }
-                    accountAth.Password = accountInfo.NewPassword;
-                }
 
                 DbContext.Accounts.Update(account);
                 await DbContext.SaveChangesAsync();
