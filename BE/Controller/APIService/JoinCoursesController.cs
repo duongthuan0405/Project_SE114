@@ -29,12 +29,12 @@ namespace BE.Controller.APIService
             {
                 var course = await DbContext.Courses.FindAsync(course_id);
                 var requester = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                
+
                 if (course == null)
                 {
                     return StatusCode(StatusCodes.Status404NotFound, new { Message = "Khóa học không tồn tại" });
                 }
-                if(requester == null)
+                if (requester == null)
                 {
                     return StatusCode(StatusCodes.Status404NotFound, new { Message = "Tài khoản không tồn tại" });
                 }
@@ -53,9 +53,9 @@ namespace BE.Controller.APIService
                 if (await existingJoin.AnyAsync(jc => jc.State == (int)JoinCourse.JoinCourseState.Pending))
                 {
                     return StatusCode(StatusCodes.Status200OK, new JoinCourseResponseDTO(course_id, requester, "Bạn đã gửi yêu cầu tham gia khóa học này, vui lòng chờ phê duyệt"));
-                  
+
                 }
-               
+
                 var joinCourse = new JoinCourse
                 {
                     CourseID = course_id,
@@ -63,19 +63,19 @@ namespace BE.Controller.APIService
                     TimeJoin = DateTime.Now
                 };
 
-                if(course.IsPrivate == true)
+                if (course.IsPrivate == true)
                 {
                     joinCourse.State = (int)JoinCourse.JoinCourseState.Pending;
                     await DbContext.JoinCourses.AddAsync(joinCourse);
                     await DbContext.SaveChangesAsync();
                     return Ok(new JoinCourseResponseDTO(course_id, requester, "Vui lòng chờ giáo viên duyệt yêu cầu tham gia"));
                 }
-       
+
                 joinCourse.State = (int)JoinCourse.JoinCourseState.Joined;
                 await DbContext.JoinCourses.AddAsync(joinCourse);
                 await DbContext.SaveChangesAsync();
                 return Ok(new JoinCourseResponseDTO(course_id, requester, "Tham gia khóa học thành công"));
-                    
+
             }
             catch (Exception ex)
             {
@@ -92,7 +92,7 @@ namespace BE.Controller.APIService
                 var course = await DbContext.Courses.FindAsync(course_id);
                 var account = await DbContext.Accounts.FindAsync(account_id);
                 var requester = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                
+
                 if (course == null)
                 {
                     return StatusCode(StatusCodes.Status404NotFound, new { Message = "Khóa học không tồn tại" });
@@ -116,7 +116,7 @@ namespace BE.Controller.APIService
 
                 joinCourse.State = (int)JoinCourse.JoinCourseState.Joined;
                 await DbContext.SaveChangesAsync();
-                return Ok(new {Message = "Phê duyệt tham gia khóa học thành công"});
+                return Ok(new { Message = "Phê duyệt tham gia khóa học thành công" });
             }
             catch (Exception ex)
             {
@@ -156,7 +156,7 @@ namespace BE.Controller.APIService
 
                 joinCourse.State = (int)JoinCourse.JoinCourseState.Denied;
                 await DbContext.SaveChangesAsync();
-                return Ok(new {Message = "Từ chối tham gia nhóm thành công"});
+                return Ok(new { Message = "Từ chối tham gia nhóm thành công" });
             }
             catch (Exception ex)
             {
@@ -180,7 +180,7 @@ namespace BE.Controller.APIService
                 {
                     return StatusCode(StatusCodes.Status404NotFound, new { Message = "Khóa học không tồn tại" });
                 }
-               
+
                 if (!await DbContext.Courses.AnyAsync(c => c.Id == course_id && c.HostId == requester))
                 {
                     return StatusCode(StatusCodes.Status403Forbidden, new { Message = "Bạn không có quyền xem danh sách yêu cầu tham gia khóa học này" });
@@ -191,18 +191,18 @@ namespace BE.Controller.APIService
                     .OrderBy(jc => jc.TimeJoin)
                     .Join(DbContext.Accounts, jc => jc.AccountID, a => a.Id, (jc, a) => new { jc, a })
                     .Join(DbContext.AccountAuthens, x => x.a.Id, aa => aa.Id, (x, aa) => new AccountInfoDTO()
-                        {
-                            Id = x.a.Id,
-                            FullName = x.a.LastMiddleName + " " + x.a.FirstName,
-                            FirstName = x.a.FirstName,
-                            LastMiddleName = x.a.LastMiddleName,
-                            Email = aa.Email,
-                            Avatar = x.a.Avatar,
-                            AccountTypeId = x.a.AccountTypeId,
-                            AccountType = DbContext.AccountTypes.Where(at => at.Id == x.a.AccountTypeId)
+                    {
+                        Id = x.a.Id,
+                        FullName = x.a.LastMiddleName + " " + x.a.FirstName,
+                        FirstName = x.a.FirstName,
+                        LastMiddleName = x.a.LastMiddleName,
+                        Email = aa.Email,
+                        Avatar = x.a.Avatar,
+                        AccountTypeId = x.a.AccountTypeId,
+                        AccountType = DbContext.AccountTypes.Where(at => at.Id == x.a.AccountTypeId)
                                                                     .Select(at => at.Name)
                                                                     .FirstOrDefault() ?? "Chưa xác định"
-                        }
+                    }
                     ).ToListAsync();
                 return Ok(permissions);
             }
@@ -211,5 +211,72 @@ namespace BE.Controller.APIService
                 return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "Lỗi server khi lấy danh sách yêu cầu tham gia khóa học" });
             }
         }
+
+        [HttpPatch("{course_id}/leave")]
+        [Authorize(Roles = StaticClass.RoleId.Student + "," + StaticClass.RoleId.Teacher)]
+        public async Task<ActionResult> LeaveCourse([FromRoute] string course_id)
+        {
+            try
+            {
+                var requester = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (requester == null)
+                {
+                    return StatusCode(StatusCodes.Status404NotFound, new { Message = "Tài khoản không tồn tại" });
+                }
+
+                var joinCourse = await DbContext.JoinCourses
+                    .FirstOrDefaultAsync(jc => jc.CourseID == course_id && jc.AccountID == requester);
+
+                if (joinCourse == null)
+                {
+                    return StatusCode(StatusCodes.Status404NotFound, new { Message = "Bạn chưa tham gia khóa học này" });
+                }
+
+                joinCourse.State = (int)JoinCourse.JoinCourseState.Left;
+                await DbContext.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "Lỗi server khi rời khỏi khóa học" });
+            }
+        }
+
+        [HttpPatch("{course_id}/ban/{account_id}")]
+        [Authorize(Roles = StaticClass.RoleId.Teacher)]
+        public async Task<ActionResult> BanAccountFromCourse([FromRoute] string course_id, [FromRoute] string account_id)
+        {
+            try
+            {
+                var course = await DbContext.Courses.FindAsync(course_id);
+                var requester = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                if (course == null)
+                {
+                    return StatusCode(StatusCodes.Status404NotFound, new { Message = "Khóa học không tồn tại" });
+                }
+                if (requester == null || !requester.Equals(course.HostId))
+                {
+                    return StatusCode(StatusCodes.Status403Forbidden, new { Message = "Bạn không có quyền cấm người dùng khỏi khóa học này" });
+                }
+
+                var joinCourse = await DbContext.JoinCourses
+                    .FirstOrDefaultAsync(jc => jc.CourseID == course_id && jc.AccountID == account_id);
+
+                if (joinCourse == null)
+                {
+                    return StatusCode(StatusCodes.Status404NotFound, new { Message = "Người dùng không tham gia khóa học này" });
+                }
+
+                joinCourse.State = (int)JoinCourse.JoinCourseState.Banned;
+                await DbContext.SaveChangesAsync();
+                return Ok(new { Message = "Cấm người dùng khỏi khóa học thành công" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "Lỗi server khi cấm người dùng khỏi khóa học" });
+            }
+        }
+
     }
 }

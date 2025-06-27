@@ -34,13 +34,13 @@ namespace BE.Controller.APIService
                 return StatusCode(StatusCodes.Status403Forbidden, new { Message = "Quiz đã hết thời gian làm bài" });
             }
 
-            if(await db.Quizzes.AnyAsync(q => q.Id == quiz_id && q.StartTime > DateTime.Now))
+            if (await db.Quizzes.AnyAsync(q => q.Id == quiz_id && q.StartTime > DateTime.Now))
             {
                 return StatusCode(StatusCodes.Status403Forbidden, new { Message = "Quiz chưa bắt đầu" });
             }
 
             var aq = await db.AttemptQuizzes.Where(aq => aq.AccountId == requester && aq.QuizId == quiz_id).FirstOrDefaultAsync();
-            
+
             if (aq != null && aq.IsSubmitted)
             {
                 return StatusCode(StatusCodes.Status403Forbidden, new { Message = "Bạn đã nộp bài làm cho quiz này" });
@@ -99,7 +99,7 @@ namespace BE.Controller.APIService
             var deadline = await db.Quizzes.Where(q => q.Id == quiz_id)
                 .Select(q => q.DueTime)
                 .FirstOrDefaultAsync();
-             
+
             var attemptQuiz = await db.AttemptQuizzes.Where(aq => aq.AccountId == requester && aq.QuizId == quiz_id && !aq.IsSubmitted)
             .FirstOrDefaultAsync();
             if (attemptQuiz == null)
@@ -116,6 +116,7 @@ namespace BE.Controller.APIService
             await db.SaveChangesAsync();
             return Ok();
         }
+    
 
     }
 }
