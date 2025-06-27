@@ -3,6 +3,7 @@ using BE.Data.Database;
 using BE.Data.Entities;
 using BE.DTOs;
 using BE.Email;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -233,7 +234,7 @@ namespace BE.Controller.AuthenticationService
                 if (account == null)
                     return BadRequest(new { Message = "Tài khoản không tồn tại" });
 
-                account.Password = dto.NewPassword; 
+                account.Password = dto.NewPassword;
                 DbContext.PasswordResetTokens.Remove(tokenEntity);
                 await DbContext.SaveChangesAsync();
 
@@ -247,6 +248,41 @@ namespace BE.Controller.AuthenticationService
                 });
             }
 
+        }
+
+        [HttpPatch("update-password")]
+        [Authorize(Roles = StaticClass.RoleId.Admin + "," + StaticClass.RoleId.Teacher + "," + StaticClass.RoleId.Student)]
+        public async Task<IActionResult> UpdatePassword([FromBody] UpdatePasswordDTO dto)
+        {
+            try
+            {
+                var accountId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (string.IsNullOrEmpty(accountId))
+                {
+                    return StatusCode(StatusCodes.Status401Unauthorized, new { Message = "Bạn cần đăng nhập để thực hiện thao tác này" });
+                }
+
+                var account = await DbContext.AccountAuthens.FindAsync(accountId);
+                if (account == null)
+                {
+                    return StatusCode(StatusCodes.Status404NotFound, new { Message = "Tài khoản không tồn tại" });
+                }
+
+                if (account.Password != dto.OldPassword)
+                {
+                    return StatusCode(StatusCodes.Status400BadRequest, new { Message = "Mật khẩu cũ không đúng" });
+                }
+
+                account.Password = dto.NewPassword;
+                DbContext.AccountAuthens.Update(account);
+                await DbContext.SaveChangesAsync();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "Lỗi hệ thống khi cập nhật mật khẩu" });
+            }
         }
     }
 }

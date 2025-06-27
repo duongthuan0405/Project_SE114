@@ -9,6 +9,5 @@ namespace BE.DTOs
     {
         public string LastMiddleName { get; set; } = "";
         public string FirstName { get; set; } = "";
-        public string NewPassword { get; set; } = "";
     }
 }
