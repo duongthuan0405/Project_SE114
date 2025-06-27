@@ -48,7 +48,7 @@ public class ViewQuiz extends AppCompatActivity {
         tvDue = findViewById(R.id.tv_DueTime_ViewQuiz);
         tvScore = findViewById(R.id.tv_Score_ViewQuiz);
         btnAction = findViewById(R.id.btn_Action_ViewQuiz);
-
+/*
         String title = getIntent().getStringExtra("quiz_name");
         String description = getIntent().getStringExtra("quiz_description");
         String startTime = getIntent().getStringExtra("quiz_start");
@@ -118,6 +118,8 @@ public class ViewQuiz extends AppCompatActivity {
                 viewResultLauncher.launch(intent);
             }
         });
+
+ */
     }
 
     private String getStatus(String startTimeStr, String dueTimeStr) {

@@ -41,6 +41,7 @@ public class StaticClass
         public static String SOON = "Chưa diễn ra";
         public static String NOW = "Đang diễn ra";
         public static String END = "Đã kết thúc";
+        public static String BENOTPUBLISHED = "Chưa xuất bản";
     }
 
     public static AccountInfo accountInfo;

@@ -7,7 +7,6 @@ import com.example.tqt_quiz.domain.dto.CreateQuestionRequest;
 import com.example.tqt_quiz.domain.dto.QuestionDTO;
 import com.example.tqt_quiz.domain.dto.QuizCreateRequestDTO;
 import com.example.tqt_quiz.domain.dto.QuizDTO;
-import com.example.tqt_quiz.presentation.classes.Question;
 
 import java.util.List;
 
@@ -50,5 +49,7 @@ public interface CreateQuizContract {
         void updateQuiz(String quizId, QuizCreateRequestDTO quizCreateRequestDTO);
 
         void loadCourseList();
+
+        void onDeletedClick(String quizId);
     }
 }

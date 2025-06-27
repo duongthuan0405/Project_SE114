@@ -1,7 +1,6 @@
 package com.example.tqt_quiz.presentation.presenter;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.tqt_quiz.data.interactor.CourseRelatedInteractIMP;
 import com.example.tqt_quiz.data.interactor.QuestionrealatedIMP;
@@ -14,15 +13,8 @@ import com.example.tqt_quiz.domain.dto.QuizDTO;
 import com.example.tqt_quiz.domain.interactor.ICourseRelatedInteract;
 import com.example.tqt_quiz.domain.interactor.IQuestionrelatedInteract;
 import com.example.tqt_quiz.domain.interactor.IQuizRelatedInteract;
-import com.example.tqt_quiz.presentation.adapters.CourseAdapterForSpinner;
-import com.example.tqt_quiz.presentation.classes.Answer;
-import com.example.tqt_quiz.presentation.classes.Question;
-import com.example.tqt_quiz.presentation.classes.Quiz;
 import com.example.tqt_quiz.presentation.contract_vp.CreateQuizContract;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CreateQuizPresenter implements CreateQuizContract.IPresenter
@@ -73,7 +65,7 @@ public class CreateQuizPresenter implements CreateQuizContract.IPresenter
 
     @Override
     public void createQuiz(QuizCreateRequestDTO quizCreateRequestDTO) {
-
+        Log.d("THUAN", quizCreateRequestDTO.isPublished() ? "PUBLISH" : "NO");
         quizRelatedInteract.CreateQuiz(quizCreateRequestDTO, view.getTheContext(), new IQuizRelatedInteract.CreateQuizCallBack() {
             @Override
             public void onSuccess(QuizDTO response) {
@@ -166,6 +158,7 @@ public class CreateQuizPresenter implements CreateQuizContract.IPresenter
 
     @Override
     public void updateQuiz(String quizId, QuizCreateRequestDTO quizCreateRequestDTO) {
+
         quizRelatedInteract.UpdateQuiz(quizId, quizCreateRequestDTO, view.getTheContext(), new IQuizRelatedInteract.UpdateQuizCallBack() {
             @Override
             public void onSuccess(QuizDTO response) {
@@ -228,4 +221,37 @@ public class CreateQuizPresenter implements CreateQuizContract.IPresenter
             }
         });
     }
+
+    @Override
+    public void onDeletedClick(String quizId) {
+
+        quizRelatedInteract.DeleteQuiz(quizId, view.getTheContext(), new IQuizRelatedInteract.DeleteQuizCallBack() {
+            @Override
+            public void onSuccess() {
+                view.showMessage("Xóa quiz thành công");
+                view.finishAddQuiz();
+            }
+
+            @Override
+            public void onFailureByExpiredToken() {
+                view.navigateToLogin();
+            }
+
+            @Override
+            public void onFailureByUnAcceptedRole() {
+                view.showMessage("Tài khoản không thể truy cập tài nguyên này");
+            }
+
+            @Override
+            public void onOtherFailure(String msg) {
+                view.showMessage(msg);
+            }
+
+            @Override
+            public void onFailureByCannotSendToServer() {
+                view.showMessage("Không thể kết nối đến server");
+            }
+        });
+    }
+
 }

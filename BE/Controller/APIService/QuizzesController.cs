@@ -232,7 +232,7 @@ namespace BE.Controller.APIService
                     StartTime = quizCreateRequest.StartTime,
                     DueTime = quizCreateRequest.DueTime,
                     CourseID = quizCreateRequest.CourseId,
-                    IsPublished = false
+                    IsPublished = quizCreateRequest.IsPublished
                 };
 
                 string id = "";
@@ -274,7 +274,7 @@ namespace BE.Controller.APIService
         }
 
         [HttpPatch("{quiz_id}/publish")]
-        [Authorize(StaticClass.RoleId.Teacher)]
+        [Authorize(Roles = StaticClass.RoleId.Teacher)]
         public async Task<ActionResult> PublishQuiz([FromRoute] string quiz_id)
         {
             var requester = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -290,6 +290,11 @@ namespace BE.Controller.APIService
                 if (c == null)
                 {
                     return StatusCode(StatusCodes.Status403Forbidden, new { Message = "Bạn không có quyền công bố Quiz này" });
+                }
+
+                if(quiz.StartTime <= DateTime.Now)
+                {
+                    return BadRequest(new { Message = "Thời gian bắt đầu phải sau thời điểm hiện tại" });
                 }
 
                 quiz.IsPublished = true;
@@ -342,6 +347,7 @@ namespace BE.Controller.APIService
                 quiz.Description = quizUpdateRequest.Description;
                 quiz.StartTime = quizUpdateRequest.StartTime;
                 quiz.DueTime = quizUpdateRequest.DueTime;
+                quiz.IsPublished = quizUpdateRequest.IsPublished;
 
                 await DbContext.SaveChangesAsync();
 
@@ -477,6 +483,11 @@ namespace BE.Controller.APIService
                 var course = await DbContext.Courses
                     .Where(c => c.Id == quiz.CourseID && c.HostId == requester)
                     .FirstOrDefaultAsync();
+
+                if(DateTime.Now >= quiz.StartTime && quiz.IsPublished)
+                {
+                    return BadRequest(new { Message = "Không thể xóa Quiz đã bắt đầu" });
+                }
 
                 if (course == null)
                 {
