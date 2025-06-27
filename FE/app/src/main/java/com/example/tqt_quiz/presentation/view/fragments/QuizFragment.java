@@ -22,6 +22,7 @@ import android.widget.Toast;
 import android.widget.Spinner;
 
 import com.example.tqt_quiz.R;
+import com.example.tqt_quiz.data.repository.RoleManager;
 import com.example.tqt_quiz.domain.dto.QuizDTO;
 import com.example.tqt_quiz.presentation.adapters.CourseAdapterForSpinner;
 import com.example.tqt_quiz.presentation.adapters.QuizAdapter;
@@ -32,6 +33,7 @@ import com.example.tqt_quiz.presentation.contract_vp.QuizFragmentContract;
 import com.example.tqt_quiz.presentation.presenter.QuizFragmentPresenter;
 import com.example.tqt_quiz.presentation.view.activities.CreateQuiz;
 import com.example.tqt_quiz.presentation.view.activities.Login;
+import com.example.tqt_quiz.presentation.view.activities.ViewQuiz;
 import com.example.tqt_quiz.staticclass.StaticClass;
 
 import java.text.ParseException;
@@ -63,6 +65,8 @@ public class QuizFragment extends Fragment implements QuizFragmentContract.IView
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_quiz, container, false);
         presenter = new QuizFragmentPresenter(this);
+
+        String roleId = new RoleManager(requireContext().getApplicationContext()).GetRole();
 
         //Ánh xạ
         lvQuiz = view.findViewById(R.id.lv_Quiz_Quiz);
@@ -105,21 +109,36 @@ public class QuizFragment extends Fragment implements QuizFragmentContract.IView
         spnFilterCourse.setOnItemSelectedListener(lsn);
         spnFilterStatus.setOnItemSelectedListener(lsn);
 
+        if (roleId.equals(StaticClass.AccountTypeId.teacher)) {
+            btnAddQuiz.setVisibility(View.VISIBLE);
 
+            btnAddQuiz.setOnClickListener(v -> {
+                Intent intent = new Intent(requireContext(), CreateQuiz.class);
+                createQuizLauncher.launch(intent);
+            });
 
-        btnAddQuiz.setOnClickListener(v -> {
-            Intent intent = new Intent(requireContext(), CreateQuiz.class);
-            createQuizLauncher.launch(intent);
-        });
+            lvQuiz.setOnItemClickListener((parent, view1, position, id) -> {
+                Intent intent = new Intent(requireContext(), CreateQuiz.class);
+                String quiz_id = ((Quiz)lvQuiz.getAdapter().getItem(position)).getId();
+                intent.putExtra("quizId", quiz_id);
+                createQuizLauncher.launch(intent);
+            });
 
+        } else if (roleId.equals(StaticClass.AccountTypeId.student)) {
+            btnAddQuiz.setVisibility(View.GONE);
 
-
-        lvQuiz.setOnItemClickListener((parent, view1, position, id) -> {
-            Intent intent = new Intent(requireContext(), CreateQuiz.class);
-            String quiz_id = ((Quiz)lvQuiz.getAdapter().getItem(position)).getId();
-            intent.putExtra("quizId", quiz_id);
-            createQuizLauncher.launch(intent);
-        });
+            lvQuiz.setOnItemClickListener((parent, view1, position, id) -> {
+                Quiz selectedQuiz = (Quiz) lvQuiz.getAdapter().getItem(position);
+                Intent intent = new Intent(requireContext(), ViewQuiz.class);
+                intent.putExtra("quiz_id", selectedQuiz.getId());
+                intent.putExtra("quiz_name", selectedQuiz.getName());
+                intent.putExtra("quiz_description", selectedQuiz.getDescription());
+                intent.putExtra("quiz_start", selectedQuiz.getStartTime());
+                intent.putExtra("quiz_due", selectedQuiz.getDueTime());
+                intent.putExtra("course_id", selectedQuiz.getCourseID());
+                startActivity(intent);
+            });
+        }
 
 
         return view;

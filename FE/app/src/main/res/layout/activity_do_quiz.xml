@@ -50,18 +50,6 @@
         android:textColor="@android:color/black"
         android:layout_marginBottom="12dp" />
 
-    <!-- Tổng kết kết quả -->
-    <TextView
-        android:id="@+id/tv_ResultSummary_DoQuiz"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Bạn đã trả lời đúng X/Y câu."
-        android:textSize="14sp"
-        android:textStyle="bold"
-        android:textColor="@color/Primary"
-        android:layout_marginBottom="12dp"
-        android:visibility="gone"/>
-
     <!-- Danh sách câu hỏi -->
     <ScrollView
         android:layout_width="match_parent"

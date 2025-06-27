@@ -161,16 +161,28 @@ public class ViewCourseSt extends AppCompatActivity implements ViewCourseStContr
 
     @Override
     public void ShowCourse(CourseDTO courseDTO) {
-
+        Course course = new Course(courseDTO);
+        StaticClass.setImage(avatar, course.getAvatar(), R.drawable.resource_default);
+        name.setText(course.getName());
+        isPrivate.setText("Riêng tư: " + (course.isPrivate() ? "Có" : "Không"));
+        description.setText(course.getDescription());
+        host.setText("👤Tên giáo viên: " + course.getHostName());
+        tv_CourseId.setText("- " + course.getId() + " -");
     }
 
     @Override
     public void ShowAllMemBerInCourse(List<AccountInfo> MemberList) {
-
+        memberList = new ArrayList<>();
+        for (AccountInfo info : MemberList) {
+            memberList.add(new Member(info));
+        }
+        memberAdapter = new MemberAdapter(this, 0, memberList, MemberAdapter.MODE_MEMBER, null);
+        lvMembers.setAdapter(memberAdapter);
+        setListViewHeightBasedOnChildren(lvMembers);
     }
 
     @Override
     public void ShowToast(String msg) {
-
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 }

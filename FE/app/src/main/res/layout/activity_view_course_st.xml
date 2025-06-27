@@ -115,5 +115,17 @@
             android:background="@color/white"
             android:nestedScrollingEnabled="true"
             android:scrollbars="vertical" />
+
+        <Button
+            android:id="@+id/btn_DeleteCourse_ViewCourse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rời"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:background="@drawable/btn_rectagle_red"
+            android:elevation="6dp"/>
     </LinearLayout>
 </ScrollView>
