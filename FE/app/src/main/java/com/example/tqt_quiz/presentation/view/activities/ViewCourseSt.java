@@ -189,6 +189,13 @@ public class ViewCourseSt extends AppCompatActivity implements ViewCourseStContr
     }
 
     @Override
+    public void navigateToLogin() {
+        Intent i= new Intent(ViewCourseSt.this.getApplicationContext(), Login.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
+    }
+
+    @Override
     public void ShowToast(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }

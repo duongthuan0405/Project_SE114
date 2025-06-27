@@ -14,6 +14,7 @@ public interface JoinCourseSTContract {
         void ShowToast(String msg);
         void DisableJoin();
         void EnableJoin();
+        void navigateToLogin();
     }
 
     public interface IPresentor

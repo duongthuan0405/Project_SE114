@@ -3,6 +3,7 @@ package com.example.tqt_quiz.presentation.view.activities;
 import static android.widget.Toast.LENGTH_SHORT;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -114,5 +115,12 @@ public class JoinCourseActivitySt extends AppCompatActivity implements JoinCours
     @Override
     public void EnableJoin() {
         JoinButton.setEnabled(true);
+    }
+
+    @Override
+    public void navigateToLogin() {
+        Intent i= new Intent(JoinCourseActivitySt.this.getApplicationContext(), Login.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
     }
 }

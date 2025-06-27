@@ -32,6 +32,7 @@ public class JoinCourseSTPresenter implements JoinCourseSTContract.IPresentor {
             public void onFailureByExpiredToken(String msg) {
                 view.ShowToast(msg);
                 view.DisableJoin();
+                view.navigateToLogin();
             }
 
             @Override
@@ -71,6 +72,7 @@ public class JoinCourseSTPresenter implements JoinCourseSTContract.IPresentor {
             @Override
             public void onFailureByExpiredToken(String msg) {
                 view.ShowToast(msg);
+                view.navigateToLogin();
             }
 
             @Override

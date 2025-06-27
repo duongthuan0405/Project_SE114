@@ -30,6 +30,7 @@ public class ViewCourseStPresenter implements ViewCourseStContract.IPresenter
             @Override
             public void onFailureByExpiredToken(String msg) {
                 view.ShowToast(msg);
+                view.navigateToLogin();
             }
 
             @Override
@@ -65,7 +66,7 @@ public class ViewCourseStPresenter implements ViewCourseStContract.IPresenter
 
             @Override
             public void onFailureByExpiredToken() {
-                view.ShowToast("Het han phien lam viec");
+                view.navigateToLogin();
             }
 
             @Override
@@ -95,7 +96,7 @@ public class ViewCourseStPresenter implements ViewCourseStContract.IPresenter
 
             @Override
             public void onFailureByExpiredToken() {
-                view.ShowToast("Het han phien lam viec");
+                view.navigateToLogin();
             }
 
             @Override

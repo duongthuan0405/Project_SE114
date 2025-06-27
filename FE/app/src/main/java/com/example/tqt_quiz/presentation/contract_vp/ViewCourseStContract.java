@@ -15,6 +15,7 @@ public interface ViewCourseStContract
         Context GetTheContext();
         void ShowCourse(CourseDTO courseDTO);
         void ShowAllMemBerInCourse(List<AccountInfo> MemberList);
+        void navigateToLogin();
         void ShowToast(String msg);
     }
 

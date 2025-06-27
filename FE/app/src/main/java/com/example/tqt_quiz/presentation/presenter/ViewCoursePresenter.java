@@ -238,7 +238,7 @@ public class ViewCoursePresenter implements ViewCourseContract.IPresenter
 
             @Override
             public void onFailureByExpiredToken() {
-                view.showToast("Ban da het han phien lam viec");
+                view.navigateToLogin();
             }
 
             @Override
