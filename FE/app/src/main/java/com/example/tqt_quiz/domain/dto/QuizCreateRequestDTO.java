@@ -24,6 +24,9 @@ public class QuizCreateRequestDTO {
     @SerializedName("courseId")
     private String courseId;
 
+    @SerializedName("isPublished")
+    private boolean isPublished;
+
     // Getter and Setter for name
     public String getName() {
         return name;
@@ -70,12 +73,21 @@ public class QuizCreateRequestDTO {
     }
 
 
-    public QuizCreateRequestDTO(String name, String description, LocalDateTime startTime, LocalDateTime dueTime, String courseId) {
+    public QuizCreateRequestDTO(String name, String description, LocalDateTime startTime, LocalDateTime dueTime, String courseId, boolean isPublished) {
         this.name = name;
         this.description = description;
         this.startTime = startTime;
         this.dueTime = dueTime;
         this.courseId = courseId;
+        this.isPublished = isPublished;
+    }
+
+    public boolean isPublished() {
+        return isPublished;
+    }
+
+    public void setPublished(boolean published) {
+        isPublished = published;
     }
 
     @Override

@@ -40,12 +40,22 @@
         android:textColor="@android:color/darker_gray"
         android:layout_marginBottom="8dp"/>
 
-    <!-- Thời gian bắt đầu và kết thúc -->
+    <!-- Thời gian bắt đầu -->
     <TextView
-        android:id="@+id/tv_Time_DoQuiz"
+        android:id="@+id/tv_StartTime_DoQuiz"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Thời gian: 2025-06-20 08:00 - 09:00"
+        android:text="Bắt đầu: 2025-06-20 08:00"
+        android:textSize="14sp"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="4dp" />
+
+    <!-- Thời gian kết thúc -->
+    <TextView
+        android:id="@+id/tv_DueTime_DoQuiz"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Kết thúc: 2025-06-20 09:00"
         android:textSize="14sp"
         android:textColor="@android:color/black"
         android:layout_marginBottom="12dp" />

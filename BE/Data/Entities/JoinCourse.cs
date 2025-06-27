@@ -30,7 +30,8 @@ namespace BE.Data.Entities
             Pending = 0,
             Denied = 1,
             Joined = 2,
-            Left = 3
+            Left = 3,
+            Banned = 4
         }
 
     }

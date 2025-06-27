@@ -192,7 +192,8 @@ public class QuizRelatedIMP implements IQuizRelatedInteract {
     public void UpdateQuiz(String Quiz_id, QuizCreateRequestDTO updatedquiz, Context context, UpdateQuizCallBack callback) {
         TokenManager tokenManager=new TokenManager(context);
         UpdateQuizService service=RetrofitClient.GetClient(tokenManager).create(UpdateQuizService.class);
-        Call<QuizDTO> call=service.UpdateQuiz(Quiz_id,updatedquiz);
+        Log.d("THUANKK", updatedquiz.isPublished() ? "PUBLISH" : "NO");
+        Call<QuizDTO> call=service.UpdateQuiz(Quiz_id, updatedquiz);
         call.enqueue(new Callback<QuizDTO>() {
             @Override
             public void onResponse(Call<QuizDTO> call, Response<QuizDTO> response) {
