@@ -95,5 +95,17 @@ public interface ICourseRelatedInteract {
 
         public void onFailureByCannotSendToServer();
     }
+    public void LeaveCourse(String courseId, Context context, LeaveCourseCallBack callback);
+    public interface LeaveCourseCallBack
+    {
+        public void onSuccess();
 
+        public void onFailureByExpiredToken();
+
+        public void onFailureByUnAcepptedRole();
+
+        public void onFailureByOtherError(String msg);
+
+        public void onFailureByCannotSendToServer();
+    }
 }
