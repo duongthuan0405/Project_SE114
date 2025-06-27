@@ -2,6 +2,7 @@ package com.example.tqt_quiz.domain.interactor;
 
 import android.content.Context;
 
+import com.example.tqt_quiz.domain.APIService.BanSomeOneOutCourseService;
 import com.example.tqt_quiz.domain.dto.AccountInfo;
 import com.example.tqt_quiz.domain.dto.CourseCreateInfo;
 import com.example.tqt_quiz.domain.dto.CourseDTO;
@@ -98,6 +99,18 @@ public interface ICourseRelatedInteract {
     public void LeaveCourse(String courseId, Context context, LeaveCourseCallBack callback);
     public interface LeaveCourseCallBack
     {
+        public void onSuccess();
+
+        public void onFailureByExpiredToken();
+
+        public void onFailureByUnAcepptedRole();
+
+        public void onFailureByOtherError(String msg);
+
+        public void onFailureByCannotSendToServer();
+    }
+    public void BanSomeOneOutCourse(String courseid,String accountid,Context context,BanSomeOneOutCourseCallBack callback);
+    public interface BanSomeOneOutCourseCallBack {
         public void onSuccess();
 
         public void onFailureByExpiredToken();

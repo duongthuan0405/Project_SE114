@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.example.tqt_quiz.data.repository.token.RetrofitClient;
 import com.example.tqt_quiz.data.repository.token.TokenManager;
+import com.example.tqt_quiz.domain.APIService.BanSomeOneOutCourseService;
 import com.example.tqt_quiz.domain.APIService.CreateNewCourseService;
 import com.example.tqt_quiz.domain.APIService.DeleteCourseService;
 import com.example.tqt_quiz.domain.APIService.FetchAllUserCourseService;
@@ -396,6 +397,47 @@ public class CourseRelatedInteractIMP implements ICourseRelatedInteract
         TokenManager tokenManager=new TokenManager(context);
         LeaveCourseService service=RetrofitClient.GetClient(tokenManager).create(LeaveCourseService.class);
         Call<Void> call=service.LeaveCourse(courseId);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if(response.isSuccessful())
+                {
+                    callback.onSuccess();
+                }
+                else
+                {
+                    String rawJson = "";
+                    try
+                    {
+                        int code = response.code();
+                        rawJson=response.errorBody().string();
+                        JSONObject obj=new JSONObject(rawJson);
+                        String msg=obj.optString("message");
+                        callback.onFailureByOtherError(msg);
+                    }
+                    catch (Exception e)
+                    {
+                        if(response.code() == 401)
+                            callback.onFailureByExpiredToken();
+                        else if(response.code() == 403)
+                            callback.onFailureByUnAcepptedRole();
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                callback.onFailureByCannotSendToServer();
+            }
+        });
+    }
+
+    @Override
+    public void BanSomeOneOutCourse(String courseid, String accountid, Context context, BanSomeOneOutCourseCallBack callback) {
+        TokenManager tokenManager=new TokenManager(context);
+        BanSomeOneOutCourseService service=RetrofitClient.GetClient(tokenManager).create(BanSomeOneOutCourseService.class);
+        Call<Void> call=service.BanSomeOneOutCourse(courseid,accountid);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
