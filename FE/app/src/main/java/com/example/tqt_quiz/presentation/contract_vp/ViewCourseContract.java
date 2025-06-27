@@ -44,5 +44,6 @@ public interface ViewCourseContract
         void onDenyAccount(String accountId, String courseId);
 
         void saveLogo(Uri selectedImageUri, String courseId);
+        void DeleteCourse(String CourseId);
     }
 }

@@ -84,4 +84,34 @@ public class ViewCourseStPresenter implements ViewCourseStContract.IPresenter
             }
         });
     }
+
+    @Override
+    public void LeaveCourse(String courseId) {
+        courseRelatedInteractIMP.LeaveCourse(courseId, view.GetTheContext(), new ICourseRelatedInteract.LeaveCourseCallBack() {
+            @Override
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onFailureByExpiredToken() {
+                view.ShowToast("Het han phien lam viec");
+            }
+
+            @Override
+            public void onFailureByUnAcepptedRole() {
+                view.ShowToast("Ban khong co quyen thuc hien chuc nang nay");
+            }
+
+            @Override
+            public void onFailureByOtherError(String msg) {
+                view.ShowToast(msg);
+            }
+
+            @Override
+            public void onFailureByCannotSendToServer() {
+                view.ShowToast("Mat ket noi voi may chu");
+            }
+        });
+    }
 }

@@ -11,6 +11,7 @@ import com.example.tqt_quiz.domain.dto.UploadResponse;
 import com.example.tqt_quiz.domain.interactor.ICourseRelatedInteract;
 import com.example.tqt_quiz.domain.interactor.IImageRelatedInteract;
 import com.example.tqt_quiz.domain.interactor.IJoinCourseInteract;
+import com.example.tqt_quiz.domain.interactor.IQuizRelatedInteract;
 import com.example.tqt_quiz.presentation.contract_vp.ViewCourseContract;
 
 import java.util.List;
@@ -223,6 +224,36 @@ public class ViewCoursePresenter implements ViewCourseContract.IPresenter
             @Override
             public void onFailureByCannotConnectToServer() {
                 view.showToast("Không thể kết nối đến server");
+            }
+        });
+    }
+
+    @Override
+    public void DeleteCourse(String CourseId) {
+        courseRelatedInteract.DeleteCourse(CourseId, view.getTheContext(), new ICourseRelatedInteract.DeleteCourseCallBack() {
+            @Override
+            public void onSuccess() {
+                view.showToast("Da xoa thanh cong khoa hoc");
+            }
+
+            @Override
+            public void onFailureByExpiredToken() {
+                view.showToast("Ban da het han phien lam viec");
+            }
+
+            @Override
+            public void onFailureByUnAcceptedRole() {
+                view.showToast("Ban khong co quyen han de lam dieu nay");
+            }
+
+            @Override
+            public void onOtherFailure(String msg) {
+                view.showToast(msg);
+            }
+
+            @Override
+            public void onFailureByCannotSendToServer() {
+                view.showToast("Khong the ket noi toi server");
             }
         });
     }

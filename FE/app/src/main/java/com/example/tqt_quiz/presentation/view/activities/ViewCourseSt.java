@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,7 +41,7 @@ public class ViewCourseSt extends AppCompatActivity implements ViewCourseStContr
     MemberAdapter memberAdapter;
     ShapeableImageView avatar;
     String courseId;
-
+    Button LeaveButton;
     ViewCourseStContract.IPresenter presenter;
 
     @Override
@@ -64,7 +65,7 @@ public class ViewCourseSt extends AppCompatActivity implements ViewCourseStContr
         host = findViewById(R.id.tv_HostName_ViewCourseSt);
         tv_CourseId = findViewById(R.id.tv_CourseID_ViewCourseSt);
         lvMembers = findViewById(R.id.lv_Members_ViewCourseSt);
-
+        LeaveButton=findViewById(R.id.btn_DeleteCourse_ViewCourse);
         presenter = new ViewCourseStPresenter(this);
 
         // ĐỂ ĐÂY CÓ DÙNG LẠI THÌ DÙNG
@@ -131,6 +132,12 @@ public class ViewCourseSt extends AppCompatActivity implements ViewCourseStContr
             Intent intent = new Intent(ViewCourseSt.this, MemberInfo.class);
             intent.putExtra("memberId", selectedMember.getId());
             startActivity(intent);
+        });
+        LeaveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.LeaveCourse(courseId);
+            }
         });
     }
 

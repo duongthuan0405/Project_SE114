@@ -339,7 +339,7 @@ public class CourseRelatedInteractIMP implements ICourseRelatedInteract
                             callback.onFailureByExpiredToken();
                         else if(response.code() == 403)
                             callback.onFailureByUnAcceptedRole();
-                            e.printStackTrace();
+                        e.printStackTrace();
                     }
                 }
             }

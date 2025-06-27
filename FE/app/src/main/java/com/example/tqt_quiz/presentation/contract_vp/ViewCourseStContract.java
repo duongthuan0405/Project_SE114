@@ -24,5 +24,6 @@ public interface ViewCourseStContract
         void showCourseInfo(String courseId);
 
         void showListMemberOfCourse(String courseId);
+        void LeaveCourse(String courseId);
     }
 }
