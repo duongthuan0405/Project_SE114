@@ -89,5 +89,44 @@ namespace BE.Controller.APIService
             }
         }
 
+        [HttpPut]
+        [Authorize(Roles = StaticClass.RoleId.Admin + "," + StaticClass.RoleId.Teacher + "," + StaticClass.RoleId.Student)]
+        public async Task<ActionResult> UpdateUserInfo([FromBody] UpdateAccountDTO accountInfo)
+        {
+        
+            var account_id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            try
+            {
+                var account = await DbContext.Accounts.FindAsync(account_id);
+                if (account == null)
+                {
+                    return StatusCode(StatusCodes.Status404NotFound, new { Message = "Tài khoản không tồn tại" });
+                }
+
+                account.LastMiddleName = string.IsNullOrEmpty(accountInfo.LastMiddleName) || string.IsNullOrWhiteSpace(accountInfo.LastMiddleName) ? account.LastMiddleName : accountInfo.LastMiddleName;
+                account.FirstName = string.IsNullOrEmpty(accountInfo.FirstName) || string.IsNullOrWhiteSpace(accountInfo.FirstName) ? account.FirstName : accountInfo.FirstName;
+
+                if (string.IsNullOrWhiteSpace(accountInfo.NewPassword))
+                {
+                    var accountAth = await DbContext.AccountAuthens.FindAsync(account_id);
+                    if (accountAth == null)
+                    {
+                        return StatusCode(StatusCodes.Status404NotFound, new { Message = "Thông tin xác thực tài khoản không tồn tại" });
+                    }
+                    accountAth.Password = accountInfo.NewPassword;
+                }
+
+                DbContext.Accounts.Update(account);
+                await DbContext.SaveChangesAsync();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "Lỗi server khi cập nhật thông tin tài khoản" });
+            }
+        }
+
     }
 }
