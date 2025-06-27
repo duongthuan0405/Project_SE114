@@ -7,6 +7,8 @@
     android:padding="16dp"
     android:background="@color/AppBackground"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginHorizontal="10dp"
+    android:layout_marginVertical="10dp"
     tools:context=".presentation.view.activities.CreateQuiz">
 
     <!-- Tiêu đề Quiz -->
@@ -15,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Nhập tiêu đề bài kiểm tra"
-        android:textSize="20sp"
+        android:textSize="25sp"
         android:textStyle="bold"
         android:inputType="text"
         android:textColor="@android:color/black"
@@ -27,35 +29,99 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Nhập mô tả (tuỳ chọn)"
-        android:textSize="14sp"
+        android:textSize="15sp"
         android:inputType="text"
         android:textColor="@android:color/darker_gray"
         android:background="@android:color/transparent"
-        android:layout_marginTop="4dp" />
+        android:layout_marginTop="5dp" />
 
-    <!-- Thời gian bắt đầu -->
-    <EditText
-        android:id="@+id/edt_QuizStartTime_CreateQuiz"
+    <!-- Course ID -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Thời gian bắt đầu (ví dụ: 2025-06-20 08:00)"
-        android:textSize="14sp"
-        android:inputType="datetime"
-        android:textColor="@android:color/black"
-        android:background="@android:color/transparent"
-        android:layout_marginTop="8dp" />
+        android:layout_height="25sp"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
 
-    <!-- Thời gian kết thúc -->
-    <EditText
-        android:id="@+id/edt_QuizDueTime_CreateQuiz"
+        <TextView
+            android:id="@+id/tv_Course"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="center_vertical"
+            android:text="Khóa học: "
+            android:textColor="@color/black"
+            android:textSize="15sp">
+
+        </TextView>
+
+        <Spinner
+            android:id="@+id/spn_Course"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:background="@drawable/rounded_border">
+        </Spinner>
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Thời gian kết thúc (ví dụ: 2025-06-20 09:00)"
-        android:textSize="14sp"
-        android:inputType="datetime"
-        android:textColor="@android:color/black"
-        android:background="@android:color/transparent"
-        android:layout_marginTop="4dp" />
+        android:layout_height="25sp"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal"
+        android:weightSum="6">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:text="Thời gian bắt đầu: "
+            android:textColor="@android:color/black"
+            android:gravity="center_vertical"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/edt_StartTime_CreateQuiz"
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:textColor="@android:color/black"
+            android:textSize="15sp"
+            android:gravity="center_vertical"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="25sp"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal"
+        android:weightSum="6">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:text="Thời gian kết thúc: "
+            android:textColor="@android:color/black"
+            android:gravity="center_vertical"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/edt_DueTime_CreateQuiz"
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:textSize="15sp"
+            android:inputType="datetime"
+            android:textColor="@android:color/black"
+            android:background="@android:color/transparent"/>
+
+    </LinearLayout>
 
     <!-- Danh sách câu hỏi -->
     <ScrollView
@@ -79,14 +145,47 @@
         android:gravity="end"
         android:layout_marginTop="12dp">
 
+        <Switch
+            android:id="@+id/switch_IsPublish_CreateQuiz"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Công khai"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_gravity="start"
+            android:layout_weight="0"
+            android:layout_marginEnd="16dp"
+            tools:ignore="UseSwitchCompatOrMaterialXml"
+            android:gravity="center_vertical"/>
+
+        <!-- Spacer để đẩy 2 nút ra phải -->
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
         <Button
             android:id="@+id/btn_Cancel_CreateQuiz"
-            android:layout_width="wrap_content"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:text="Hủy"
             android:textColor="@color/white"
             android:textStyle="bold"
             android:background="@drawable/btn_rectagle_red"/>
+
+        <Space
+            android:layout_width="12dp"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btn_Delete_CreateQuiz"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:text="Xóa"
+            android:enabled="false"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:background="@drawable/btn_rectangle_gray" />
 
         <Space
             android:layout_width="12dp"

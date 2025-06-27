@@ -17,6 +17,7 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/img_Avatar_MemberItem"
+
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@drawable/resource_default"

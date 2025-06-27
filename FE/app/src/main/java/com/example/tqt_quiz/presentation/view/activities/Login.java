@@ -3,6 +3,7 @@ package com.example.tqt_quiz.presentation.view.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -30,6 +31,8 @@ public class Login extends AppCompatActivity implements LoginContract.IView {
     ActivityResultLauncher<Intent> launcher_Login_Main;
     ActivityResultLauncher<Intent> getLauncher_Login_Register;
 
+    ActivityResultLauncher<Intent> launcher_Login_ForgotPass;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +44,8 @@ public class Login extends AppCompatActivity implements LoginContract.IView {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        StaticClass.customActionBar(getSupportActionBar(), R.layout.custom_action_bar_2);
 
         //Ánh xạ
         btn_Login = findViewById(R.id.btn_Login_Login);
@@ -65,6 +70,14 @@ public class Login extends AppCompatActivity implements LoginContract.IView {
                     {
                         Toast.makeText(Login.this, "Đăng ký thành công", Toast.LENGTH_LONG).show();
                     }
+                }
+        );
+
+        launcher_Login_ForgotPass = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result ->
+                {
+
                 }
         );
 
@@ -115,8 +128,10 @@ public class Login extends AppCompatActivity implements LoginContract.IView {
     }
 
     @Override
-    public void navigateToForgotPassword() {
-
+    public void navigateToForgotPassword()
+    {
+        Intent i = new Intent(Login.this, ForgotPassword2.class);
+        launcher_Login_ForgotPass.launch(i);
     }
 
     @Override

@@ -2,6 +2,8 @@ package com.example.tqt_quiz.domain.interactor;
 
 import android.content.Context;
 
+import com.example.tqt_quiz.domain.APIService.BanSomeOneOutCourseService;
+import com.example.tqt_quiz.domain.dto.AccountInfo;
 import com.example.tqt_quiz.domain.dto.CourseCreateInfo;
 import com.example.tqt_quiz.domain.dto.CourseDTO;
 
@@ -70,6 +72,52 @@ public interface ICourseRelatedInteract {
         public void onFailureByNotExistAccount(String msg);
 
         public void onFailureByServerError(String msg);
+
+        public void onFailureByCannotSendToServer();
+    }
+    void DeleteCourse(String CourseID,Context context,DeleteCourseCallBack callback);
+    public interface DeleteCourseCallBack
+    {
+        void onSuccess();
+        void onFailureByExpiredToken();
+        void onFailureByUnAcceptedRole();
+        void onOtherFailure(String msg);
+        void onFailureByCannotSendToServer();
+    }
+
+    public void GetAllMemberInCourse(String course_id, Context context, GetAllMemberInCourseCallBack callBack);
+    public interface GetAllMemberInCourseCallBack {
+        public void onSuccess(List<AccountInfo> response);
+
+        public void onFailureByExpiredToken();
+
+        public void onFailureByUnAcepptedRole();
+        public void onFailureByOtherError(String msg);
+
+        public void onFailureByCannotSendToServer();
+    }
+    public void LeaveCourse(String courseId, Context context, LeaveCourseCallBack callback);
+    public interface LeaveCourseCallBack
+    {
+        public void onSuccess();
+
+        public void onFailureByExpiredToken();
+
+        public void onFailureByUnAcepptedRole();
+
+        public void onFailureByOtherError(String msg);
+
+        public void onFailureByCannotSendToServer();
+    }
+    public void BanSomeOneOutCourse(String courseid,String accountid,Context context,BanSomeOneOutCourseCallBack callback);
+    public interface BanSomeOneOutCourseCallBack {
+        public void onSuccess();
+
+        public void onFailureByExpiredToken();
+
+        public void onFailureByUnAcepptedRole();
+
+        public void onFailureByOtherError(String msg);
 
         public void onFailureByCannotSendToServer();
     }

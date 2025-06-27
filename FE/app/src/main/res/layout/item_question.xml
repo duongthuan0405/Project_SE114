@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_question_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -12,25 +13,50 @@
         android:id="@+id/edt_Content_QuestionItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Câu hỏi"
         android:background="@null"
+        android:hint="Câu hỏi"
+        android:paddingBottom="8dp"
         android:textSize="16sp"
-        android:textStyle="bold"
-        android:paddingBottom="8dp"/>
+        android:textStyle="bold" />
 
     <!-- Danh sách câu trả lời -->
-    <LinearLayout
-        android:id="@+id/ll_AnswerList_QuestionItem"
+    <RadioGroup
+        android:id="@+id/rg_AnswerList_QuestionItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" />
 
-    <!-- Nút xóa câu hỏi -->
-    <Button
-        android:id="@+id/btn_Delete_QuestionItem"
-        android:layout_width="wrap_content"
+    <!-- Hiển thị đáp án đúng (chỉ hiển thị khi sai) -->
+    <TextView
+        android:id="@+id/tv_CorrectAnswer_QuestionItem"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Xóa câu hỏi"
-        android:layout_gravity="end"
-        android:layout_marginTop="8dp"/>
+        android:text="Đáp án đúng: ... "
+        android:textColor="@android:color/holo_red_dark"
+        android:textStyle="italic"
+        android:textSize="14sp"
+        android:visibility="gone"
+        android:layout_marginTop="6dp" />
+
+    <!-- Nút xóa câu hỏi -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end"
+        android:layout_marginTop="8dp">
+
+        <Button
+            android:id="@+id/btn_Delete_QuestionItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Xóa câu hỏi" />
+
+        <Button
+            android:id="@+id/btn_Add_QuestionItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thêm câu hỏi"
+            android:layout_marginEnd="8dp" />
+    </LinearLayout>
 </LinearLayout>

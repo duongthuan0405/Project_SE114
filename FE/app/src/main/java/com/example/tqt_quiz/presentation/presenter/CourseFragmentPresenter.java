@@ -1,5 +1,7 @@
 package com.example.tqt_quiz.presentation.presenter;
 
+import android.util.Log;
+
 import com.example.tqt_quiz.data.interactor.CourseRelatedInteractIMP;
 import com.example.tqt_quiz.domain.dto.CourseDTO;
 import com.example.tqt_quiz.domain.interactor.ICourseRelatedInteract;
@@ -50,5 +52,11 @@ public class CourseFragmentPresenter implements ICourseFragmentContract.IPresent
                 view.showError("Không thể kết nối đến server");
             }
         });
+    }
+
+    @Override
+    public void onAddCourseClick() {
+
+        view.navigateToAddCourse();
     }
 }

@@ -6,10 +6,12 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.tqt_quiz.data.interactor.AuthInteractorIMP;
+import com.example.tqt_quiz.domain.dto.AccountInfo;
 import com.example.tqt_quiz.domain.dto.LoginResponse;
 import com.example.tqt_quiz.domain.interactor.IAccountInteractor;
 import com.example.tqt_quiz.domain.interactor.IAuthInteract;
 import com.example.tqt_quiz.presentation.contract_vp.LoginContract;
+import com.example.tqt_quiz.staticclass.StaticClass;
 
 public class LoginPresenter implements LoginContract.IPresenter {
     LoginContract.IView view;
@@ -31,6 +33,14 @@ public class LoginPresenter implements LoginContract.IPresenter {
         authInteract.Login(email, password, view.getContext(), new IAuthInteract.LoginCallBack() {
             @Override
             public void onSuccess(LoginResponse response) {
+                AccountInfo info = new AccountInfo();
+                info.setUserID(response.getUserID());
+                info.setFullName(response.getFullName());
+                info.setAccountType(response.getRole());
+                info.setAccountTypeId(response.getRoleId());
+
+                StaticClass.accountInfo = info;
+
                 view.loginSuccess(response);
             }
 
