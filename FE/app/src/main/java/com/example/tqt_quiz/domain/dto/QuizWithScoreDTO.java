@@ -11,6 +11,7 @@ public class QuizWithScoreDTO {
     int totalQuestion;
     @SerializedName("isSubmitted")
     boolean isSubmitted;
+
     public QuizDTO getQuiz() {
         return quiz;
     }

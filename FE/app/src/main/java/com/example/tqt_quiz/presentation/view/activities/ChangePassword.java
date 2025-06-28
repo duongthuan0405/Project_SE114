@@ -1,6 +1,7 @@
 package com.example.tqt_quiz.presentation.view.activities;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -13,6 +14,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.tqt_quiz.R;
+import com.google.android.material.textfield.TextInputLayout;
 
 public class ChangePassword extends AppCompatActivity {
 
@@ -40,11 +42,12 @@ public class ChangePassword extends AppCompatActivity {
         Title = findViewById(R.id.tv_title_forgot_password);
 
         //Thay đổi nội dung
-        OldPassword.setHint("Nhập mật khẩu cũ");
+        ((TextInputLayout)findViewById(R.id.til_email_token)).setHint("Nhập mật khẩu cũ");
         Save.setText("Lưu");
 
         //Đổi tiêu đề
         Title.setText("Đổi mật khẩu");
+        findViewById(R.id.tv_currentEmail).setVisibility(View.GONE);
 
         //Sự kiện lưu
         Save.setOnClickListener(v -> {

@@ -411,7 +411,7 @@ namespace BE.Controller.APIService
                                     .Where(c => c.Id == x.q.CourseID)
                                     .Select(c => c.Name)
                                     .FirstOrDefault() ?? "",
-                                StatusOfAttempt = aq == null ? StaticClass.StateOfAttemptQuiz.NotFinish : (aq.IsSubmitted ? StaticClass.StateOfAttemptQuiz.Finish : StaticClass.StateOfAttemptQuiz.NotFinish)
+                                StatusOfAttempt = aq == null ? StaticClass.StateOfAttemptQuiz.NotAttempted : (aq.IsSubmitted ? StaticClass.StateOfAttemptQuiz.Finish : StaticClass.StateOfAttemptQuiz.NotFinish)
                             }
                         ).ToListAsync();
                 }
@@ -578,13 +578,25 @@ namespace BE.Controller.APIService
                     .Join(DbContext.Answers, dr => dr.AnswerId, a => a.Id, (dr, a) => new { dr, a })
                     .CountAsync(x => x.a.IsTrue);
 
-                return Ok(new QuizWithScoreDTO
+
+                QuizWithScoreDTO quizWithScore = new QuizWithScoreDTO
                 {
                     Quiz = quiz,
                     TotalCorrectAnswer = TotalCorrectAnswer,
                     IsSubmitted = atquiz.IsSubmitted,
                     TotalQuestions = TotalQuestions
-                });
+                };
+
+                if (DateTime.Now < quiz.DueTime)
+                {
+                    TotalCorrectAnswer = 0;
+                }
+                else
+                {
+                    quizWithScore.IsSubmitted = true; // Nếu quá thời gian làm bài, đánh dấu là đã nộp
+                }
+
+                return Ok();
 
 
             }

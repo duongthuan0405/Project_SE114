@@ -40,18 +40,10 @@ public class QuizDTO {
     @SerializedName("statusOfAttempt")
     private String statusOfAttempt;
 
-    public String getStatusOfAttempt() {
-        return statusOfAttempt;
-    }
-
-    public void setStatusOfAttempt(String statusOfAttempt) {
-        this.statusOfAttempt = statusOfAttempt;
-    }
-
-    // Getters and Setters
     public String getId() {
         return id;
     }
+
     public void setId(String id) {
         this.id = id;
     }
@@ -59,6 +51,7 @@ public class QuizDTO {
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -66,6 +59,7 @@ public class QuizDTO {
     public String getDescription() {
         return description;
     }
+
     public void setDescription(String description) {
         this.description = description;
     }
@@ -73,6 +67,7 @@ public class QuizDTO {
     public LocalDateTime getStartTime() {
         return startTime;
     }
+
     public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
@@ -80,6 +75,7 @@ public class QuizDTO {
     public LocalDateTime getDueTime() {
         return dueTime;
     }
+
     public void setDueTime(LocalDateTime dueTime) {
         this.dueTime = dueTime;
     }
@@ -87,6 +83,7 @@ public class QuizDTO {
     public String getCourseId() {
         return courseId;
     }
+
     public void setCourseId(String courseId) {
         this.courseId = courseId;
     }
@@ -94,28 +91,24 @@ public class QuizDTO {
     public String getCourseName() {
         return courseName;
     }
+
     public void setCourseName(String courseName) {
         this.courseName = courseName;
     }
 
-    public boolean getIsPublished() {
+    public boolean isPublished() {
         return isPublished;
     }
-    public void setIsPublished(boolean isPublished) {
-        this.isPublished = isPublished;
+
+    public void setPublished(boolean published) {
+        isPublished = published;
     }
-    @Override
-    public String toString() {
-        return "QuizDTO{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", startTime=" + startTime +
-                ", dueTime=" + dueTime +
-                ", courseId='" + courseId + '\'' +
-                ", courseName='" + courseName + '\'' +
-                ", isPublished=" + isPublished +
-                ", statusOfAttempt='" + statusOfAttempt + '\'' +
-                '}';
+
+    public String getStatusOfAttempt() {
+        return statusOfAttempt;
+    }
+
+    public void setStatusOfAttempt(String statusOfAttempt) {
+        this.statusOfAttempt = statusOfAttempt;
     }
 }

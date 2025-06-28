@@ -3,7 +3,6 @@ package com.example.tqt_quiz.presentation.view.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +28,7 @@ import com.example.tqt_quiz.presentation.classes.Quiz;
 import com.example.tqt_quiz.presentation.contract_vp.QuizFragmentStContract;
 import com.example.tqt_quiz.presentation.presenter.QuizFragmentStPresenter;
 import com.example.tqt_quiz.presentation.view.activities.Login;
-import com.example.tqt_quiz.presentation.view.activities.ViewQuiz;
+import com.example.tqt_quiz.presentation.view.activities.ViewQuizSt;
 import com.example.tqt_quiz.staticclass.StaticClass;
 
 import java.text.ParseException;
@@ -99,8 +98,8 @@ public class QuizFragmentSt extends Fragment implements QuizFragmentStContract.I
 
         lvQuiz.setOnItemClickListener((parent, view1, position, id) -> {
             Quiz selectedQuiz = (Quiz) lvQuiz.getAdapter().getItem(position);
-            Intent intent = new Intent(requireContext(), ViewQuiz.class);
-            intent.putExtra("quiz_id", selectedQuiz.getId());
+            Intent intent = new Intent(requireContext(), ViewQuizSt.class);
+            intent.putExtra("quizId", selectedQuiz.getId());
             viewQuizLauncher.launch(intent);
         });
 
@@ -111,6 +110,7 @@ public class QuizFragmentSt extends Fragment implements QuizFragmentStContract.I
     private void loadSpinner()
     {
         statusOptions = new ArrayList<>();
+        statusOptions.add(StaticClass.StateOfQuiz.ALL);
         statusOptions.add(StaticClass.StateOfQuiz.SOON);
         statusOptions.add(StaticClass.StateOfQuiz.NOW);
         statusOptions.add(StaticClass.StateOfQuiz.END);

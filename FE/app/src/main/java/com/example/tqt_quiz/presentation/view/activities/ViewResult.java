@@ -40,6 +40,7 @@ public class ViewResult extends AppCompatActivity {
             return insets;
         });
 
+        /*
         // Ánh xạ view
         Title = findViewById(R.id.tv_Title_ViewResult);
         Description = findViewById(R.id.tv_Description_ViewResult);
@@ -94,5 +95,7 @@ public class ViewResult extends AppCompatActivity {
 
             QuestionList.addView(viewHolder.getRoot());
         }
+
+         */
     }
 }

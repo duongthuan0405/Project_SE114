@@ -45,15 +45,13 @@ public class CourseFragment extends Fragment implements CourseFragmentContract.I
     private ActivityResultLauncher<Intent> addCourseLauncher;
     private EditText edTx_FindCourse;
 
+    private ActivityResultLauncher<Intent> createCourseLauncher;
+    private ActivityResultLauncher<Intent> viewCourseLauncher;
+
     public CourseFragment() {
 
     }
-    private final ActivityResultLauncher<Intent> createCourseLauncher =
-            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
-                    presenter.showAllMyCourse();
-                }
-            });
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,13 +69,25 @@ public class CourseFragment extends Fragment implements CourseFragmentContract.I
         AddCourse = view.findViewById(R.id.btn_Add_Course);
         edTx_FindCourse = view.findViewById(R.id.edt_Find_Course);
 
+        createCourseLauncher =
+                registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                    presenter.showAllMyCourse();
+                });
+
+        viewCourseLauncher =
+                registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                    presenter.showAllMyCourse();
+                });
+
+
+
         presenter.showAllMyCourse();
 
         lvCourse.setOnItemClickListener((parent, view1, position, id) -> {
             Course selectedCourse = courseList.get(position);
             Intent intent = new Intent(requireContext(), ViewCourse.class);
             intent.putExtra("courseId", selectedCourse.getId());
-            startActivity(intent);
+            viewCourseLauncher.launch(intent);
         });
 
 

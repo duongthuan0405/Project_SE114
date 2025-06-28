@@ -38,6 +38,7 @@ public class StaticClass
 
     public static class StateOfQuiz
     {
+        public static String ALL = "Tất cả";
         public static String SOON = "Chưa diễn ra";
         public static String NOW = "Đang diễn ra";
         public static String END = "Đã kết thúc";

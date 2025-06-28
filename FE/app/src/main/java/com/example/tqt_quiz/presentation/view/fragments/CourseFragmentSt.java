@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
@@ -45,6 +47,8 @@ public class CourseFragmentSt extends Fragment implements CourseFragmentStContra
     private CourseFragmentStContract.IPresenter presenter;
     private EditText edTx_FindCourse;
     private Button btnJoinCourse;
+    private ActivityResultLauncher<Intent> joinCourseLauncher;
+    private ActivityResultLauncher<Intent> viewCourseLauncher;
 
     public CourseFragmentSt() {
     }
@@ -54,13 +58,6 @@ public class CourseFragmentSt extends Fragment implements CourseFragmentStContra
         super.onCreate(savedInstanceState);
         presenter = new CourseFragmentStPresenter(this);
     }
-
-    private final ActivityResultLauncher<Intent> joinCourseLauncher =
-            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-                if (result.getResultCode() == Activity.RESULT_OK) {
-                    onTabReload(); // Reload lại danh sách khi tham gia khóa học xong
-                }
-            });
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -89,11 +86,20 @@ public class CourseFragmentSt extends Fragment implements CourseFragmentStContra
             }
         });
 
+        joinCourseLauncher =
+                registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                    onTabReload();
+                });
+
+        viewCourseLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                o -> onTabReload());
+
+
         lvCourses.setOnItemClickListener((parent, view1, position, id) -> {
             Course selectedCourse = courseList.get(position);
             Intent intent = new Intent(requireContext(), ViewCourseSt.class);
             intent.putExtra("courseId", selectedCourse.getId());
-            startActivity(intent);
+            viewCourseLauncher.launch(intent);
         });
 
         btnJoinCourse.setOnClickListener(v -> {

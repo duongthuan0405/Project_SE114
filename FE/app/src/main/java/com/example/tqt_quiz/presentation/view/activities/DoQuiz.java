@@ -50,6 +50,8 @@ public class DoQuiz extends AppCompatActivity {
         QuestionList = findViewById(R.id.ll_QuestionList_DoQuiz);
         Finish = findViewById(R.id.btn_Finish_DoQuiz);
 
+        /*
+
         // Nhận dữ liệu từ intent
         Intent intent = getIntent();
         String title = intent.getStringExtra("quiz_name");
@@ -102,5 +104,7 @@ public class DoQuiz extends AppCompatActivity {
             setResult(RESULT_OK, resultIntent);
             finish();
         });
+
+         */
     }
 }
