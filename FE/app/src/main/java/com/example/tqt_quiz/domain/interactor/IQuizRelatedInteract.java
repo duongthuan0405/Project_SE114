@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.tqt_quiz.domain.dto.QuizCreateRequestDTO;
 import com.example.tqt_quiz.domain.dto.QuizDTO;
+import com.example.tqt_quiz.domain.dto.QuizWithScoreDTO;
 
 import java.util.List;
 
@@ -66,6 +67,15 @@ public interface IQuizRelatedInteract {
     public interface DeleteQuizCallBack
     {
         void onSuccess();
+        void onFailureByExpiredToken();
+        void onFailureByUnAcceptedRole();
+        void onOtherFailure(String msg);
+        void onFailureByCannotSendToServer();
+    }
+    void GetQuizScore(String QUizId,Context context,GetQuizScoreCallBack callback);
+    public interface GetQuizScoreCallBack
+    {
+        void onSuccess(QuizWithScoreDTO response);
         void onFailureByExpiredToken();
         void onFailureByUnAcceptedRole();
         void onOtherFailure(String msg);

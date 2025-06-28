@@ -8,10 +8,12 @@ import com.example.tqt_quiz.data.repository.token.TokenManager;
 import com.example.tqt_quiz.domain.APIService.CreateQuizService;
 import com.example.tqt_quiz.domain.APIService.DeleteQuizService;
 import com.example.tqt_quiz.domain.APIService.FetchQuizService;
+import com.example.tqt_quiz.domain.APIService.GetQuizScoreService;
 import com.example.tqt_quiz.domain.APIService.PublishQuizService;
 import com.example.tqt_quiz.domain.APIService.UpdateQuizService;
 import com.example.tqt_quiz.domain.dto.QuizCreateRequestDTO;
 import com.example.tqt_quiz.domain.dto.QuizDTO;
+import com.example.tqt_quiz.domain.dto.QuizWithScoreDTO;
 import com.example.tqt_quiz.domain.interactor.IQuizRelatedInteract;
 import com.example.tqt_quiz.domain.repository.token.ITokenManager;
 
@@ -307,5 +309,43 @@ public class QuizRelatedIMP implements IQuizRelatedInteract {
             }
         });
     }
+    @Override
+    public void GetQuizScore(String QuizId, Context context, GetQuizScoreCallBack callback) {
+        TokenManager tokenManager=new TokenManager(context);
+        GetQuizScoreService service=RetrofitClient.GetClient(tokenManager).create(GetQuizScoreService.class);
+        Call<QuizWithScoreDTO> call= service.GetQuizScore(QuizId);
+        call.enqueue(new Callback<QuizWithScoreDTO>() {
+            @Override
+            public void onResponse(Call<QuizWithScoreDTO> call, Response<QuizWithScoreDTO> response) {
+                if(response.isSuccessful())
+                {
+                    callback.onSuccess(response.body());
+                }
+                else
+                {
+                    try
+                    {
+                        String rawJSON="";
+                        rawJSON=response.errorBody().string();
+                        JSONObject obj=new JSONObject(rawJSON);
+                        String msg=obj.optString("message");
+                        callback.onOtherFailure(msg);
+                    }
+                    catch (Exception e)
+                    {
+                        if(response.code() == 401)
+                            callback.onFailureByExpiredToken();
+                        else if(response.code() == 403)
+                            callback.onFailureByUnAcceptedRole();
+                        e.printStackTrace();
+                    }
+                }
+            }
 
+            @Override
+            public void onFailure(Call<QuizWithScoreDTO> call, Throwable t) {
+                callback.onFailureByCannotSendToServer();
+            }
+        });
+    }
 }
