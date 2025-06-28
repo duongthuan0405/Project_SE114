@@ -5,9 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="@color/AppBackground"
-    android:layout_marginHorizontal="10dp"
-    android:layout_marginVertical="10dp">
+    android:background="@color/AppBackground">
 
     <!-- Tiêu đề Quiz (không chỉnh sửa được) -->
     <TextView
