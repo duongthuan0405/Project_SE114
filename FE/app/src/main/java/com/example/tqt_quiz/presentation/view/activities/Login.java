@@ -30,6 +30,8 @@ public class Login extends AppCompatActivity implements LoginContract.IView {
     ActivityResultLauncher<Intent> launcher_Login_Main;
     ActivityResultLauncher<Intent> getLauncher_Login_Register;
 
+    ActivityResultLauncher<Intent> launcher_Login_ForgotPass;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +72,14 @@ public class Login extends AppCompatActivity implements LoginContract.IView {
                 }
         );
 
+        launcher_Login_ForgotPass = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result ->
+                {
+
+                }
+        );
+
         //Thao tác Login Click
         btn_Login.setOnClickListener(v -> {
             String email = edt_Email.getText().toString();
@@ -88,20 +98,9 @@ public class Login extends AppCompatActivity implements LoginContract.IView {
 
     @Override
     public void loginSuccess(LoginResponse loginResponse) {
-        if(loginResponse.getRoleId().equals(StaticClass.AccountTypeId.admin))
-        {
-
-        }
-        else if (loginResponse.getRoleId().equals(StaticClass.AccountTypeId.teacher))
-        {
-            Intent i = new Intent(com.example.tqt_quiz.presentation.view.activities.Login.this, MainHome.class);
-            launcher_Login_Main.launch(i);
-            finish();
-        }
-        else if (loginResponse.getRoleId().equals(StaticClass.AccountTypeId.student))
-        {
-
-        }
+        Intent i = new Intent(com.example.tqt_quiz.presentation.view.activities.Login.this, MainHome.class);
+        launcher_Login_Main.launch(i);
+        finish();
 
     }
 
@@ -117,8 +116,10 @@ public class Login extends AppCompatActivity implements LoginContract.IView {
     }
 
     @Override
-    public void navigateToForgotPassword() {
-
+    public void navigateToForgotPassword()
+    {
+        Intent i = new Intent(Login.this, ForgotPassword.class);
+        launcher_Login_ForgotPass.launch(i);
     }
 
     @Override

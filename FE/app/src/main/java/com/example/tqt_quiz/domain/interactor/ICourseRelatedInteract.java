@@ -10,55 +10,85 @@ import java.util.List;
 
 public interface ICourseRelatedInteract {
     public void FetchAllCourseJoined(Context context, FetchJoinedCallBack callBack);
-    public interface FetchJoinedCallBack
-    {
+
+    public interface FetchJoinedCallBack {
         public void onSuccess(List<CourseDTO> response);
+
         public void onFailureByExpiredToken(String msg);
+
         public void onFailureByUnAcepptedRole(String msg);
+
         public void onFailureByNotExistAccount(String msg);
+
         public void onFailureByServerError(String msg);
+
         public void onFailureByCannotSendToServer();
     }
-    public void FetchAllCourseHosted(Context context,FetchHostedCallBack callBack);
-    public interface FetchHostedCallBack
-    {
+
+    public void FetchAllCourseHosted(Context context, FetchHostedCallBack callBack);
+
+    public interface FetchHostedCallBack {
         public void onSuccess(List<CourseDTO> response);
+
         public void onFailureByExpiredToken(String msg);
+
         public void onFailureByUnAcepptedRole(String msg);
+
         public void onFailureByNotExistAccount(String msg);
+
         public void onFailureByServerError(String msg);
+
         public void onFailureByCannotSendToServer();
     }
-    public void FetchAllCoursePending(Context context,FetchAllPendingCallBack callBack);
-    public interface FetchAllPendingCallBack
-    {
+
+    public void FetchAllCoursePending(Context context, FetchAllPendingCallBack callBack);
+
+    public interface FetchAllPendingCallBack {
         public void onSuccess(List<CourseDTO> response);
+
         public void onFailureByExpiredToken(String msg);
+
         public void onFailureByUnAcepptedRole(String msg);
+
         public void onFailureByNotExistAccount(String msg);
+
         public void onFailureByServerError(String msg);
+
         public void onFailureByCannotSendToServer();
     }
-    public void FetchAllCourseDenied(Context context,FetchAllDeniedCallBack callBack);
-    public interface FetchAllDeniedCallBack
-    {
+
+    public void FetchAllCourseDenied(Context context, FetchAllDeniedCallBack callBack);
+
+    public interface FetchAllDeniedCallBack {
         public void onSuccess(List<CourseDTO> response);
+
         public void onFailureByExpiredToken(String msg);
+
         public void onFailureByUnAcepptedRole(String msg);
+
         public void onFailureByNotExistAccount(String msg);
+
         public void onFailureByServerError(String msg);
+
         public void onFailureByCannotSendToServer();
     }
+
     public void FindCourseByID(String course_ID, Context context, FindCourseByIDCallBack callBack);
-    public interface FindCourseByIDCallBack
-    {
+
+    public interface FindCourseByIDCallBack {
         public void onSuccess(CourseDTO response);
+
         public void onFailureByExpiredToken(String msg);
+
         public void onFailureByUnAcepptedRole(String msg);
+
         public void onFailureByNotExistCourse(String msg);
+
         public void onFailureByServerError(String msg);
+
         public void onFailureByCannotSendToServer();
     }
+
     public void CreateNewCourse(CourseCreateInfo info, Context context, CreateNewCourseCallBack callBack);
 
     public interface CreateNewCourseCallBack {
@@ -74,26 +104,46 @@ public interface ICourseRelatedInteract {
 
         public void onFailureByCannotSendToServer();
     }
-    void DeleteCourse(String CourseID,Context context,DeleteCourseCallBack callback);
-    public interface DeleteCourseCallBack
-    {
+
+    void DeleteCourse(String CourseID, Context context, DeleteCourseCallBack callback);
+
+    public interface DeleteCourseCallBack {
         void onSuccess();
+
         void onFailureByExpiredToken();
+
         void onFailureByUnAcceptedRole();
+
         void onOtherFailure(String msg);
+
         void onFailureByCannotSendToServer();
     }
 
     public void GetAllMemberInCourse(String course_id, Context context, GetAllMemberInCourseCallBack callBack);
+
     public interface GetAllMemberInCourseCallBack {
         public void onSuccess(List<AccountInfo> response);
 
         public void onFailureByExpiredToken();
 
         public void onFailureByUnAcepptedRole();
+
         public void onFailureByOtherError(String msg);
 
         public void onFailureByCannotSendToServer();
     }
 
+    public void LeaveCourse(String courseId, Context context, LeaveCourseCallBack callback);
+    public interface LeaveCourseCallBack
+    {
+        public void onSuccess();
+
+        public void onFailureByExpiredToken();
+
+        public void onFailureByUnAcepptedRole();
+
+        public void onFailureByOtherError(String msg);
+
+        public void onFailureByCannotSendToServer();
+    }
 }

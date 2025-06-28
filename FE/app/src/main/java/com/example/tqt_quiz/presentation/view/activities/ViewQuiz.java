@@ -1,21 +1,17 @@
 package com.example.tqt_quiz.presentation.view.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.tqt_quiz.R;
-import com.example.tqt_quiz.staticclass.StaticClass;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,8 +22,6 @@ public class ViewQuiz extends AppCompatActivity {
 
     TextView tvTitle, tvDescription, tvStart, tvDue, tvScore;
     Button btnAction;
-    ActivityResultLauncher<Intent> doQuizLauncher, viewResultLauncher;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,15 +34,13 @@ public class ViewQuiz extends AppCompatActivity {
             return insets;
         });
 
-        StaticClass.customActionBar(getSupportActionBar(), R.layout.custom_action_bar_2);
-
         tvTitle = findViewById(R.id.tv_Title_ViewQuiz);
         tvDescription = findViewById(R.id.tv_Description_ViewQuiz);
         tvStart = findViewById(R.id.tv_StartTime_ViewQuiz);
         tvDue = findViewById(R.id.tv_DueTime_ViewQuiz);
         tvScore = findViewById(R.id.tv_Score_ViewQuiz);
         btnAction = findViewById(R.id.btn_Action_ViewQuiz);
-
+/*
         String title = getIntent().getStringExtra("quiz_name");
         String description = getIntent().getStringExtra("quiz_description");
         String startTime = getIntent().getStringExtra("quiz_start");
@@ -118,6 +110,8 @@ public class ViewQuiz extends AppCompatActivity {
                 viewResultLauncher.launch(intent);
             }
         });
+
+ */
     }
 
     private String getStatus(String startTimeStr, String dueTimeStr) {

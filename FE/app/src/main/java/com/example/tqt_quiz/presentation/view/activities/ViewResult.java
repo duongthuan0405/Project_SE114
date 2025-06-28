@@ -1,5 +1,6 @@
 package com.example.tqt_quiz.presentation.view.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -23,28 +24,30 @@ import java.util.List;
 
 public class ViewResult extends AppCompatActivity {
 
-    private TextView tvTitle, tvDescription, tvTime, tvCourseId, tvResultSummary;
-    private LinearLayout llQuestionList;
+    private TextView Title, Description, StartTime, DueTime, CourseId, ResultSummary;
+    private LinearLayout QuestionList;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_do_quiz);
+        setContentView(R.layout.activity_view_result);
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.layout_root_do_quiz), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.layout_root_view_result), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
         // Ánh xạ view
-        tvTitle = findViewById(R.id.tv_Title_DoQuiz);
-        tvDescription = findViewById(R.id.tv_Description_DoQuiz);
-        tvTime = findViewById(R.id.tv_Time_DoQuiz);
-        tvCourseId = findViewById(R.id.tv_CourseId_DoQuiz);
-        tvResultSummary = findViewById(R.id.tv_ResultSummary_DoQuiz);
-        llQuestionList = findViewById(R.id.ll_QuestionList_DoQuiz);
+        Title = findViewById(R.id.tv_Title_ViewResult);
+        Description = findViewById(R.id.tv_Description_ViewResult);
+        StartTime = findViewById(R.id.tv_StartTime_ViewResult);
+        DueTime = findViewById(R.id.tv_DueTime_ViewResult);
+        CourseId = findViewById(R.id.tv_CourseId_ViewResult);
+        ResultSummary = findViewById(R.id.tv_ResultSummary_ViewResult);
+        QuestionList = findViewById(R.id.ll_QuestionList_ViewResult);
 
         // Nhận dữ liệu từ intent
         Intent intent = getIntent();
@@ -55,10 +58,11 @@ public class ViewResult extends AppCompatActivity {
         String courseId = intent.getStringExtra("course_id");
 
         // Hiển thị thông tin quiz
-        tvTitle.setText(title != null ? title : "Chưa có tiêu đề");
-        tvDescription.setText(description != null ? description : "Không có mô tả");
-        tvTime.setText("Thời gian: " + start + " - " + due);
-        tvCourseId.setText("Course ID: " + (courseId != null ? courseId : "--"));
+        Title.setText(title != null ? title : "Chưa có tiêu đề");
+        Description.setText(description != null ? description : "Không có mô tả");
+        StartTime.setText("Bắt đầu: " + start);
+        DueTime.setText("Kết thúc: " + due);
+        CourseId.setText("Course ID: " + (courseId != null ? courseId : "--"));
 
         // Lấy danh sách câu hỏi (demo)
         List<Question> questionList = DummyQuizGenerator.getSampleQuestions();
@@ -75,12 +79,12 @@ public class ViewResult extends AppCompatActivity {
         }
 
         // Hiển thị kết quả
-        tvResultSummary.setText("Kết quả: " + correct + " / " + questionList.size());
+        ResultSummary.setText("Kết quả: " + correct + " / " + questionList.size());
 
         // Tạo UI hiển thị từng câu hỏi
         LayoutInflater inflater = LayoutInflater.from(this);
         for (Question question : questionList) {
-            View questionView = inflater.inflate(R.layout.item_question, llQuestionList, false);
+            View questionView = inflater.inflate(R.layout.item_question, QuestionList, false);
             QuestionViewHolder viewHolder = new QuestionViewHolder(questionView, false);
 
             // Set dữ liệu đã chọn
@@ -88,7 +92,7 @@ public class ViewResult extends AppCompatActivity {
             viewHolder.setReadOnly();
             viewHolder.showResultFeedback();
 
-            llQuestionList.addView(viewHolder.getRoot());
+            QuestionList.addView(viewHolder.getRoot());
         }
     }
 }

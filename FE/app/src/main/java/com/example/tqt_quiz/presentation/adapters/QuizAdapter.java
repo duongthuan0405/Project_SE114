@@ -86,7 +86,12 @@ public class QuizAdapter extends ArrayAdapter<Quiz> {
                 String statusText;
                 int bgResId;
 
-                if (now.before(start)) {
+                if(!quiz.isPublished())
+                {
+                    statusText = StaticClass.StateOfQuiz.BENOTPUBLISHED;
+                    bgResId = R.drawable.bg_status_benotpublished;
+                }
+                else if (now.before(start)) {
                     statusText = StaticClass.StateOfQuiz.SOON;
                     bgResId = R.drawable.bg_status_upcoming;
                 } else if (now.after(end)) {

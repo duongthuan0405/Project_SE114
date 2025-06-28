@@ -13,12 +13,16 @@ public class RegisterRequest {
 
     @SerializedName("lastMiddleName")
     private String LastMiddleName;
-    public RegisterRequest(String email, String password, String Firstname, String LastMiddleName)
+
+    @SerializedName("accountTypeId")
+    private String accountTypeId;
+    public RegisterRequest(String email, String password, String Firstname, String LastMiddleName, String accountTypeId)
     {
         this.Email=email;
         this.Password=password;
         this.FirstName=Firstname;
         this.LastMiddleName=LastMiddleName;
+        this.accountTypeId=accountTypeId;
     }
 
     // Getters and Setters

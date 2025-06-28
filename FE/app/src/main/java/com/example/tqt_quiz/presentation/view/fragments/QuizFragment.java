@@ -11,7 +11,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.FragmentActivity;
 
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +22,7 @@ import android.widget.Toast;
 import android.widget.Spinner;
 
 import com.example.tqt_quiz.R;
+import com.example.tqt_quiz.data.repository.RoleManager;
 import com.example.tqt_quiz.domain.dto.QuizDTO;
 import com.example.tqt_quiz.presentation.adapters.CourseAdapterForSpinner;
 import com.example.tqt_quiz.presentation.adapters.QuizAdapter;
@@ -33,6 +33,7 @@ import com.example.tqt_quiz.presentation.contract_vp.QuizFragmentContract;
 import com.example.tqt_quiz.presentation.presenter.QuizFragmentPresenter;
 import com.example.tqt_quiz.presentation.view.activities.CreateQuiz;
 import com.example.tqt_quiz.presentation.view.activities.Login;
+import com.example.tqt_quiz.presentation.view.activities.ViewQuiz;
 import com.example.tqt_quiz.staticclass.StaticClass;
 
 import java.text.ParseException;
@@ -47,13 +48,12 @@ public class QuizFragment extends Fragment implements QuizFragmentContract.IView
     private List<Quiz> quizList = new ArrayList<>();
     private QuizAdapter quizAdapter;
     private ListView lvQuiz;
-    private ActivityResultLauncher<Intent> viewQuizLauncher, createQuizLauncher;
+    private ActivityResultLauncher<Intent> createQuizLauncher;
     private Button btnAddQuiz;
     private Spinner spnFilterCourse, spnFilterStatus;
     private List<String> statusOptions;
     private List<Quiz> allQuizList;
     private List<Course> listCourse;
-    private boolean loaded = false;
 
 
     public QuizFragment() {
@@ -66,6 +66,8 @@ public class QuizFragment extends Fragment implements QuizFragmentContract.IView
         View view = inflater.inflate(R.layout.fragment_quiz, container, false);
         presenter = new QuizFragmentPresenter(this);
 
+        String roleId = new RoleManager(requireContext().getApplicationContext()).GetRole();
+
         //Ánh xạ
         lvQuiz = view.findViewById(R.id.lv_Quiz_Quiz);
         btnAddQuiz = view.findViewById(R.id.btn_Add_Quiz);
@@ -73,11 +75,6 @@ public class QuizFragment extends Fragment implements QuizFragmentContract.IView
         spnFilterStatus = view.findViewById(R.id.spn_FilterStatus_Quiz);
 
         //Khai báo launcher
-        viewQuizLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {}
-        );
-
         createQuizLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -107,21 +104,22 @@ public class QuizFragment extends Fragment implements QuizFragmentContract.IView
         spnFilterCourse.setOnItemSelectedListener(lsn);
         spnFilterStatus.setOnItemSelectedListener(lsn);
 
+        if (roleId.equals(StaticClass.AccountTypeId.teacher)) {
+            btnAddQuiz.setVisibility(View.VISIBLE);
 
+            btnAddQuiz.setOnClickListener(v -> {
+                Intent intent = new Intent(requireContext(), CreateQuiz.class);
+                createQuizLauncher.launch(intent);
+            });
 
-        btnAddQuiz.setOnClickListener(v -> {
-            Intent intent = new Intent(requireContext(), CreateQuiz.class);
-            createQuizLauncher.launch(intent);
-        });
+            lvQuiz.setOnItemClickListener((parent, view1, position, id) -> {
+                Intent intent = new Intent(requireContext(), CreateQuiz.class);
+                Quiz quiz = ((Quiz)lvQuiz.getAdapter().getItem(position));
+                intent.putExtra("quizId", quiz.getId());
+                createQuizLauncher.launch(intent);
+            });
 
-
-
-        lvQuiz.setOnItemClickListener((parent, view1, position, id) -> {
-            Intent intent = new Intent(requireContext(), CreateQuiz.class);
-            String quiz_id = ((Quiz)lvQuiz.getAdapter().getItem(position)).getId();
-            intent.putExtra("quizId", quiz_id);
-            createQuizLauncher.launch(intent);
-        });
+        }
 
 
         return view;
@@ -133,6 +131,7 @@ public class QuizFragment extends Fragment implements QuizFragmentContract.IView
         statusOptions.add(StaticClass.StateOfQuiz.SOON);
         statusOptions.add(StaticClass.StateOfQuiz.NOW);
         statusOptions.add(StaticClass.StateOfQuiz.END);
+        statusOptions.add(StaticClass.StateOfQuiz.BENOTPUBLISHED);
         ArrayAdapter<String> statusAdt = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, statusOptions);
         statusAdt.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnFilterStatus.setAdapter(statusAdt);
@@ -222,8 +221,7 @@ public class QuizFragment extends Fragment implements QuizFragmentContract.IView
     }
 
     @Override
-    public void onTabVisible(boolean firstTime) {
+    public void onTabReload() {
         presenter.loadCourseToSpinner();
-        loaded = true;
     }
 }

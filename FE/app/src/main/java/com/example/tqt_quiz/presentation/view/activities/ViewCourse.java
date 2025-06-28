@@ -2,10 +2,13 @@ package com.example.tqt_quiz.presentation.view.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioButton;
@@ -13,6 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -29,6 +34,7 @@ import com.example.tqt_quiz.presentation.contract_vp.ViewCourseContract;
 import com.example.tqt_quiz.presentation.interfaces.OnPendingMemberAction;
 import com.example.tqt_quiz.presentation.presenter.ViewCoursePresenter;
 import com.example.tqt_quiz.staticclass.StaticClass;
+import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,8 +48,11 @@ public class ViewCourse extends AppCompatActivity implements ViewCourseContract.
     List<Member> memberList, pendingList;
     MemberAdapter memberAdapter;
     RadioButton rdbMembers, rdbWaiting;
+    Button Deletebutton;
     ViewCourseContract.IPresenter presenter;
+    ShapeableImageView logo;
     String courseId;
+    private ActivityResultLauncher<Intent> imagePickerLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,15 +71,16 @@ public class ViewCourse extends AppCompatActivity implements ViewCourseContract.
 
         courseId = getIntent().getStringExtra("courseId");
 
-        avatar = findViewById(R.id.img_CourseAvatar_ViewCourse);
-        name = findViewById(R.id.tv_CourseName_ViewCourse);
-        isPrivate = findViewById(R.id.tv_IsPrivate_ViewCourse);
-        description = findViewById(R.id.tv_DescriptionValue_ViewCourse);
-        host = findViewById(R.id.tv_HostName_ViewCourse);
+        avatar = findViewById(R.id.img_CourseAvatar_ViewCourseSt);
+        name = findViewById(R.id.tv_CourseName_ViewCourseSt);
+        isPrivate = findViewById(R.id.tv_IsPrivate_ViewCourseSt);
+        description = findViewById(R.id.tv_DescriptionValue_ViewCourseSt);
+        host = findViewById(R.id.tv_HostName_ViewCourseSt);
         rdbMembers = findViewById(R.id.rdb_Members_ViewCourse);
         rdbWaiting = findViewById(R.id.rdb_Waiting_ViewCourse);
-        lvMembers = findViewById(R.id.lv_Members_ViewCourse);
-        tv_CourseId = findViewById(R.id.tv_CourseID_ViewCourse);
+        lvMembers = findViewById(R.id.lv_Members_ViewCourseSt);
+        tv_CourseId = findViewById(R.id.tv_CourseID_ViewCourseSt);
+        Deletebutton=findViewById(R.id.btn_DeleteCourse_ViewCourse);
 
         presenter.showCourseInfo(courseId);
 
@@ -81,7 +91,12 @@ public class ViewCourse extends AppCompatActivity implements ViewCourseContract.
                     }
                 }
         );
-
+        Deletebutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.DeleteCourse(courseId);
+            }
+        });
         rdbWaiting.setOnCheckedChangeListener(
                 (buttonView, isChecked) -> {
                     if(isChecked)
@@ -97,6 +112,28 @@ public class ViewCourse extends AppCompatActivity implements ViewCourseContract.
             Intent intent = new Intent(ViewCourse.this, MemberInfo.class);
             intent.putExtra("memberId", selectedMember.getId());
             startActivity(intent);
+        });
+
+        imagePickerLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        Uri selectedImageUri = result.getData().getData();
+                        if (selectedImageUri != null) {
+                            avatar.setImageURI(selectedImageUri);
+                            presenter.saveLogo(selectedImageUri, courseId);
+                        }
+                    }
+                }
+        );
+
+        avatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                intent.setType("image/*");
+                imagePickerLauncher.launch(intent);
+            }
         });
 
 
@@ -133,6 +170,7 @@ public class ViewCourse extends AppCompatActivity implements ViewCourseContract.
     public void showCourseInfo(CourseDTO response) {
         Course course = new Course(response);
         if (course != null) {
+            Log.d("THUAN___", course.getAvatar());
             StaticClass.setImage(avatar, course.getAvatar(), R.drawable.resource_default);
             name.setText(course.getName());
             isPrivate.setText("Riêng tư: " + (course.isPrivate() ? "Có" : "Không"));

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/AppBackground"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Thông tin khóa học -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="12dp"
+            android:background="@drawable/btn_rectagle"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/img_CourseAvatar_ViewCourseSt"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/resource_default"
+                app:shapeAppearanceOverlay="@style/rounded_border_img"
+                android:scaleType="fitXY"
+                android:layout_marginEnd="12dp" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_CourseName_ViewCourseSt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Lập trình Android cơ bản"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/gray" />
+
+                <TextView
+                    android:id="@+id/tv_CourseID_ViewCourseSt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="- ID -"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/gray" />
+
+                <TextView
+                    android:id="@+id/tv_IsPrivate_ViewCourseSt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Riêng tư: Có"
+                    android:textSize="14sp"
+                    android:textColor="@color/gray"
+                    android:layout_marginTop="4dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Mô tả -->
+        <TextView
+            android:id="@+id/tv_Description_ViewCourseSt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="📌 Mô tả khóa học"
+            android:textColor="@color/dark_gray"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:id="@+id/tv_DescriptionValue_ViewCourseSt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Khóa học dành cho người mới bắt đầu học lập trình Android."
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:inputType="textMultiLine"
+            android:minLines="4"
+            android:maxLines="6"
+            android:background="@drawable/rounded_border"
+            android:padding="12dp"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Giáo viên -->
+        <TextView
+            android:id="@+id/tv_HostName_ViewCourseSt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="👤 Tên giáo viên: "
+            android:textSize="16sp"
+            android:textColor="@color/dark_gray"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Thành viên -->
+
+        <!-- Danh sách thành viên -->
+        <ListView
+            android:id="@+id/lv_Members_ViewCourseSt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="4dp"
+            android:background="@color/white"
+            android:nestedScrollingEnabled="true"
+            android:scrollbars="vertical" />
+
+        <Button
+            android:id="@+id/btn_DeleteCourse_ViewCourse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rời"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:background="@drawable/btn_rectagle_red"
+            android:elevation="6dp"/>
+    </LinearLayout>
+</ScrollView>

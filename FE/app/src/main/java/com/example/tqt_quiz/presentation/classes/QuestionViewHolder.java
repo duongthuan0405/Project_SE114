@@ -1,8 +1,8 @@
 package com.example.tqt_quiz.presentation.classes;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -11,9 +11,6 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.example.tqt_quiz.R;
-import com.example.tqt_quiz.domain.dto.AnswerDTO;
-import com.example.tqt_quiz.domain.dto.QuestionDTO;
-import com.example.tqt_quiz.domain.dto.QuizDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -173,4 +170,20 @@ public class QuestionViewHolder
         btn_Delete.setOnClickListener(lsn);
     }
 
+    public void disableForEditing() {
+        disableForAllChildren(root);
+        btn_Delete.setVisibility(View.GONE);
+        btn_Add.setVisibility(View.GONE);
+    }
+
+    private void disableForAllChildren(View view)
+    {
+        view.setEnabled(false);
+        if (view instanceof ViewGroup) {
+            ViewGroup group = (ViewGroup) view;
+            for (int i = 0; i < group.getChildCount(); i++) {
+                disableForAllChildren(group.getChildAt(i));
+            }
+        }
+    }
 }

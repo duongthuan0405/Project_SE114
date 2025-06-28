@@ -13,6 +13,8 @@ namespace BE.DTOs
         public DateTime DueTime { get; set; }
         [Required]
         public string CourseId { get; set; } = "";
+        [Required]
+        public bool IsPublished { get; set; } = false;
       
     }
 }

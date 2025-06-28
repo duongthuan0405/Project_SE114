@@ -4,7 +4,6 @@ import com.example.tqt_quiz.data.interactor.AccountInteractorIMP;
 import com.example.tqt_quiz.domain.dto.AccountInfo;
 import com.example.tqt_quiz.domain.interactor.IAccountInteractor;
 import com.example.tqt_quiz.presentation.contract_vp.IMainActivityContract;
-import com.example.tqt_quiz.staticclass.StaticClass;
 
 public class MainActivityPresenter implements IMainActivityContract.IPresenter
 {
@@ -24,14 +23,7 @@ public class MainActivityPresenter implements IMainActivityContract.IPresenter
             @Override
             public void onSuccess(AccountInfo response) {
 
-                if(response.getAccountTypeId().equals(StaticClass.AccountTypeId.teacher))
-                    mainView.navigateToMainHomeForTeacher();
-                else if (response.getAccountTypeId().equals(StaticClass.AccountTypeId.student))
-                    mainView.navigateToMainHomeForStudent();
-                else if (response.getAccountTypeId().equals(StaticClass.AccountTypeId.admin))
-                    mainView.navigateToMainHomeForAdmin();
-                else
-                    mainView.showToast("Lỗi phân quyền");
+                mainView.navigateToMainHome();
 
             }
 

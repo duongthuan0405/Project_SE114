@@ -23,7 +23,7 @@
             android:layout_marginBottom="16dp">
 
             <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/img_CourseAvatar_ViewCourse"
+                android:id="@+id/img_CourseAvatar_ViewCourseSt"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:src="@drawable/resource_default"
@@ -38,7 +38,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tv_CourseName_ViewCourse"
+                    android:id="@+id/tv_CourseName_ViewCourseSt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Lập trình Android cơ bản"
@@ -47,7 +47,7 @@
                     android:textColor="@color/gray" />
 
                 <TextView
-                    android:id="@+id/tv_CourseID_ViewCourse"
+                    android:id="@+id/tv_CourseID_ViewCourseSt"
                     android:layout_marginTop="4dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
 
 
                 <TextView
-                    android:id="@+id/tv_IsPrivate_ViewCourse"
+                    android:id="@+id/tv_IsPrivate_ViewCourseSt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Riêng tư: Có"
@@ -69,7 +69,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/tv_Description_ViewCourse"
+            android:id="@+id/tv_Description_ViewCourseSt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="📌 Mô tả khóa học"
@@ -79,7 +79,7 @@
             android:layout_marginBottom="4dp" />
 
         <TextView
-            android:id="@+id/tv_DescriptionValue_ViewCourse"
+            android:id="@+id/tv_DescriptionValue_ViewCourseSt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Khóa học dành cho người mới bắt đầu học lập trình Android."
@@ -93,7 +93,7 @@
             android:layout_marginBottom="16dp"/>
 
         <TextView
-            android:id="@+id/tv_HostName_ViewCourse"
+            android:id="@+id/tv_HostName_ViewCourseSt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="👤 Tên giáo viên: "
@@ -135,7 +135,7 @@
                 android:textColor="@color/dark_gray"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:layout_marginEnd="20dp"
+                android:layout_marginStart="20dp"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
                 android:paddingLeft="40dp"
@@ -146,7 +146,7 @@
         </RadioGroup>
 
         <ListView
-            android:id="@+id/lv_Members_ViewCourse"
+            android:id="@+id/lv_Members_ViewCourseSt"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:divider="@android:color/transparent"
@@ -154,5 +154,17 @@
             android:background="@color/white"
             android:nestedScrollingEnabled="true"
             android:scrollbars="vertical" />
+
+        <Button
+            android:id="@+id/btn_DeleteCourse_ViewCourse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Xóa"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:background="@drawable/btn_rectagle_red"
+            android:elevation="6dp"/>
     </LinearLayout>
 </ScrollView>

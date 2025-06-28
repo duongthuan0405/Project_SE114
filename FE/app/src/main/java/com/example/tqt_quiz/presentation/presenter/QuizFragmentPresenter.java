@@ -75,12 +75,23 @@ public class QuizFragmentPresenter implements QuizFragmentContract.IPresenter
             @Override
             public void onSuccess(List<QuizDTO> response) {
                 List<QuizDTO> quizzes;
-                if(selectedStatus.equals(StaticClass.StateOfQuiz.SOON))
+                if(selectedStatus.equals(StaticClass.StateOfQuiz.BENOTPUBLISHED))
                 {
                     quizzes = new ArrayList<>();
                     for(QuizDTO q : response)
                     {
-                        if(LocalDateTime.now().isBefore(q.getStartTime()))
+                        if(!q.getIsPublished())
+                        {
+                            quizzes.add(q);
+                        }
+                    }
+                }
+                else if(selectedStatus.equals(StaticClass.StateOfQuiz.SOON))
+                {
+                    quizzes = new ArrayList<>();
+                    for(QuizDTO q : response)
+                    {
+                        if(LocalDateTime.now().isBefore(q.getStartTime()) && q.getIsPublished())
                         {
                             quizzes.add(q);
                         }
@@ -90,7 +101,7 @@ public class QuizFragmentPresenter implements QuizFragmentContract.IPresenter
                     quizzes = new ArrayList<>();
                     for(QuizDTO q : response)
                     {
-                        if(LocalDateTime.now().isAfter(q.getStartTime()) && LocalDateTime.now().isBefore(q.getDueTime()))
+                        if(LocalDateTime.now().isAfter(q.getStartTime()) && LocalDateTime.now().isBefore(q.getDueTime()) && q.getIsPublished())
                         {
                             quizzes.add(q);
                         }
@@ -101,7 +112,7 @@ public class QuizFragmentPresenter implements QuizFragmentContract.IPresenter
                     quizzes = new ArrayList<>();
                     for(QuizDTO q : response)
                     {
-                        if(LocalDateTime.now().isAfter(q.getDueTime()))
+                        if(LocalDateTime.now().isAfter(q.getDueTime()) && q.getIsPublished())
                         {
                             quizzes.add(q);
                         }
@@ -132,7 +143,6 @@ public class QuizFragmentPresenter implements QuizFragmentContract.IPresenter
             }
         });
 
-
     }
 
     @Override
@@ -141,12 +151,23 @@ public class QuizFragmentPresenter implements QuizFragmentContract.IPresenter
             @Override
             public void onSuccess(List<QuizDTO> response) {
                 List<QuizDTO> quizzes;
-                if(selectedStatus.equals(StaticClass.StateOfQuiz.SOON))
+                if(selectedStatus.equals(StaticClass.StateOfQuiz.BENOTPUBLISHED))
                 {
                     quizzes = new ArrayList<>();
                     for(QuizDTO q : response)
                     {
-                        if(LocalDateTime.now().isBefore(q.getStartTime()))
+                        if(!q.getIsPublished())
+                        {
+                            quizzes.add(q);
+                        }
+                    }
+                }
+                else if(selectedStatus.equals(StaticClass.StateOfQuiz.SOON))
+                {
+                    quizzes = new ArrayList<>();
+                    for(QuizDTO q : response)
+                    {
+                        if(LocalDateTime.now().isBefore(q.getStartTime()) && q.getIsPublished())
                         {
                             quizzes.add(q);
                         }
@@ -156,7 +177,7 @@ public class QuizFragmentPresenter implements QuizFragmentContract.IPresenter
                     quizzes = new ArrayList<>();
                     for(QuizDTO q : response)
                     {
-                        if(LocalDateTime.now().isAfter(q.getStartTime()) && LocalDateTime.now().isBefore(q.getDueTime()))
+                        if(LocalDateTime.now().isAfter(q.getStartTime()) && LocalDateTime.now().isBefore(q.getDueTime()) && q.getIsPublished())
                         {
                             quizzes.add(q);
                         }
@@ -167,7 +188,7 @@ public class QuizFragmentPresenter implements QuizFragmentContract.IPresenter
                     quizzes = new ArrayList<>();
                     for(QuizDTO q : response)
                     {
-                        if(LocalDateTime.now().isAfter(q.getDueTime()))
+                        if(LocalDateTime.now().isAfter(q.getDueTime()) && q.getIsPublished())
                         {
                             quizzes.add(q);
                         }

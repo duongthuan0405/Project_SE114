@@ -5,10 +5,15 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.example.tqt_quiz.data.repository.RoleManager;
 import com.example.tqt_quiz.presentation.view.fragments.CourseFragment;
 import com.example.tqt_quiz.presentation.view.fragments.NotificationFragment;
 import com.example.tqt_quiz.presentation.view.fragments.ProfileFragment;
 import com.example.tqt_quiz.presentation.view.fragments.QuizFragment;
+import com.example.tqt_quiz.presentation.view.fragments.CourseFragmentSt;
+import com.example.tqt_quiz.presentation.view.fragments.QuizFragmentSt;
+import com.example.tqt_quiz.staticclass.StaticClass;
+
 
 import java.util.ArrayList;
 
@@ -17,10 +22,27 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
     public ViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
         list = new ArrayList<>();
-        list.add(new CourseFragment());
-        list.add(new QuizFragment());
-        list.add(new NotificationFragment());
-        list.add(new ProfileFragment());
+
+        //Phân quyền người dùng
+        String roleId = new RoleManager(fragmentActivity.getApplicationContext()).GetRole();
+
+        if(roleId.equals(StaticClass.AccountTypeId.teacher))
+        {
+            list.add(new CourseFragment());
+            list.add(new QuizFragment());
+            list.add(new NotificationFragment());
+            list.add(new ProfileFragment());
+        }
+
+        if(roleId.equals(StaticClass.AccountTypeId.student))
+        {
+            list.add(new CourseFragmentSt());
+            list.add(new QuizFragmentSt());
+            list.add(new NotificationFragment());
+            list.add(new ProfileFragment());
+        }
+
+
     }
 
     @NonNull

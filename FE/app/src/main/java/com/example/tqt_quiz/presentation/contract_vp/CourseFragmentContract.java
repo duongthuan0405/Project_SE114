@@ -6,7 +6,7 @@ import com.example.tqt_quiz.domain.dto.CourseDTO;
 
 import java.util.List;
 
-public interface ICourseFragmentContract {
+public interface CourseFragmentContract {
     public interface IView
     {
 

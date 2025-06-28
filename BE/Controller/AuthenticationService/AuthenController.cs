@@ -2,6 +2,8 @@
 using BE.Data.Database;
 using BE.Data.Entities;
 using BE.DTOs;
+using BE.Email;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,10 +24,12 @@ namespace BE.Controller.AuthenticationService
     {
         private readonly MyAppDBContext DbContext;
         private readonly IConfiguration Configuration;
-        public AuthenController(MyAppDBContext DbContext, IConfiguration Configuration)
+        private readonly IEmailService _emailService;
+        public AuthenController(MyAppDBContext DbContext, IEmailService emailService, IConfiguration Configuration)
         {
             this.DbContext = DbContext;
             this.Configuration = Configuration;
+            _emailService = emailService;
         }
 
         [HttpPost("login")]
@@ -41,9 +45,9 @@ namespace BE.Controller.AuthenticationService
                 {
 
                     return StatusCode(StatusCodes.Status401Unauthorized, new
-                        {
-                            Message = "Tên đăng nhập hoặc mật khẩu không đúng"
-                        }
+                    {
+                        Message = "Tên đăng nhập hoặc mật khẩu không đúng"
+                    }
                     );
                 }
 
@@ -85,9 +89,9 @@ namespace BE.Controller.AuthenticationService
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new
-                    {
-                        Message = "Lỗi hệ thống khi đăng nhập"
-                    }
+                {
+                    Message = "Lỗi hệ thống khi đăng nhập"
+                }
                 );
             }
         }
@@ -100,9 +104,9 @@ namespace BE.Controller.AuthenticationService
                 if (string.IsNullOrEmpty(req.Email) || string.IsNullOrEmpty(req.Password))
                 {
                     return StatusCode(StatusCodes.Status400BadRequest, new
-                        {
-                            Message = "Email, mật khẩu và loại tài khoản là bắt buộc"
-                        }
+                    {
+                        Message = "Email, mật khẩu và loại tài khoản là bắt buộc"
+                    }
                     );
                 }
 
@@ -111,9 +115,9 @@ namespace BE.Controller.AuthenticationService
                 if (existingAuthen != null)
                 {
                     return StatusCode(StatusCodes.Status409Conflict, new
-                        {
-                            Message = "Email đã được sử dụng"
-                        }
+                    {
+                        Message = "Email đã được sử dụng"
+                    }
                     );
                 }
 
@@ -136,7 +140,7 @@ namespace BE.Controller.AuthenticationService
                     Id = id,
                     FirstName = req.FirstName,
                     LastMiddleName = req.LastMiddleName,
-                    AccountTypeId = StaticClass.RoleId.Student
+                    AccountTypeId = req.AccountTypeId
                 };
                 DbContext.Accounts.Add(newAccount);
 
@@ -150,16 +154,134 @@ namespace BE.Controller.AuthenticationService
                     Email = newAuthen.Email,
                     Avatar = newAccount.Avatar,
                     AccountTypeId = newAccount.AccountTypeId,
-                    AccountType = StaticClass.RoleId.Student
+                    AccountType = newAccount.AccountTypeId
                 });
             }
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new
-                    {
-                        Message = "Lỗi hệ thống khi đăng ký"
-                    }
+                {
+                    Message = "Lỗi hệ thống khi đăng ký"
+                }
                 );
+            }
+        }
+
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPwDTO dto)
+        {
+            try
+            {
+                var user = await DbContext.AccountAuthens.FirstOrDefaultAsync(a => a.Email == dto.Email);
+                if (user == null) return Ok();
+
+                var existingToken = await DbContext.PasswordResetTokens.FirstOrDefaultAsync(t => t.Email == dto.Email && t.ExpiredAt > DateTime.Now);
+
+                if (existingToken != null)
+                {
+                    return Ok();
+                }
+
+                var token = Guid.NewGuid().ToString("N").Substring(0, 6);
+                var expiredAt = DateTime.Now.AddMinutes(5);
+                string id = "";
+                do
+                {
+                    id = StaticClass.CreateId();
+                }
+                while (await DbContext.PasswordResetTokens.AnyAsync(t => t.Id == id));
+
+                var resetToken = new PasswordResetToken
+                {
+                    Id = id,
+                    Email = dto.Email,
+                    Token = token,
+                    ExpiredAt = expiredAt
+                };
+
+                DbContext.PasswordResetTokens.Add(resetToken);
+                await DbContext.SaveChangesAsync();
+
+                var html = $@"
+                <p>Bạn đã yêu cầu đặt lại mật khẩu.</p>
+                <p>Mã xác thực của bạn (hết hạn sau 5 phút):</p>
+                <h2>{token}</h2>
+                ";
+
+                await _emailService.SendAsync(dto.Email, "Đặt lại mật khẩu", html);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new
+                {
+                    Message = "Lỗi hệ thống khi gửi email đặt lại mật khẩu"
+                });
+            }
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPwDTO dto)
+        {
+            try
+            {
+                var tokenEntity = await DbContext.PasswordResetTokens.FirstOrDefaultAsync(t => t.Email == dto.Email && t.Token == dto.Token);
+
+                if (tokenEntity == null || tokenEntity.ExpiredAt < DateTime.UtcNow)
+                    return BadRequest(new { Message = "Token không hợp lệ hoặc đã hết hạn." });
+
+                var account = await DbContext.AccountAuthens.FirstOrDefaultAsync(a => a.Email == dto.Email);
+                if (account == null)
+                    return BadRequest(new { Message = "Tài khoản không tồn tại" });
+
+                account.Password = dto.NewPassword;
+                DbContext.PasswordResetTokens.Remove(tokenEntity);
+                await DbContext.SaveChangesAsync();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new
+                {
+                    Message = "Lỗi hệ thống khi đặt lại mật khẩu"
+                });
+            }
+
+        }
+
+        [HttpPatch("update-password")]
+        [Authorize(Roles = StaticClass.RoleId.Admin + "," + StaticClass.RoleId.Teacher + "," + StaticClass.RoleId.Student)]
+        public async Task<IActionResult> UpdatePassword([FromBody] UpdatePasswordDTO dto)
+        {
+            try
+            {
+                var accountId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (string.IsNullOrEmpty(accountId))
+                {
+                    return StatusCode(StatusCodes.Status401Unauthorized, new { Message = "Bạn cần đăng nhập để thực hiện thao tác này" });
+                }
+
+                var account = await DbContext.AccountAuthens.FindAsync(accountId);
+                if (account == null)
+                {
+                    return StatusCode(StatusCodes.Status404NotFound, new { Message = "Tài khoản không tồn tại" });
+                }
+
+                if (account.Password != dto.OldPassword)
+                {
+                    return StatusCode(StatusCodes.Status400BadRequest, new { Message = "Mật khẩu cũ không đúng" });
+                }
+
+                account.Password = dto.NewPassword;
+                DbContext.AccountAuthens.Update(account);
+                await DbContext.SaveChangesAsync();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "Lỗi hệ thống khi cập nhật mật khẩu" });
             }
         }
     }

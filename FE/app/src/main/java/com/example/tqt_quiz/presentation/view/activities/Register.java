@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +30,7 @@ public class Register extends AppCompatActivity implements RegisterContract.IVie
     private TextView Login;
     private RegisterContract.IPresenter presenter;
     ActivityResultLauncher<Intent> launcher;
+    RadioButton teacher, student;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +53,8 @@ public class Register extends AppCompatActivity implements RegisterContract.IVie
         Type = findViewById(R.id.rdg_Type_Register);
         Register = findViewById(R.id.btn_Register_Register);
         Login = findViewById(R.id.btn_Login_Register);
+        teacher = findViewById(R.id.rdb_Teacher_Register);
+        student = findViewById(R.id.rdb_Student_Register);
 
         presenter = new RegisterPresenter(this);
 
@@ -69,7 +73,7 @@ public class Register extends AppCompatActivity implements RegisterContract.IVie
             String pw = Pw.getText().toString();
             String pwAgain = PwAgain.getText().toString();
 
-            presenter.handleRegister(type, lastName, firstName, email, pw, pwAgain);
+            presenter.handleRegister(type, lastName, firstName, email, pw, pwAgain, getSelectedType());
         });
 
         //Thao tác Login Click
@@ -78,12 +82,10 @@ public class Register extends AppCompatActivity implements RegisterContract.IVie
 
     private String getSelectedType() {
         int checkedId = Type.getCheckedRadioButtonId();
-        if (checkedId == R.id.rdb_Student_Register) {
-            return "Student";
-        } else if (checkedId == R.id.rdb_Teacher_Register) {
-            return "Teacher";
+        if (checkedId == R.id.rdb_Teacher_Register) {
+            return StaticClass.AccountTypeId.teacher;
         }
-        return "";
+        return StaticClass.AccountTypeId.student;
     }
 
     @Override
