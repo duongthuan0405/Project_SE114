@@ -13,7 +13,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -40,12 +39,10 @@ import com.example.tqt_quiz.presentation.contract_vp.CreateQuizContract;
 import com.example.tqt_quiz.presentation.presenter.CreateQuizPresenter;
 import com.example.tqt_quiz.staticclass.StaticClass;
 
-import java.sql.Time;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.IView
 {
@@ -55,7 +52,7 @@ public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.
     private EditText Title, Description;
     private TextView StartTime, DueTime;
     private Spinner CourseId;
-    private Switch isPublishSwitch;
+    private Button btn_Publish;
     private String quiz_id = "";
     LocalDateTime selectedDate;
     private int d, M, y, H, m;
@@ -82,7 +79,7 @@ public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.
         StartTime = findViewById(R.id.edt_StartTime_CreateQuiz);
         DueTime = findViewById(R.id.edt_DueTime_CreateQuiz);
         CourseId = findViewById(R.id.spn_Course);
-        isPublishSwitch = findViewById(R.id.switch_IsPublish_CreateQuiz);
+        btn_Publish = findViewById(R.id.btn_IsPublish_CreateQuiz);
         Finish = findViewById(R.id.btn_Finish_CreateQuiz);
         btnDelete = findViewById(R.id.btn_Delete_CreateQuiz);
         Cancel = findViewById(R.id.btn_Cancel_CreateQuiz);
@@ -91,6 +88,17 @@ public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.
         DueTime.setOnClickListener(v -> onClickTimeTextView(v));
         StartTime.setText(defaultDateTime.format(DateTimeFormatter.ofPattern(StaticClass.DateTimeFormat)));
         DueTime.setText(defaultDateTime.plusHours(1).format(DateTimeFormatter.ofPattern(StaticClass.DateTimeFormat)));
+
+
+        btn_Publish.setOnClickListener(v -> handlePublish());
+        Cancel.setOnClickListener(v -> finish());
+        Finish.setOnClickListener(v -> handleSubmit(false));
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleDelete();
+            }
+        });
 
         presenter.loadCourseList();
 
@@ -104,15 +112,23 @@ public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.
 
         if(!quiz_id.equals(""))
         {
+
             presenter.onDetailOldQuiz(quiz_id);
         }
 
         else {
+            btnDelete.setVisibility(View.GONE);
             addNewQuestion();
-            Cancel.setOnClickListener(v -> finish());
-            Finish.setOnClickListener(v -> handleSubmit());
         }
 
+    }
+
+    private void handleDelete() {
+        presenter.onDeletedClick(quiz_id);
+    }
+
+    private void handlePublish() {
+        handleSubmit(true);
     }
 
     private void addNewQuestion() {
@@ -130,35 +146,25 @@ public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.
             });
     }
 
-    private void handleSubmit()
+    private void handleSubmit(boolean isPublish)
     {
-        if(oldQuiz != null && !LocalDateTime.now().isBefore(oldQuiz.getStartTime()))
-        {
-            Intent i = new Intent();
-            setResult(RESULT_CANCELED, i);
-            showMessage("Bài quiz đang diễn ra hoặc đã kết thúc, không thể chỉnh sửa");
-            finish();
-            return;
-        }
         String title = "";
         String description = "";
         String startTime = "";
         String dueTime = "";
-        boolean isPublished = false;
 
         String course_id = ((Course)CourseId.getSelectedItem()).getId();
         title = Title.getText().toString().trim();
         description = Description.getText().toString().trim();
         startTime = StartTime.getText().toString().trim();
         dueTime = DueTime.getText().toString().trim();
-        isPublished = isPublishSwitch.isChecked();
 
         QuizCreateRequestDTO quizCreateRequestDTO;
 
         try {
             LocalDateTime lcDt_startTime = LocalDateTime.parse(startTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
             LocalDateTime lcDt_dueTime = LocalDateTime.parse(dueTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-            quizCreateRequestDTO = new QuizCreateRequestDTO(title, description, lcDt_startTime, lcDt_dueTime, course_id);
+            quizCreateRequestDTO = new QuizCreateRequestDTO(title, description, lcDt_startTime, lcDt_dueTime, course_id, isPublish);
         }
         catch (Exception e)
         {
@@ -266,9 +272,26 @@ public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.
         Description.setText(response.getDescription());
         CourseId.setVisibility(View.GONE);
         TextView tv = CreateQuiz.this.findViewById(R.id.tv_Course);
-        tv.append(" " + response.getCourseName());
-        presenter.onGetOldQuestion(response.getId());
+        tv.append(" " + response.getCourseName() + " (" + response.getId() + ")");
         oldQuiz = response;
+        presenter.onGetOldQuestion(response.getId());
+
+        if(oldQuiz.getIsPublished())
+        {
+            if(oldQuiz.getStartTime().isBefore(LocalDateTime.now()))
+            {
+                disableEditQuiz();
+                btn_Publish.setVisibility(View.GONE);
+                Finish.setVisibility(View.GONE);
+                btnDelete.setVisibility(View.GONE);
+            }
+            else
+            {
+                disableEditQuiz();
+                btn_Publish.setVisibility(View.GONE);
+            }
+        }
+
     }
 
     @Override
@@ -281,6 +304,10 @@ public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.
             QuestionViewHolder questionViewHolder = new QuestionViewHolder(questionView, true);
             questionView.setTag(questionViewHolder);
 
+            if(oldQuiz.getIsPublished() && oldQuiz.getStartTime().isBefore(LocalDateTime.now()))
+            {
+                questionViewHolder.disableForEditing();
+            }
 
             Question question = new Question(q);
 
@@ -296,8 +323,6 @@ public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.
             );
         }
 
-        Cancel.setOnClickListener(v -> finish());
-        Finish.setOnClickListener(v -> handleSubmit());
     }
 
     @Override
@@ -322,7 +347,6 @@ public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.
     {
         TextView tv = (TextView)v;
 
-        Log.d("THUAN", defaultDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
         DatePickerDialog date = new DatePickerDialog(CreateQuiz.this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -345,8 +369,13 @@ public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.
         }, defaultDateTime.getYear(), defaultDateTime.getMonthValue(), defaultDateTime.getDayOfMonth());
 
         date.show();
+    }
 
-
-
+    void disableEditQuiz()
+    {
+        Title.setEnabled(false);
+        Description.setEnabled(false);
+        StartTime.setEnabled(false);
+        DueTime.setEnabled(false);
     }
 }

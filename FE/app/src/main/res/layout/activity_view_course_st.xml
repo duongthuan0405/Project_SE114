@@ -9,10 +9,11 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp">
 
+        <!-- Thông tin khóa học -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -48,14 +49,13 @@
 
                 <TextView
                     android:id="@+id/tv_CourseID_ViewCourseSt"
-                    android:layout_marginTop="4dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
                     android:text="- ID -"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     android:textColor="@color/gray" />
-
 
                 <TextView
                     android:id="@+id/tv_IsPrivate_ViewCourseSt"
@@ -68,6 +68,7 @@
             </LinearLayout>
         </LinearLayout>
 
+        <!-- Mô tả -->
         <TextView
             android:id="@+id/tv_Description_ViewCourseSt"
             android:layout_width="match_parent"
@@ -92,6 +93,7 @@
             android:padding="12dp"
             android:layout_marginBottom="16dp"/>
 
+        <!-- Giáo viên -->
         <TextView
             android:id="@+id/tv_HostName_ViewCourseSt"
             android:layout_width="match_parent"
@@ -101,54 +103,13 @@
             android:textColor="@color/dark_gray"
             android:layout_marginBottom="16dp" />
 
-        <RadioGroup
-            android:id="@+id/rdg_Type_ViewCourse"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_gravity="center_horizontal">
+        <!-- Thành viên -->
 
-            <RadioButton
-                android:id="@+id/rdb_Members_ViewCourse"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Thành viên"
-                android:textColor="@color/dark_gray"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:layout_marginEnd="20dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:paddingLeft="40dp"
-                android:paddingRight="40dp"
-                android:button="@android:color/transparent"
-                android:background="@drawable/radio_selector"
-                android:elevation="4dp" />
-
-            <RadioButton
-                android:id="@+id/rdb_Waiting_ViewCourse"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Chờ duyệt"
-                android:textColor="@color/dark_gray"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:layout_marginStart="20dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:paddingLeft="40dp"
-                android:paddingRight="40dp"
-                android:button="@android:color/transparent"
-                android:background="@drawable/radio_selector"
-                android:elevation="4dp" />
-        </RadioGroup>
-
+        <!-- Danh sách thành viên -->
         <ListView
             android:id="@+id/lv_Members_ViewCourseSt"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:divider="@android:color/transparent"
             android:dividerHeight="4dp"
             android:background="@color/white"
@@ -159,7 +120,7 @@
             android:id="@+id/btn_DeleteCourse_ViewCourse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Xóa"
+            android:text="Rời"
             android:textStyle="bold"
             android:textColor="@color/white"
             android:layout_gravity="bottom|end"

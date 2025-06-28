@@ -1,16 +1,9 @@
 package com.example.tqt_quiz.presentation.view.fragments;
 
 import android.content.Context;
-import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import android.content.Intent;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.fragment.app.FragmentActivity;
-
-
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,20 +11,23 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import com.example.tqt_quiz.R;
-import com.example.tqt_quiz.data.repository.RoleManager;
 import com.example.tqt_quiz.domain.dto.QuizDTO;
 import com.example.tqt_quiz.presentation.adapters.CourseAdapterForSpinner;
 import com.example.tqt_quiz.presentation.adapters.QuizAdapter;
 import com.example.tqt_quiz.presentation.classes.Course;
 import com.example.tqt_quiz.presentation.classes.IReloadableTab;
 import com.example.tqt_quiz.presentation.classes.Quiz;
-import com.example.tqt_quiz.presentation.contract_vp.QuizFragmentContract;
-import com.example.tqt_quiz.presentation.presenter.QuizFragmentPresenter;
-import com.example.tqt_quiz.presentation.view.activities.CreateQuiz;
+import com.example.tqt_quiz.presentation.contract_vp.QuizFragmentStContract;
+import com.example.tqt_quiz.presentation.presenter.QuizFragmentStPresenter;
 import com.example.tqt_quiz.presentation.view.activities.Login;
 import com.example.tqt_quiz.presentation.view.activities.ViewQuiz;
 import com.example.tqt_quiz.staticclass.StaticClass;
@@ -42,13 +38,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class QuizFragment extends Fragment implements QuizFragmentContract.IView, IReloadableTab
+public class QuizFragmentSt extends Fragment implements QuizFragmentStContract.IView, IReloadableTab
 {
-    QuizFragmentContract.IPresenter presenter;
+    QuizFragmentStContract.IPresenter presenter;
     private List<Quiz> quizList = new ArrayList<>();
     private QuizAdapter quizAdapter;
     private ListView lvQuiz;
-    private ActivityResultLauncher<Intent> createQuizLauncher;
+    private ActivityResultLauncher<Intent> viewQuizLauncher;
     private Button btnAddQuiz;
     private Spinner spnFilterCourse, spnFilterStatus;
     private List<String> statusOptions;
@@ -56,7 +52,7 @@ public class QuizFragment extends Fragment implements QuizFragmentContract.IView
     private List<Course> listCourse;
 
 
-    public QuizFragment() {
+    public QuizFragmentSt() {
         // Required empty public constructor
     }
 
@@ -64,9 +60,8 @@ public class QuizFragment extends Fragment implements QuizFragmentContract.IView
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_quiz, container, false);
-        presenter = new QuizFragmentPresenter(this);
 
-        String roleId = new RoleManager(requireContext().getApplicationContext()).GetRole();
+        presenter = new QuizFragmentStPresenter(this);
 
         //Ánh xạ
         lvQuiz = view.findViewById(R.id.lv_Quiz_Quiz);
@@ -75,15 +70,11 @@ public class QuizFragment extends Fragment implements QuizFragmentContract.IView
         spnFilterStatus = view.findViewById(R.id.spn_FilterStatus_Quiz);
 
         //Khai báo launcher
-        createQuizLauncher = registerForActivityResult(
+        viewQuizLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == AppCompatActivity.RESULT_OK) {
-                        Toast.makeText(getContext(), "Thêm/Sửa Quiz thành công", Toast.LENGTH_LONG).show();
-                        filterQuizList();
-                    }
-                }
+                result -> {}
         );
+
 
         loadSpinner();
 
@@ -104,22 +95,14 @@ public class QuizFragment extends Fragment implements QuizFragmentContract.IView
         spnFilterCourse.setOnItemSelectedListener(lsn);
         spnFilterStatus.setOnItemSelectedListener(lsn);
 
-        if (roleId.equals(StaticClass.AccountTypeId.teacher)) {
-            btnAddQuiz.setVisibility(View.VISIBLE);
+        btnAddQuiz.setVisibility(View.GONE);
 
-            btnAddQuiz.setOnClickListener(v -> {
-                Intent intent = new Intent(requireContext(), CreateQuiz.class);
-                createQuizLauncher.launch(intent);
-            });
-
-            lvQuiz.setOnItemClickListener((parent, view1, position, id) -> {
-                Intent intent = new Intent(requireContext(), CreateQuiz.class);
-                Quiz quiz = ((Quiz)lvQuiz.getAdapter().getItem(position));
-                intent.putExtra("quizId", quiz.getId());
-                createQuizLauncher.launch(intent);
-            });
-
-        }
+        lvQuiz.setOnItemClickListener((parent, view1, position, id) -> {
+            Quiz selectedQuiz = (Quiz) lvQuiz.getAdapter().getItem(position);
+            Intent intent = new Intent(requireContext(), ViewQuiz.class);
+            intent.putExtra("quiz_id", selectedQuiz.getId());
+            viewQuizLauncher.launch(intent);
+        });
 
 
         return view;
@@ -131,14 +114,11 @@ public class QuizFragment extends Fragment implements QuizFragmentContract.IView
         statusOptions.add(StaticClass.StateOfQuiz.SOON);
         statusOptions.add(StaticClass.StateOfQuiz.NOW);
         statusOptions.add(StaticClass.StateOfQuiz.END);
-        statusOptions.add(StaticClass.StateOfQuiz.BENOTPUBLISHED);
         ArrayAdapter<String> statusAdt = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, statusOptions);
         statusAdt.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnFilterStatus.setAdapter(statusAdt);
-        spnFilterStatus.setSelection(0);
-
-        // Lọc course
         presenter.loadCourseToSpinner();
+        spnFilterStatus.setSelection(0);
     }
 
     private void filterQuizList() {
@@ -180,8 +160,21 @@ public class QuizFragment extends Fragment implements QuizFragmentContract.IView
 
 
     @Override
+    public void onTabReload() {
+        presenter.loadCourseToSpinner();
+    }
+
+    @Override
     public Context getTheContext() {
         return getActivity().getApplicationContext();
+    }
+
+    @Override
+    public void showOnCourseSpinner(List<Course> response) {
+        listCourse = response;
+        CourseAdapterForSpinner courseAdapterForSpinner = new CourseAdapterForSpinner(getTheContext(), listCourse);
+        spnFilterCourse.setAdapter(courseAdapterForSpinner);
+        spnFilterCourse.setSelection(0);
     }
 
     @Override
@@ -200,14 +193,6 @@ public class QuizFragment extends Fragment implements QuizFragmentContract.IView
     }
 
     @Override
-    public void showOnSpinnerCourse(List<Course> courses) {
-        listCourse = courses;
-        CourseAdapterForSpinner courseAdapterForSpinner = new CourseAdapterForSpinner(getTheContext(), courses);
-        spnFilterCourse.setAdapter(courseAdapterForSpinner);
-        spnFilterCourse.setSelection(0);
-    }
-
-    @Override
     public void showQuiz(List<QuizDTO> quizzes) {
         allQuizList = new ArrayList<>();
         for(QuizDTO quizDTO : quizzes)
@@ -217,11 +202,5 @@ public class QuizFragment extends Fragment implements QuizFragmentContract.IView
 
         quizAdapter = new QuizAdapter(getTheContext(), R.layout.item_quiz, allQuizList);
         lvQuiz.setAdapter(quizAdapter);
-
-    }
-
-    @Override
-    public void onTabReload() {
-        presenter.loadCourseToSpinner();
     }
 }

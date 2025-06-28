@@ -15,7 +15,7 @@ public class RoleManager implements IRoleManager {
     }
     @Override
     public void SaveRole(String RoleID) {
-        pref.edit().putString(KeyRole,RoleID);
+        pref.edit().putString(KeyRole,RoleID).apply();
     }
 
     @Override

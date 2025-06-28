@@ -1,10 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_root_view_result"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.view.activities.ViewResult">
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/AppBackground"
+    android:layout_marginHorizontal="10dp"
+    android:layout_marginVertical="10dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- Tiêu đề Quiz -->
+    <TextView
+        android:id="@+id/tv_Title_ViewResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tiêu đề bài kiểm tra"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="4dp" />
+
+    <!-- Mô tả Quiz -->
+    <TextView
+        android:id="@+id/tv_Description_ViewResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Mô tả bài kiểm tra"
+        android:textSize="14sp"
+        android:textColor="@android:color/darker_gray"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Course ID -->
+    <TextView
+        android:id="@+id/tv_CourseId_ViewResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Course ID: CS101"
+        android:textStyle="italic"
+        android:textColor="@android:color/darker_gray"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Thời gian bắt đầu -->
+    <TextView
+        android:id="@+id/tv_StartTime_ViewResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Bắt đầu: 2025-06-20 08:00"
+        android:textSize="14sp"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="4dp" />
+
+    <!-- Thời gian kết thúc -->
+    <TextView
+        android:id="@+id/tv_DueTime_ViewResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Kết thúc: 2025-06-20 09:00"
+        android:textSize="14sp"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="12dp" />
+
+    <!-- Tổng kết kết quả -->
+    <TextView
+        android:id="@+id/tv_ResultSummary_ViewResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Bạn đã trả lời đúng X/Y câu."
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="@color/Primary"
+        android:layout_marginBottom="12dp" />
+
+    <!-- Danh sách câu hỏi -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:id="@+id/ll_QuestionList_ViewResult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
+
+</LinearLayout>

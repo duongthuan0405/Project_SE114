@@ -26,9 +26,8 @@ import com.example.tqt_quiz.domain.dto.CourseDTO;
 import com.example.tqt_quiz.presentation.adapters.CourseAdapter;
 import com.example.tqt_quiz.presentation.classes.Course;
 import com.example.tqt_quiz.presentation.classes.IReloadableTab;
-import com.example.tqt_quiz.presentation.contract_vp.ICourseFragmentContract;
+import com.example.tqt_quiz.presentation.contract_vp.CourseFragmentContract;
 import com.example.tqt_quiz.presentation.presenter.CourseFragmentPresenter;
-import com.example.tqt_quiz.presentation.presenter.QuizFragmentPresenter;
 import com.example.tqt_quiz.presentation.view.activities.CreateCourse;
 import com.example.tqt_quiz.presentation.view.activities.Login;
 import com.example.tqt_quiz.presentation.view.activities.ViewCourse;
@@ -36,16 +35,15 @@ import com.example.tqt_quiz.presentation.view.activities.ViewCourse;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CourseFragment extends Fragment implements ICourseFragmentContract.IView, IReloadableTab
+public class CourseFragment extends Fragment implements CourseFragmentContract.IView, IReloadableTab
 {
-    ICourseFragmentContract.IPresenter presenter;
+    CourseFragmentContract.IPresenter presenter;
     Button AddCourse;
     private ListView lvCourse;
     private List<Course> courseList;
     private CourseAdapter courseAdapter;
     private ActivityResultLauncher<Intent> addCourseLauncher;
     private EditText edTx_FindCourse;
-    private boolean loaded = false;
 
     public CourseFragment() {
 
@@ -151,8 +149,7 @@ public class CourseFragment extends Fragment implements ICourseFragmentContract.
     }
 
     @Override
-    public void onTabVisible(boolean firstTime) {
+    public void onTabReload() {
         presenter.showAllMyCourse();
-        loaded = true;
     }
 }

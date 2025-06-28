@@ -139,30 +139,27 @@
 
     <!-- Nút điều hướng -->
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="end"
+        android:layout_gravity="center"
         android:layout_marginTop="12dp">
 
-        <Switch
-            android:id="@+id/switch_IsPublish_CreateQuiz"
+        <Button
+            android:id="@+id/btn_IsPublish_CreateQuiz"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Công khai"
+            android:text="Xuất bản"
             android:textStyle="bold"
-            android:textColor="@android:color/black"
-            android:layout_gravity="start"
+            android:textColor="@android:color/white"
+            android:layout_gravity="center"
             android:layout_weight="0"
-            android:layout_marginEnd="16dp"
-            tools:ignore="UseSwitchCompatOrMaterialXml"
-            android:gravity="center_vertical"/>
+            android:background="@drawable/btn_rectangle_green"
+            android:layout_marginHorizontal="8dp"
+            android:gravity="center"/>
 
         <!-- Spacer để đẩy 2 nút ra phải -->
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
 
         <Button
             android:id="@+id/btn_Cancel_CreateQuiz"
@@ -171,34 +168,30 @@
             android:text="Hủy"
             android:textColor="@color/white"
             android:textStyle="bold"
-            android:background="@drawable/btn_rectagle_red"/>
+            android:background="@drawable/btn_rectangle_gray"
+            android:layout_marginHorizontal="8dp"/>
 
-        <Space
-            android:layout_width="12dp"
-            android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/btn_Delete_CreateQuiz"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
             android:text="Xóa"
-            android:enabled="false"
             android:textColor="@android:color/white"
             android:textStyle="bold"
-            android:background="@drawable/btn_rectangle_gray" />
+            android:background="@drawable/btn_rectagle_red" />
 
-        <Space
-            android:layout_width="12dp"
-            android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/btn_Finish_CreateQuiz"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hoàn thành"
-            android:textColor="@color/white"
-            android:textStyle="bold"
             android:background="@drawable/btn_rectagle"
-            android:padding="10dp"/>
+            android:padding="10dp"
+            android:text="Lưu"
+            android:layout_marginHorizontal="8dp"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
     </LinearLayout>
 </LinearLayout>

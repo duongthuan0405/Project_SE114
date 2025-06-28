@@ -232,7 +232,7 @@ namespace BE.Controller.APIService
                     StartTime = quizCreateRequest.StartTime,
                     DueTime = quizCreateRequest.DueTime,
                     CourseID = quizCreateRequest.CourseId,
-                    IsPublished = false
+                    IsPublished = quizCreateRequest.IsPublished
                 };
 
                 string id = "";
@@ -274,7 +274,7 @@ namespace BE.Controller.APIService
         }
 
         [HttpPatch("{quiz_id}/publish")]
-        [Authorize(StaticClass.RoleId.Teacher)]
+        [Authorize(Roles = StaticClass.RoleId.Teacher)]
         public async Task<ActionResult> PublishQuiz([FromRoute] string quiz_id)
         {
             var requester = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -347,6 +347,7 @@ namespace BE.Controller.APIService
                 quiz.Description = quizUpdateRequest.Description;
                 quiz.StartTime = quizUpdateRequest.StartTime;
                 quiz.DueTime = quizUpdateRequest.DueTime;
+                quiz.IsPublished = quizUpdateRequest.IsPublished;
 
                 await DbContext.SaveChangesAsync();
 

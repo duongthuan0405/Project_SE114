@@ -3,6 +3,7 @@ package com.example.tqt_quiz.data.interactor;
 import android.content.Context;
 import android.util.Log;
 
+import com.example.tqt_quiz.data.repository.RoleManager;
 import com.example.tqt_quiz.data.repository.token.RetrofitClient;
 import com.example.tqt_quiz.data.repository.token.TokenManager;
 import com.example.tqt_quiz.domain.APIService.AccountInfoService;
@@ -132,5 +133,7 @@ public class AccountInteractorIMP implements IAccountInteractor
     public void logOut(Context context) {
         TokenManager tokenManager = new TokenManager(context);
         tokenManager.ClearToken();
+        RoleManager roleManager = new RoleManager(context);
+        roleManager.ClearRole();
     }
 }

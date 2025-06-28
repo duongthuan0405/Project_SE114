@@ -8,6 +8,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioButton;
@@ -47,6 +48,7 @@ public class ViewCourse extends AppCompatActivity implements ViewCourseContract.
     List<Member> memberList, pendingList;
     MemberAdapter memberAdapter;
     RadioButton rdbMembers, rdbWaiting;
+    Button Deletebutton;
     ViewCourseContract.IPresenter presenter;
     ShapeableImageView logo;
     String courseId;
@@ -69,15 +71,16 @@ public class ViewCourse extends AppCompatActivity implements ViewCourseContract.
 
         courseId = getIntent().getStringExtra("courseId");
 
-        avatar = findViewById(R.id.img_CourseAvatar_ViewCourse);
-        name = findViewById(R.id.tv_CourseName_ViewCourse);
-        isPrivate = findViewById(R.id.tv_IsPrivate_ViewCourse);
-        description = findViewById(R.id.tv_DescriptionValue_ViewCourse);
-        host = findViewById(R.id.tv_HostName_ViewCourse);
+        avatar = findViewById(R.id.img_CourseAvatar_ViewCourseSt);
+        name = findViewById(R.id.tv_CourseName_ViewCourseSt);
+        isPrivate = findViewById(R.id.tv_IsPrivate_ViewCourseSt);
+        description = findViewById(R.id.tv_DescriptionValue_ViewCourseSt);
+        host = findViewById(R.id.tv_HostName_ViewCourseSt);
         rdbMembers = findViewById(R.id.rdb_Members_ViewCourse);
         rdbWaiting = findViewById(R.id.rdb_Waiting_ViewCourse);
-        lvMembers = findViewById(R.id.lv_Members_ViewCourse);
-        tv_CourseId = findViewById(R.id.tv_CourseID_ViewCourse);
+        lvMembers = findViewById(R.id.lv_Members_ViewCourseSt);
+        tv_CourseId = findViewById(R.id.tv_CourseID_ViewCourseSt);
+        Deletebutton=findViewById(R.id.btn_DeleteCourse_ViewCourse);
 
         presenter.showCourseInfo(courseId);
 
@@ -88,7 +91,12 @@ public class ViewCourse extends AppCompatActivity implements ViewCourseContract.
                     }
                 }
         );
-
+        Deletebutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.DeleteCourse(courseId);
+            }
+        });
         rdbWaiting.setOnCheckedChangeListener(
                 (buttonView, isChecked) -> {
                     if(isChecked)

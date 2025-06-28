@@ -46,7 +46,6 @@
                 android:textSize="16sp" />
         </androidx.cardview.widget.CardView>
 
-        <!-- Radio Group -->
         <RadioGroup
             android:id="@+id/rdg_Type_ViewCourseSt"
             android:layout_width="wrap_content"
@@ -57,7 +56,7 @@
             android:layout_gravity="center">
 
             <RadioButton
-                android:id="@+id/rdb_Members_ViewCourseSt"
+                android:id="@+id/rdb_Course_ViewCourseSt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Khóa học"
@@ -91,7 +90,6 @@
                 android:elevation="4dp" />
         </RadioGroup>
 
-
         <ListView
             android:id="@+id/lv_Course_CourseSt"
             android:layout_width="match_parent"
@@ -101,6 +99,18 @@
             android:dividerHeight="4dp"
             android:padding="4dp"
             android:clipToPadding="false" />
-
     </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_Join_CourseSt"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:text="+"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:background="@drawable/btn_round"
+        android:elevation="6dp" />
 </FrameLayout>
