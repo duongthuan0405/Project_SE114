@@ -2,21 +2,21 @@ package com.example.tqt_quiz.domain.dto;
 
 import com.google.gson.annotations.SerializedName;
 
-public class QuizWithScoreDTO {
-    @SerializedName("quiz")
-    QuizDTO quiz;
+public class AccountWithScore {
+    @SerializedName("account")
+    AccountInfo account;
     @SerializedName("totalCorrectAnswer")
     int totalCorrectAnswer;
     @SerializedName("totalQuestions")
-    int totalQuestion;
+    int totalQuestions;
     @SerializedName("isSubmitted")
     boolean isSubmitted;
-    public QuizDTO getQuiz() {
-        return quiz;
+    public AccountInfo getAccount() {
+        return account;
     }
 
-    public void setQuiz(QuizDTO quiz) {
-        this.quiz = quiz;
+    public void setAccount(AccountInfo account) {
+        this.account = account;
     }
 
     public int getTotalCorrectAnswer() {
@@ -27,12 +27,12 @@ public class QuizWithScoreDTO {
         this.totalCorrectAnswer = totalCorrectAnswer;
     }
 
-    public int getTotalQuestion() {
-        return totalQuestion;
+    public int getTotalQuestions() {
+        return totalQuestions;
     }
 
-    public void setTotalQuestion(int totalQuestion) {
-        this.totalQuestion = totalQuestion;
+    public void setTotalQuestions(int totalQuestions) {
+        this.totalQuestions = totalQuestions;
     }
 
     public boolean isSubmitted() {

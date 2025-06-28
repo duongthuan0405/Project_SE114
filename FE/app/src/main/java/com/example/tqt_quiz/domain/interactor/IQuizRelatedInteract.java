@@ -2,6 +2,7 @@ package com.example.tqt_quiz.domain.interactor;
 
 import android.content.Context;
 
+import com.example.tqt_quiz.domain.dto.AccountWithScore;
 import com.example.tqt_quiz.domain.dto.QuizCreateRequestDTO;
 import com.example.tqt_quiz.domain.dto.QuizDTO;
 import com.example.tqt_quiz.domain.dto.QuizWithScoreDTO;
@@ -76,6 +77,15 @@ public interface IQuizRelatedInteract {
     public interface GetQuizScoreCallBack
     {
         void onSuccess(QuizWithScoreDTO response);
+        void onFailureByExpiredToken();
+        void onFailureByUnAcceptedRole();
+        void onOtherFailure(String msg);
+        void onFailureByCannotSendToServer();
+    }
+    void GetQuizRecordForTeeacher(String quizid,Context context,GetQuizRecordForTeeacherCallBack callback);
+    public interface GetQuizRecordForTeeacherCallBack
+    {
+        void onSuccess(List<AccountWithScore> response);
         void onFailureByExpiredToken();
         void onFailureByUnAcceptedRole();
         void onOtherFailure(String msg);
