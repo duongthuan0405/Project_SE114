@@ -292,7 +292,7 @@ namespace BE.Controller.APIService
                     return StatusCode(StatusCodes.Status403Forbidden, new { Message = "Bạn không có quyền công bố Quiz này" });
                 }
 
-                if(quiz.StartTime <= DateTime.Now)
+                if (quiz.StartTime <= DateTime.Now)
                 {
                     return BadRequest(new { Message = "Thời gian bắt đầu phải sau thời điểm hiện tại" });
                 }
@@ -484,7 +484,7 @@ namespace BE.Controller.APIService
                     .Where(c => c.Id == quiz.CourseID && c.HostId == requester)
                     .FirstOrDefaultAsync();
 
-                if(DateTime.Now >= quiz.StartTime && quiz.IsPublished)
+                if (DateTime.Now >= quiz.StartTime && quiz.IsPublished)
                 {
                     return BadRequest(new { Message = "Không thể xóa Quiz đã bắt đầu" });
                 }
@@ -511,6 +511,156 @@ namespace BE.Controller.APIService
             {
                 await tx.RollbackAsync();
                 return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "Lỗi server khi xóa Quiz" });
+            }
+        }
+
+        [HttpGet("{quiz_id}/quiz_with_result")]
+        [Authorize(Roles = StaticClass.RoleId.Student)]
+        public async Task<ActionResult<QuizWithScoreDTO>> GetQuizWithResult([FromRoute] string quiz_id)
+        {
+            var requester = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var role = User.FindFirstValue(ClaimTypes.Role);
+
+            try
+            {
+                var quiz = await DbContext.Quizzes.AsNoTracking().Where(q => q.Id == quiz_id)
+                    .Select(q => new QuizDTO
+                    {
+                        Id = q.Id,
+                        Name = q.Name,
+                        Description = q.Description,
+                        StartTime = q.StartTime,
+                        DueTime = q.DueTime,
+                        CourseId = q.CourseID,
+                        IsPublished = q.IsPublished
+                    }).FirstOrDefaultAsync();
+
+                if (quiz == null || !quiz.IsPublished)
+                {
+                    return StatusCode(StatusCodes.Status404NotFound, new { Message = "Quiz không tồn tại hoặc chưa được công bố" });
+                }
+                // Kiểm tra xem người dùng có tham gia khóa học chứa quiz này không
+                var isEnrolled = await DbContext.JoinCourses
+                    .AnyAsync(jc => jc.AccountID == requester && jc.CourseID == quiz.CourseId && jc.State == (int)JoinCourse.JoinCourseState.Joined);
+                if (!isEnrolled)
+                {
+                    return StatusCode(StatusCodes.Status403Forbidden, new { Message = "Bạn không có quyền truy cập Quiz này" });
+                }
+                AttemptQuiz? atquiz = await DbContext.AttemptQuizzes
+                    .Where(aq => aq.AccountId == requester && aq.QuizId == quiz_id)
+                    .FirstOrDefaultAsync();
+
+                var TotalQuestions = await DbContext.Questions
+                .Where(q => q.QuizId == quiz_id)
+                .CountAsync();
+                if (atquiz == null)
+                {
+                    return Ok(new QuizWithScoreDTO
+                    {
+                        Quiz = quiz,
+                        TotalCorrectAnswer = 0,
+                        IsSubmitted = false,
+                        TotalQuestions = TotalQuestions
+                    });
+                }
+                if (!atquiz.IsSubmitted)
+                {
+                    return Ok(new QuizWithScoreDTO
+                    {
+                        Quiz = quiz,
+                        TotalCorrectAnswer = 0,
+                        IsSubmitted = false,
+                        TotalQuestions = TotalQuestions
+                    });
+                }
+
+                var TotalCorrectAnswer = await DbContext.DetailResults.Where(dr => dr.AttemptQuizId == atquiz.Id)
+                    .Join(DbContext.Answers, dr => dr.AnswerId, a => a.Id, (dr, a) => new { dr, a })
+                    .CountAsync(x => x.a.IsTrue);
+
+                return Ok(new QuizWithScoreDTO
+                {
+                    Quiz = quiz,
+                    TotalCorrectAnswer = TotalCorrectAnswer,
+                    IsSubmitted = atquiz.IsSubmitted,
+                    TotalQuestions = TotalQuestions
+                });
+
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "Lỗi server khi lấy thông tin Quiz" });
+            }
+        }
+
+        [HttpGet("{quiz_id}/all_results")]
+        [Authorize(Roles = StaticClass.RoleId.Teacher)]
+        public async Task<ActionResult<List<AccountWithScore>>> GetAllResultsOfQuiz([FromRoute] string quiz_id)
+        {
+            var requester = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            try
+            {
+                var quiz = await DbContext.Quizzes.FindAsync(quiz_id);
+                if (quiz == null || !quiz.IsPublished)
+                {
+                    return StatusCode(StatusCodes.Status404NotFound, new { Message = "Quiz không tồn tại hoặc chưa được công bố" });
+                }
+
+                var course = await DbContext.Courses
+                    .Where(c => c.Id == quiz.CourseID && c.HostId == requester)
+                    .FirstOrDefaultAsync();
+
+                if (course == null)
+                {
+                    return StatusCode(StatusCodes.Status403Forbidden, new { Message = "Bạn không có quyền truy cập kết quả Quiz này" });
+                }
+
+                int TotalQuestions = await DbContext.Questions
+                    .Where(q => q.QuizId == quiz_id)
+                    .CountAsync();
+
+                var results = DbContext.AccountAuthens.Join(DbContext.Accounts, at => at.Id, a => a.Id, (at, a) => new { at, a })
+                        .Join(DbContext.JoinCourses, x => x.a.Id, jc => jc.AccountID, (x, jc) => new { at = x.at, a = x.a, jc = jc })
+                        .Join(DbContext.Quizzes.Where(q => q.Id == quiz_id), x => x.jc.CourseID, q => q.CourseID, (x, q) => new { a = x.a, at = x.at, q = q })
+                        .GroupJoin(DbContext.AttemptQuizzes, x => x.q.Id, aq => aq.QuizId, (x, ls_at) => new { x = x, ls_at = ls_at.DefaultIfEmpty() })
+                        .SelectMany(x => x.ls_at, (x, at) => new { x = x.x, atq = at });
+
+                List<AccountWithScore> accountWithScores = new List<AccountWithScore>();
+                foreach (var r in results)
+                {
+                    if (r.atq == null)
+                    {
+                        accountWithScores.Add(new AccountWithScore
+                        {
+                            Account = new AccountInfoDTO(r.x.a.Id, r.x.at.Email, r.x.a.LastMiddleName, r.x.a.FirstName, r.x.a.Avatar, r.x.a.AccountTypeId, ""),
+                            TotalCorrectAnswer = 0,
+                            TotalQuestions = TotalQuestions,
+                            IsSubmitted = false
+                        });
+                    }
+                    else
+                    {
+                        var totalCorrectAnswer = await DbContext.DetailResults.Where(dr => dr.AttemptQuizId == r.atq.Id)
+                            .Join(DbContext.Answers, dr => dr.AnswerId, a => a.Id, (dr, a) => new { dr, a })
+                            .CountAsync(x => x.a.IsTrue);
+
+                        accountWithScores.Add(new AccountWithScore
+                        {
+                            Account = new AccountInfoDTO(r.x.a.Id, r.x.at.Email, r.x.a.LastMiddleName, r.x.a.FirstName, r.x.a.Avatar, r.x.a.AccountTypeId, ""),
+                            TotalCorrectAnswer = totalCorrectAnswer,
+                            TotalQuestions = TotalQuestions,
+                            IsSubmitted = r.atq.IsSubmitted
+                        });
+                    }
+                }
+
+                return Ok(accountWithScores);
+                                     
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "Lỗi server khi lấy kết quả Quiz" });
             }
         }
     }
