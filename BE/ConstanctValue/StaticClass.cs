@@ -21,6 +21,7 @@
         {
             public const string NotFinish = "Chưa nộp";
             public const string Finish = "Đã nộp";
+            public const string NotAttempted = "Chưa làm";
         }
 
         public static string CreateId()

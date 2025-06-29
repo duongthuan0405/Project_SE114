@@ -37,7 +37,7 @@
             android:name=".presentation.view.activities.ForgotPassword"
             android:exported="false" />
         <activity
-            android:name=".presentation.view.activities.ViewQuiz"
+            android:name=".presentation.view.activities.ViewQuizSt"
             android:exported="false" />
         <activity
             android:name=".presentation.view.activities.CreateQuiz"

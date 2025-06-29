@@ -48,7 +48,7 @@ namespace BE.Controller.APIService
 
             if (aq != null)
             {
-                return Ok(new AttemptQuizDTO
+                AttemptQuizDTO atq = new AttemptQuizDTO
                 {
                     Id = aq.Id,
                     QuizId = aq.QuizId,
@@ -56,7 +56,18 @@ namespace BE.Controller.APIService
                     AttemptTime = aq.AttemptTime,
                     FinishTime = aq.FinishTime,
                     IsSubmitted = aq.IsSubmitted
-                });
+                };
+
+                atq.QuizName = await db.Quizzes.Where(q => q.Id == quiz_id)
+                    .Select(q => q.Name)
+                    .FirstOrDefaultAsync() ?? "";
+
+                atq.CourseName = await db.Quizzes.Join(db.Courses, q => q.CourseID, c => c.Id, (q, c) => new { q, c })
+                    .Where(qc => qc.q.Id == quiz_id)
+                    .Select(qc => qc.c.Name)
+                    .FirstOrDefaultAsync() ?? "";   
+
+                return Ok(atq);
             }
 
             string id = StaticClass.CreateId();

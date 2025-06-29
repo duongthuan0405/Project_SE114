@@ -50,7 +50,7 @@ public class ViewCourseStPresenter implements ViewCourseStContract.IPresenter
 
             @Override
             public void onFailureByCannotSendToServer() {
-                view.ShowToast("Mat ket noi voi may chu");
+                view.ShowToast("Không thể kết nối đến máy chủ");
             }
         });
     }
@@ -71,7 +71,7 @@ public class ViewCourseStPresenter implements ViewCourseStContract.IPresenter
 
             @Override
             public void onFailureByUnAcepptedRole() {
-                view.ShowToast("Ban khong co quyen thuc hien chuc nang nay");
+                view.ShowToast("Tài khoản không thể truy cập tài nguyên này");
             }
 
             @Override
@@ -81,7 +81,7 @@ public class ViewCourseStPresenter implements ViewCourseStContract.IPresenter
 
             @Override
             public void onFailureByCannotSendToServer() {
-                view.ShowToast("Mat ket noi voi may chu");
+                view.ShowToast("Không thể kết nối đến server");
             }
         });
     }
@@ -91,7 +91,8 @@ public class ViewCourseStPresenter implements ViewCourseStContract.IPresenter
         courseRelatedInteractIMP.LeaveCourse(courseId, view.GetTheContext(), new ICourseRelatedInteract.LeaveCourseCallBack() {
             @Override
             public void onSuccess() {
-
+                view.ShowToast("Đã rời khóa học thành công");
+                view.Finish();
             }
 
             @Override
@@ -101,7 +102,7 @@ public class ViewCourseStPresenter implements ViewCourseStContract.IPresenter
 
             @Override
             public void onFailureByUnAcepptedRole() {
-                view.ShowToast("Ban khong co quyen thuc hien chuc nang nay");
+                view.ShowToast("Tài khoản không thể truy cập tài nguyên này");
             }
 
             @Override
@@ -111,8 +112,11 @@ public class ViewCourseStPresenter implements ViewCourseStContract.IPresenter
 
             @Override
             public void onFailureByCannotSendToServer() {
-                view.ShowToast("Mat ket noi voi may chu");
+                view.ShowToast("Không thể kết nối đến server");
             }
         });
     }
 }
+
+
+

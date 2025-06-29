@@ -22,4 +22,9 @@ public class UpdatePasswordDTO {
     public void setNewPassword(String newPassword) {
         this.newPassword = newPassword;
     }
+
+    public UpdatePasswordDTO(String newPassword, String oldPassword) {
+        this.newPassword = newPassword;
+        this.oldPassword = oldPassword;
+    }
 }

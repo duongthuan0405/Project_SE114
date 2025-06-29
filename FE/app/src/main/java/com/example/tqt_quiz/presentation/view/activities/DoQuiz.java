@@ -18,6 +18,7 @@ import com.example.tqt_quiz.R;
 import com.example.tqt_quiz.presentation.classes.Question;
 import com.example.tqt_quiz.presentation.classes.QuestionViewHolder;
 import com.example.tqt_quiz.presentation.utils.DummyQuizGenerator;
+import com.example.tqt_quiz.staticclass.StaticClass;
 
 import java.util.List;
 
@@ -41,6 +42,8 @@ public class DoQuiz extends AppCompatActivity {
             return insets;
         });
 
+        StaticClass.customActionBar(getSupportActionBar(), R.layout.custom_action_bar_2);
+
         // Ánh xạ view
         Title = findViewById(R.id.tv_Title_DoQuiz);
         Description = findViewById(R.id.tv_Description_DoQuiz);
@@ -49,6 +52,21 @@ public class DoQuiz extends AppCompatActivity {
         CourseId = findViewById(R.id.tv_CourseId_DoQuiz);
         QuestionList = findViewById(R.id.ll_QuestionList_DoQuiz);
         Finish = findViewById(R.id.btn_Finish_DoQuiz);
+
+        // B1: Attempt Quiz
+
+        // B2: Lay ds cau hoi dua vao Quiz (Quiz nam trong Quiz)
+
+        // B3: Show info quiz
+
+        // B4: Show questions (lấy dựa mã quiz)
+
+
+
+
+
+
+        /*
 
         // Nhận dữ liệu từ intent
         Intent intent = getIntent();
@@ -72,10 +90,13 @@ public class DoQuiz extends AppCompatActivity {
         LayoutInflater inflater = LayoutInflater.from(this);
         int index = 0;
         for (Question question : questionList) {
+
             View questionView = inflater.inflate(R.layout.item_question, QuestionList, false);
-            QuestionViewHolder viewHolder = new QuestionViewHolder(questionView, true);
+            QuestionViewHolder viewHolder = new QuestionViewHolder(questionView, false);
             questionView.setTag(viewHolder);
+
             viewHolder.setDataWithSelectedAnswer(question);
+
             viewHolder.getRoot().findViewById(R.id.btn_Add_QuestionItem).setVisibility(View.GONE);
             viewHolder.getRoot().findViewById(R.id.btn_Delete_QuestionItem).setVisibility(View.GONE);
             QuestionList.addView(viewHolder.getRoot());
@@ -102,5 +123,7 @@ public class DoQuiz extends AppCompatActivity {
             setResult(RESULT_OK, resultIntent);
             finish();
         });
+
+         */
     }
 }

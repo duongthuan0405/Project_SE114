@@ -199,4 +199,11 @@ public class ViewCourseSt extends AppCompatActivity implements ViewCourseStContr
     public void ShowToast(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    public void Finish() {
+        Intent i = new Intent();
+        setResult(RESULT_OK, i);
+        finish();
+    }
 }
