@@ -112,11 +112,25 @@ public class QuizFragment extends Fragment implements QuizFragmentContract.IView
             });
 
             lvQuiz.setOnItemClickListener((parent, view1, position, id) -> {
-                Intent intent = new Intent(requireContext(), CreateQuiz.class);
-                Quiz quiz = ((Quiz)lvQuiz.getAdapter().getItem(position));
-                intent.putExtra("quizId", quiz.getId());
-                createQuizLauncher.launch(intent);
+                Quiz quiz = (Quiz) lvQuiz.getAdapter().getItem(position);
+                String quizStatus = getQuizStatus(quiz);
+
+                if (quizStatus.equals(StaticClass.StateOfQuiz.END)) {
+                    Intent intent = new Intent(requireContext(), com.example.tqt_quiz.presentation.view.activities.ViewScore.class);
+                    intent.putExtra("quizId", quiz.getId());
+                    intent.putExtra("quizName", quiz.getName());
+                    intent.putExtra("quizDescription", quiz.getDescription());
+                    intent.putExtra("startTime", quiz.getStartTime());
+                    intent.putExtra("dueTime", quiz.getDueTime());
+                    intent.putExtra("courseId", quiz.getCourseID());
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(requireContext(), CreateQuiz.class);
+                    intent.putExtra("quizId", quiz.getId());
+                    createQuizLauncher.launch(intent);
+                }
             });
+
 
         }
 
