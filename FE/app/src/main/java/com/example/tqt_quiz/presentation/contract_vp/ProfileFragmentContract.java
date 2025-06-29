@@ -24,5 +24,7 @@ public interface ProfileFragmentContract
         void onLogoutClick();
 
         void getMySelfAccountInfo();
+
+        void getProfile();
     }
 }

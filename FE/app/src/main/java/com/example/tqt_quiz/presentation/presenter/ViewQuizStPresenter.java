@@ -21,6 +21,7 @@ public class ViewQuizStPresenter implements ViewQuizStContract.IPresenter
     @Override
     public void getQuizWithScore(String quizId)
     {
+
         quizRelatedInteract.GetQuizScore(quizId, view.getTheContext(), new IQuizRelatedInteract.GetQuizScoreCallBack() {
             @Override
             public void onSuccess(QuizWithScoreDTO response) {

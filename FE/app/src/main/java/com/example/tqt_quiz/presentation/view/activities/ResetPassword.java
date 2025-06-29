@@ -21,6 +21,7 @@ import com.example.tqt_quiz.presentation.contract_vp.ForgotPasswordContract;
 import com.example.tqt_quiz.presentation.contract_vp.ResetPasswordContract;
 import com.example.tqt_quiz.presentation.presenter.ForgotPasswordPresenter;
 import com.example.tqt_quiz.presentation.presenter.ResetPasswordPresenter;
+import com.example.tqt_quiz.staticclass.StaticClass;
 
 public class ResetPassword extends AppCompatActivity implements ResetPasswordContract.IView
 {
@@ -43,7 +44,7 @@ public class ResetPassword extends AppCompatActivity implements ResetPasswordCon
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
+        StaticClass.customActionBar(getSupportActionBar(), R.layout.custom_action_bar_2);
 
         presenter = new ResetPasswordPresenter(this);
 

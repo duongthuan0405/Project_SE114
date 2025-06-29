@@ -19,6 +19,7 @@ import com.example.tqt_quiz.presentation.classes.Answer;
 import com.example.tqt_quiz.presentation.classes.Question;
 import com.example.tqt_quiz.presentation.classes.QuestionViewHolder;
 import com.example.tqt_quiz.presentation.utils.DummyQuizGenerator;
+import com.example.tqt_quiz.staticclass.StaticClass;
 
 import java.util.List;
 
@@ -39,6 +40,7 @@ public class ViewResult extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        StaticClass.customActionBar(getSupportActionBar(), R.layout.custom_action_bar_2);
 
         /*
         // Ánh xạ view

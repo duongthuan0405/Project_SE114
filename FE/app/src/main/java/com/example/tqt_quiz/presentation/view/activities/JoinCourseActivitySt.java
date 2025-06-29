@@ -46,6 +46,7 @@ public class JoinCourseActivitySt extends AppCompatActivity implements JoinCours
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        StaticClass.customActionBar(getSupportActionBar(), R.layout.custom_action_bar_2);
         BindingUI();
         DisableJoin();
         presenter=new JoinCourseStPresenter(this);

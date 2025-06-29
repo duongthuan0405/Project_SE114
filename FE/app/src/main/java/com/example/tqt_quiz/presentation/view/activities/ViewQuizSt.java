@@ -51,6 +51,7 @@ public class ViewQuizSt extends AppCompatActivity implements ViewQuizStContract.
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        StaticClass.customActionBar(getSupportActionBar(), R.layout.custom_action_bar_2);
 
         tvTitle = findViewById(R.id.tv_Title_ViewQuiz);
         tvDescription = findViewById(R.id.tv_Description_ViewQuiz);
@@ -133,13 +134,17 @@ public class ViewQuizSt extends AppCompatActivity implements ViewQuizStContract.
 
         String status = getStatus(quizWithScoreDTO.getQuiz().getStartTime(), quizWithScoreDTO.getQuiz().getDueTime());
 
+        Log.d("THUAN", response.getQuiz().getName());
+
         if (status.equals(StaticClass.StateOfQuiz.SOON)) {
             btnAction.setVisibility(View.GONE);
             tvScore.setText("-- / --");
-        } else if (status.equals(StaticClass.StateOfQuiz.NOW)) {
+        }
+        else if (status.equals(StaticClass.StateOfQuiz.NOW)) {
             btnAction.setVisibility(View.VISIBLE);
             btnAction.setText("Làm bài");
             tvScore.setText("-- / --");
+
             if(response.isSubmitted())
             {
                 btnAction.setEnabled(false);

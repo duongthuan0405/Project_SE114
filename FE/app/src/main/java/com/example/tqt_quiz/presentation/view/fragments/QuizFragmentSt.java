@@ -3,6 +3,7 @@ package com.example.tqt_quiz.presentation.view.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,6 +100,7 @@ public class QuizFragmentSt extends Fragment implements QuizFragmentStContract.I
         lvQuiz.setOnItemClickListener((parent, view1, position, id) -> {
             Quiz selectedQuiz = (Quiz) lvQuiz.getAdapter().getItem(position);
             Intent intent = new Intent(requireContext(), ViewQuizSt.class);
+
             intent.putExtra("quizId", selectedQuiz.getId());
             viewQuizLauncher.launch(intent);
         });

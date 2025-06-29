@@ -18,6 +18,7 @@ import com.example.tqt_quiz.R;
 import com.example.tqt_quiz.presentation.classes.Question;
 import com.example.tqt_quiz.presentation.classes.QuestionViewHolder;
 import com.example.tqt_quiz.presentation.utils.DummyQuizGenerator;
+import com.example.tqt_quiz.staticclass.StaticClass;
 
 import java.util.List;
 
@@ -40,6 +41,8 @@ public class DoQuiz extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        StaticClass.customActionBar(getSupportActionBar(), R.layout.custom_action_bar_2);
 
         // Ánh xạ view
         Title = findViewById(R.id.tv_Title_DoQuiz);

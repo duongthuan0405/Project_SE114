@@ -596,7 +596,7 @@ namespace BE.Controller.APIService
                     quizWithScore.IsSubmitted = true; // Nếu quá thời gian làm bài, đánh dấu là đã nộp
                 }
 
-                return Ok();
+                return Ok(quizWithScore);
 
 
             }

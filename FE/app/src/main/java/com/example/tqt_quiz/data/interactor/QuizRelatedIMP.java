@@ -317,13 +317,11 @@ public class QuizRelatedIMP implements IQuizRelatedInteract {
         TokenManager tokenManager=new TokenManager(context);
         GetQuizScoreService service=RetrofitClient.GetClient(tokenManager).create(GetQuizScoreService.class);
         Call<QuizWithScoreDTO> call= service.GetQuizScore(QuizId);
-
         call.enqueue(new Callback<QuizWithScoreDTO>() {
             @Override
             public void onResponse(Call<QuizWithScoreDTO> call, Response<QuizWithScoreDTO> response) {
                 if(response.isSuccessful())
                 {
-
                     callback.onSuccess(response.body());
                 }
                 else
