@@ -27,6 +27,7 @@ import com.example.tqt_quiz.presentation.classes.Question;
 import com.example.tqt_quiz.presentation.classes.QuestionViewHolder;
 import com.example.tqt_quiz.presentation.contract_vp.DoQuizContract;
 import com.example.tqt_quiz.presentation.presenter.DoQuizPresenter;
+import com.example.tqt_quiz.presentation.utils.DummyQuizGenerator;
 import com.example.tqt_quiz.staticclass.StaticClass;
 
 import java.time.format.DateTimeFormatter;

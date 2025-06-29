@@ -13,6 +13,7 @@ import com.example.tqt_quiz.domain.interactor.IQuestionrelatedInteract;
 import com.example.tqt_quiz.domain.interactor.IQuizRelatedInteract;
 import com.example.tqt_quiz.presentation.contract_vp.DoQuizContract;
 
+import java.util.Collections;
 import java.util.List;
 
 public class DoQuizPresenter implements DoQuizContract.IPresenter {
