@@ -55,6 +55,7 @@ public class DoQuiz extends AppCompatActivity implements DoQuizContract.IView {
         StaticClass.customActionBar(getSupportActionBar(), R.layout.custom_action_bar_2);
 
         presenter = new DoQuizPresenter(this);
+
         // Ánh xạ view
         Title = findViewById(R.id.tv_Title_DoQuiz);
         Description = findViewById(R.id.tv_Description_DoQuiz);
