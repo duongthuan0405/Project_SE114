@@ -89,10 +89,12 @@ public class ViewQuizSt extends AppCompatActivity implements ViewQuizStContract.
             String status = getStatus(quizWithScoreDTO.getQuiz().getStartTime(), quizWithScoreDTO.getQuiz().getDueTime());
             if (status.equals(StaticClass.StateOfQuiz.NOW)) {
                 Intent intent = new Intent(ViewQuizSt.this, DoQuiz.class);
+                intent.putExtra("quizId",quizId);
                 doQuizLauncher.launch(intent);
 
             } else if (status.equals(StaticClass.StateOfQuiz.END)) {
                 Intent intent = new Intent(ViewQuizSt.this, ViewResult.class);
+                intent.putExtra("quizId",quizId);
                 viewResultLauncher.launch(intent);
             }
         });
