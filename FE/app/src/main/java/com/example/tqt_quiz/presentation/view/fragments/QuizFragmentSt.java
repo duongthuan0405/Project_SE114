@@ -120,7 +120,7 @@ public class QuizFragmentSt extends Fragment implements QuizFragmentStContract.I
         statusAdt.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnFilterStatus.setAdapter(statusAdt);
         presenter.loadCourseToSpinner();
-        spnFilterStatus.setSelection(0);
+        spnFilterStatus.setSelection(2);
     }
 
     private void filterQuizList() {

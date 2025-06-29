@@ -138,7 +138,7 @@ public class QuizFragment extends Fragment implements QuizFragmentContract.IView
         ArrayAdapter<String> statusAdt = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, statusOptions);
         statusAdt.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnFilterStatus.setAdapter(statusAdt);
-        spnFilterStatus.setSelection(0);
+        spnFilterStatus.setSelection(4);
 
         // Lọc course
         presenter.loadCourseToSpinner();
