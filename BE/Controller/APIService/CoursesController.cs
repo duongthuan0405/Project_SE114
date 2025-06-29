@@ -319,10 +319,23 @@ namespace BE.Controller.APIService
 
                 db.Questions.RemoveRange(questions);
                 await db.SaveChangesAsync();
+                string avtNeedToDelete = course.Avatar?.TrimStart('/') ?? "";
+        
                 db.Courses.Remove(course);
+
+                if (!string.IsNullOrEmpty(avtNeedToDelete))
+                {
+                    string physicalPath = Path.Combine("wwwroot", avtNeedToDelete);
+                    if (System.IO.File.Exists(physicalPath))
+                    {
+                        System.IO.File.Delete(physicalPath);
+                    }
+                }
 
                 await db.SaveChangesAsync();
                 await tx.CommitAsync();
+
+            
 
                 return Ok(new { Message = "Xóa khóa học thành công" });
             }

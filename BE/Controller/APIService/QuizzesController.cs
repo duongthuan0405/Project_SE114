@@ -632,11 +632,11 @@ namespace BE.Controller.APIService
                     .Where(q => q.QuizId == quiz_id)
                     .CountAsync();
 
-                var results = DbContext.AccountAuthens.Join(DbContext.Accounts, at => at.Id, a => a.Id, (at, a) => new { at, a })
+                var results = await DbContext.AccountAuthens.Join(DbContext.Accounts, at => at.Id, a => a.Id, (at, a) => new { at, a })
                         .Join(DbContext.JoinCourses, x => x.a.Id, jc => jc.AccountID, (x, jc) => new { at = x.at, a = x.a, jc = jc })
                         .Join(DbContext.Quizzes.Where(q => q.Id == quiz_id), x => x.jc.CourseID, q => q.CourseID, (x, q) => new { a = x.a, at = x.at, q = q })
                         .GroupJoin(DbContext.AttemptQuizzes, x => x.q.Id, aq => aq.QuizId, (x, ls_at) => new { x = x, ls_at = ls_at.DefaultIfEmpty() })
-                        .SelectMany(x => x.ls_at, (x, at) => new { x = x.x, atq = at });
+                        .SelectMany(x => x.ls_at, (x, at) => new { x = x.x, atq = at }).ToListAsync();
 
                 List<AccountWithScore> accountWithScores = new List<AccountWithScore>();
                 foreach (var r in results)

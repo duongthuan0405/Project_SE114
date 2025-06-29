@@ -1,11 +1,14 @@
 package com.example.tqt_quiz.presentation.view.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,15 +17,24 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.tqt_quiz.R;
+import com.example.tqt_quiz.domain.dto.AccountWithScore;
+import com.example.tqt_quiz.domain.dto.QuizDTO;
+import com.example.tqt_quiz.presentation.contract_vp.ViewScoreContract;
+import com.example.tqt_quiz.presentation.presenter.ViewScorePresenter;
+import com.example.tqt_quiz.staticclass.StaticClass;
 import com.google.android.material.imageview.ShapeableImageView;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ViewScore extends AppCompatActivity {
+public class ViewScore extends AppCompatActivity implements ViewScoreContract.IView
+{
 
     private TextView tvTitle, tvDescription, tvCourseId, tvStartTime, tvDueTime;
     private LinearLayout llScoreList;
+    private String quizId;
+    ViewScoreContract.IPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +48,9 @@ public class ViewScore extends AppCompatActivity {
             return insets;
         });
 
+        StaticClass.customActionBar(getSupportActionBar(), R.layout.custom_action_bar_2);
+
+        presenter = new ViewScorePresenter(this);
         // Ánh xạ
         tvTitle = findViewById(R.id.tv_Title_ViewScore);
         tvDescription = findViewById(R.id.tv_Description_ViewScore);
@@ -44,59 +59,58 @@ public class ViewScore extends AppCompatActivity {
         tvDueTime = findViewById(R.id.tv_DueTime_ViewScore);
         llScoreList = findViewById(R.id.ll_ScoreList_ViewScore);
 
-        // Nhận dữ liệu từ intent
-        Intent intent = getIntent();
-        String quizName = intent.getStringExtra("quizName");
-        String quizDescription = intent.getStringExtra("quizDescription");
-        String courseId = intent.getStringExtra("courseId");
-        String startTime = intent.getStringExtra("startTime");
-        String dueTime = intent.getStringExtra("dueTime");
+        Intent i = getIntent();
+        quizId = i.getStringExtra("quizId");
+        presenter.quizInfo(quizId);
+        presenter.getResultForTeacherView(quizId);
 
-        // Set dữ liệu
-        tvTitle.setText(quizName != null ? quizName : "Không có tiêu đề");
-        tvDescription.setText(quizDescription != null ? quizDescription : "Không có mô tả");
-        tvCourseId.setText("Course ID: " + (courseId != null ? courseId : "--"));
-        tvStartTime.setText("Bắt đầu: " + (startTime != null ? startTime : "--"));
-        tvDueTime.setText("Kết thúc: " + (dueTime != null ? dueTime : "--"));
+    }
 
-        // Giả lập danh sách điểm học sinh (sau này bạn thay bằng dữ liệu thật từ API)
-        List<StudentScore> studentScores = getDummyScores();
 
-        // Hiển thị danh sách
+
+    @Override
+    public Context getTheContext() {
+        return ViewScore.this.getApplicationContext();
+    }
+
+    @Override
+    public void onSuccessGetQuizInfo(QuizDTO response) {
+        tvTitle.setText(response.getName());
+        tvDescription.setText(response.getDescription());
+        tvCourseId.setText(String.format("Khóa học: %s - (%s)", response.getCourseName(), response.getCourseId()));
+        tvStartTime.setText("Bắt đầu: " + response.getStartTime().format(DateTimeFormatter.ofPattern(StaticClass.DateTimeFormat)));
+        tvDueTime.setText("Kết thúc: " + response.getDueTime().format(DateTimeFormatter.ofPattern(StaticClass.DateTimeFormat)));
+    }
+
+    @Override
+    public void navigateToLogin() {
+        Intent i = new Intent(ViewScore.this, Login.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
+    }
+
+    @Override
+    public void showMessage(String s) {
+        Toast.makeText(getTheContext(), s, Toast.LENGTH_LONG);
+    }
+
+    @Override
+    public void onSuccessShowResult(List<AccountWithScore> response) {
         LayoutInflater inflater = LayoutInflater.from(this);
-        for (StudentScore score : studentScores) {
+        for (AccountWithScore a : response)
+        {
             View scoreItem = inflater.inflate(R.layout.item_score, llScoreList, false);
 
             TextView tvName = scoreItem.findViewById(R.id.tv_Name_ScoreItem);
             TextView tvScore = scoreItem.findViewById(R.id.tv_Score_ScoreItem);
             ShapeableImageView imgAvatar = scoreItem.findViewById(R.id.img_Avatar_ScoreItem);
 
-            tvName.setText(score.name);
-            tvScore.setText(String.valueOf(score.score));
-            imgAvatar.setImageResource(R.drawable.resource_default); // bạn có thể dùng Glide/Picasso nếu có URL
+            tvName.setText(a.getAccount().getFullName());
+            tvScore.setText(((float)a.getTotalCorrectAnswer() / a.getTotalQuestions()) + "");
+            StaticClass.setImage(imgAvatar, a.getAccount().getAvatar(), R.drawable.resource_default);
 
             llScoreList.addView(scoreItem);
         }
     }
 
-    // Dữ liệu mẫu
-    private List<StudentScore> getDummyScores() {
-        List<StudentScore> list = new ArrayList<>();
-        list.add(new StudentScore("Nguyễn Văn A", 9.5));
-        list.add(new StudentScore("Trần Thị B", 8.0));
-        list.add(new StudentScore("Lê Văn C", 7.25));
-        list.add(new StudentScore("Phạm Thị D", 10.0));
-        return list;
-    }
-
-    // Lớp đơn giản đại diện cho điểm số
-    private static class StudentScore {
-        String name;
-        double score;
-
-        StudentScore(String name, double score) {
-            this.name = name;
-            this.score = score;
-        }
-    }
 }
