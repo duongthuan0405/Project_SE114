@@ -53,6 +53,19 @@ public class DoQuiz extends AppCompatActivity {
         QuestionList = findViewById(R.id.ll_QuestionList_DoQuiz);
         Finish = findViewById(R.id.btn_Finish_DoQuiz);
 
+        // B1: Attempt Quiz
+
+        // B2: Lay ds cau hoi dua vao Quiz (Quiz nam trong Quiz)
+
+        // B3: Show info quiz
+
+        // B4: Show questions (lấy dựa mã quiz)
+
+
+
+
+
+
         /*
 
         // Nhận dữ liệu từ intent
@@ -77,10 +90,13 @@ public class DoQuiz extends AppCompatActivity {
         LayoutInflater inflater = LayoutInflater.from(this);
         int index = 0;
         for (Question question : questionList) {
+
             View questionView = inflater.inflate(R.layout.item_question, QuestionList, false);
-            QuestionViewHolder viewHolder = new QuestionViewHolder(questionView, true);
+            QuestionViewHolder viewHolder = new QuestionViewHolder(questionView, false);
             questionView.setTag(viewHolder);
+
             viewHolder.setDataWithSelectedAnswer(question);
+
             viewHolder.getRoot().findViewById(R.id.btn_Add_QuestionItem).setVisibility(View.GONE);
             viewHolder.getRoot().findViewById(R.id.btn_Delete_QuestionItem).setVisibility(View.GONE);
             QuestionList.addView(viewHolder.getRoot());
