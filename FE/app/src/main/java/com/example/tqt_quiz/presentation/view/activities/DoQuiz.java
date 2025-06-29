@@ -63,9 +63,6 @@ public class DoQuiz extends AppCompatActivity {
 
 
 
-
-
-
         /*
 
         // Nhận dữ liệu từ intent

@@ -123,5 +123,16 @@ namespace BE.Controller.APIService
                 return StatusCode(500, new { Message = "Lỗi server khi tải lên logo khóa học" });
             }
         }
+
+        public void DeleteImage(string imagePath)
+        {
+            if (string.IsNullOrWhiteSpace(imagePath)) return;
+
+            string physicalPath = Path.Combine(_env.WebRootPath, imagePath.TrimStart('/'));
+            if (System.IO.File.Exists(physicalPath))
+            {
+                System.IO.File.Delete(physicalPath);
+            }
+        }
     }
 }

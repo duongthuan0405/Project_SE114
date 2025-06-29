@@ -7,10 +7,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/AppBackground"
-    android:padding="16dp"
-    tools:context=".presentation.view.activities.ChangeProfile">
+    android:padding="16dp">
 
-    <!-- Title -->
     <TextView
         android:id="@+id/tv_Adjust_ChangePf"
         android:layout_width="wrap_content"
@@ -23,11 +21,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp" />
 
-    <!-- Avatar -->
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/img_ChangeAvt_ChangePf"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_marginTop="16dp"
         app:layout_constraintTop_toBottomOf="@id/tv_Adjust_ChangePf"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,75 +33,63 @@
         android:scaleType="centerCrop"
         app:srcCompat="@drawable/resource_default" />
 
-    <!-- Name -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_FirstName_ChangePf"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/img_ChangeAvt_ChangePf"
-        android:layout_marginTop="24dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edt_FirstName_ChangePf"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Tên"
-            android:inputType="textPersonName"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <!-- Username -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_MiddleName_ChangePf"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/til_FirstName_ChangePf"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edt_MiddleName_ChangePf"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Họ"
-            android:inputType="text"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <!-- Email -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_Email_ChangePf"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/til_MiddleName_ChangePf"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edt_Email_ChangePf"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Email"
-            android:enabled="false"
-            android:inputType="textEmailAddress"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <!-- Nút lưu -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_Save_ChangePf"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Lưu"
-        android:textAllCaps="false"
-        android:textStyle="bold"
-        android:textSize="15dp"
-        android:textColor="@android:color/white"
-        android:background="@drawable/btn_rectagle"
-        app:layout_constraintTop_toBottomOf="@id/til_Email_ChangePf"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:orientation="vertical"
+        android:layout_marginHorizontal="30dp"
+        app:layout_constraintTop_toBottomOf="@+id/img_ChangeAvt_ChangePf"
+        android:layout_marginTop="30dp">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_FirstName_ChangePf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_FirstName_ChangePf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Tên"
+                android:inputType="textPersonName"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_MiddleName_ChangePf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_MiddleName_ChangePf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Họ và tên lót"
+                android:inputType="text"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_Email_ChangePf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"/>
+
+        <Button
+            android:id="@+id/btn_Save_ChangePf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Lưu"
+            android:textAllCaps="false"
+            android:textStyle="bold"
+            android:textSize="15dp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/btn_rectagle" />
+
+
+    </LinearLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

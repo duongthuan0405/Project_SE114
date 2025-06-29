@@ -6,7 +6,10 @@ import com.google.gson.annotations.SerializedName;
 
 import org.jetbrains.annotations.NotNull;
 
-public class AccountInfo {
+import java.io.Serializable;
+
+public class AccountInfo implements Serializable
+{
     @SerializedName("id")
     @NotNull
     private String UserID;
