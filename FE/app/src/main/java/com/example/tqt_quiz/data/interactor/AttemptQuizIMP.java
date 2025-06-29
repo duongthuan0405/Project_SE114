@@ -3,6 +3,7 @@ package com.example.tqt_quiz.data.interactor;
 import android.content.Context;
 import android.util.Log;
 
+import com.example.tqt_quiz.data.repository.token.DoQuizTokenManager;
 import com.example.tqt_quiz.data.repository.token.RetrofitClient;
 import com.example.tqt_quiz.data.repository.token.TokenManager;
 import com.example.tqt_quiz.domain.APIService.AttemptQuizService;
@@ -20,6 +21,7 @@ public class AttemptQuizIMP implements IAttemptQuizInteract {
     @Override
     public void AttemptQuiz(String quizId, Context context, AtttemptQuizCallBack callback) {
         TokenManager tokenManager=new TokenManager(context);
+        DoQuizTokenManager doQuizTokenManager=new DoQuizTokenManager(context);
         AttemptQuizService service= RetrofitClient.GetClient(tokenManager).create(AttemptQuizService.class);
         Call<AttemptQuizDTO> call= service.AttemptQuiz(quizId);
         call.enqueue(new Callback<AttemptQuizDTO>() {
@@ -28,6 +30,7 @@ public class AttemptQuizIMP implements IAttemptQuizInteract {
                 if(response.isSuccessful())
                 {
                     callback.onSuccess(response.body());
+                    doQuizTokenManager.SaveToken(response.body().getTokenForQuiz());
                 }
                 else{
                     String rawJson="";
