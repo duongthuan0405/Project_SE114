@@ -648,7 +648,9 @@ namespace BE.Controller.APIService
                             Account = new AccountInfoDTO(r.x.a.Id, r.x.at.Email, r.x.a.LastMiddleName, r.x.a.FirstName, r.x.a.Avatar, r.x.a.AccountTypeId, ""),
                             TotalCorrectAnswer = 0,
                             TotalQuestions = TotalQuestions,
-                            IsSubmitted = false
+                            IsSubmitted = false,
+                            StartedAt = null,
+                            FinishedAt = null
                         });
                     }
                     else
@@ -662,10 +664,19 @@ namespace BE.Controller.APIService
                             Account = new AccountInfoDTO(r.x.a.Id, r.x.at.Email, r.x.a.LastMiddleName, r.x.a.FirstName, r.x.a.Avatar, r.x.a.AccountTypeId, ""),
                             TotalCorrectAnswer = totalCorrectAnswer,
                             TotalQuestions = TotalQuestions,
-                            IsSubmitted = r.atq.IsSubmitted
+                            IsSubmitted = r.atq.IsSubmitted,
+                            StartedAt = r.atq.AttemptTime,
+                            FinishedAt = r.atq.IsSubmitted ? r.atq.FinishTime : null
                         });
                     }
                 }
+
+                accountWithScores.Sort((x, y) =>
+                {
+                    if (x.TotalCorrectAnswer != y.TotalCorrectAnswer)
+                        return x.TotalCorrectAnswer.CompareTo(y.TotalCorrectAnswer);
+                    return (x.FinishedAt < y.FinishedAt) ? 1 : x.Account.FirstName.CompareTo(y.Account.FirstName);
+                });
 
                 return Ok(accountWithScores);
                                      

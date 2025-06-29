@@ -70,8 +70,6 @@ public class DoQuiz extends AppCompatActivity implements DoQuizContract.IView {
 
         presenter.StartAttempt(quizId);
 
-
-
         Finish.setOnClickListener(v -> {
 
         });
@@ -125,7 +123,7 @@ public class DoQuiz extends AppCompatActivity implements DoQuizContract.IView {
         Description.setText(info.getDescription() != null ? info.getDescription() : "Không có mô tả");
         StartTime.setText("Bắt đầu: " + info.getStartTime().format(DateTimeFormatter.ofPattern(StaticClass.DateTimeFormat)));
         DueTime.setText("Kết thúc: " + info.getDueTime().format(DateTimeFormatter.ofPattern(StaticClass.DateTimeFormat)));
-        CourseId.setText("Khóa học: " + (info.getCourseId() != null ? info.getCourseName() : "--"));
+        CourseId.setText("Khóa học: " + info.getCourseName() + " (" + info.getCourseId() + ")");
 
     }
 }

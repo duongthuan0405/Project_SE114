@@ -2,6 +2,7 @@ package com.example.tqt_quiz.presentation.view.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -24,6 +26,7 @@ import com.example.tqt_quiz.presentation.presenter.ViewScorePresenter;
 import com.example.tqt_quiz.staticclass.StaticClass;
 import com.google.android.material.imageview.ShapeableImageView;
 
+import java.time.Duration;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +61,6 @@ public class ViewScore extends AppCompatActivity implements ViewScoreContract.IV
         tvStartTime = findViewById(R.id.tv_StartTime_ViewScore);
         tvDueTime = findViewById(R.id.tv_DueTime_ViewScore);
         llScoreList = findViewById(R.id.ll_ScoreList_ViewScore);
-
         Intent i = getIntent();
         quizId = i.getStringExtra("quizId");
         presenter.quizInfo(quizId);
@@ -77,7 +79,7 @@ public class ViewScore extends AppCompatActivity implements ViewScoreContract.IV
     public void onSuccessGetQuizInfo(QuizDTO response) {
         tvTitle.setText(response.getName());
         tvDescription.setText(response.getDescription());
-        tvCourseId.setText(String.format("Khóa học: %s - (%s)", response.getCourseName(), response.getCourseId()));
+        tvCourseId.setText(String.format("Khóa học: %s (%s)", response.getCourseName(), response.getCourseId()));
         tvStartTime.setText("Bắt đầu: " + response.getStartTime().format(DateTimeFormatter.ofPattern(StaticClass.DateTimeFormat)));
         tvDueTime.setText("Kết thúc: " + response.getDueTime().format(DateTimeFormatter.ofPattern(StaticClass.DateTimeFormat)));
     }
@@ -104,12 +106,49 @@ public class ViewScore extends AppCompatActivity implements ViewScoreContract.IV
             TextView tvName = scoreItem.findViewById(R.id.tv_Name_ScoreItem);
             TextView tvScore = scoreItem.findViewById(R.id.tv_Score_ScoreItem);
             ShapeableImageView imgAvatar = scoreItem.findViewById(R.id.img_Avatar_ScoreItem);
+            TextView tvCorrectAnswer = scoreItem.findViewById(R.id.tv_Correct_MemInfo_ScoreItem);
+            TextView tvTimeToDo = scoreItem.findViewById(R.id.tv_TimeToDo_ScoreItem);
 
             tvName.setText(a.getAccount().getFullName());
-            tvScore.setText(((float)a.getTotalCorrectAnswer() / a.getTotalQuestions()) + "");
+            float score = (float)a.getTotalCorrectAnswer() / a.getTotalQuestions();
+            tvScore.setText(score + "");
             StaticClass.setImage(imgAvatar, a.getAccount().getAvatar(), R.drawable.resource_default);
-
             llScoreList.addView(scoreItem);
+            tvCorrectAnswer.setText(String.format("Kết quả: %d / %d", a.getTotalCorrectAnswer(), a.getTotalQuestions()));
+            if(score < 5f)
+            {
+                tvScore.setBackgroundResource(R.drawable.bg_status_ended);
+            }
+            else if(score < 8f)
+            {
+                tvScore.setBackgroundResource(R.drawable.bg_status_benotpublished);
+            }
+            else
+            {
+                tvScore.setBackgroundResource(R.drawable.btn_rectangle_green);
+            }
+
+
+            if(a.getStartAt() == null)
+            {
+                tvTimeToDo.setText("Thời gian: Chưa tham gia");
+                tvTimeToDo.setTextColor(Color.parseColor("#F44336"));
+            }
+            else if(a.getFinishAt() == null)
+            {
+                tvTimeToDo.setText("Thời gian: Chưa nộp bài");
+                tvTimeToDo.setTextColor(Color.parseColor("#F28705"));
+            }
+            else
+            {
+                Duration d = Duration.between(a.getStartAt(), a.getFinishAt());
+                long totalMins = d.toMinutes();
+                long hours = totalMins / 60;
+                long mins = totalMins - hours * 60;
+                long sec = totalMins * 60 - hours * 3600 - mins * 60;
+                tvTimeToDo.setText(String.format("Thời gian: %d giờ %d phút %d giây", hours, mins, sec ));
+            }
+
         }
     }
 
