@@ -5,7 +5,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+
 
 namespace BE.Controller.APIService
 {
@@ -14,9 +18,11 @@ namespace BE.Controller.APIService
     public class AttemptQuizzesController : ControllerBase
     {
         MyAppDBContext db;
-        public AttemptQuizzesController(MyAppDBContext dbContext)
+        IConfiguration Configuration;
+        public AttemptQuizzesController(MyAppDBContext dbContext, IConfiguration configuration)
         {
             db = dbContext;
+            Configuration = configuration;
         }
 
         [HttpPost("{quiz_id}/attempt")]
@@ -46,6 +52,31 @@ namespace BE.Controller.APIService
                 return StatusCode(StatusCodes.Status403Forbidden, new { Message = "Bạn đã nộp bài làm cho quiz này" });
             }
 
+            var claims = new Claim[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, requester),
+                new Claim(ClaimTypes.Role, StaticClass.RoleId.Student),
+            };
+
+            var jwt = Configuration.GetSection("Jwt");
+            var keyBytes = Encoding.UTF8.GetBytes(jwt["Key"]);
+            var key = new SymmetricSecurityKey(keyBytes);
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var expires = await db.Quizzes
+                .Where(q => q.Id == quiz_id)
+                .Select(q => q.DueTime)
+                .FirstOrDefaultAsync(); 
+
+            var token = new JwtSecurityToken(
+                issuer: jwt["Issuer"],
+                audience: jwt["Audience"],
+                claims: claims,
+                expires: DateTime.SpecifyKind(expires, DateTimeKind.Local).ToUniversalTime(),
+                signingCredentials: creds
+            );
+
+            var tokenForQuiz = new JwtSecurityTokenHandler().WriteToken(token);
+
             if (aq != null)
             {
                 AttemptQuizDTO atq = new AttemptQuizDTO
@@ -55,7 +86,8 @@ namespace BE.Controller.APIService
                     AccountId = aq.AccountId,
                     AttemptTime = aq.AttemptTime,
                     FinishTime = aq.FinishTime,
-                    IsSubmitted = aq.IsSubmitted
+                    IsSubmitted = aq.IsSubmitted,
+                    TokenForQuiz = tokenForQuiz
                 };
 
                 atq.QuizName = await db.Quizzes.Where(q => q.Id == quiz_id)
@@ -65,7 +97,7 @@ namespace BE.Controller.APIService
                 atq.CourseName = await db.Quizzes.Join(db.Courses, q => q.CourseID, c => c.Id, (q, c) => new { q, c })
                     .Where(qc => qc.q.Id == quiz_id)
                     .Select(qc => qc.c.Name)
-                    .FirstOrDefaultAsync() ?? "";   
+                    .FirstOrDefaultAsync() ?? "";
 
                 return Ok(atq);
             }
@@ -98,7 +130,8 @@ namespace BE.Controller.APIService
                 AccountId = requester,
                 AttemptTime = attemptQuiz.AttemptTime,
                 FinishTime = attemptQuiz.FinishTime,
-                IsSubmitted = attemptQuiz.IsSubmitted
+                IsSubmitted = attemptQuiz.IsSubmitted,
+                TokenForQuiz = tokenForQuiz
             });
         }
 
