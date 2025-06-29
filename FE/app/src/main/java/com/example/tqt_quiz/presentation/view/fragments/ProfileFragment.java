@@ -1,11 +1,11 @@
 package com.example.tqt_quiz.presentation.view.fragments;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.tqt_quiz.R;
 import com.example.tqt_quiz.domain.dto.AccountInfo;
@@ -38,6 +39,7 @@ public class ProfileFragment extends Fragment implements ProfileFragmentContract
     ShapeableImageView Avatar;
     Button EditInfo, ChangePassword;
     ActivityResultLauncher<Intent> editProfileLauncher, changePasswordLauncher;
+    private AccountInfo accountInfo;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -54,30 +56,42 @@ public class ProfileFragment extends Fragment implements ProfileFragmentContract
         Email = v.findViewById(R.id.tv_Email_Profile);
         Avatar = v.findViewById(R.id.img_Avatar_Profile);
         EditInfo = v.findViewById(R.id.btn_EditInfo_Profile);
+        ChangePassword = v.findViewById(R.id.btn_ChangePassword_Profile);
 
         presenter = new ProfileFragmentPresenter(this);
 
         //Khởi tạo Launcher
         editProfileLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == getActivity().RESULT_OK) {
-                        presenter.getMySelfAccountInfo();
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult o) {
+                        onTabReload();
+                        if(o.getResultCode() == getActivity().RESULT_OK)
+                        {
+                            Toast.makeText(getTheContext(), "Cập nhật thông tin thành công", Toast.LENGTH_LONG).show();
+                        }
                     }
                 }
         );
 
         changePasswordLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
-                result -> {}
+                result -> {
+                    if(result.getResultCode() == getActivity().RESULT_OK)
+                    {
+                        Toast.makeText(getTheContext(), "Sửa mật khẩu thành công", Toast.LENGTH_LONG).show();
+                        onTabReload();
+                    }
+                }
         );
 
         EditInfo.setOnClickListener(view -> {
-            Intent intent = new Intent(requireContext(), ChangeProfile.class);
+            Intent intent = new Intent(getContext(), ChangeProfile.class);
+            intent.putExtra("oldProfile", accountInfo);
             editProfileLauncher.launch(intent);
         });
 
-        ChangePassword = v.findViewById(R.id.btn_ChangePassword_Profile);
         ChangePassword.setOnClickListener(view -> {
             Intent intent = new Intent(requireContext(), ChangePassword.class);
             changePasswordLauncher.launch(intent);
@@ -94,25 +108,6 @@ public class ProfileFragment extends Fragment implements ProfileFragmentContract
 
         return v;
     }
-
-    private final ActivityResultLauncher<Intent> changeProfileLauncher =
-            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
-                    Intent data = result.getData();
-
-                    String firstName = data.getStringExtra("first_name");
-                    String middleName = data.getStringExtra("middle_name");
-                    String email = data.getStringExtra("email");
-                    Uri avatarUri = data.getData(); // getData dùng cho URI từ ảnh
-
-                    // Cập nhật giao diện
-                    FullName.setText(middleName + " " + firstName);
-                    Email.setText(email);
-                    if (avatarUri != null) {
-                        Avatar.setImageURI(avatarUri);
-                    }
-                }
-            });
 
     @Override
     public Context getTheContext() {
@@ -131,6 +126,7 @@ public class ProfileFragment extends Fragment implements ProfileFragmentContract
 
     @Override
     public void showInfo(AccountInfo response) {
+        accountInfo = response;
         FullName.setText(response.getFullName());
         AccountType.setText(response.getAccountType());
         Email.setText(response.getEmail());
@@ -139,11 +135,15 @@ public class ProfileFragment extends Fragment implements ProfileFragmentContract
 
     @Override
     public void showError(String msg) {
+        Toast.makeText(getTheContext(), msg, Toast.LENGTH_LONG).show();
+    }
 
+    @Override
+    public void onGetCurrentInfoSuccess(AccountInfo response) {
     }
 
     @Override
     public void onTabReload() {
-
+        presenter.getProfile();
     }
 }

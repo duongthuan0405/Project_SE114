@@ -20,7 +20,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.tqt_quiz.R;
 import com.example.tqt_quiz.domain.dto.CourseDTO;
 import com.example.tqt_quiz.presentation.contract_vp.JoinCourseSTContract;
-import com.example.tqt_quiz.presentation.presenter.JoinCourseSTPresenter;
+import com.example.tqt_quiz.presentation.presenter.JoinCourseStPresenter;
 import com.example.tqt_quiz.staticclass.StaticClass;
 import com.google.android.material.imageview.ShapeableImageView;
 
@@ -35,7 +35,7 @@ public class JoinCourseActivitySt extends AppCompatActivity implements JoinCours
     TextView TeacherName=null;
     Button JoinButton=null;
     Button FindButton=null;
-    JoinCourseSTPresenter presenter=null;
+    JoinCourseStPresenter presenter=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,9 +46,10 @@ public class JoinCourseActivitySt extends AppCompatActivity implements JoinCours
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        StaticClass.customActionBar(getSupportActionBar(), R.layout.custom_action_bar_2);
         BindingUI();
         DisableJoin();
-        presenter=new JoinCourseSTPresenter(this);
+        presenter=new JoinCourseStPresenter(this);
         JoinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

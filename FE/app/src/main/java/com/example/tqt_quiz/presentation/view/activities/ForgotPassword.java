@@ -21,6 +21,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.tqt_quiz.R;
 import com.example.tqt_quiz.presentation.contract_vp.ForgotPasswordContract;
 import com.example.tqt_quiz.presentation.presenter.ForgotPasswordPresenter;
+import com.example.tqt_quiz.staticclass.StaticClass;
 
 public class ForgotPassword extends AppCompatActivity implements ForgotPasswordContract.IView
 {
@@ -39,6 +40,7 @@ public class ForgotPassword extends AppCompatActivity implements ForgotPasswordC
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        StaticClass.customActionBar(getSupportActionBar(), R.layout.custom_action_bar_2);
 
         presenter = new ForgotPasswordPresenter(this);
 

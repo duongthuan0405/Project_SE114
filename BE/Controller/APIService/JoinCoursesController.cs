@@ -225,12 +225,14 @@ namespace BE.Controller.APIService
                 }
 
                 var joinCourse = await DbContext.JoinCourses
-                    .FirstOrDefaultAsync(jc => jc.CourseID == course_id && jc.AccountID == requester);
+                    .FirstOrDefaultAsync(jc => jc.CourseID == course_id && jc.AccountID == requester && jc.State == (int)JoinCourse.JoinCourseState.Joined);
 
                 if (joinCourse == null)
                 {
                     return StatusCode(StatusCodes.Status404NotFound, new { Message = "Bạn chưa tham gia khóa học này" });
                 }
+
+            
 
                 joinCourse.State = (int)JoinCourse.JoinCourseState.Left;
                 await DbContext.SaveChangesAsync();

@@ -411,7 +411,7 @@ namespace BE.Controller.APIService
                                     .Where(c => c.Id == x.q.CourseID)
                                     .Select(c => c.Name)
                                     .FirstOrDefault() ?? "",
-                                StatusOfAttempt = aq == null ? StaticClass.StateOfAttemptQuiz.NotFinish : (aq.IsSubmitted ? StaticClass.StateOfAttemptQuiz.Finish : StaticClass.StateOfAttemptQuiz.NotFinish)
+                                StatusOfAttempt = aq == null ? StaticClass.StateOfAttemptQuiz.NotAttempted : (aq.IsSubmitted ? StaticClass.StateOfAttemptQuiz.Finish : StaticClass.StateOfAttemptQuiz.NotFinish)
                             }
                         ).ToListAsync();
                 }
@@ -578,13 +578,25 @@ namespace BE.Controller.APIService
                     .Join(DbContext.Answers, dr => dr.AnswerId, a => a.Id, (dr, a) => new { dr, a })
                     .CountAsync(x => x.a.IsTrue);
 
-                return Ok(new QuizWithScoreDTO
+
+                QuizWithScoreDTO quizWithScore = new QuizWithScoreDTO
                 {
                     Quiz = quiz,
                     TotalCorrectAnswer = TotalCorrectAnswer,
                     IsSubmitted = atquiz.IsSubmitted,
                     TotalQuestions = TotalQuestions
-                });
+                };
+
+                if (DateTime.Now < quiz.DueTime)
+                {
+                    TotalCorrectAnswer = 0;
+                }
+                else
+                {
+                    quizWithScore.IsSubmitted = true; // Nếu quá thời gian làm bài, đánh dấu là đã nộp
+                }
+
+                return Ok(quizWithScore);
 
 
             }
@@ -620,11 +632,11 @@ namespace BE.Controller.APIService
                     .Where(q => q.QuizId == quiz_id)
                     .CountAsync();
 
-                var results = DbContext.AccountAuthens.Join(DbContext.Accounts, at => at.Id, a => a.Id, (at, a) => new { at, a })
+                var results = await DbContext.AccountAuthens.Join(DbContext.Accounts, at => at.Id, a => a.Id, (at, a) => new { at, a })
                         .Join(DbContext.JoinCourses, x => x.a.Id, jc => jc.AccountID, (x, jc) => new { at = x.at, a = x.a, jc = jc })
                         .Join(DbContext.Quizzes.Where(q => q.Id == quiz_id), x => x.jc.CourseID, q => q.CourseID, (x, q) => new { a = x.a, at = x.at, q = q })
                         .GroupJoin(DbContext.AttemptQuizzes, x => x.q.Id, aq => aq.QuizId, (x, ls_at) => new { x = x, ls_at = ls_at.DefaultIfEmpty() })
-                        .SelectMany(x => x.ls_at, (x, at) => new { x = x.x, atq = at });
+                        .SelectMany(x => x.ls_at, (x, at) => new { x = x.x, atq = at }).ToListAsync();
 
                 List<AccountWithScore> accountWithScores = new List<AccountWithScore>();
                 foreach (var r in results)
@@ -636,7 +648,9 @@ namespace BE.Controller.APIService
                             Account = new AccountInfoDTO(r.x.a.Id, r.x.at.Email, r.x.a.LastMiddleName, r.x.a.FirstName, r.x.a.Avatar, r.x.a.AccountTypeId, ""),
                             TotalCorrectAnswer = 0,
                             TotalQuestions = TotalQuestions,
-                            IsSubmitted = false
+                            IsSubmitted = false,
+                            StartedAt = null,
+                            FinishedAt = null
                         });
                     }
                     else
@@ -650,10 +664,19 @@ namespace BE.Controller.APIService
                             Account = new AccountInfoDTO(r.x.a.Id, r.x.at.Email, r.x.a.LastMiddleName, r.x.a.FirstName, r.x.a.Avatar, r.x.a.AccountTypeId, ""),
                             TotalCorrectAnswer = totalCorrectAnswer,
                             TotalQuestions = TotalQuestions,
-                            IsSubmitted = r.atq.IsSubmitted
+                            IsSubmitted = r.atq.IsSubmitted,
+                            StartedAt = r.atq.AttemptTime,
+                            FinishedAt = r.atq.IsSubmitted ? r.atq.FinishTime : null
                         });
                     }
                 }
+
+                accountWithScores.Sort((x, y) =>
+                {
+                    if (x.TotalCorrectAnswer != y.TotalCorrectAnswer)
+                        return x.TotalCorrectAnswer.CompareTo(y.TotalCorrectAnswer);
+                    return (x.FinishedAt < y.FinishedAt) ? 1 : x.Account.FirstName.CompareTo(y.Account.FirstName);
+                });
 
                 return Ok(accountWithScores);
                                      

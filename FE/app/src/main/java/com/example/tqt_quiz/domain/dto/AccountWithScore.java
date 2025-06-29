@@ -1,6 +1,10 @@
 package com.example.tqt_quiz.domain.dto;
 
+import com.example.tqt_quiz.domain.JasonAdapters.LocalDateTimeAdapter;
+import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
+
+import java.time.LocalDateTime;
 
 public class AccountWithScore {
     @SerializedName("account")
@@ -11,6 +15,12 @@ public class AccountWithScore {
     int totalQuestions;
     @SerializedName("isSubmitted")
     boolean isSubmitted;
+
+    @SerializedName("startedAt")@JsonAdapter(LocalDateTimeAdapter.class)
+    LocalDateTime startAt;
+
+    @SerializedName("finishedAt")@JsonAdapter(LocalDateTimeAdapter.class)
+    LocalDateTime finishAt;
     public AccountInfo getAccount() {
         return account;
     }
@@ -41,5 +51,21 @@ public class AccountWithScore {
 
     public void setSubmitted(boolean submitted) {
         isSubmitted = submitted;
+    }
+
+    public LocalDateTime getStartAt() {
+        return startAt;
+    }
+
+    public void setStartAt(LocalDateTime startAt) {
+        this.startAt = startAt;
+    }
+
+    public LocalDateTime getFinishAt() {
+        return finishAt;
+    }
+
+    public void setFinishAt(LocalDateTime finishAt) {
+        this.finishAt = finishAt;
     }
 }

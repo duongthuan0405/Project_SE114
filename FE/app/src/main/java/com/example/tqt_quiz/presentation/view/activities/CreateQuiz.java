@@ -57,6 +57,7 @@ public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.
     LocalDateTime selectedDate;
     private int d, M, y, H, m;
     private QuizDTO oldQuiz;
+    private Button btnViewResult;
     LocalDateTime defaultDateTime = LocalDateTime.now().plusHours(1);
 
     @Override
@@ -83,6 +84,9 @@ public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.
         Finish = findViewById(R.id.btn_Finish_CreateQuiz);
         btnDelete = findViewById(R.id.btn_Delete_CreateQuiz);
         Cancel = findViewById(R.id.btn_Cancel_CreateQuiz);
+        btnViewResult = findViewById(R.id.btn_ViewResult);
+
+        btnViewResult.setVisibility(View.GONE);
 
         StartTime.setOnClickListener(v -> onClickTimeTextView(v));
         DueTime.setOnClickListener(v -> onClickTimeTextView(v));
@@ -158,6 +162,11 @@ public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.
         description = Description.getText().toString().trim();
         startTime = StartTime.getText().toString().trim();
         dueTime = DueTime.getText().toString().trim();
+
+        if(oldQuiz != null && oldQuiz.isPublished())
+        {
+            isPublish = true;
+        }
 
         QuizCreateRequestDTO quizCreateRequestDTO;
 
@@ -275,8 +284,16 @@ public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.
         tv.append(" " + response.getCourseName() + " (" + response.getId() + ")");
         oldQuiz = response;
         presenter.onGetOldQuestion(response.getId());
+        btnViewResult.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(CreateQuiz.this, ViewScore.class);
+                i.putExtra("quizId", quiz_id);
+                startActivity(i);
+            }
+        });
 
-        if(oldQuiz.getIsPublished())
+        if(oldQuiz.isPublished())
         {
             if(oldQuiz.getStartTime().isBefore(LocalDateTime.now()))
             {
@@ -284,6 +301,7 @@ public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.
                 btn_Publish.setVisibility(View.GONE);
                 Finish.setVisibility(View.GONE);
                 btnDelete.setVisibility(View.GONE);
+                btnViewResult.setVisibility(View.VISIBLE);
             }
             else
             {
@@ -304,7 +322,7 @@ public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.
             QuestionViewHolder questionViewHolder = new QuestionViewHolder(questionView, true);
             questionView.setTag(questionViewHolder);
 
-            if(oldQuiz.getIsPublished() && oldQuiz.getStartTime().isBefore(LocalDateTime.now()))
+            if(oldQuiz.isPublished() && oldQuiz.getStartTime().isBefore(LocalDateTime.now()))
             {
                 questionViewHolder.disableForEditing();
             }

@@ -17,6 +17,8 @@ public interface ProfileFragmentContract
         void showInfo(AccountInfo response);
 
         void showError(String msg);
+
+        void onGetCurrentInfoSuccess(AccountInfo response);
     }
 
     public interface IPresenter
@@ -24,5 +26,9 @@ public interface ProfileFragmentContract
         void onLogoutClick();
 
         void getMySelfAccountInfo();
+
+        void getProfile();
+
+        void showCurrentInfo();
     }
 }

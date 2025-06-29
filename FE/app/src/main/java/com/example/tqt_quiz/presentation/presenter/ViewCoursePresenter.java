@@ -233,7 +233,8 @@ public class ViewCoursePresenter implements ViewCourseContract.IPresenter
         courseRelatedInteract.DeleteCourse(CourseId, view.getTheContext(), new ICourseRelatedInteract.DeleteCourseCallBack() {
             @Override
             public void onSuccess() {
-                view.showToast("Da xoa thanh cong khoa hoc");
+                view.showToast("Đã xóa khóa học thành công");
+                view.Finish();
             }
 
             @Override
@@ -243,7 +244,7 @@ public class ViewCoursePresenter implements ViewCourseContract.IPresenter
 
             @Override
             public void onFailureByUnAcceptedRole() {
-                view.showToast("Ban khong co quyen han de lam dieu nay");
+                view.showToast("Tài khoản không thể truy cập tài nguyên này");
             }
 
             @Override
@@ -253,7 +254,7 @@ public class ViewCoursePresenter implements ViewCourseContract.IPresenter
 
             @Override
             public void onFailureByCannotSendToServer() {
-                view.showToast("Khong the ket noi toi server");
+                view.showToast("Không thể kết nối đến server");
             }
         });
     }

@@ -17,6 +17,8 @@ public interface ViewCourseStContract
         void ShowAllMemBerInCourse(List<AccountInfo> MemberList);
         void navigateToLogin();
         void ShowToast(String msg);
+
+        void Finish();
     }
 
     public interface IPresenter
