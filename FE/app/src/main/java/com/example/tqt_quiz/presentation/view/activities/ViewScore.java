@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,15 +15,24 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.tqt_quiz.R;
+import com.example.tqt_quiz.domain.APIService.GetQuizScoreService;
+import com.example.tqt_quiz.domain.dto.AccountWithScore;
+import com.example.tqt_quiz.domain.dto.QuizScoreBoardDTO;
+import com.example.tqt_quiz.staticclass.StaticClass;
 import com.google.android.material.imageview.ShapeableImageView;
 
-import java.util.ArrayList;
-import java.util.List;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ViewScore extends AppCompatActivity {
 
     private TextView tvTitle, tvDescription, tvCourseId, tvStartTime, tvDueTime;
     private LinearLayout llScoreList;
+    private GetQuizScoreService quizScoreService;
+    private String quizId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +56,7 @@ public class ViewScore extends AppCompatActivity {
 
         // Nhận dữ liệu từ intent
         Intent intent = getIntent();
+        quizId = intent.getStringExtra("quizId");
         String quizName = intent.getStringExtra("quizName");
         String quizDescription = intent.getStringExtra("quizDescription");
         String courseId = intent.getStringExtra("courseId");
@@ -59,44 +70,53 @@ public class ViewScore extends AppCompatActivity {
         tvStartTime.setText("Bắt đầu: " + (startTime != null ? startTime : "--"));
         tvDueTime.setText("Kết thúc: " + (dueTime != null ? dueTime : "--"));
 
-        // Giả lập danh sách điểm học sinh (sau này bạn thay bằng dữ liệu thật từ API)
-        List<StudentScore> studentScores = getDummyScores();
+        // Gọi API để lấy danh sách điểm số thực tế
+        fetchQuizScores();
+    }
 
-        // Hiển thị danh sách
+    private void fetchQuizScores() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(StaticClass.BareUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        /*
+        quizScoreService = retrofit.create(GetQuizScoreService.class);
+        quizScoreService.GetQuizScore(quizId).enqueue(new Callback<QuizScoreBoardDTO>() {
+            @Override
+            public void onResponse(Call<QuizScoreBoardDTO> call, Response<QuizScoreBoardDTO> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    for (AccountWithScore score : response.body().getScores()) {
+                        addScoreItem(score);
+                    }
+                } else {
+                    Toast.makeText(ViewScore.this, "Lỗi khi tải điểm số", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<QuizScoreBoardDTO> call, Throwable t) {
+                Toast.makeText(ViewScore.this, "Không thể kết nối server", Toast.LENGTH_SHORT).show();
+            }
+        });
+        */
+    }
+
+    private void addScoreItem(AccountWithScore score) {
         LayoutInflater inflater = LayoutInflater.from(this);
-        for (StudentScore score : studentScores) {
-            View scoreItem = inflater.inflate(R.layout.item_score, llScoreList, false);
+        View scoreItem = inflater.inflate(R.layout.item_score, llScoreList, false);
 
-            TextView tvName = scoreItem.findViewById(R.id.tv_Name_ScoreItem);
-            TextView tvScore = scoreItem.findViewById(R.id.tv_Score_ScoreItem);
-            ShapeableImageView imgAvatar = scoreItem.findViewById(R.id.img_Avatar_ScoreItem);
+        TextView tvName = scoreItem.findViewById(R.id.tv_Name_ScoreItem);
+        TextView tvScore = scoreItem.findViewById(R.id.tv_Score_ScoreItem);
+        ShapeableImageView imgAvatar = scoreItem.findViewById(R.id.img_Avatar_ScoreItem);
 
-            tvName.setText(score.name);
-            tvScore.setText(String.valueOf(score.score));
-            imgAvatar.setImageResource(R.drawable.resource_default); // bạn có thể dùng Glide/Picasso nếu có URL
+        tvName.setText(score.getAccount().getFullName());
+        tvScore.setText(score.isSubmitted() ?
+                String.format("%d / %d", score.getTotalCorrectAnswer(), score.getTotalQuestions()) :
+                "-- / --");
 
-            llScoreList.addView(scoreItem);
-        }
-    }
+        StaticClass.setImage(imgAvatar, score.getAccount().getAvatar(), R.drawable.resource_default);
 
-    // Dữ liệu mẫu
-    private List<StudentScore> getDummyScores() {
-        List<StudentScore> list = new ArrayList<>();
-        list.add(new StudentScore("Nguyễn Văn A", 9.5));
-        list.add(new StudentScore("Trần Thị B", 8.0));
-        list.add(new StudentScore("Lê Văn C", 7.25));
-        list.add(new StudentScore("Phạm Thị D", 10.0));
-        return list;
-    }
-
-    // Lớp đơn giản đại diện cho điểm số
-    private static class StudentScore {
-        String name;
-        double score;
-
-        StudentScore(String name, double score) {
-            this.name = name;
-            this.score = score;
-        }
+        llScoreList.addView(scoreItem);
     }
 }

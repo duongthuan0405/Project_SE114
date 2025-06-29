@@ -2,6 +2,7 @@ package com.example.tqt_quiz.presentation.view.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -20,11 +21,14 @@ import com.example.tqt_quiz.presentation.classes.QuestionViewHolder;
 import com.example.tqt_quiz.presentation.utils.DummyQuizGenerator;
 import com.example.tqt_quiz.staticclass.StaticClass;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class DoQuiz extends AppCompatActivity {
 
-    private TextView Title, Description, StartTime, DueTime, CourseId;
+    private TextView Title, Description, StartTime, DueTime, CourseId, tvTimer;
     private LinearLayout QuestionList;
     private Button Finish;
 
@@ -52,6 +56,7 @@ public class DoQuiz extends AppCompatActivity {
         CourseId = findViewById(R.id.tv_CourseId_DoQuiz);
         QuestionList = findViewById(R.id.ll_QuestionList_DoQuiz);
         Finish = findViewById(R.id.btn_Finish_DoQuiz);
+        tvTimer = findViewById(R.id.tv_Timer_DoQuiz);
 
         // B1: Attempt Quiz
 
@@ -66,7 +71,7 @@ public class DoQuiz extends AppCompatActivity {
 
 
 
-        /*
+
 
         // Nhận dữ liệu từ intent
         Intent intent = getIntent();
@@ -83,6 +88,19 @@ public class DoQuiz extends AppCompatActivity {
         DueTime.setText("Kết thúc: " + due);
         CourseId.setText("Course ID: " + (courseId != null ? courseId : "--"));
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(StaticClass.DateTimeFormat);
+        LocalDateTime dueTime = LocalDateTime.parse(due, formatter);
+        LocalDateTime now = LocalDateTime.now();
+
+        long millisUntilDue = Duration.between(now, dueTime).toMillis();
+        if (millisUntilDue > 0) {
+            startCountdown(millisUntilDue);
+        } else {
+            tvTimer.setText("00:00");
+            Finish.setEnabled(false);
+        }
+
+        /*
         // Load câu hỏi (Dùng tạm thời – sau này thay bằng API hoặc gì đó, đại loại vậy)
         questionList = DummyQuizGenerator.getSampleQuestions(); // bạn có thể thay bằng dữ liệu thực tế
 
@@ -125,5 +143,24 @@ public class DoQuiz extends AppCompatActivity {
         });
 
          */
+    }
+
+    private void startCountdown(long millisUntilFinished) {
+        new CountDownTimer(millisUntilFinished, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                long seconds = millisUntilFinished / 1000;
+                long minutes = seconds / 60;
+                long remainingSeconds = seconds % 60;
+
+                tvTimer.setText(String.format("%02d:%02d", minutes, remainingSeconds));
+            }
+
+            @Override
+            public void onFinish() {
+                tvTimer.setText("00:00");
+                Finish.performClick();
+            }
+        }.start();
     }
 }
