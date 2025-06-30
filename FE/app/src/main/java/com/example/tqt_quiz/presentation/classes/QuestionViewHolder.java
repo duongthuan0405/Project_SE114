@@ -1,5 +1,6 @@
 package com.example.tqt_quiz.presentation.classes;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ public class QuestionViewHolder
     private final RadioGroup answerList;
     private final EditText[] edtAnswers = new EditText[TOTAL_ANSWERS];
     private RadioButton[] rdbAnswers = new RadioButton[TOTAL_ANSWERS];
+    private LinearLayout[] answerFrame = new LinearLayout[TOTAL_ANSWERS];
     private final Button btn_Add, btn_Delete;
     private final TextView tvCorrectAnswer;
     private final LinearLayout layoutQuestionContainer;
@@ -48,6 +50,7 @@ public class QuestionViewHolder
 
             edtAnswers[i] = answerView.findViewById(R.id.edt_Content_AnswerItem);
             rdbAnswers[i] = answerView.findViewById(R.id.rdb_IsCorrect_AnswerItem);
+            answerFrame[i] = answerView.findViewById(R.id.frameQuestion);
             TextView tv_AnswerItem = answerView.findViewById(R.id.tv_Label_AnswerItem);
             tv_AnswerItem.setText(labels[i] + "");
 
@@ -78,6 +81,18 @@ public class QuestionViewHolder
         for (int i = 0; i < TOTAL_ANSWERS; i++) {
             edtAnswers[i].setText(dto.getAnswers().get(i).getContent());
             rdbAnswers[i].setChecked(dto.getAnswers().get(i).isCorrect());
+            idAnswer[i] = dto.getAnswers().get(i).getId();
+        }
+    }
+
+    public void setDataWithCorrectAnswerAndSelectedAnswer(Question dto)
+    {
+        data = dto;
+        edtQuestion.setText(dto.getContent());
+        for (int i = 0; i < TOTAL_ANSWERS; i++) {
+            edtAnswers[i].setText(dto.getAnswers().get(i).getContent());
+            rdbAnswers[i].setChecked(dto.getAnswers().get(i).isSelected());
+            answerFrame[i].setBackgroundColor(Color.parseColor("#935CDC"));
             idAnswer[i] = dto.getAnswers().get(i).getId();
         }
     }
