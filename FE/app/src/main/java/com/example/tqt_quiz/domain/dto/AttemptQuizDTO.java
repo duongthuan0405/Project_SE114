@@ -13,6 +13,10 @@ public class AttemptQuizDTO {
     String quizId;
     @SerializedName("accountId")
     String accountId;
+    @SerializedName("quizName")
+    String QuizName;
+    @SerializedName("courseName")
+    String CourseName;
     @SerializedName("attemptTime")
             @JsonAdapter(LocalDateTimeAdapter.class)
     LocalDateTime attemptTime;
@@ -21,6 +25,8 @@ public class AttemptQuizDTO {
     LocalDateTime finishTime;
     @SerializedName("isSubmitted")
     boolean isSubmitted;
+    @SerializedName("tokenForQuiz")
+    String tokenForQuiz;
     public String getId() {
         return id;
     }
@@ -67,5 +73,27 @@ public class AttemptQuizDTO {
 
     public void setSubmitted(boolean isSubmitted) {
         this.isSubmitted = isSubmitted;
+    }
+    public String getQuizName() {
+        return QuizName;
+    }
+
+    public void setQuizName(String quizName) {
+        this.QuizName = quizName;
+    }
+
+    public String getCourseName() {
+        return CourseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.CourseName = courseName;
+    }
+    public String getTokenForQuiz() {
+        return tokenForQuiz;
+    }
+
+    public void setTokenForQuiz(String tokenForQuiz) {
+        this.tokenForQuiz = tokenForQuiz;
     }
 }

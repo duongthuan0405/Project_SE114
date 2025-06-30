@@ -1,7 +1,10 @@
 package com.example.tqt_quiz.presentation.view.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -10,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -26,13 +30,26 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import com.example.tqt_quiz.domain.dto.AccountWithScore;
+import com.example.tqt_quiz.domain.dto.QuizDTO;
+import com.example.tqt_quiz.presentation.contract_vp.ViewScoreContract;
+import com.example.tqt_quiz.presentation.presenter.ViewScorePresenter;
+import com.example.tqt_quiz.staticclass.StaticClass;
+import com.google.android.material.imageview.ShapeableImageView;
 
-public class ViewScore extends AppCompatActivity {
+import java.time.Duration;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ViewScore extends AppCompatActivity implements ViewScoreContract.IView
+{
 
     private TextView tvTitle, tvDescription, tvCourseId, tvStartTime, tvDueTime;
     private LinearLayout llScoreList;
     private GetQuizScoreService quizScoreService;
     private String quizId;
+    ViewScoreContract.IPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +63,9 @@ public class ViewScore extends AppCompatActivity {
             return insets;
         });
 
+        StaticClass.customActionBar(getSupportActionBar(), R.layout.custom_action_bar_2);
+
+        presenter = new ViewScorePresenter(this);
         // Ánh xạ
         tvTitle = findViewById(R.id.tv_Title_ViewScore);
         tvDescription = findViewById(R.id.tv_Description_ViewScore);
@@ -53,70 +73,95 @@ public class ViewScore extends AppCompatActivity {
         tvStartTime = findViewById(R.id.tv_StartTime_ViewScore);
         tvDueTime = findViewById(R.id.tv_DueTime_ViewScore);
         llScoreList = findViewById(R.id.ll_ScoreList_ViewScore);
+        Intent i = getIntent();
+        quizId = i.getStringExtra("quizId");
+        presenter.quizInfo(quizId);
+        presenter.getResultForTeacherView(quizId);
 
-        // Nhận dữ liệu từ intent
-        Intent intent = getIntent();
-        quizId = intent.getStringExtra("quizId");
-        String quizName = intent.getStringExtra("quizName");
-        String quizDescription = intent.getStringExtra("quizDescription");
-        String courseId = intent.getStringExtra("courseId");
-        String startTime = intent.getStringExtra("startTime");
-        String dueTime = intent.getStringExtra("dueTime");
-
-        // Set dữ liệu
-        tvTitle.setText(quizName != null ? quizName : "Không có tiêu đề");
-        tvDescription.setText(quizDescription != null ? quizDescription : "Không có mô tả");
-        tvCourseId.setText("Course ID: " + (courseId != null ? courseId : "--"));
-        tvStartTime.setText("Bắt đầu: " + (startTime != null ? startTime : "--"));
-        tvDueTime.setText("Kết thúc: " + (dueTime != null ? dueTime : "--"));
-
-        // Gọi API để lấy danh sách điểm số thực tế
-        fetchQuizScores();
     }
 
-    private void fetchQuizScores() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(StaticClass.BareUrl)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
 
-        /*
-        quizScoreService = retrofit.create(GetQuizScoreService.class);
-        quizScoreService.GetQuizScore(quizId).enqueue(new Callback<QuizScoreBoardDTO>() {
-            @Override
-            public void onResponse(Call<QuizScoreBoardDTO> call, Response<QuizScoreBoardDTO> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    for (AccountWithScore score : response.body().getScores()) {
-                        addScoreItem(score);
-                    }
-                } else {
-                    Toast.makeText(ViewScore.this, "Lỗi khi tải điểm số", Toast.LENGTH_SHORT).show();
-                }
-            }
 
-            @Override
-            public void onFailure(Call<QuizScoreBoardDTO> call, Throwable t) {
-                Toast.makeText(ViewScore.this, "Không thể kết nối server", Toast.LENGTH_SHORT).show();
-            }
-        });
-        */
+    @Override
+    public Context getTheContext() {
+        return ViewScore.this.getApplicationContext();
     }
 
-    private void addScoreItem(AccountWithScore score) {
+    @Override
+    public void onSuccessGetQuizInfo(QuizDTO response) {
+        tvTitle.setText(response.getName());
+        tvDescription.setText(response.getDescription());
+        tvCourseId.setText(String.format("Khóa học: %s (%s)", response.getCourseName(), response.getCourseId()));
+        tvStartTime.setText("Bắt đầu: " + response.getStartTime().format(DateTimeFormatter.ofPattern(StaticClass.DateTimeFormat)));
+        tvDueTime.setText("Kết thúc: " + response.getDueTime().format(DateTimeFormatter.ofPattern(StaticClass.DateTimeFormat)));
+    }
+
+    @Override
+    public void navigateToLogin() {
+        Intent i = new Intent(ViewScore.this, Login.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
+    }
+
+    @Override
+    public void showMessage(String s) {
+        Toast.makeText(getTheContext(), s, Toast.LENGTH_LONG);
+    }
+
+    @Override
+    public void onSuccessShowResult(List<AccountWithScore> response) {
         LayoutInflater inflater = LayoutInflater.from(this);
-        View scoreItem = inflater.inflate(R.layout.item_score, llScoreList, false);
+        for (AccountWithScore a : response)
+        {
+            View scoreItem = inflater.inflate(R.layout.item_score, llScoreList, false);
 
-        TextView tvName = scoreItem.findViewById(R.id.tv_Name_ScoreItem);
-        TextView tvScore = scoreItem.findViewById(R.id.tv_Score_ScoreItem);
-        ShapeableImageView imgAvatar = scoreItem.findViewById(R.id.img_Avatar_ScoreItem);
+            TextView tvName = scoreItem.findViewById(R.id.tv_Name_ScoreItem);
+            TextView tvScore = scoreItem.findViewById(R.id.tv_Score_ScoreItem);
+            ShapeableImageView imgAvatar = scoreItem.findViewById(R.id.img_Avatar_ScoreItem);
+            TextView tvCorrectAnswer = scoreItem.findViewById(R.id.tv_Correct_MemInfo_ScoreItem);
+            TextView tvTimeToDo = scoreItem.findViewById(R.id.tv_TimeToDo_ScoreItem);
 
-        tvName.setText(score.getAccount().getFullName());
-        tvScore.setText(score.isSubmitted() ?
-                String.format("%d / %d", score.getTotalCorrectAnswer(), score.getTotalQuestions()) :
-                "-- / --");
+            tvName.setText(a.getAccount().getFullName());
+            float score = (float)a.getTotalCorrectAnswer() / a.getTotalQuestions();
+            tvScore.setText(score + "");
+            StaticClass.setImage(imgAvatar, a.getAccount().getAvatar(), R.drawable.resource_default);
+            llScoreList.addView(scoreItem);
+            tvCorrectAnswer.setText(String.format("Kết quả: %d / %d", a.getTotalCorrectAnswer(), a.getTotalQuestions()));
+            if(score < 5f)
+            {
+                tvScore.setBackgroundResource(R.drawable.bg_status_ended);
+            }
+            else if(score < 8f)
+            {
+                tvScore.setBackgroundResource(R.drawable.bg_status_benotpublished);
+            }
+            else
+            {
+                tvScore.setBackgroundResource(R.drawable.btn_rectangle_green);
+            }
 
-        StaticClass.setImage(imgAvatar, score.getAccount().getAvatar(), R.drawable.resource_default);
 
-        llScoreList.addView(scoreItem);
+            if(a.getStartAt() == null)
+            {
+                tvTimeToDo.setText("Thời gian: Chưa tham gia");
+                tvTimeToDo.setTextColor(Color.parseColor("#F44336"));
+            }
+            else if(a.getFinishAt() == null)
+            {
+                tvTimeToDo.setText("Thời gian: Chưa nộp bài");
+                tvTimeToDo.setTextColor(Color.parseColor("#F28705"));
+            }
+            else
+            {
+                Duration d = Duration.between(a.getStartAt(), a.getFinishAt());
+                long totalSecs = d.getSeconds();
+                long hours = totalSecs / 3600;
+                long mins = (totalSecs - hours * 3600) / 60;
+                long sec = totalSecs - hours * 3600 - mins * 60;
+                tvTimeToDo.setText(String.format("Thời gian: %d giờ %d phút %d giây", hours, mins, sec ));
+            }
+
+        }
     }
+
 }

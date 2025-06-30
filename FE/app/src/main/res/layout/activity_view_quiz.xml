@@ -80,17 +80,33 @@
 
             <!-- Điểm số -->
             <TextView
-                android:id="@+id/tv_Score_ViewQuiz"
+                android:id="@+id/tv_NumberOfCorrect_ViewQuiz"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Điểm số: 8 / 10"
-                android:textSize="17sp"
+                android:text="Kết quả: 8 / 10"
+                android:textSize="16sp"
                 android:textColor="@color/Primary"
                 android:textStyle="bold"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="15dp"
                 app:layout_constraintTop_toBottomOf="@id/tv_DueTime_ViewQuiz"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_Score_ViewQuiz"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="20dp"
+                android:text="Điểm số: 0.0"
+                android:textSize="20sp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/btn_rectangle_green"
+                app:layout_constraintTop_toBottomOf="@id/tv_NumberOfCorrect_ViewQuiz"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:gravity="center"/>
 
             <!-- Nút hành động -->
             <Button

@@ -70,7 +70,7 @@ namespace BE.Controller.AuthenticationService
                     issuer: jwt["Issuer"],
                     audience: jwt["Audience"],
                     claims: claims,
-                    expires: expires,
+                    expires: DateTime.SpecifyKind(expires, DateTimeKind.Local).ToUniversalTime(),
                     signingCredentials: creds
                 );
 

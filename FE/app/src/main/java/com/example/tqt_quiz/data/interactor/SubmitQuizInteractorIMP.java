@@ -2,6 +2,7 @@ package com.example.tqt_quiz.data.interactor;
 
 import android.content.Context;
 
+import com.example.tqt_quiz.data.repository.token.DoQuizTokenManager;
 import com.example.tqt_quiz.data.repository.token.RetrofitClient;
 import com.example.tqt_quiz.data.repository.token.TokenManager;
 import com.example.tqt_quiz.domain.APIService.SubmitQuizService;
@@ -17,7 +18,7 @@ public class SubmitQuizInteractorIMP implements ISubmitQuizInteractor {
 
     @Override
     public void SubmitQuiz(String quizId, Context context, SubmitQuizCallBack callback) {
-        TokenManager tokenManager= new TokenManager(context);
+        DoQuizTokenManager tokenManager= new DoQuizTokenManager( context);
         SubmitQuizService service= RetrofitClient.GetClient(tokenManager).create(SubmitQuizService.class);
         Call<Void> call= service.SubmitQuiz(quizId);
         call.enqueue(new Callback<Void>() {

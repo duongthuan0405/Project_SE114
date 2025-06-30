@@ -3,7 +3,6 @@ package com.example.tqt_quiz.presentation.view.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -13,6 +12,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -23,18 +23,16 @@ import com.example.tqt_quiz.presentation.contract_vp.ViewQuizStContract;
 import com.example.tqt_quiz.presentation.presenter.ViewQuizStPresenter;
 import com.example.tqt_quiz.staticclass.StaticClass;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Date;
 import java.util.Locale;
 
 public class ViewQuizSt extends AppCompatActivity implements ViewQuizStContract.IView
 {
 
-    TextView tvTitle, tvDescription, tvStart, tvDue, tvScore;
+    TextView tvTitle, tvDescription, tvStart, tvDue, tvCorrect, tvScore;
     Button btnAction;
     ActivityResultLauncher<Intent> doQuizLauncher, viewResultLauncher;
     ViewQuizStContract.IPresenter presenter;
@@ -57,8 +55,9 @@ public class ViewQuizSt extends AppCompatActivity implements ViewQuizStContract.
         tvDescription = findViewById(R.id.tv_Description_ViewQuiz);
         tvStart = findViewById(R.id.tv_StartTime_ViewQuiz);
         tvDue = findViewById(R.id.tv_DueTime_ViewQuiz);
-        tvScore = findViewById(R.id.tv_Score_ViewQuiz);
+        tvCorrect = findViewById(R.id.tv_NumberOfCorrect_ViewQuiz);
         btnAction = findViewById(R.id.btn_Action_ViewQuiz);
+        tvScore = findViewById(R.id.tv_Score_ViewQuiz);
 
         presenter = new ViewQuizStPresenter(this);
 
@@ -71,7 +70,7 @@ public class ViewQuizSt extends AppCompatActivity implements ViewQuizStContract.
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                         String newScore = result.getData().getStringExtra("quiz_score");
                         if (newScore != null) {
-                            tvScore.setText("Điểm số: " + newScore + " / 10");
+                            tvCorrect.setText("Điểm số: " + newScore + " / 10");
                             btnAction.setEnabled(false);
                             btnAction.setText("Đã hoàn thành");
                         }
@@ -89,10 +88,12 @@ public class ViewQuizSt extends AppCompatActivity implements ViewQuizStContract.
             String status = getStatus(quizWithScoreDTO.getQuiz().getStartTime(), quizWithScoreDTO.getQuiz().getDueTime());
             if (status.equals(StaticClass.StateOfQuiz.NOW)) {
                 Intent intent = new Intent(ViewQuizSt.this, DoQuiz.class);
+                intent.putExtra("quizId", quizId);
                 doQuizLauncher.launch(intent);
 
             } else if (status.equals(StaticClass.StateOfQuiz.END)) {
                 Intent intent = new Intent(ViewQuizSt.this, ViewResult.class);
+                intent.putExtra("quizId", quizId);
                 viewResultLauncher.launch(intent);
             }
         });
@@ -134,16 +135,16 @@ public class ViewQuizSt extends AppCompatActivity implements ViewQuizStContract.
 
         String status = getStatus(quizWithScoreDTO.getQuiz().getStartTime(), quizWithScoreDTO.getQuiz().getDueTime());
 
-        Log.d("THUAN", response.getQuiz().getName());
-
         if (status.equals(StaticClass.StateOfQuiz.SOON)) {
             btnAction.setVisibility(View.GONE);
-            tvScore.setText("-- / --");
+            tvCorrect.setText("Kết quả: -- / --");
+            tvScore.setText("Điểm số: --");
         }
         else if (status.equals(StaticClass.StateOfQuiz.NOW)) {
             btnAction.setVisibility(View.VISIBLE);
             btnAction.setText("Làm bài");
-            tvScore.setText("-- / --");
+            tvCorrect.setText("Kết quả: -- / --");
+            tvScore.setText("Điểm số: --");
 
             if(response.isSubmitted())
             {
@@ -155,7 +156,21 @@ public class ViewQuizSt extends AppCompatActivity implements ViewQuizStContract.
         {
             btnAction.setVisibility(View.VISIBLE);
             btnAction.setText("Xem bài làm");
-            tvScore.setText(String.format("%d / %d", quizWithScoreDTO.getTotalCorrectAnswer(), quizWithScoreDTO.getTotalQuestion()));
+            tvCorrect.setText(String.format("Kết quả: %d / %d", quizWithScoreDTO.getTotalCorrectAnswer(), quizWithScoreDTO.getTotalQuestion()));
+            float score = (float)quizWithScoreDTO.getTotalCorrectAnswer() / quizWithScoreDTO.getTotalQuestion();
+            tvScore.setText(String.format("Điểm số: %.1f", score));
+            if(score < 5f)
+            {
+                tvScore.setBackgroundResource(R.drawable.bg_status_ended);
+            }
+            else if(score < 8f)
+            {
+                tvScore.setBackgroundResource(R.drawable.bg_status_benotpublished);
+            }
+            else
+            {
+                tvScore.setBackgroundResource(R.drawable.btn_rectangle_green);
+            }
         }
     }
 
