@@ -291,7 +291,7 @@ namespace BE.Controller.APIService
                     {
                         try
                         {
-                            await emailService.SendAsync(email, subject, htmlContent);
+                            emailService.SendAsync(email, subject, htmlContent);
                         }
                         catch (Exception e)
                         {
@@ -358,7 +358,7 @@ namespace BE.Controller.APIService
                     {
                         try
                         {
-                            await emailService.SendAsync(email, subject, htmlContent);
+                            emailService.SendAsync(email, subject, htmlContent);
                         }
                         catch (Exception e)
                         {
@@ -457,7 +457,7 @@ namespace BE.Controller.APIService
                     {
                         try
                         {
-                            await emailService.SendAsync(email, subject, htmlContent);
+                            emailService.SendAsync(email, subject, htmlContent);
                         }
                         catch (Exception e)
                         {
@@ -673,10 +673,7 @@ namespace BE.Controller.APIService
                     });
                 }
 
-                var TotalCorrectAnswer = await DbContext.DetailResults.Where(dr => dr.AttemptQuizId == atquiz.Id)
-                    .Join(DbContext.Answers, dr => dr.AnswerId, a => a.Id, (dr, a) => new { dr, a })
-                    .CountAsync(x => x.a.IsTrue);
-
+                int TotalCorrectAnswer = 0;
 
                 QuizWithScoreDTO quizWithScore = new QuizWithScoreDTO
                 {
@@ -692,8 +689,12 @@ namespace BE.Controller.APIService
                 }
                 else
                 {
-                    quizWithScore.IsSubmitted = true; // Nếu quá thời gian làm bài, đánh dấu là đã nộp
-                }
+                    quizWithScore.IsSubmitted = true;
+                    TotalCorrectAnswer = await DbContext.DetailResults.Where(dr => dr.AttemptQuizId == atquiz.Id)
+                    .Join(DbContext.Answers, dr => dr.AnswerId, a => a.Id, (dr, a) => new { dr, a })
+                    .CountAsync(x => x.a.IsTrue);
+                    quizWithScore.TotalCorrectAnswer = TotalCorrectAnswer;
+                }                
 
                 return Ok(quizWithScore);
 
