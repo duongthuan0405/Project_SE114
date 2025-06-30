@@ -75,11 +75,11 @@ public class DoQuiz extends AppCompatActivity implements DoQuizContract.IView {
 
         Intent intent = getIntent();
         String quizId=intent.getStringExtra("quizId");
+        LocalDateTime dueTime = (LocalDateTime) getIntent().getExtras().get("dueTime");
 
         presenter.StartAttempt(quizId);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(StaticClass.DateTimeFormat);
-        LocalDateTime dueTime = LocalDateTime.parse(due, formatter);
         LocalDateTime now = LocalDateTime.now();
 
         long millisUntilDue = Duration.between(now, dueTime).toMillis();
@@ -91,14 +91,6 @@ public class DoQuiz extends AppCompatActivity implements DoQuizContract.IView {
             Timer.setText("00:00");
             Finish.setEnabled(false);
         }
-    }
-
-        /*
-        // Load câu hỏi (Dùng tạm thời – sau này thay bằng API hoặc gì đó, đại loại vậy)
-        questionList = DummyQuizGenerator.getSampleQuestions(); // bạn có thể thay bằng dữ liệu thực tế
-        Finish.setOnClickListener(v -> {
-
-        });
     }
 
     @Override
@@ -153,7 +145,7 @@ public class DoQuiz extends AppCompatActivity implements DoQuizContract.IView {
         CourseId.setText("Khóa học: " + info.getCourseName() + " (" + info.getCourseId() + ")");
 
     }
-        */
+
 
     private void startCountdown(long millisUntilFinished) {
         new CountDownTimer(millisUntilFinished, 1000) {

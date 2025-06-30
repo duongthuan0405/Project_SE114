@@ -21,7 +21,6 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.tqt_quiz.R;
 import com.example.tqt_quiz.domain.APIService.GetQuizScoreService;
 import com.example.tqt_quiz.domain.dto.AccountWithScore;
-import com.example.tqt_quiz.domain.dto.QuizScoreBoardDTO;
 import com.example.tqt_quiz.staticclass.StaticClass;
 import com.google.android.material.imageview.ShapeableImageView;
 
