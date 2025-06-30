@@ -1,5 +1,6 @@
 
 using BE.Adapter;
+using BE.AutoService;
 using BE.Data.Database;
 using BE.Email;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -30,13 +31,15 @@ public class Program
             opts => opts.UseSqlServer(TQT_Quiz_Connection)
         );
 
+        builder.Services.AddHostedService<AutoSubmitService>();
+
         // CamelCase
         builder.Services.AddControllers().AddJsonOptions(
             opt =>
             {
                 opt.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
                 opt.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
-                opt.JsonSerializerOptions.Converters.Add(new DateTimeConverterUsingFormat("yyyy-MM-dd HH:mm"));
+                opt.JsonSerializerOptions.Converters.Add(new DateTimeConverterUsingFormat("yyyy-MM-dd HH:mm:ss"));
             }
         );
 

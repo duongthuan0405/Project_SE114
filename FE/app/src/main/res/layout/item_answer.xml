@@ -9,11 +9,13 @@
     app:cardBackgroundColor="@color/white">
 
     <LinearLayout
+        android:id="@+id/frameQuestion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="12dp"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:background="@color/AppBackground">
 
         <!-- Ký hiệu A/B/C/D -->
         <TextView

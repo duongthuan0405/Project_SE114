@@ -2,6 +2,7 @@
 using BE.Data.Database;
 using BE.Data.Entities;
 using BE.DTOs;
+using BE.Email;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,10 +16,12 @@ namespace BE.Controller.APIService
     public class JoinCoursesController : ControllerBase
     {
         public readonly MyAppDBContext DbContext;
+        public readonly IEmailService emailService;
 
-        public JoinCoursesController(MyAppDBContext context)
+        public JoinCoursesController(MyAppDBContext context, IEmailService emailService)
         {
             DbContext = context;
+            this.emailService = emailService;
         }
 
         [HttpPost("{course_id}")]
@@ -116,6 +119,30 @@ namespace BE.Controller.APIService
 
                 joinCourse.State = (int)JoinCourse.JoinCourseState.Joined;
                 await DbContext.SaveChangesAsync();
+                // Gửi email thông báo cho người dùng đã được phê duyệt
+                var email = await DbContext.AccountAuthens
+                    .Where(aa => aa.Id == account_id)
+                    .Select(aa => aa.Email)
+                    .FirstOrDefaultAsync();
+                if (!string.IsNullOrEmpty(email))
+                {
+                    string subject = "Phê duyệt tham gia khóa học";
+                    string htmlContent = $@"
+                        <p>Xin chào,</p>
+                        <p>Bạn đã được <b>phê duyệt</b> tham gia vào khóa học <b>{course.Name}</b>.</p>
+                        <p>Hãy đăng nhập hệ thống để bắt đầu học và làm bài.</p>
+                        <p>Chúc bạn học tốt!</p>";
+
+                    try
+                    {
+                        emailService.SendAsync(email, subject, htmlContent);
+                    }
+                    catch (Exception e)
+                    {
+                       
+                    }
+                }
+                    
                 return Ok(new { Message = "Phê duyệt tham gia khóa học thành công" });
             }
             catch (Exception ex)
@@ -156,6 +183,27 @@ namespace BE.Controller.APIService
 
                 joinCourse.State = (int)JoinCourse.JoinCourseState.Denied;
                 await DbContext.SaveChangesAsync();
+
+                var email = await DbContext.AccountAuthens
+                    .Where(aa => aa.Id == account_id)
+                    .Select(aa => aa.Email)
+                    .FirstOrDefaultAsync();
+                if (!string.IsNullOrEmpty(email))
+                {
+                    string subject = "Phê duyệt tham gia khóa học";
+                    string htmlContent = $@"
+                        <p>Xin chào,</p>
+                        <p>Bạn đã bị <b>từ chối</b> tham gia vào khóa học <b>{course.Name}</b>.</p>";
+                    try
+                    {
+                        emailService.SendAsync(email, subject, htmlContent);
+                    }
+                    catch (Exception e)
+                    {
+                       
+                    }
+                }
+
                 return Ok(new { Message = "Từ chối tham gia nhóm thành công" });
             }
             catch (Exception ex)
@@ -232,8 +280,6 @@ namespace BE.Controller.APIService
                     return StatusCode(StatusCodes.Status404NotFound, new { Message = "Bạn chưa tham gia khóa học này" });
                 }
 
-            
-
                 joinCourse.State = (int)JoinCourse.JoinCourseState.Left;
                 await DbContext.SaveChangesAsync();
                 return Ok();
@@ -272,6 +318,27 @@ namespace BE.Controller.APIService
 
                 joinCourse.State = (int)JoinCourse.JoinCourseState.Banned;
                 await DbContext.SaveChangesAsync();
+
+                string subject = "Phê duyệt tham gia khóa học";
+                string htmlContent = $@"
+                    <p>Xin chào,</p>
+                    <p>Bạn đã bị <b>cấm</b> khỏi khóa học <b>{course.Name}</b>.</p>";
+                var email = await DbContext.AccountAuthens
+                    .Where(aa => aa.Id == account_id)
+                    .Select(aa => aa.Email)
+                    .FirstOrDefaultAsync();
+                if (!string.IsNullOrEmpty(email))
+                {
+
+                    try
+                    {
+                        emailService.SendAsync(email, subject, htmlContent);
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+                }
                 return Ok(new { Message = "Cấm người dùng khỏi khóa học thành công" });
             }
             catch (Exception ex)

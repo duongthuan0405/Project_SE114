@@ -3,6 +3,7 @@ package com.example.tqt_quiz.presentation.view.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -67,13 +68,8 @@ public class ViewQuizSt extends AppCompatActivity implements ViewQuizStContract.
         doQuizLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
-                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                        String newScore = result.getData().getStringExtra("quiz_score");
-                        if (newScore != null) {
-                            tvCorrect.setText("Điểm số: " + newScore + " / 10");
-                            btnAction.setEnabled(false);
-                            btnAction.setText("Đã hoàn thành");
-                        }
+                    if (result.getResultCode() == RESULT_OK) {
+                        presenter.getQuizWithScore(quizId);
                     }
                 }
         );
@@ -89,11 +85,14 @@ public class ViewQuizSt extends AppCompatActivity implements ViewQuizStContract.
             if (status.equals(StaticClass.StateOfQuiz.NOW)) {
                 Intent intent = new Intent(ViewQuizSt.this, DoQuiz.class);
                 intent.putExtra("quizId", quizId);
+                intent.putExtra("dueTime", quizWithScoreDTO.getQuiz().getDueTime());
                 doQuizLauncher.launch(intent);
 
             } else if (status.equals(StaticClass.StateOfQuiz.END)) {
                 Intent intent = new Intent(ViewQuizSt.this, ViewResult.class);
                 intent.putExtra("quizId", quizId);
+                intent.putExtra("totalCorrect", quizWithScoreDTO.getTotalCorrectAnswer());
+                intent.putExtra("totalQuestion", quizWithScoreDTO.getTotalQuestion());
                 viewResultLauncher.launch(intent);
             }
         });
@@ -157,7 +156,7 @@ public class ViewQuizSt extends AppCompatActivity implements ViewQuizStContract.
             btnAction.setVisibility(View.VISIBLE);
             btnAction.setText("Xem bài làm");
             tvCorrect.setText(String.format("Kết quả: %d / %d", quizWithScoreDTO.getTotalCorrectAnswer(), quizWithScoreDTO.getTotalQuestion()));
-            float score = (float)quizWithScoreDTO.getTotalCorrectAnswer() / quizWithScoreDTO.getTotalQuestion();
+            float score = (float)quizWithScoreDTO.getTotalCorrectAnswer() / quizWithScoreDTO.getTotalQuestion() * 10;
             tvScore.setText(String.format("Điểm số: %.1f", score));
             if(score < 5f)
             {

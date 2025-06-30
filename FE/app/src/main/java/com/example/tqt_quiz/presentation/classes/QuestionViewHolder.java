@@ -1,19 +1,26 @@
 package com.example.tqt_quiz.presentation.classes;
 
+import android.graphics.Color;
+import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
+
 import com.example.tqt_quiz.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 
 public class QuestionViewHolder
 {
@@ -27,9 +34,11 @@ public class QuestionViewHolder
     private final RadioGroup answerList;
     private final EditText[] edtAnswers = new EditText[TOTAL_ANSWERS];
     private RadioButton[] rdbAnswers = new RadioButton[TOTAL_ANSWERS];
+    private LinearLayout[] answerFrame = new LinearLayout[TOTAL_ANSWERS];
     private final Button btn_Add, btn_Delete;
     private final TextView tvCorrectAnswer;
-    private final LinearLayout layoutQuestionContainer;
+    private final CardView layoutQuestionContainer;
+    CountDownTimer timer;
 
     public QuestionViewHolder(View root, boolean isSetChooseDefault)
     {
@@ -48,6 +57,7 @@ public class QuestionViewHolder
 
             edtAnswers[i] = answerView.findViewById(R.id.edt_Content_AnswerItem);
             rdbAnswers[i] = answerView.findViewById(R.id.rdb_IsCorrect_AnswerItem);
+            answerFrame[i] = answerView.findViewById(R.id.frameQuestion);
             TextView tv_AnswerItem = answerView.findViewById(R.id.tv_Label_AnswerItem);
             tv_AnswerItem.setText(labels[i] + "");
 
@@ -58,6 +68,7 @@ public class QuestionViewHolder
                     rdbAnswers[j].setChecked(j == finalI);
                 }
             });
+
             answerList.addView(answerView);
         }
         if(isSetChooseDefault)
@@ -82,16 +93,19 @@ public class QuestionViewHolder
         }
     }
 
-    public void setReadOnly() {
-        edtQuestion.setEnabled(false);
-        btn_Add.setVisibility(View.GONE);
-        btn_Delete.setVisibility(View.GONE);
+    public void setDataWithCorrectAnswerAndSelectedAnswer(Question dto)
+    {
+        data = dto;
+        edtQuestion.setText(dto.getContent());
         for (int i = 0; i < TOTAL_ANSWERS; i++) {
-            edtAnswers[i].setEnabled(false);
-            rdbAnswers[i].setEnabled(false);
+            edtAnswers[i].setText(dto.getAnswers().get(i).getContent());
+            rdbAnswers[i].setChecked(dto.getAnswers().get(i).isSelected());
+
+            if(dto.getAnswers().get(i).isCorrect())
+                answerFrame[i].setBackgroundColor(Color.parseColor("#93DC5C"));
+            idAnswer[i] = dto.getAnswers().get(i).getId();
         }
     }
-
 
     public void setDataWithSelectedAnswer(Question dto) {
         data = dto;
@@ -121,34 +135,6 @@ public class QuestionViewHolder
         }
         dto.setAnswers(answers);
         return dto;
-    }
-
-    public void showResultFeedback() {
-        String correctAnswer = "";
-        String selectedAnswer = getIdAnswerSelected();
-
-        boolean isCorrect = false;
-
-        for (int i = 0; i < TOTAL_ANSWERS; i++) {
-            Answer ans = data.getAnswers().get(i);
-            if (ans.isCorrect()) {
-                correctAnswer = labels[i] + ". " + ans.getContent();
-            }
-            if (ans.isCorrect() && ans.getId().equals(selectedAnswer)) {
-                isCorrect = true;
-            }
-        }
-
-        if (!isCorrect) {
-            // Câu sai → viền đỏ + hiện đáp án đúng
-            layoutQuestionContainer.setBackgroundResource(R.drawable.rounded_border_red);
-            tvCorrectAnswer.setText("Đáp án đúng: " + correctAnswer);
-            tvCorrectAnswer.setVisibility(View.VISIBLE);
-        } else {
-            // Câu đúng → viền bình thường
-            layoutQuestionContainer.setBackgroundResource(R.drawable.rounded_border);
-            tvCorrectAnswer.setVisibility(View.GONE);
-        }
     }
 
     public String getIdAnswerSelected()
@@ -186,4 +172,44 @@ public class QuestionViewHolder
             }
         }
     }
+
+    public void setOnAfterSecondsNotChangeSelection(int sec, IActionAfterNotChangeSelection action) {
+        for(RadioButton r : rdbAnswers)
+        {
+            r.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if(isChecked)
+                    {
+                        if(timer != null) {
+                            timer.cancel();
+                        }
+                        timer = getNewTimer(sec, action);
+                        timer.start();
+                    }
+                }
+            });
+        }
+    }
+
+    public interface IActionAfterNotChangeSelection
+    {
+        public void onAction(String lastSelection);
+    }
+
+    private CountDownTimer getNewTimer(int sec, IActionAfterNotChangeSelection action)
+    {
+        return timer = new CountDownTimer(sec * 1000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                action.onAction(QuestionViewHolder.this.getIdAnswerSelected());
+            }
+        };
+    }
+
 }

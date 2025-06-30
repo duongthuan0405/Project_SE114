@@ -47,7 +47,7 @@ public class StaticClass
 
     public static AccountInfo accountInfo;
 
-    public static String DateTimeFormat = "yyyy-MM-dd HH:mm";
+    public static String DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
 
     public static String BareUrl = "http://10.0.2.2:5027";
 

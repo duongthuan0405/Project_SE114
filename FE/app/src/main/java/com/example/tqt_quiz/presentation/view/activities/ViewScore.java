@@ -19,6 +19,16 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.tqt_quiz.R;
+import com.example.tqt_quiz.domain.APIService.GetQuizScoreService;
+import com.example.tqt_quiz.domain.dto.AccountWithScore;
+import com.example.tqt_quiz.staticclass.StaticClass;
+import com.google.android.material.imageview.ShapeableImageView;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import com.example.tqt_quiz.domain.dto.AccountWithScore;
 import com.example.tqt_quiz.domain.dto.QuizDTO;
 import com.example.tqt_quiz.presentation.contract_vp.ViewScoreContract;
@@ -36,6 +46,7 @@ public class ViewScore extends AppCompatActivity implements ViewScoreContract.IV
 
     private TextView tvTitle, tvDescription, tvCourseId, tvStartTime, tvDueTime;
     private LinearLayout llScoreList;
+    private GetQuizScoreService quizScoreService;
     private String quizId;
     ViewScoreContract.IPresenter presenter;
 
@@ -110,8 +121,8 @@ public class ViewScore extends AppCompatActivity implements ViewScoreContract.IV
             TextView tvTimeToDo = scoreItem.findViewById(R.id.tv_TimeToDo_ScoreItem);
 
             tvName.setText(a.getAccount().getFullName());
-            float score = (float)a.getTotalCorrectAnswer() / a.getTotalQuestions();
-            tvScore.setText(score + "");
+            float score = (float)a.getTotalCorrectAnswer() / a.getTotalQuestions() * 10;
+            tvScore.setText(String.format("%.1f", score));
             StaticClass.setImage(imgAvatar, a.getAccount().getAvatar(), R.drawable.resource_default);
             llScoreList.addView(scoreItem);
             tvCorrectAnswer.setText(String.format("Kết quả: %d / %d", a.getTotalCorrectAnswer(), a.getTotalQuestions()));
@@ -142,10 +153,10 @@ public class ViewScore extends AppCompatActivity implements ViewScoreContract.IV
             else
             {
                 Duration d = Duration.between(a.getStartAt(), a.getFinishAt());
-                long totalMins = d.toMinutes();
-                long hours = totalMins / 60;
-                long mins = totalMins - hours * 60;
-                long sec = totalMins * 60 - hours * 3600 - mins * 60;
+                long totalSecs = d.getSeconds();
+                long hours = totalSecs / 3600;
+                long mins = (totalSecs - hours * 3600) / 60;
+                long sec = totalSecs - hours * 3600 - mins * 60;
                 tvTimeToDo.setText(String.format("Thời gian: %d giờ %d phút %d giây", hours, mins, sec ));
             }
 

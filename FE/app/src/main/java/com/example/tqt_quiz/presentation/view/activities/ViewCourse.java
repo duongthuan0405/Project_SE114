@@ -170,7 +170,6 @@ public class ViewCourse extends AppCompatActivity implements ViewCourseContract.
     public void showCourseInfo(CourseDTO response) {
         Course course = new Course(response);
         if (course != null) {
-            Log.d("THUAN___", course.getAvatar());
             StaticClass.setImage(avatar, course.getAvatar(), R.drawable.resource_default);
             name.setText(course.getName());
             isPrivate.setText("Riêng tư: " + (course.isPrivate() ? "Có" : "Không"));
