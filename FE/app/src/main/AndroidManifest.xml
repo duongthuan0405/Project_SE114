@@ -19,6 +19,9 @@
             android:name=".presentation.view.activities.ChangeProfile"
             android:exported="false" />
         <activity
+            android:name=".presentation.view.activities.ViewScore"
+            android:exported="false" />
+        <activity
             android:name=".presentation.view.activities.ChangePassword"
             android:exported="false" />
         <activity

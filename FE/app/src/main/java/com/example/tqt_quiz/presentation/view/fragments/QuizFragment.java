@@ -112,11 +112,14 @@ public class QuizFragment extends Fragment implements QuizFragmentContract.IView
             });
 
             lvQuiz.setOnItemClickListener((parent, view1, position, id) -> {
+                Quiz quiz = (Quiz) lvQuiz.getAdapter().getItem(position);
+                String quizStatus = getQuizStatus(quiz);
+
                 Intent intent = new Intent(requireContext(), CreateQuiz.class);
-                Quiz quiz = ((Quiz)lvQuiz.getAdapter().getItem(position));
                 intent.putExtra("quizId", quiz.getId());
                 createQuizLauncher.launch(intent);
             });
+
 
         }
 

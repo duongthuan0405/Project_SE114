@@ -5,6 +5,7 @@ import static android.widget.Toast.LENGTH_SHORT;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,10 @@ import com.example.tqt_quiz.domain.dto.QuestionDTO;
 import com.example.tqt_quiz.domain.dto.QuizDTO;
 import com.example.tqt_quiz.presentation.classes.Question;
 import com.example.tqt_quiz.presentation.classes.QuestionViewHolder;
+import com.example.tqt_quiz.staticclass.StaticClass;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
 import com.example.tqt_quiz.presentation.contract_vp.DoQuizContract;
 import com.example.tqt_quiz.presentation.presenter.DoQuizPresenter;
 import com.example.tqt_quiz.presentation.utils.DummyQuizGenerator;
@@ -35,14 +40,15 @@ import java.util.List;
 
 public class DoQuiz extends AppCompatActivity implements DoQuizContract.IView {
 
-    private TextView Title, Description, StartTime, DueTime, CourseId;
+    private TextView Title, Description, StartTime, DueTime, CourseId, Timer;
     private LinearLayout QuestionList;
     private Button Finish;
     private DoQuizContract.IPresenter presenter;
     private AttemptQuizDTO currentattemptinfo = null;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_do_quiz);
@@ -64,18 +70,27 @@ public class DoQuiz extends AppCompatActivity implements DoQuizContract.IView {
         CourseId = findViewById(R.id.tv_CourseId_DoQuiz);
         QuestionList = findViewById(R.id.ll_QuestionList_DoQuiz);
         Finish = findViewById(R.id.btn_Finish_DoQuiz);
+        Timer = findViewById(R.id.tv_Timer_DoQuiz);
 
 
         Intent intent = getIntent();
         String quizId=intent.getStringExtra("quizId");
+        LocalDateTime dueTime = (LocalDateTime) getIntent().getExtras().get("dueTime");
 
         presenter.StartAttempt(quizId);
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(StaticClass.DateTimeFormat);
+        LocalDateTime now = LocalDateTime.now();
 
-
-        Finish.setOnClickListener(v -> {
-
-        });
+        long millisUntilDue = Duration.between(now, dueTime).toMillis();
+        if (millisUntilDue > 0) {
+            startCountdown(millisUntilDue);
+        } 
+        else 
+        {
+            Timer.setText("00:00");
+            Finish.setEnabled(false);
+        }
     }
 
     @Override
@@ -118,6 +133,7 @@ public class DoQuiz extends AppCompatActivity implements DoQuizContract.IView {
         currentattemptinfo=info;
         presenter.ShowQuizInfo(info.getQuizId());
         presenter.showQuestion(info.getQuizId());
+        Log.d("THUAN", currentattemptinfo == null ? "NULL" : "NOT NULL");
     }
 
     @Override
@@ -126,7 +142,27 @@ public class DoQuiz extends AppCompatActivity implements DoQuizContract.IView {
         Description.setText(info.getDescription() != null ? info.getDescription() : "Không có mô tả");
         StartTime.setText("Bắt đầu: " + info.getStartTime().format(DateTimeFormatter.ofPattern(StaticClass.DateTimeFormat)));
         DueTime.setText("Kết thúc: " + info.getDueTime().format(DateTimeFormatter.ofPattern(StaticClass.DateTimeFormat)));
-        CourseId.setText("Khóa học: " + (info.getCourseId() != null ? info.getCourseName() : "--"));
+        CourseId.setText("Khóa học: " + info.getCourseName() + " (" + info.getCourseId() + ")");
 
+    }
+
+
+    private void startCountdown(long millisUntilFinished) {
+        new CountDownTimer(millisUntilFinished, 1000) {
+            @Override
+            public void onTick(long millisUntilFiniyshed) {
+                long seconds = millisUntilFinished / 1000;
+                long minutes = seconds / 60;
+                long remainingSeconds = seconds % 60;
+
+                Timer.setText(String.format("%02d:%02d", minutes, remainingSeconds));
+            }
+
+            @Override
+            public void onFinish() {
+                Timer.setText("00:00");
+                Finish.performClick();
+            }
+        }.start();
     }
 }
