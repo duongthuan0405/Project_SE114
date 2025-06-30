@@ -9,9 +9,12 @@ namespace BE.DTOs
         public string Id { get; set; }
 
         public string QuizId { get; set; }
+        public string QuizName { get; set; }
+        public string CourseName { get; set; }
         public string AccountId { get; set; }
         public DateTime AttemptTime { get; set; }
         public DateTime FinishTime { get; set; }
         public bool IsSubmitted { get; set; } = false;
+        public string TokenForQuiz { get; set; } = string.Empty;
     }
 }
