@@ -65,8 +65,6 @@ public class ViewResult extends AppCompatActivity implements ViewResultContract.
         QuestionList = findViewById(R.id.ll_QuestionList_ViewResult);
         TimeToDo = findViewById(R.id.tv_TimeToDo_ViewResult);
 
-
-
         presenter = new ViewResultPresenter(this);
 
         Intent intent = getIntent();

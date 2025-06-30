@@ -3,6 +3,7 @@ package com.example.tqt_quiz.presentation.view.activities;
 import static android.widget.Toast.LENGTH_SHORT;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -66,7 +68,7 @@ public class DoQuiz extends AppCompatActivity implements DoQuizContract.IView {
         CourseId = findViewById(R.id.tv_CourseId_DoQuiz);
         QuestionList = findViewById(R.id.ll_QuestionList_DoQuiz);
         Finish = findViewById(R.id.btn_Finish_DoQuiz);
-        //Timer = findViewById(R.id.tv_Timer_DoQuiz);
+        Timer = findViewById(R.id.tv_Timer_DoQuiz);
 
 
         Intent intent = getIntent();
@@ -75,18 +77,41 @@ public class DoQuiz extends AppCompatActivity implements DoQuizContract.IView {
 
         presenter.StartAttempt(quizId);
 
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(StaticClass.DateTimeFormat);
-//        LocalDateTime now = LocalDateTime.now();
-//
-//        long millisUntilDue = Duration.between(now, dueTime).toMillis();
-//        if (millisUntilDue > 0) {
-//            startCountdown(millisUntilDue);
-//        }
-//        else
-//        {
-//            Timer.setText("00:00");
-//            Finish.setEnabled(false);
-//        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(StaticClass.DateTimeFormat);
+        LocalDateTime now = LocalDateTime.now();
+
+        long millisUntilDue = Duration.between(now, dueTime).toMillis();
+        if (millisUntilDue > 0) {
+            startCountdown(millisUntilDue);
+        }
+        else
+        {
+
+        }
+
+        Finish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(DoQuiz.this);
+                builder.setMessage("Bạn có chắn chắn rằng muốn nộp bài");
+                builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        presenter.submit(currentattemptinfo.getQuizId());
+                    }
+                });
+
+                builder.create();
+
+                builder.show();
+            }
+        });
     }
 
     @Override
@@ -147,6 +172,13 @@ public class DoQuiz extends AppCompatActivity implements DoQuizContract.IView {
 
     }
 
+    @Override
+    public void Finish() {
+        Intent i = new Intent();
+        setResult(RESULT_OK, i);
+        finish();
+    }
+
 
     private void startCountdown(long millisUntilFinished) {
         new CountDownTimer(millisUntilFinished, 1000) {
@@ -163,7 +195,7 @@ public class DoQuiz extends AppCompatActivity implements DoQuizContract.IView {
             @Override
             public void onFinish() {
                 Timer.setText("00:00:00");
-                Finish.performClick();
+                presenter.submit(currentattemptinfo.getQuizId());
             }
         }.start();
     }
