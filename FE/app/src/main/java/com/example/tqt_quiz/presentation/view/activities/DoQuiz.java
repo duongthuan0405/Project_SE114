@@ -152,22 +152,23 @@ public class DoQuiz extends AppCompatActivity implements DoQuizContract.IView {
     }
 
 
-//    private void startCountdown(long millisUntilFinished) {
-//        new CountDownTimer(millisUntilFinished, 1000) {
-//            @Override
-//            public void onTick(long millisUntilFiniyshed) {
-//                long seconds = millisUntilFinished / 1000;
-//                long minutes = seconds / 60;
-//                long remainingSeconds = seconds % 60;
-//
-//                Timer.setText(String.format("%02d:%02d", minutes, remainingSeconds));
-//            }
-//
-//            @Override
-//            public void onFinish() {
-//                Timer.setText("00:00");
-//                Finish.performClick();
-//            }
-//        }.start();
-//    }
+    private void startCountdown(long millisUntilFinished) {
+        new CountDownTimer(millisUntilFinished, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                long totalSeconds = millisUntilFinished / 1000;
+                long hours = totalSeconds / 3600;
+                long minutes = (totalSeconds % 3600) / 60;
+                long seconds = totalSeconds % 60;
+
+                Timer.setText(String.format("%02d:%02d:%02d", hours, minutes, seconds));
+            }
+
+            @Override
+            public void onFinish() {
+                Timer.setText("00:00:00");
+                Finish.performClick();
+            }
+        }.start();
+    }
 }
