@@ -276,7 +276,7 @@ public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.
         oldQuiz = response;
         presenter.onGetOldQuestion(response.getId());
 
-        if(oldQuiz.isPublished())
+        if(oldQuiz.getIsPublished())
         {
             if(oldQuiz.getStartTime().isBefore(LocalDateTime.now()))
             {
@@ -304,7 +304,7 @@ public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.
             QuestionViewHolder questionViewHolder = new QuestionViewHolder(questionView, true);
             questionView.setTag(questionViewHolder);
 
-            if(oldQuiz.isPublished() && oldQuiz.getStartTime().isBefore(LocalDateTime.now()))
+            if(oldQuiz.getIsPublished() && oldQuiz.getStartTime().isBefore(LocalDateTime.now()))
             {
                 questionViewHolder.disableForEditing();
             }
