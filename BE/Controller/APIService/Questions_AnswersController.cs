@@ -263,8 +263,93 @@ namespace BE.Controller.APIService
 
             try
             {
-                
-                
+
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "Lỗi server khi cập nhật lựa chọn câu trả lời" });
+            }
+        }
+
+        [HttpPut("{attempt_quiz_id}/select/{new_answer_id}")]
+        [Authorize(Roles = StaticClass.RoleId.Student)]
+        public async Task<ActionResult> UpdateAnswer([FromRoute] string attempt_quiz_id, [FromRoute] string new_answer_id)
+        {
+            string requester = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "";
+
+            if (string.IsNullOrEmpty(attempt_quiz_id) || string.IsNullOrEmpty(new_answer_id))
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new { Message = "Yêu cầu không hợp lệ" });
+            }
+
+
+            var attemptQuiz = await db.AttemptQuizzes
+                .Where(aq => aq.Id == attempt_quiz_id && aq.AccountId == requester)
+                .FirstOrDefaultAsync();
+
+            if (attemptQuiz == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, new { Message = "Bài làm không tồn tại" });
+            }
+
+            if (attemptQuiz.IsSubmitted)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, new { Message = "Bạn đã nộp bài làm cho quiz này" });
+            }
+
+            var quiz = await db.Quizzes
+                .Where(q => q.Id == attemptQuiz.QuizId)
+                .FirstOrDefaultAsync();
+
+            if (quiz == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, new { Message = "Quiz không tồn tại" });
+            }
+            if (DateTime.Now > quiz.DueTime)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, new { Message = "Quiz đã hết hạn" });
+            }
+            if (DateTime.Now < quiz.StartTime)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, new { Message = "Quiz chưa bắt đầu" });
+            }
+
+
+
+            try
+            {
+                var answer = await db.Answers
+                    .Where(a => a.Id == new_answer_id)
+                    .Select(a => new { a.Id, a.QuestionID })
+                    .FirstOrDefaultAsync();
+
+                if (answer == null)
+                    return BadRequest(new { Message = "Đáp án không tồn tại" });
+
+                var questionId = answer.QuestionID;
+
+                var existingAnswerIdsInQuestion = await db.Answers
+                    .Where(a => a.QuestionID == questionId)
+                    .Select(a => a.Id)
+                    .ToListAsync();
+
+                var oldDetails = await db.DetailResults
+                    .Where(dr => dr.AttemptQuizId == attempt_quiz_id && existingAnswerIdsInQuestion.Contains(dr.AnswerId))
+                    .ToListAsync();
+
+                if (oldDetails.Any())
+                    db.DetailResults.RemoveRange(oldDetails);
+
+                // Thêm mới đáp án
+                db.DetailResults.Add(new DetailResult
+                {
+                    AttemptQuizId = attempt_quiz_id,
+                    AnswerId = new_answer_id
+                });
+
+                await db.SaveChangesAsync();
                 return Ok();
             }
             catch (Exception ex)
