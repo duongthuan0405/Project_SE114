@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -28,13 +27,11 @@ import com.example.tqt_quiz.presentation.classes.Question;
 import com.example.tqt_quiz.presentation.classes.QuestionViewHolder;
 import com.example.tqt_quiz.presentation.contract_vp.ViewResultContract;
 import com.example.tqt_quiz.presentation.presenter.ViewResultPresenter;
-import com.example.tqt_quiz.presentation.utils.DummyQuizGenerator;
 import com.example.tqt_quiz.staticclass.StaticClass;
 
 import java.time.Duration;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Locale;
 
 public class ViewResult extends AppCompatActivity implements ViewResultContract.IView {
 

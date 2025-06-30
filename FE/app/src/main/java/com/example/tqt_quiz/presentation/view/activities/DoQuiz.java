@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -28,12 +27,9 @@ import com.example.tqt_quiz.presentation.classes.Question;
 import com.example.tqt_quiz.presentation.classes.QuestionViewHolder;
 import com.example.tqt_quiz.staticclass.StaticClass;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import com.example.tqt_quiz.presentation.contract_vp.DoQuizContract;
 import com.example.tqt_quiz.presentation.presenter.DoQuizPresenter;
-import com.example.tqt_quiz.presentation.utils.DummyQuizGenerator;
-import com.example.tqt_quiz.staticclass.StaticClass;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;

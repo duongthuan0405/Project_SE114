@@ -8,56 +8,85 @@
     android:padding="16dp"
     android:background="@color/AppBackground">
 
-    <!-- Tiêu đề Quiz (không chỉnh sửa được) -->
-    <TextView
-        android:id="@+id/tv_Title_DoQuiz"
+    <!-- Thông tin Quiz dạng Card -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Tiêu đề bài kiểm tra"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="@android:color/black"
-        android:layout_marginBottom="4dp" />
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:background="@drawable/btn_rectagle"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="16dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Tiêu đề Quiz -->
+            <TextView
+                android:id="@+id/tv_Title_DoQuiz"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tiêu đề bài kiểm tra"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/gray" />
+
+            <!-- Khóa học -->
+            <TextView
+                android:id="@+id/tv_CourseId_DoQuiz"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Khóa học: CS101"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/gray"
+                android:layout_marginTop="4dp" />
+
+            <!-- Thời gian bắt đầu -->
+            <TextView
+                android:id="@+id/tv_StartTime_DoQuiz"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bắt đầu: 2025-06-20 08:00"
+                android:textSize="14sp"
+                android:textColor="@color/gray"
+                android:layout_marginTop="2dp" />
+
+            <!-- Thời gian kết thúc -->
+            <TextView
+                android:id="@+id/tv_DueTime_DoQuiz"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kết thúc: 2025-06-20 09:00"
+                android:textSize="14sp"
+                android:textColor="@color/gray"
+                android:layout_marginTop="2dp" />
+        </LinearLayout>
+    </LinearLayout>
 
     <!-- Mô tả Quiz -->
+    <TextView
+        android:id="@+id/tv_DescriptionTitle_DoQuiz"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="📌 Mô tả bài kiểm tra"
+        android:textColor="@color/dark_gray"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_marginBottom="4dp" />
+
     <TextView
         android:id="@+id/tv_Description_DoQuiz"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Mô tả bài kiểm tra"
-        android:textSize="17sp"
-        android:textColor="@android:color/darker_gray"
-        android:layout_marginBottom="8dp" />
-
-    <!-- Course ID -->
-    <TextView
-        android:id="@+id/tv_CourseId_DoQuiz"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Course ID: CS101"
-        android:textSize="17sp"
-        android:textStyle="italic"
-        android:textColor="@android:color/darker_gray"
-        android:layout_marginBottom="8dp" />
-
-    <!-- Thời gian bắt đầu -->
-    <TextView
-        android:id="@+id/tv_StartTime_DoQuiz"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Bắt đầu: 2025-06-20 08:00"
-        android:textSize="17sp"
-        android:textColor="@android:color/black"
-        android:layout_marginBottom="4dp" />
-
-    <!-- Thời gian kết thúc -->
-    <TextView
-        android:id="@+id/tv_DueTime_DoQuiz"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Kết thúc: 2025-06-20 09:00"
-        android:textSize="17sp"
-        android:textColor="@android:color/black"
+        android:text="(Nội dung mô tả bài kiểm tra sẽ hiển thị ở đây)"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:background="@drawable/rounded_border"
+        android:padding="12dp"
         android:layout_marginBottom="12dp" />
 
     <!-- Danh sách câu hỏi -->
@@ -78,11 +107,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="right"
+        android:gravity="end"
         android:layout_marginTop="12dp"
         android:paddingTop="4dp">
 
-        <!-- Đồng hồ đếm -->
+        <!-- Bộ đếm -->
         <LinearLayout
             android:id="@+id/layout_Timer"
             android:layout_width="wrap_content"
@@ -110,7 +139,7 @@
         <Space
             android:layout_width="20dp"
             android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"/>
+            android:layout_gravity="center_vertical" />
 
         <!-- Nút hoàn thành -->
         <Button
@@ -123,5 +152,4 @@
             android:background="@drawable/btn_rectagle"
             android:padding="10dp" />
     </LinearLayout>
-
 </LinearLayout>
