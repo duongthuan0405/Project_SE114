@@ -70,7 +70,7 @@ public class DoQuiz extends AppCompatActivity implements DoQuizContract.IView {
         CourseId = findViewById(R.id.tv_CourseId_DoQuiz);
         QuestionList = findViewById(R.id.ll_QuestionList_DoQuiz);
         Finish = findViewById(R.id.btn_Finish_DoQuiz);
-        Timer = findViewById(R.id.tv_Timer_DoQuiz);
+        //Timer = findViewById(R.id.tv_Timer_DoQuiz);
 
 
         Intent intent = getIntent();
@@ -79,18 +79,18 @@ public class DoQuiz extends AppCompatActivity implements DoQuizContract.IView {
 
         presenter.StartAttempt(quizId);
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(StaticClass.DateTimeFormat);
-        LocalDateTime now = LocalDateTime.now();
-
-        long millisUntilDue = Duration.between(now, dueTime).toMillis();
-        if (millisUntilDue > 0) {
-            startCountdown(millisUntilDue);
-        } 
-        else 
-        {
-            Timer.setText("00:00");
-            Finish.setEnabled(false);
-        }
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(StaticClass.DateTimeFormat);
+//        LocalDateTime now = LocalDateTime.now();
+//
+//        long millisUntilDue = Duration.between(now, dueTime).toMillis();
+//        if (millisUntilDue > 0) {
+//            startCountdown(millisUntilDue);
+//        }
+//        else
+//        {
+//            Timer.setText("00:00");
+//            Finish.setEnabled(false);
+//        }
     }
 
     @Override
@@ -113,6 +113,12 @@ public class DoQuiz extends AppCompatActivity implements DoQuizContract.IView {
             viewHolder.getRoot().findViewById(R.id.btn_Add_QuestionItem).setVisibility(View.GONE);
             viewHolder.getRoot().findViewById(R.id.btn_Delete_QuestionItem).setVisibility(View.GONE);
             QuestionList.addView(viewHolder.getRoot());
+            viewHolder.setOnAfterSecondsNotChangeSelection(1,
+                    questionId ->
+                    {
+                        presenter.sendAnswer(currentattemptinfo, questionId);
+                    }
+            );
         }
     }
 
@@ -133,7 +139,6 @@ public class DoQuiz extends AppCompatActivity implements DoQuizContract.IView {
         currentattemptinfo=info;
         presenter.ShowQuizInfo(info.getQuizId());
         presenter.showQuestion(info.getQuizId());
-        Log.d("THUAN", currentattemptinfo == null ? "NULL" : "NOT NULL");
     }
 
     @Override
@@ -147,22 +152,22 @@ public class DoQuiz extends AppCompatActivity implements DoQuizContract.IView {
     }
 
 
-    private void startCountdown(long millisUntilFinished) {
-        new CountDownTimer(millisUntilFinished, 1000) {
-            @Override
-            public void onTick(long millisUntilFiniyshed) {
-                long seconds = millisUntilFinished / 1000;
-                long minutes = seconds / 60;
-                long remainingSeconds = seconds % 60;
-
-                Timer.setText(String.format("%02d:%02d", minutes, remainingSeconds));
-            }
-
-            @Override
-            public void onFinish() {
-                Timer.setText("00:00");
-                Finish.performClick();
-            }
-        }.start();
-    }
+//    private void startCountdown(long millisUntilFinished) {
+//        new CountDownTimer(millisUntilFinished, 1000) {
+//            @Override
+//            public void onTick(long millisUntilFiniyshed) {
+//                long seconds = millisUntilFinished / 1000;
+//                long minutes = seconds / 60;
+//                long remainingSeconds = seconds % 60;
+//
+//                Timer.setText(String.format("%02d:%02d", minutes, remainingSeconds));
+//            }
+//
+//            @Override
+//            public void onFinish() {
+//                Timer.setText("00:00");
+//                Finish.performClick();
+//            }
+//        }.start();
+//    }
 }

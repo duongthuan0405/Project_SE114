@@ -1,5 +1,7 @@
 package com.example.tqt_quiz.presentation.presenter;
 
+import android.util.Log;
+
 import com.example.tqt_quiz.data.interactor.AttemptQuizIMP;
 import com.example.tqt_quiz.data.interactor.QuestionrealatedIMP;
 import com.example.tqt_quiz.data.interactor.QuizRelatedIMP;
@@ -82,6 +84,11 @@ public class ViewResultPresenter implements ViewResultContract.IPresenter {
             @Override
             public void onFailureByCannotSendToServer() {
                 view.ShowToast("Mat ket noi voi may chu");
+            }
+
+            @Override
+            public void onNotAttemptYet() {
+
             }
         });
     }

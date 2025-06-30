@@ -9,6 +9,9 @@ import java.util.List;
 
 public interface IQuestionrelatedInteract {
     void CreateQuestion (List<CreateQuestionRequest> questionRequest, Context context, CreateQuestionCallBack callback);
+
+    void FetchQuizQuestionForStudentWhenDoQuiz(String quizid, Context context, FetchQuizQuestionForStudentCallBack fetchQuizQuestionForStudentCallBack);
+
     public interface CreateQuestionCallBack
     {
         void onSuccess();

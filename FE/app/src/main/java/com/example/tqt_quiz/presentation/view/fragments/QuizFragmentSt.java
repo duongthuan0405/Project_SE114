@@ -163,6 +163,7 @@ public class QuizFragmentSt extends Fragment implements QuizFragmentStContract.I
 
     @Override
     public void onTabReload() {
+        loadSpinner();
         presenter.loadCourseToSpinner();
     }
 

@@ -171,8 +171,8 @@ public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.
         QuizCreateRequestDTO quizCreateRequestDTO;
 
         try {
-            LocalDateTime lcDt_startTime = LocalDateTime.parse(startTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-            LocalDateTime lcDt_dueTime = LocalDateTime.parse(dueTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+            LocalDateTime lcDt_startTime = LocalDateTime.parse(startTime, DateTimeFormatter.ofPattern(StaticClass.DateTimeFormat));
+            LocalDateTime lcDt_dueTime = LocalDateTime.parse(dueTime, DateTimeFormatter.ofPattern(StaticClass.DateTimeFormat));
             quizCreateRequestDTO = new QuizCreateRequestDTO(title, description, lcDt_startTime, lcDt_dueTime, course_id, isPublish);
         }
         catch (Exception e)

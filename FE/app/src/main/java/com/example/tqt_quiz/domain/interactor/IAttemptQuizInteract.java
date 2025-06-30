@@ -27,5 +27,6 @@ public interface IAttemptQuizInteract {
         void onFailureByUnAcceptedRole();
         void onOtherFailure(String msg);
         void onFailureByCannotSendToServer();
+        void onNotAttemptYet();
     }
 }

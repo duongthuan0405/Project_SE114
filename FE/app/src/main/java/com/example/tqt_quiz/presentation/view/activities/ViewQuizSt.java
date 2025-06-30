@@ -95,6 +95,8 @@ public class ViewQuizSt extends AppCompatActivity implements ViewQuizStContract.
             } else if (status.equals(StaticClass.StateOfQuiz.END)) {
                 Intent intent = new Intent(ViewQuizSt.this, ViewResult.class);
                 intent.putExtra("quizId", quizId);
+                intent.putExtra("totalCorrect", quizWithScoreDTO.getTotalCorrectAnswer());
+                intent.putExtra("totalQuestion", quizWithScoreDTO.getTotalQuestion());
                 viewResultLauncher.launch(intent);
             }
         });
@@ -158,7 +160,7 @@ public class ViewQuizSt extends AppCompatActivity implements ViewQuizStContract.
             btnAction.setVisibility(View.VISIBLE);
             btnAction.setText("Xem bài làm");
             tvCorrect.setText(String.format("Kết quả: %d / %d", quizWithScoreDTO.getTotalCorrectAnswer(), quizWithScoreDTO.getTotalQuestion()));
-            float score = (float)quizWithScoreDTO.getTotalCorrectAnswer() / quizWithScoreDTO.getTotalQuestion();
+            float score = (float)quizWithScoreDTO.getTotalCorrectAnswer() / quizWithScoreDTO.getTotalQuestion() * 10;
             tvScore.setText(String.format("Điểm số: %.1f", score));
             if(score < 5f)
             {

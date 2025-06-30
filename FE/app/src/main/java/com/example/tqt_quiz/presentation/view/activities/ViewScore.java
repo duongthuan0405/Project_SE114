@@ -121,8 +121,8 @@ public class ViewScore extends AppCompatActivity implements ViewScoreContract.IV
             TextView tvTimeToDo = scoreItem.findViewById(R.id.tv_TimeToDo_ScoreItem);
 
             tvName.setText(a.getAccount().getFullName());
-            float score = (float)a.getTotalCorrectAnswer() / a.getTotalQuestions();
-            tvScore.setText(score + "");
+            float score = (float)a.getTotalCorrectAnswer() / a.getTotalQuestions() * 10;
+            tvScore.setText(String.format("%.1f", score));
             StaticClass.setImage(imgAvatar, a.getAccount().getAvatar(), R.drawable.resource_default);
             llScoreList.addView(scoreItem);
             tvCorrectAnswer.setText(String.format("Kết quả: %d / %d", a.getTotalCorrectAnswer(), a.getTotalQuestions()));

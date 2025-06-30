@@ -23,6 +23,7 @@ public interface DoQuizContract {
       void showQuestion(String quizid);
       void StartAttempt(String quizid);
       void ShowQuizInfo(String quizid);
+      void sendAnswer(AttemptQuizDTO currentattemptinfo, String questionId);
     }
 
 }
