@@ -9,7 +9,18 @@ import java.util.List;
 
 public interface IAttemptQuizInteract {
     void AttemptQuiz(String quizId, Context context,AtttemptQuizCallBack callback);
+
+    void GetAttemptInfo(String quizId, Context context, GetAttemptInfo callback);
+
     public interface AtttemptQuizCallBack
+    {
+        void onSuccess(AttemptQuizDTO response);
+        void onFailureByExpiredToken();
+        void onFailureByUnAcceptedRole();
+        void onOtherFailure(String msg);
+        void onFailureByCannotSendToServer();
+    }
+    public interface GetAttemptInfo
     {
         void onSuccess(AttemptQuizDTO response);
         void onFailureByExpiredToken();
