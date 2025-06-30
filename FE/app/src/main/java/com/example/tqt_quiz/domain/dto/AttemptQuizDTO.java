@@ -25,6 +25,8 @@ public class AttemptQuizDTO {
     LocalDateTime finishTime;
     @SerializedName("isSubmitted")
     boolean isSubmitted;
+    @SerializedName("tokenForQuiz")
+    String tokenForQuiz;
     public String getId() {
         return id;
     }
@@ -86,5 +88,12 @@ public class AttemptQuizDTO {
 
     public void setCourseName(String courseName) {
         this.CourseName = courseName;
+    }
+    public String getTokenForQuiz() {
+        return tokenForQuiz;
+    }
+
+    public void setTokenForQuiz(String tokenForQuiz) {
+        this.tokenForQuiz = tokenForQuiz;
     }
 }

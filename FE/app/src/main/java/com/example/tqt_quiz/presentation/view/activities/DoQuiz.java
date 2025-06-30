@@ -70,8 +70,7 @@ public class DoQuiz extends AppCompatActivity implements DoQuizContract.IView {
         String quizId=intent.getStringExtra("quizId");
 
         presenter.StartAttempt(quizId);
-        presenter.ShowQuizInfo(quizId);
-        presenter.showQuestion(quizId);
+
 
 
         Finish.setOnClickListener(v -> {
@@ -117,6 +116,8 @@ public class DoQuiz extends AppCompatActivity implements DoQuizContract.IView {
     @Override
     public void SaveAttemptInfo(AttemptQuizDTO info) {
         currentattemptinfo=info;
+        presenter.ShowQuizInfo(info.getQuizId());
+        presenter.showQuestion(info.getQuizId());
     }
 
     @Override
