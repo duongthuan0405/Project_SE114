@@ -3,8 +3,6 @@ package com.example.tqt_quiz.presentation.view.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,7 +16,6 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.tqt_quiz.R;
 import com.example.tqt_quiz.presentation.classes.Question;
 import com.example.tqt_quiz.presentation.classes.QuestionViewHolder;
-import com.example.tqt_quiz.presentation.utils.DummyQuizGenerator;
 import com.example.tqt_quiz.staticclass.StaticClass;
 
 import java.time.Duration;
@@ -28,7 +25,7 @@ import java.util.List;
 
 public class DoQuiz extends AppCompatActivity {
 
-    private TextView Title, Description, StartTime, DueTime, CourseId, tvTimer;
+    private TextView Title, Description, StartTime, DueTime, CourseId, Timer;
     private LinearLayout QuestionList;
     private Button Finish;
 
@@ -56,7 +53,7 @@ public class DoQuiz extends AppCompatActivity {
         CourseId = findViewById(R.id.tv_CourseId_DoQuiz);
         QuestionList = findViewById(R.id.ll_QuestionList_DoQuiz);
         Finish = findViewById(R.id.btn_Finish_DoQuiz);
-        tvTimer = findViewById(R.id.tv_Timer_DoQuiz);
+        Timer = findViewById(R.id.tv_Timer_DoQuiz);
 
         // B1: Attempt Quiz
 
@@ -96,7 +93,7 @@ public class DoQuiz extends AppCompatActivity {
         if (millisUntilDue > 0) {
             startCountdown(millisUntilDue);
         } else {
-            tvTimer.setText("00:00");
+            Timer.setText("00:00");
             Finish.setEnabled(false);
         }
 
@@ -153,12 +150,12 @@ public class DoQuiz extends AppCompatActivity {
                 long minutes = seconds / 60;
                 long remainingSeconds = seconds % 60;
 
-                tvTimer.setText(String.format("%02d:%02d", minutes, remainingSeconds));
+                Timer.setText(String.format("%02d:%02d", minutes, remainingSeconds));
             }
 
             @Override
             public void onFinish() {
-                tvTimer.setText("00:00");
+                Timer.setText("00:00");
                 Finish.performClick();
             }
         }.start();
