@@ -196,7 +196,7 @@ namespace BE.Controller.APIService
                         <p>Bạn đã bị <b>từ chối</b> tham gia vào khóa học <b>{course.Name}</b>.</p>";
                     try
                     {
-                        await emailService.SendAsync(email, subject, htmlContent);
+                        emailService.SendAsync(email, subject, htmlContent);
                     }
                     catch (Exception e)
                     {
@@ -334,7 +334,7 @@ namespace BE.Controller.APIService
 
                     try
                     {
-                        await emailService.SendAsync(email, subject, htmlContent);
+                        emailService.SendAsync(email, subject, htmlContent);
                     }
                     catch (Exception e)
                     {

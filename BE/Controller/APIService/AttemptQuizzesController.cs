@@ -65,7 +65,7 @@ namespace BE.Controller.APIService
             var expires = await db.Quizzes
                 .Where(q => q.Id == quiz_id)
                 .Select(q => q.DueTime)
-                .FirstOrDefaultAsync(); 
+                .FirstOrDefaultAsync();
 
             var token = new JwtSecurityToken(
                 issuer: jwt["Issuer"],
@@ -160,7 +160,43 @@ namespace BE.Controller.APIService
             await db.SaveChangesAsync();
             return Ok();
         }
-    
 
+        [HttpGet("{quiz_id}/attempt_info")]
+        [Authorize(Roles = StaticClass.RoleId.Student)]
+        public async Task<ActionResult<AttemptQuizDTO>> GetAttemptQuizInfo([FromRoute] string quiz_id)
+        {
+            string requester = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "";
+            var attemptQuiz = await db.AttemptQuizzes
+                .Where(aq => aq.AccountId == requester && aq.QuizId == quiz_id)
+                .FirstOrDefaultAsync();
+
+            if (attemptQuiz == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, new { Message = "Không tìm thấy bài làm" });
+            }
+
+            AttemptQuizDTO atq = new AttemptQuizDTO
+            {
+                Id = attemptQuiz.Id,
+                QuizId = attemptQuiz.QuizId,
+                AccountId = attemptQuiz.AccountId,
+                AttemptTime = attemptQuiz.AttemptTime,
+                FinishTime = attemptQuiz.FinishTime,
+                IsSubmitted = attemptQuiz.IsSubmitted,
+                TokenForQuiz = ""
+            };
+
+            atq.QuizName = await db.Quizzes.Where(q => q.Id == quiz_id)
+                .Select(q => q.Name)
+                .FirstOrDefaultAsync() ?? "";
+
+            atq.CourseName = await db.Quizzes.Join(db.Courses, q => q.CourseID, c => c.Id, (q, c) => new { q, c })
+                .Where(qc => qc.q.Id == quiz_id)
+                .Select(qc => qc.c.Name)
+                .FirstOrDefaultAsync() ?? "";
+
+            return Ok(atq);
+        }
     }
+    
 }

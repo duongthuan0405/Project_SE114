@@ -10,7 +10,7 @@ namespace BE.AutoService
     public class AutoSubmitService : BackgroundService
     {
         private readonly IServiceProvider _serviceProvider;
-        private readonly TimeSpan _interval = TimeSpan.FromMinutes(5);
+        private readonly TimeSpan _interval = TimeSpan.FromMinutes(0.5);
         public AutoSubmitService(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
@@ -30,13 +30,18 @@ namespace BE.AutoService
             using (var scope = _serviceProvider.CreateScope())
             {
                 var db = scope.ServiceProvider.GetRequiredService<MyAppDBContext>();
-                var now = DateTime.UtcNow;
+                var now = DateTime.Now;
 
                 // Lấy danh sách quiz đã hết hạn
                 var expiredQuizIds = await db.Quizzes
                     .Where(q => q.DueTime < now && q.IsPublished)
                     .Select(q => q.Id)
                     .ToListAsync();
+
+                foreach (string s in expiredQuizIds)
+                {
+                    Console.WriteLine(s);
+                }
 
                 if (expiredQuizIds.Count == 0) return;
 
@@ -50,10 +55,8 @@ namespace BE.AutoService
                     foreach (var attempt in unsubmittedAttempts)
                     {
                         attempt.IsSubmitted = true;
-                        attempt.FinishTime = attempt.FinishTime;
+                        await db.SaveChangesAsync();
                     }
-
-                    await db.SaveChangesAsync();
                 }
             }
         }
