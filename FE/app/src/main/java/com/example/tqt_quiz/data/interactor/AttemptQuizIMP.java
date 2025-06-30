@@ -1,6 +1,7 @@
 package com.example.tqt_quiz.data.interactor;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.tqt_quiz.data.repository.token.DoQuizTokenManager;
 import com.example.tqt_quiz.data.repository.token.RetrofitClient;
@@ -19,7 +20,7 @@ public class AttemptQuizIMP implements IAttemptQuizInteract {
 
     @Override
     public void AttemptQuiz(String quizId, Context context, AtttemptQuizCallBack callback) {
-        TokenManager tokenManager=new TokenManager(context);
+        DoQuizTokenManager tokenManager=new DoQuizTokenManager(context);
         DoQuizTokenManager doQuizTokenManager=new DoQuizTokenManager(context);
         AttemptQuizService service= RetrofitClient.GetClient(tokenManager).create(AttemptQuizService.class);
         Call<AttemptQuizDTO> call= service.AttemptQuiz(quizId);
@@ -28,8 +29,8 @@ public class AttemptQuizIMP implements IAttemptQuizInteract {
             public void onResponse(Call<AttemptQuizDTO> call, Response<AttemptQuizDTO> response) {
                 if(response.isSuccessful())
                 {
-                    callback.onSuccess(response.body());
                     doQuizTokenManager.SaveToken(response.body().getTokenForQuiz());
+                    callback.onSuccess(response.body());
                 }
                 else{
                     String rawJson="";
@@ -62,15 +63,20 @@ public class AttemptQuizIMP implements IAttemptQuizInteract {
     public void GetAttemptInfo(String quizId, Context context, GetAttemptInfo callback) {
         TokenManager tokenManager=new TokenManager(context);
         AttemptQuizService service= RetrofitClient.GetClient(tokenManager).create(AttemptQuizService.class);
-        Call<AttemptQuizDTO> call= service.AttemptQuiz(quizId);
+        Call<AttemptQuizDTO> call= service.GetAttemptInfo(quizId);
         call.enqueue(new Callback<AttemptQuizDTO>() {
             @Override
             public void onResponse(Call<AttemptQuizDTO> call, Response<AttemptQuizDTO> response) {
+
                 if(response.isSuccessful())
                 {
                     callback.onSuccess(response.body());
                 }
                 else{
+                    if(response.code() == 404)
+                    {
+                        callback.onNotAttemptYet();
+                    }
                     String rawJson="";
                     try
                     {

@@ -3,6 +3,7 @@ package com.example.tqt_quiz.data.interactor;
 import android.content.Context;
 import android.util.Log;
 
+import com.example.tqt_quiz.data.repository.token.DoQuizTokenManager;
 import com.example.tqt_quiz.data.repository.token.RetrofitClient;
 import com.example.tqt_quiz.data.repository.token.TokenManager;
 import com.example.tqt_quiz.domain.APIService.CreateQuestionService;
@@ -57,6 +58,46 @@ public class QuestionrealatedIMP implements IQuestionrelatedInteract {
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
+                callback.onFailureByCannotSendToServer();
+            }
+        });
+    }
+
+    @Override
+    public void FetchQuizQuestionForStudentWhenDoQuiz(String quizId, Context context, FetchQuizQuestionForStudentCallBack callback) {
+        DoQuizTokenManager tokenManager=new DoQuizTokenManager(context);
+        FetchQuestionService service= RetrofitClient.GetClient(tokenManager).create(FetchQuestionService.class);
+        Call<List<QuestionDTO>> call= service.FetchQuizQuestionForStudent(quizId);
+        call.enqueue(new Callback<List<QuestionDTO>>() {
+            @Override
+            public void onResponse(Call<List<QuestionDTO>> call, Response<List<QuestionDTO>> response) {
+                if(response.isSuccessful())
+                {
+                    callback.onSuccess(response.body());
+                }
+                else{
+                    String rawJson="";
+                    try
+                    {
+                        rawJson=response.errorBody().string();
+                        JSONObject obj=new JSONObject(rawJson);
+                        String msg=obj.optString("message");
+                        callback.onOtherFailure(msg);
+                    } catch (Exception e) {
+                        if(response.code()==401)
+                        {
+                            callback.onFailureByExpiredToken();
+                        }
+                        else if(response.code()==403)
+                        {
+                            callback.onFailureByUnAcceptedRole();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<QuestionDTO>> call, Throwable t) {
                 callback.onFailureByCannotSendToServer();
             }
         });

@@ -11,6 +11,9 @@ import java.util.List;
 
 public interface IQuizRelatedInteract {
     void SearchQuizById(String id,Context context,SearchQuizCallBack callBack);
+
+    void SearchQuizByIdWhenDoQuiz(String quizid, Context context, SearchQuizCallBack searchQuizCallBack);
+
     public interface SearchQuizCallBack
     {
         void onSuccess(QuizDTO response);

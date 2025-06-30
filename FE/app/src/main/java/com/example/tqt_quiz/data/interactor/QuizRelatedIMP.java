@@ -3,6 +3,7 @@ package com.example.tqt_quiz.data.interactor;
 import android.content.Context;
 import android.util.Log;
 
+import com.example.tqt_quiz.data.repository.token.DoQuizTokenManager;
 import com.example.tqt_quiz.data.repository.token.RetrofitClient;
 import com.example.tqt_quiz.data.repository.token.TokenManager;
 import com.example.tqt_quiz.domain.APIService.CreateQuizService;
@@ -66,6 +67,46 @@ public class QuizRelatedIMP implements IQuizRelatedInteract {
             @Override
             public void onFailure(Call<QuizDTO> call, Throwable t) {
                     callBack.onFailureByCannotSendToServer();
+            }
+        });
+    }
+
+    @Override
+    public void SearchQuizByIdWhenDoQuiz(String id, Context context, SearchQuizCallBack callBack) {
+        DoQuizTokenManager tokenManager=new DoQuizTokenManager(context);
+        FetchQuizService service= RetrofitClient.GetClient(tokenManager).create(FetchQuizService.class);
+        Call<QuizDTO> call= service.FetchQuizByQuizID(id);
+        call.enqueue(new Callback<QuizDTO>() {
+            @Override
+            public void onResponse(Call<QuizDTO> call, Response<QuizDTO> response) {
+                if(response.isSuccessful())
+                {
+                    callBack.onSuccess(response.body());
+                }
+                else{
+                    String rawJson="";
+                    try
+                    {
+                        rawJson=response.errorBody().string();
+                        JSONObject obj=new JSONObject(rawJson);
+                        String msg=obj.optString("message");
+                        callBack.onOtherFailure(msg);
+                    } catch (Exception e) {
+                        if(response.code()==401)
+                        {
+                            callBack.onFailureByExpiredToken();
+                        }
+                        else if(response.code()==403)
+                        {
+                            callBack.onFailureByUnAcceptedRole();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<QuizDTO> call, Throwable t) {
+                callBack.onFailureByCannotSendToServer();
             }
         });
     }
