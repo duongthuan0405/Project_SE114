@@ -22,4 +22,9 @@ public class UpdateAccountInfoDTO {
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
+
+    public UpdateAccountInfoDTO(String lastMiddleName, String firstName) {
+        this.lastMiddleName = lastMiddleName;
+        this.firstName = firstName;
+    }
 }

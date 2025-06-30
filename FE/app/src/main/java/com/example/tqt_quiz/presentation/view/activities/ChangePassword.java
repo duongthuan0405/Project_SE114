@@ -1,6 +1,9 @@
 package com.example.tqt_quiz.presentation.view.activities;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -13,12 +16,18 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.tqt_quiz.R;
+import com.example.tqt_quiz.presentation.contract_vp.ChangePasswordContract;
+import com.example.tqt_quiz.presentation.presenter.ChangePasswordPresenter;
+import com.example.tqt_quiz.staticclass.StaticClass;
+import com.google.android.material.textfield.TextInputLayout;
 
-public class ChangePassword extends AppCompatActivity {
+public class ChangePassword extends AppCompatActivity implements ChangePasswordContract.IView
+{
 
     TextView Title;
     private EditText OldPassword, NewPassword, ReNewPassword;
     private Button Save;
+    ChangePasswordContract.IPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +41,10 @@ public class ChangePassword extends AppCompatActivity {
             return insets;
         });
 
+        StaticClass.customActionBar(getSupportActionBar(), R.layout.custom_action_bar_2);
+
+        presenter = new ChangePasswordPresenter(this);
+
         //Ánh xạ view
         OldPassword = findViewById(R.id.edt_email_token);
         NewPassword = findViewById(R.id.edt_email_newPass);
@@ -40,11 +53,12 @@ public class ChangePassword extends AppCompatActivity {
         Title = findViewById(R.id.tv_title_forgot_password);
 
         //Thay đổi nội dung
-        OldPassword.setHint("Nhập mật khẩu cũ");
+        ((TextInputLayout)findViewById(R.id.til_email_token)).setHint("Nhập mật khẩu cũ");
         Save.setText("Lưu");
 
         //Đổi tiêu đề
         Title.setText("Đổi mật khẩu");
+        findViewById(R.id.tv_currentEmail).setVisibility(View.GONE);
 
         //Sự kiện lưu
         Save.setOnClickListener(v -> {
@@ -67,9 +81,32 @@ public class ChangePassword extends AppCompatActivity {
                 return;
             }
 
-            Toast.makeText(this, "Đổi mật khẩu thành công (demo)", Toast.LENGTH_SHORT).show();
-            setResult(RESULT_OK);
-            finish();
+            presenter.changePassword(newPass, oldPass);
         });
+    }
+
+    @Override
+    public Context getTheContext() {
+        return ChangePassword.this.getApplicationContext();
+    }
+
+    @Override
+    public void onSuccess() {
+        Intent i = new Intent();
+        setResult(RESULT_OK, i);
+        presenter.Logout();
+        finish();
+    }
+
+    @Override
+    public void navigateToLogin() {
+        Intent i = new Intent(ChangePassword.this, Login.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
+    }
+
+    @Override
+    public void showMessage(String msg) {
+        Toast.makeText(getTheContext(), msg, Toast.LENGTH_LONG).show();
     }
 }

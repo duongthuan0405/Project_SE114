@@ -37,7 +37,7 @@ public class Quiz implements Serializable {
         this.description = quizDTO.getDescription();
         this.startTime = quizDTO.getStartTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         this.dueTime = quizDTO.getDueTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-        this.isPublished = quizDTO.getIsPublished();
+        this.isPublished = quizDTO.isPublished();
         this.id = quizDTO.getId();
         this.courseID = quizDTO.getCourseId();
         this.courseName = quizDTO.getCourseName();

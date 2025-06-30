@@ -76,7 +76,16 @@ public class QuizFragmentStPresenter implements QuizFragmentStContract.IPresente
             @Override
             public void onSuccess(List<QuizDTO> response) {
                 List<QuizDTO> quizzes;
-                if(status.equals(StaticClass.StateOfQuiz.SOON))
+
+                if(status.equals(StaticClass.StateOfQuiz.ALL))
+                {
+                    quizzes = new ArrayList<>();
+                    for(QuizDTO q : response)
+                    {
+                        quizzes.add(q);
+                    }
+                }
+                else if(status.equals(StaticClass.StateOfQuiz.SOON))
                 {
                     quizzes = new ArrayList<>();
                     for(QuizDTO q : response)
@@ -141,7 +150,16 @@ public class QuizFragmentStPresenter implements QuizFragmentStContract.IPresente
             @Override
             public void onSuccess(List<QuizDTO> response) {
                 List<QuizDTO> quizzes;
-                if(selectedStatus.equals(StaticClass.StateOfQuiz.SOON))
+
+                if(selectedStatus.equals(StaticClass.StateOfQuiz.ALL))
+                {
+                    quizzes = new ArrayList<>();
+                    for(QuizDTO q : response)
+                    {
+                        quizzes.add(q);
+                    }
+                }
+                else if(selectedStatus.equals(StaticClass.StateOfQuiz.SOON))
                 {
                     quizzes = new ArrayList<>();
                     for(QuizDTO q : response)

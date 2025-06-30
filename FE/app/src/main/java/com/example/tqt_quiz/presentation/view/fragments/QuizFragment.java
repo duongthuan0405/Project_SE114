@@ -33,7 +33,6 @@ import com.example.tqt_quiz.presentation.contract_vp.QuizFragmentContract;
 import com.example.tqt_quiz.presentation.presenter.QuizFragmentPresenter;
 import com.example.tqt_quiz.presentation.view.activities.CreateQuiz;
 import com.example.tqt_quiz.presentation.view.activities.Login;
-import com.example.tqt_quiz.presentation.view.activities.ViewQuiz;
 import com.example.tqt_quiz.staticclass.StaticClass;
 
 import java.text.ParseException;
@@ -79,7 +78,7 @@ public class QuizFragment extends Fragment implements QuizFragmentContract.IView
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == AppCompatActivity.RESULT_OK) {
-                        Toast.makeText(getContext(), "Thêm/Sửa Quiz thành công", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Lưu Quiz thành công", Toast.LENGTH_LONG).show();
                         filterQuizList();
                     }
                 }
@@ -128,6 +127,7 @@ public class QuizFragment extends Fragment implements QuizFragmentContract.IView
     private void loadSpinner()
     {
         statusOptions = new ArrayList<>();
+        statusOptions.add(StaticClass.StateOfQuiz.ALL);
         statusOptions.add(StaticClass.StateOfQuiz.SOON);
         statusOptions.add(StaticClass.StateOfQuiz.NOW);
         statusOptions.add(StaticClass.StateOfQuiz.END);
@@ -135,7 +135,7 @@ public class QuizFragment extends Fragment implements QuizFragmentContract.IView
         ArrayAdapter<String> statusAdt = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, statusOptions);
         statusAdt.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnFilterStatus.setAdapter(statusAdt);
-        spnFilterStatus.setSelection(0);
+        spnFilterStatus.setSelection(4);
 
         // Lọc course
         presenter.loadCourseToSpinner();

@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/AppBackground"
     android:padding="16dp"
-    tools:context=".presentation.view.activities.ViewQuiz">
+    tools:context=".presentation.view.activities.ViewQuizSt">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView_ViewQuiz"
