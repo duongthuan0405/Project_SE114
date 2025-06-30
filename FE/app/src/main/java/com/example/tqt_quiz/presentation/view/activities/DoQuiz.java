@@ -115,6 +115,7 @@ public class DoQuiz extends AppCompatActivity implements DoQuizContract.IView {
         currentattemptinfo=info;
         presenter.ShowQuizInfo(info.getQuizId());
         presenter.showQuestion(info.getQuizId());
+        Log.d("THUAN", currentattemptinfo == null ? "NULL" : "NOT NULL");
     }
 
     @Override

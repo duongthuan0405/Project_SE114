@@ -36,7 +36,7 @@ public class Program
             {
                 opt.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
                 opt.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
-                opt.JsonSerializerOptions.Converters.Add(new DateTimeConverterUsingFormat("yyyy-MM-dd HH:mm"));
+                opt.JsonSerializerOptions.Converters.Add(new DateTimeConverterUsingFormat("yyyy-MM-dd HH:mm:ss"));
             }
         );
 

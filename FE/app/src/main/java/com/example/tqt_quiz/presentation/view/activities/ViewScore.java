@@ -142,10 +142,10 @@ public class ViewScore extends AppCompatActivity implements ViewScoreContract.IV
             else
             {
                 Duration d = Duration.between(a.getStartAt(), a.getFinishAt());
-                long totalMins = d.toMinutes();
-                long hours = totalMins / 60;
-                long mins = totalMins - hours * 60;
-                long sec = totalMins * 60 - hours * 3600 - mins * 60;
+                long totalSecs = d.getSeconds();
+                long hours = totalSecs / 3600;
+                long mins = (totalSecs - hours * 3600) / 60;
+                long sec = totalSecs - hours * 3600 - mins * 60;
                 tvTimeToDo.setText(String.format("Thời gian: %d giờ %d phút %d giây", hours, mins, sec ));
             }
 
