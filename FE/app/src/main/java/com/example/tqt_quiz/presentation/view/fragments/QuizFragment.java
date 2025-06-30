@@ -225,6 +225,6 @@ public class QuizFragment extends Fragment implements QuizFragmentContract.IView
 
     @Override
     public void onTabReload() {
-        presenter.loadCourseToSpinner();
+        filterQuizList();
     }
 }

@@ -17,6 +17,8 @@ public interface DoQuizContract {
         void ShowToast(String msg);
         void SaveAttemptInfo(AttemptQuizDTO info);
         void ShowQuizInfo(QuizDTO info);
+
+        void Finish();
     }
     public interface IPresenter
     {
@@ -24,6 +26,8 @@ public interface DoQuizContract {
       void StartAttempt(String quizid);
       void ShowQuizInfo(String quizid);
       void sendAnswer(AttemptQuizDTO currentattemptinfo, String questionId);
+
+        void submit(String id);
     }
 
 }

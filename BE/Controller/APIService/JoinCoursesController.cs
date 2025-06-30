@@ -135,7 +135,7 @@ namespace BE.Controller.APIService
 
                     try
                     {
-                        await emailService.SendAsync(email, subject, htmlContent);
+                        emailService.SendAsync(email, subject, htmlContent);
                     }
                     catch (Exception e)
                     {
@@ -279,8 +279,6 @@ namespace BE.Controller.APIService
                 {
                     return StatusCode(StatusCodes.Status404NotFound, new { Message = "Bạn chưa tham gia khóa học này" });
                 }
-
-            
 
                 joinCourse.State = (int)JoinCourse.JoinCourseState.Left;
                 await DbContext.SaveChangesAsync();

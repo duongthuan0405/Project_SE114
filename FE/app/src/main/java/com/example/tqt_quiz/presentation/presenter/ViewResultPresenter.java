@@ -78,6 +78,7 @@ public class ViewResultPresenter implements ViewResultContract.IPresenter {
 
             @Override
             public void onOtherFailure(String msg) {
+
                 view.ShowToast(msg);
             }
 
@@ -88,7 +89,7 @@ public class ViewResultPresenter implements ViewResultContract.IPresenter {
 
             @Override
             public void onNotAttemptYet() {
-
+                view.SaveAttemptInfo(null);
             }
         });
     }

@@ -76,6 +76,7 @@ public class AttemptQuizIMP implements IAttemptQuizInteract {
                     if(response.code() == 404)
                     {
                         callback.onNotAttemptYet();
+                        return;
                     }
                     String rawJson="";
                     try

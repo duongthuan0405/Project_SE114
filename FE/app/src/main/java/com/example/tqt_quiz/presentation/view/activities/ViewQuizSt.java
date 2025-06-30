@@ -3,6 +3,7 @@ package com.example.tqt_quiz.presentation.view.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -67,13 +68,8 @@ public class ViewQuizSt extends AppCompatActivity implements ViewQuizStContract.
         doQuizLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
-                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                        String newScore = result.getData().getStringExtra("quiz_score");
-                        if (newScore != null) {
-                            tvCorrect.setText("Điểm số: " + newScore + " / 10");
-                            btnAction.setEnabled(false);
-                            btnAction.setText("Đã hoàn thành");
-                        }
+                    if (result.getResultCode() == RESULT_OK) {
+                        presenter.getQuizWithScore(quizId);
                     }
                 }
         );
