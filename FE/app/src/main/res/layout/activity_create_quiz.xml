@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Nhập tiêu đề bài kiểm tra"
-            android:textSize="25sp"
+            android:textSize="24sp"
             android:textStyle="bold"
             android:inputType="text"
             android:textColor="@android:color/black"
@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Nhập mô tả (tuỳ chọn)"
-            android:textSize="15sp"
+            android:textSize="17sp"
             android:inputType="text"
             android:textColor="@android:color/darker_gray"
             android:background="@android:color/transparent"
@@ -54,7 +54,7 @@
                 android:gravity="center_vertical"
                 android:text="Khóa học: "
                 android:textColor="@color/black"
-                android:textSize="15sp">
+                android:textSize="17sp">
 
             </TextView>
 
