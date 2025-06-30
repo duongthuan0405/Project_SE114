@@ -2,6 +2,7 @@
 using BE.Data.Database;
 using BE.Data.Entities;
 using BE.DTOs;
+using BE.Email;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,9 +17,11 @@ namespace BE.Controller.APIService
     public class QuizController : ControllerBase
     {
         private readonly MyAppDBContext DbContext;
-        public QuizController(MyAppDBContext dbContext)
+        private readonly IEmailService emailService;
+        public QuizController(MyAppDBContext dbContext, IEmailService emailService)
         {
             DbContext = dbContext;
+            this.emailService = emailService;
         }
 
         [HttpGet("{quiz_id}")]
@@ -264,6 +267,39 @@ namespace BE.Controller.APIService
                     StatusOfAttempt = ""
                 };
 
+                if(quizCreateRequest.IsPublished)
+                {
+                    var emailMembers = await DbContext.JoinCourses
+                    .Where(jc => jc.CourseID == quizCreateRequest.CourseId && jc.State == (int)JoinCourse.JoinCourseState.Joined)
+                    .Join(DbContext.AccountAuthens, jc => jc.AccountID, aa => aa.Id, (jc, aa) => new { jc, aa })
+                    .Select(x => x.aa.Email)
+                    .ToListAsync();
+                    
+                    string subject = $"[Quiz mới] {newQuiz.Name} đã được tạo";
+                    string htmlContent = $@"
+                        <p>Chào bạn,</p>
+                        <p>Một quiz mới đã được tạo trong khóa học <b>{quizDTO.CourseName}</b>:</p>
+                        <ul>
+                            <li><b>Tên:</b> {newQuiz.Name}</li>
+                            <li><b>Mô tả:</b> {newQuiz.Description}</li>
+                            <li><b>Thời gian bắt đầu:</b> {newQuiz.StartTime:HH:mm dd/MM/yyyy}</li>
+                            <li><b>Thời gian kết thúc:</b> {newQuiz.DueTime:HH:mm dd/MM/yyyy}</li>
+                        </ul>
+                        <p>Vui lòng đăng nhập để làm bài đúng hạn.</p>";
+
+                    foreach (var email in emailMembers)
+                    {
+                        try
+                        {
+                            await emailService.SendAsync(email, subject, htmlContent);
+                        }
+                        catch (Exception e)
+                        {
+                            
+                        }
+                    }
+                }
+
                 return StatusCode(StatusCodes.Status201Created, quizDTO);
             }
 
@@ -299,6 +335,36 @@ namespace BE.Controller.APIService
 
                 quiz.IsPublished = true;
                 await DbContext.SaveChangesAsync();
+
+                var emailMembers = await DbContext.JoinCourses
+                    .Where(jc => jc.CourseID == quiz.CourseID && jc.State == (int)JoinCourse.JoinCourseState.Joined)
+                    .Join(DbContext.AccountAuthens, jc => jc.AccountID, aa => aa.Id, (jc, aa) => new { jc, aa })
+                    .Select(x => x.aa.Email)
+                    .ToListAsync();
+                    
+                    string subject = $"[Quiz mới] {quiz.Name} đã được tạo";
+                    string htmlContent = $@"
+                        <p>Chào bạn,</p>
+                        <p>Một quiz mới đã được tạo trong khóa học <b>{ await DbContext.Courses.Where(c => c.Id == quiz.CourseID).Select(c => c.Name).FirstOrDefaultAsync()}</b>:</p>
+                        <ul>
+                            <li><b>Tên:</b> {quiz.Name}</li>
+                            <li><b>Mô tả:</b> {quiz.Description}</li>
+                            <li><b>Thời gian bắt đầu:</b> {quiz.StartTime:HH:mm dd/MM/yyyy}</li>
+                            <li><b>Thời gian kết thúc:</b> {quiz.DueTime:HH:mm dd/MM/yyyy}</li>
+                        </ul>
+                        <p>Vui lòng đăng nhập để làm bài đúng hạn.</p>";
+
+                    foreach (var email in emailMembers)
+                    {
+                        try
+                        {
+                            await emailService.SendAsync(email, subject, htmlContent);
+                        }
+                        catch (Exception e)
+                        {
+                            
+                        }
+                    }
                 return Ok();
             }
             catch (Exception ex)
@@ -366,6 +432,39 @@ namespace BE.Controller.APIService
                         .FirstOrDefaultAsync() ?? "",
                     StatusOfAttempt = ""
                 };
+
+                if(quizUpdateRequest.IsPublished)
+                {
+                    var emailMembers = await DbContext.JoinCourses
+                    .Where(jc => jc.CourseID == quiz.CourseID && jc.State == (int)JoinCourse.JoinCourseState.Joined)
+                    .Join(DbContext.AccountAuthens, jc => jc.AccountID, aa => aa.Id, (jc, aa) => new { jc, aa })
+                    .Select(x => x.aa.Email)
+                    .ToListAsync();
+                    
+                    string subject = $"[Quiz cập nhật] {quiz.Name} đã được cập nhật";
+                    string htmlContent = $@"
+                        <p>Chào bạn,</p>
+                        <p>Quiz trong khóa học <b>{updatedQuizDTO.CourseName}</b> đã được cập nhật:</p>
+                        <ul>
+                            <li><b>Tên:</b> {quiz.Name}</li>
+                            <li><b>Mô tả:</b> {quiz.Description}</li>
+                            <li><b>Thời gian bắt đầu:</b> {quiz.StartTime:HH:mm dd/MM/yyyy}</li>
+                            <li><b>Thời gian kết thúc:</b> {quiz.DueTime:HH:mm dd/MM/yyyy}</li>
+                        </ul>
+                        <p>Vui lòng đăng nhập để làm bài đúng hạn.</p>";
+
+                    foreach (var email in emailMembers)
+                    {
+                        try
+                        {
+                            await emailService.SendAsync(email, subject, htmlContent);
+                        }
+                        catch (Exception e)
+                        {
+                            
+                        }
+                    }
+                }
 
                 return Ok(updatedQuizDTO);
             }
@@ -632,11 +731,11 @@ namespace BE.Controller.APIService
                     .Where(q => q.QuizId == quiz_id)
                     .CountAsync();
 
-                var results = DbContext.AccountAuthens.Join(DbContext.Accounts, at => at.Id, a => a.Id, (at, a) => new { at, a })
+                var results = await DbContext.AccountAuthens.Join(DbContext.Accounts, at => at.Id, a => a.Id, (at, a) => new { at, a })
                         .Join(DbContext.JoinCourses, x => x.a.Id, jc => jc.AccountID, (x, jc) => new { at = x.at, a = x.a, jc = jc })
                         .Join(DbContext.Quizzes.Where(q => q.Id == quiz_id), x => x.jc.CourseID, q => q.CourseID, (x, q) => new { a = x.a, at = x.at, q = q })
                         .GroupJoin(DbContext.AttemptQuizzes, x => x.q.Id, aq => aq.QuizId, (x, ls_at) => new { x = x, ls_at = ls_at.DefaultIfEmpty() })
-                        .SelectMany(x => x.ls_at, (x, at) => new { x = x.x, atq = at });
+                        .SelectMany(x => x.ls_at, (x, at) => new { x = x.x, atq = at }).ToListAsync();
 
                 List<AccountWithScore> accountWithScores = new List<AccountWithScore>();
                 foreach (var r in results)
@@ -648,7 +747,9 @@ namespace BE.Controller.APIService
                             Account = new AccountInfoDTO(r.x.a.Id, r.x.at.Email, r.x.a.LastMiddleName, r.x.a.FirstName, r.x.a.Avatar, r.x.a.AccountTypeId, ""),
                             TotalCorrectAnswer = 0,
                             TotalQuestions = TotalQuestions,
-                            IsSubmitted = false
+                            IsSubmitted = false,
+                            StartedAt = null,
+                            FinishedAt = null
                         });
                     }
                     else
@@ -662,10 +763,19 @@ namespace BE.Controller.APIService
                             Account = new AccountInfoDTO(r.x.a.Id, r.x.at.Email, r.x.a.LastMiddleName, r.x.a.FirstName, r.x.a.Avatar, r.x.a.AccountTypeId, ""),
                             TotalCorrectAnswer = totalCorrectAnswer,
                             TotalQuestions = TotalQuestions,
-                            IsSubmitted = r.atq.IsSubmitted
+                            IsSubmitted = r.atq.IsSubmitted,
+                            StartedAt = r.atq.AttemptTime,
+                            FinishedAt = r.atq.IsSubmitted ? r.atq.FinishTime : null
                         });
                     }
                 }
+
+                accountWithScores.Sort((x, y) =>
+                {
+                    if (x.TotalCorrectAnswer != y.TotalCorrectAnswer)
+                        return x.TotalCorrectAnswer.CompareTo(y.TotalCorrectAnswer);
+                    return (x.FinishedAt < y.FinishedAt) ? 1 : x.Account.FirstName.CompareTo(y.Account.FirstName);
+                });
 
                 return Ok(accountWithScores);
                                      
