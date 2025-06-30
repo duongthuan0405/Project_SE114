@@ -28,6 +28,6 @@ public class DoQuizTokenManager implements ITokenManager {
 
     @Override
     public void ClearToken() {
-        prefs.edit().remove(KEY_TOKEN);
+        prefs.edit().remove(KEY_TOKEN).apply();
     }
 }

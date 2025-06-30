@@ -1,5 +1,6 @@
 
 using BE.Adapter;
+using BE.AutoService;
 using BE.Data.Database;
 using BE.Email;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -29,6 +30,8 @@ public class Program
         builder.Services.AddDbContext<MyAppDBContext>(
             opts => opts.UseSqlServer(TQT_Quiz_Connection)
         );
+
+        builder.Services.AddHostedService<AutoSubmitService>();
 
         // CamelCase
         builder.Services.AddControllers().AddJsonOptions(

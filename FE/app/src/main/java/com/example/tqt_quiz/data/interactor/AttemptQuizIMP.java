@@ -1,7 +1,6 @@
 package com.example.tqt_quiz.data.interactor;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.example.tqt_quiz.data.repository.token.DoQuizTokenManager;
 import com.example.tqt_quiz.data.repository.token.RetrofitClient;
@@ -31,6 +30,45 @@ public class AttemptQuizIMP implements IAttemptQuizInteract {
                 {
                     callback.onSuccess(response.body());
                     doQuizTokenManager.SaveToken(response.body().getTokenForQuiz());
+                }
+                else{
+                    String rawJson="";
+                    try
+                    {
+                        rawJson=response.errorBody().string();
+                        JSONObject obj=new JSONObject(rawJson);
+                        String msg=obj.optString("message");
+                        callback.onOtherFailure(msg);
+                    } catch (Exception e) {
+                        if(response.code()==401)
+                        {
+                            callback.onFailureByExpiredToken();
+                        }
+                        else if(response.code()==403)
+                        {
+                            callback.onFailureByUnAcceptedRole();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AttemptQuizDTO> call, Throwable t) {
+                callback.onFailureByCannotSendToServer();
+            }
+        });
+    }
+    @Override
+    public void GetAttemptInfo(String quizId, Context context, GetAttemptInfo callback) {
+        TokenManager tokenManager=new TokenManager(context);
+        AttemptQuizService service= RetrofitClient.GetClient(tokenManager).create(AttemptQuizService.class);
+        Call<AttemptQuizDTO> call= service.AttemptQuiz(quizId);
+        call.enqueue(new Callback<AttemptQuizDTO>() {
+            @Override
+            public void onResponse(Call<AttemptQuizDTO> call, Response<AttemptQuizDTO> response) {
+                if(response.isSuccessful())
+                {
+                    callback.onSuccess(response.body());
                 }
                 else{
                     String rawJson="";
