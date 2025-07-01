@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace BE.Controller.APIService
@@ -409,11 +410,26 @@ namespace BE.Controller.APIService
                     return StatusCode(StatusCodes.Status403Forbidden, new { Message = "Bạn không có quyền sửa Quiz này" });
                 }
 
-                quiz.Name = quizUpdateRequest.Name;
-                quiz.Description = quizUpdateRequest.Description;
-                quiz.StartTime = quizUpdateRequest.StartTime;
-                quiz.DueTime = quizUpdateRequest.DueTime;
-                quiz.IsPublished = quizUpdateRequest.IsPublished;
+                bool IsPublishedYet = quiz.IsPublished;
+                bool IsChanged = true;
+
+                if (quiz.Name == quizUpdateRequest.Name &&
+                    quiz.Description == quizUpdateRequest.Description &&
+                    quiz.StartTime == quizUpdateRequest.StartTime &&
+                    quiz.DueTime == quizUpdateRequest.DueTime &&
+                    quiz.IsPublished == quizUpdateRequest.IsPublished)
+                {
+                    IsChanged = false;
+                }
+                else
+                {
+                    quiz.Name = quizUpdateRequest.Name;
+                    quiz.Description = quizUpdateRequest.Description;
+                    quiz.StartTime = quizUpdateRequest.StartTime;
+                    quiz.DueTime = quizUpdateRequest.DueTime;
+                    quiz.IsPublished = quizUpdateRequest.IsPublished;
+                }
+                
 
                 await DbContext.SaveChangesAsync();
 
@@ -440,11 +456,16 @@ namespace BE.Controller.APIService
                     .Join(DbContext.AccountAuthens, jc => jc.AccountID, aa => aa.Id, (jc, aa) => new { jc, aa })
                     .Select(x => x.aa.Email)
                     .ToListAsync();
-                    
-                    string subject = $"[Quiz cập nhật] {quiz.Name} đã được cập nhật";
-                    string htmlContent = $@"
+
+                    string subject = "";
+                    string htmlContent = "";
+
+                    if (!IsPublishedYet)
+                    {
+                        subject = $"[Quiz mới] {quiz.Name} đã được tạo";
+                        htmlContent = $@"
                         <p>Chào bạn,</p>
-                        <p>Quiz trong khóa học <b>{updatedQuizDTO.CourseName}</b> đã được cập nhật:</p>
+                        <p>Một quiz mới đã được tạo trong khóa học <b>{await DbContext.Courses.Where(c => c.Id == quiz.CourseID).Select(c => c.Name).FirstOrDefaultAsync()}</b>:</p>
                         <ul>
                             <li><b>Tên:</b> {quiz.Name}</li>
                             <li><b>Mô tả:</b> {quiz.Description}</li>
@@ -453,17 +474,46 @@ namespace BE.Controller.APIService
                         </ul>
                         <p>Vui lòng đăng nhập để làm bài đúng hạn.</p>";
 
-                    foreach (var email in emailMembers)
-                    {
-                        try
+                        foreach (var email in emailMembers)
                         {
-                            emailService.SendAsync(email, subject, htmlContent);
+                            try
+                            {
+                                emailService.SendAsync(email, subject, htmlContent);
+                            }
+                            catch (Exception e)
+                            {
+
+                            }
                         }
-                        catch (Exception e)
+
+                    }
+                    else if (IsChanged)
+                    {
+                        subject = $"[Quiz cập nhật] {quiz.Name} đã được cập nhật";
+                        htmlContent = $@"
+                        <p>Chào bạn,</p>
+                        <p>Một quiz đã được cập nhật trong khóa học <b>{await DbContext.Courses.Where(c => c.Id == quiz.CourseID).Select(c => c.Name).FirstOrDefaultAsync()}</b>:</p>
+                        <ul>
+                            <li><b>Tên:</b> {quiz.Name}</li>
+                            <li><b>Mô tả:</b> {quiz.Description}</li>
+                            <li><b>Thời gian bắt đầu:</b> {quiz.StartTime:HH:mm dd/MM/yyyy}</li>
+                            <li><b>Thời gian kết thúc:</b> {quiz.DueTime:HH:mm dd/MM/yyyy}</li>
+                        </ul>
+                        <p>Vui lòng đăng nhập để làm bài đúng hạn.</p>";
+                        
+                        foreach (var email in emailMembers)
                         {
-                            
+                            try
+                            {
+                                emailService.SendAsync(email, subject, htmlContent);
+                            }
+                            catch (Exception e)
+                            {
+
+                            }
                         }
                     }
+
                 }
 
                 return Ok(updatedQuizDTO);
@@ -732,12 +782,18 @@ namespace BE.Controller.APIService
                     .Where(q => q.QuizId == quiz_id)
                     .CountAsync();
 
-                var results = await DbContext.AccountAuthens.Join(DbContext.Accounts, at => at.Id, a => a.Id, (at, a) => new { at, a })
-                        .Join(DbContext.JoinCourses, x => x.a.Id, jc => jc.AccountID, (x, jc) => new { at = x.at, a = x.a, jc = jc })
-                        .Join(DbContext.Quizzes.Where(q => q.Id == quiz_id), x => x.jc.CourseID, q => q.CourseID, (x, q) => new { a = x.a, at = x.at, q = q })
-                        .GroupJoin(DbContext.AttemptQuizzes, x => x.q.Id, aq => aq.QuizId, (x, ls_at) => new { x = x, ls_at = ls_at.DefaultIfEmpty() })
-                        .SelectMany(x => x.ls_at, (x, at) => new { x = x.x, atq = at }).ToListAsync();
-
+                var results = await DbContext.AccountAuthens
+                                    .Join(DbContext.Accounts, at => at.Id, a => a.Id, (at, a) => new { at, a })
+                                    .Join(DbContext.JoinCourses.Where(jc => jc.State == (int)JoinCourse.JoinCourseState.Joined && jc.CourseID == quiz.CourseID),
+                                        x => x.a.Id, jc => jc.AccountID,
+                                        (x, jc) => new { at = x.at, a = x.a, jc = jc })
+                                    .GroupJoin(DbContext.AttemptQuizzes.Where(aq => aq.QuizId == quiz_id),
+                                            x => x.a.Id,
+                                            aq => aq.AccountId,
+                                            (x, ls_at) => new { x, ls_at })
+                                    .SelectMany(x => x.ls_at.DefaultIfEmpty(), (x, atq) => new { x = x.x, atq = atq })
+                                    .ToListAsync();
+                                    
                 List<AccountWithScore> accountWithScores = new List<AccountWithScore>();
                 foreach (var r in results)
                 {

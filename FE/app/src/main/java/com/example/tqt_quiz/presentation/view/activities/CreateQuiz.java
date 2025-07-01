@@ -5,7 +5,6 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -297,7 +296,7 @@ public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.
         {
             if(oldQuiz.getStartTime().isBefore(LocalDateTime.now()))
             {
-                disableEditQuiz();
+                disableEditQuizAll();
                 btn_Publish.setVisibility(View.GONE);
                 Finish.setVisibility(View.GONE);
                 btnDelete.setVisibility(View.GONE);
@@ -389,11 +388,17 @@ public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.
         date.show();
     }
 
-    void disableEditQuiz()
+    void disableEditQuizAll()
     {
         Title.setEnabled(false);
         Description.setEnabled(false);
         StartTime.setEnabled(false);
         DueTime.setEnabled(false);
+    }
+
+    void disableEditQuiz()
+    {
+        Title.setEnabled(false);
+        Description.setEnabled(false);
     }
 }

@@ -127,7 +127,7 @@ namespace BE.Migrations
 
                     b.HasIndex("QuestionID");
 
-                    b.ToTable("AnswerDTO");
+                    b.ToTable("Answer");
                 });
 
             modelBuilder.Entity("BE.Data.Entities.AttemptQuiz", b =>
@@ -206,7 +206,7 @@ namespace BE.Migrations
 
                     b.HasIndex("AttemptQuizId");
 
-                    b.ToTable("DetailResults");
+                    b.ToTable("DetailResult");
                 });
 
             modelBuilder.Entity("BE.Data.Entities.JoinCourse", b =>
@@ -248,7 +248,7 @@ namespace BE.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PasswordResetTokens");
+                    b.ToTable("PasswordResetToken");
                 });
 
             modelBuilder.Entity("BE.Data.Entities.Question", b =>
@@ -269,7 +269,7 @@ namespace BE.Migrations
 
                     b.HasIndex("QuizId");
 
-                    b.ToTable("QuestionDTO");
+                    b.ToTable("Question");
                 });
 
             modelBuilder.Entity("BE.Data.Entities.Quiz", b =>

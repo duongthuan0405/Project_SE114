@@ -208,6 +208,9 @@ public class QuizFragment extends Fragment implements QuizFragmentContract.IView
         CourseAdapterForSpinner courseAdapterForSpinner = new CourseAdapterForSpinner(getTheContext(), courses);
         spnFilterCourse.setAdapter(courseAdapterForSpinner);
         spnFilterCourse.setSelection(0);
+
+        if(spnFilterCourse.getCount() == 1)
+            btnAddQuiz.setVisibility(View.GONE);
     }
 
     @Override
@@ -225,6 +228,6 @@ public class QuizFragment extends Fragment implements QuizFragmentContract.IView
 
     @Override
     public void onTabReload() {
-        filterQuizList();
+        presenter.loadCourseToSpinner();
     }
 }

@@ -19,6 +19,8 @@ public interface DoQuizContract {
         void ShowQuizInfo(QuizDTO info);
 
         void Finish();
+
+        void showAlertDialogToNotify();
     }
     public interface IPresenter
     {
@@ -28,6 +30,7 @@ public interface DoQuizContract {
       void sendAnswer(AttemptQuizDTO currentattemptinfo, String questionId);
 
         void submit(String id);
+
     }
 
 }

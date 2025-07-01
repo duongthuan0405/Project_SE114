@@ -29,6 +29,7 @@ import com.example.tqt_quiz.presentation.classes.Question;
 import com.example.tqt_quiz.presentation.classes.QuestionViewHolder;
 import com.example.tqt_quiz.staticclass.StaticClass;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import com.example.tqt_quiz.presentation.contract_vp.DoQuizContract;
 import com.example.tqt_quiz.presentation.presenter.DoQuizPresenter;
@@ -179,6 +180,23 @@ public class DoQuiz extends AppCompatActivity implements DoQuizContract.IView {
         finish();
     }
 
+    @Override
+    public void showAlertDialogToNotify() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(DoQuiz.this);
+        builder.setMessage("Bài làm của bạn đã tự động nộp do đã hết thời gian làm bài");
+
+        builder.setPositiveButton("Quay lại", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Finish();
+            }
+        });
+
+        builder.create();
+
+        builder.show();
+    }
+
 
     private void startCountdown(long millisUntilFinished) {
         new CountDownTimer(millisUntilFinished, 1000) {
@@ -195,7 +213,7 @@ public class DoQuiz extends AppCompatActivity implements DoQuizContract.IView {
             @Override
             public void onFinish() {
                 Timer.setText("00:00:00");
-                presenter.submit(currentattemptinfo.getQuizId());
+                showAlertDialogToNotify();
             }
         }.start();
     }

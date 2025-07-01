@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BE.Migrations
 {
     /// <inheritdoc />
-    public partial class RebuildDB : Migration
+    public partial class BuildDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -36,6 +36,20 @@ namespace BE.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AccountType", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PasswordResetToken",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Token = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ExpiredAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PasswordResetToken", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -164,7 +178,7 @@ namespace BE.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "QuestionDTO",
+                name: "Question",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "Char(10)", maxLength: 10, nullable: false),
@@ -173,16 +187,16 @@ namespace BE.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_QuestionDTO", x => x.Id);
+                    table.PrimaryKey("PK_Question", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_QuestionDTO_Quiz_QuizId",
+                        name: "FK_Question_Quiz_QuizId",
                         column: x => x.QuizId,
                         principalTable: "Quiz",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "AnswerDTO",
+                name: "Answer",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "Char(10)", maxLength: 10, nullable: false),
@@ -192,17 +206,17 @@ namespace BE.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AnswerDTO", x => x.Id);
+                    table.PrimaryKey("PK_Answer", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AnswerDTO_QuestionDTO_QuestionID",
+                        name: "FK_Answer_Question_QuestionID",
                         column: x => x.QuestionID,
-                        principalTable: "QuestionDTO",
+                        principalTable: "Question",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "DetailResults",
+                name: "DetailResult",
                 columns: table => new
                 {
                     AttemptQuizId = table.Column<string>(type: "Char(10)", nullable: false),
@@ -210,15 +224,15 @@ namespace BE.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DetailResults", x => new { x.AnswerId, x.AttemptQuizId });
+                    table.PrimaryKey("PK_DetailResult", x => new { x.AnswerId, x.AttemptQuizId });
                     table.ForeignKey(
-                        name: "FK_DetailResults_AnswerDTO_AnswerId",
+                        name: "FK_DetailResult_Answer_AnswerId",
                         column: x => x.AnswerId,
-                        principalTable: "AnswerDTO",
+                        principalTable: "Answer",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_DetailResults_AttemptQuiz_AttemptQuizId",
+                        name: "FK_DetailResult_AttemptQuiz_AttemptQuizId",
                         column: x => x.AttemptQuizId,
                         principalTable: "AttemptQuiz",
                         principalColumn: "Id",
@@ -241,8 +255,8 @@ namespace BE.Migrations
                 column: "AccountTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AnswerDTO_QuestionID",
-                table: "AnswerDTO",
+                name: "IX_Answer_QuestionID",
+                table: "Answer",
                 column: "QuestionID");
 
             migrationBuilder.CreateIndex(
@@ -261,8 +275,8 @@ namespace BE.Migrations
                 column: "HostId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DetailResults_AttemptQuizId",
-                table: "DetailResults",
+                name: "IX_DetailResult_AttemptQuizId",
+                table: "DetailResult",
                 column: "AttemptQuizId");
 
             migrationBuilder.CreateIndex(
@@ -271,8 +285,8 @@ namespace BE.Migrations
                 column: "CourseID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_QuestionDTO_QuizId",
-                table: "QuestionDTO",
+                name: "IX_Question_QuizId",
+                table: "Question",
                 column: "QuizId");
 
             migrationBuilder.CreateIndex(
@@ -285,19 +299,22 @@ namespace BE.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "DetailResults");
+                name: "DetailResult");
 
             migrationBuilder.DropTable(
                 name: "JoinCourse");
 
             migrationBuilder.DropTable(
-                name: "AnswerDTO");
+                name: "PasswordResetToken");
+
+            migrationBuilder.DropTable(
+                name: "Answer");
 
             migrationBuilder.DropTable(
                 name: "AttemptQuiz");
 
             migrationBuilder.DropTable(
-                name: "QuestionDTO");
+                name: "Question");
 
             migrationBuilder.DropTable(
                 name: "Quiz");

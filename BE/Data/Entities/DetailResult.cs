@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace BE.Data.Entities
 {
+    [Table("DetailResult")]
     public class DetailResult
     {
         public string AttemptQuizId { get; set; }

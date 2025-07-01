@@ -4,104 +4,111 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
     android:background="@color/AppBackground">
 
     <!-- Thông tin Quiz dạng Card -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="12dp"
-        android:background="@drawable/btn_rectagle"
-        android:gravity="center_vertical"
-        android:layout_marginBottom="16dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="20dp">
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <!-- Tiêu đề Quiz -->
-            <TextView
-                android:id="@+id/tv_Title_ViewScore"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Tiêu đề bài kiểm tra"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="@color/gray" />
-
-            <!-- Khóa học -->
-            <TextView
-                android:id="@+id/tv_CourseId_ViewScore"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Khóa học: CS101"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:textColor="@color/gray"
-                android:layout_marginTop="4dp" />
-
-            <!-- Thời gian bắt đầu -->
-            <TextView
-                android:id="@+id/tv_StartTime_ViewScore"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Bắt đầu: 2025-06-20 08:00"
-                android:textSize="14sp"
-                android:textColor="@color/gray"
-                android:layout_marginTop="2dp" />
-
-            <!-- Thời gian kết thúc -->
-            <TextView
-                android:id="@+id/tv_DueTime_ViewScore"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Kết thúc: 2025-06-20 09:00"
-                android:textSize="14sp"
-                android:textColor="@color/gray"
-                android:layout_marginTop="2dp" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <!-- Mô tả -->
-    <TextView
-        android:id="@+id/tv_DescriptionTitle_ViewScore"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="📌 Mô tả bài kiểm tra"
-        android:textColor="@color/dark_gray"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:layout_marginBottom="4dp" />
-
-    <TextView
-        android:id="@+id/tv_Description_ViewScore"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="(Nội dung mô tả bài kiểm tra sẽ hiển thị ở đây)"
-        android:textSize="14sp"
-        android:textColor="@color/black"
-        android:inputType="textMultiLine"
-        android:minLines="1"
-        android:maxLines="2"
-        android:background="@drawable/rounded_border"
-        android:padding="12dp"
-        android:layout_marginBottom="16dp"/>
-
-    <!-- Danh sách điểm học sinh -->
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <LinearLayout
-            android:id="@+id/ll_ScoreList_ViewScore"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" />
-    </ScrollView>
+            android:orientation="horizontal"
+            android:padding="12dp"
+            android:background="@drawable/btn_rectagle"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp">
 
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Tiêu đề Quiz -->
+                <TextView
+                    android:id="@+id/tv_Title_ViewScore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tiêu đề bài kiểm tra"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/gray" />
+
+                <!-- Khóa học -->
+                <TextView
+                    android:id="@+id/tv_CourseId_ViewScore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Khóa học: CS101"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/gray"
+                    android:layout_marginTop="4dp" />
+
+                <!-- Thời gian bắt đầu -->
+                <TextView
+                    android:id="@+id/tv_StartTime_ViewScore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bắt đầu: 2025-06-20 08:00"
+                    android:textSize="14sp"
+                    android:textColor="@color/gray"
+                    android:layout_marginTop="2dp" />
+
+                <!-- Thời gian kết thúc -->
+                <TextView
+                    android:id="@+id/tv_DueTime_ViewScore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Kết thúc: 2025-06-20 09:00"
+                    android:textSize="14sp"
+                    android:textColor="@color/gray"
+                    android:layout_marginTop="2dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Mô tả -->
+        <TextView
+            android:id="@+id/tv_DescriptionTitle_ViewScore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="📌 Mô tả bài kiểm tra"
+            android:textColor="@color/dark_gray"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:id="@+id/tv_Description_ViewScore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="(Nội dung mô tả bài kiểm tra sẽ hiển thị ở đây)"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:inputType="textMultiLine"
+            android:minLines="1"
+            android:maxLines="2"
+            android:background="@drawable/rounded_border"
+            android:padding="12dp"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Danh sách điểm học sinh -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:id="@+id/ll_ScoreList_ViewScore"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </ScrollView>
+
+
+    </LinearLayout>
 </LinearLayout>

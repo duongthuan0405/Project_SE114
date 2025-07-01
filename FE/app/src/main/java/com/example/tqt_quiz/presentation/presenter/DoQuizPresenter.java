@@ -1,6 +1,7 @@
 package com.example.tqt_quiz.presentation.presenter;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.tqt_quiz.data.interactor.AnswerSelectInteractorIMP;
 import com.example.tqt_quiz.data.interactor.AttemptQuizIMP;
@@ -177,7 +178,8 @@ public class DoQuizPresenter implements DoQuizContract.IPresenter {
 
             @Override
             public void onOtherFailure(String msg) {
-
+                view.ShowToast(msg);
+                view.Finish();
             }
 
             @Override
@@ -186,4 +188,6 @@ public class DoQuizPresenter implements DoQuizContract.IPresenter {
             }
         });
     }
+
+
 }

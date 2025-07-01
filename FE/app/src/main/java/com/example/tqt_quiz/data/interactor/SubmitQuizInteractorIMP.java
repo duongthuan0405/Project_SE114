@@ -15,7 +15,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SubmitQuizInteractorIMP implements ISubmitQuizInteractor {
-
     @Override
     public void SubmitQuiz(String quizId, Context context, SubmitQuizCallBack callback) {
         DoQuizTokenManager tokenManager= new DoQuizTokenManager( context);
