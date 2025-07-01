@@ -1,6 +1,7 @@
 package com.example.tqt_quiz.presentation.view.activities;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -94,7 +96,24 @@ public class ViewCourse extends AppCompatActivity implements ViewCourseContract.
         Deletebutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.DeleteCourse(courseId);
+                AlertDialog.Builder builder = new AlertDialog.Builder(ViewCourse.this);
+                builder.setMessage("Bạn có chắn chắn rằng muốn xóa khóa học này không ?");
+                builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        presenter.DeleteCourse(courseId);
+                    }
+                });
+
+                builder.create();
+
+                builder.show();
             }
         });
         rdbWaiting.setOnCheckedChangeListener(

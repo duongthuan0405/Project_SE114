@@ -1,6 +1,7 @@
 package com.example.tqt_quiz.presentation.view.activities;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -136,7 +138,24 @@ public class ViewCourseSt extends AppCompatActivity implements ViewCourseStContr
         LeaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.LeaveCourse(courseId);
+                AlertDialog.Builder builder = new AlertDialog.Builder(ViewCourseSt.this);
+                builder.setMessage("Bạn có chắn chắn rằng muốn rời khóa học này không ?");
+                builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        presenter.LeaveCourse(courseId);
+                    }
+                });
+
+                builder.create();
+
+                builder.show();
             }
         });
     }
