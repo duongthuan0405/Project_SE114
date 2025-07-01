@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -34,8 +33,6 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import com.example.tqt_quiz.presentation.contract_vp.DoQuizContract;
 import com.example.tqt_quiz.presentation.presenter.DoQuizPresenter;
-import com.example.tqt_quiz.presentation.utils.DummyQuizGenerator;
-import com.example.tqt_quiz.staticclass.StaticClass;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -183,6 +180,23 @@ public class DoQuiz extends AppCompatActivity implements DoQuizContract.IView {
         finish();
     }
 
+    @Override
+    public void showAlertDialogToNotify() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(DoQuiz.this);
+        builder.setMessage("Bài làm của bạn đã tự động nộp do đã hết thời gian làm bài");
+
+        builder.setPositiveButton("Quay lại", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Finish();
+            }
+        });
+
+        builder.create();
+
+        builder.show();
+    }
+
 
     private void startCountdown(long millisUntilFinished) {
         new CountDownTimer(millisUntilFinished, 1000) {
@@ -199,7 +213,7 @@ public class DoQuiz extends AppCompatActivity implements DoQuizContract.IView {
             @Override
             public void onFinish() {
                 Timer.setText("00:00:00");
-                presenter.submit(currentattemptinfo.getQuizId());
+                showAlertDialogToNotify();
             }
         }.start();
     }

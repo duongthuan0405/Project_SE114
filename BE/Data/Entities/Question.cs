@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BE.Data.Entities
 {
-    [Table("QuestionDTO")]
+    [Table("Question")]
     public class Question
     {
         [Key]

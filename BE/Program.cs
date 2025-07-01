@@ -32,6 +32,7 @@ public class Program
         );
 
         builder.Services.AddHostedService<AutoSubmitService>();
+        builder.Services.AddHostedService<AutoDeleteResetPassToken>();
 
         // CamelCase
         builder.Services.AddControllers().AddJsonOptions(

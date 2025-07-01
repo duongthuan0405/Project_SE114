@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BE.Data.Entities
 {
-    [Table("PasswordResetTokens")]
+    [Table("PasswordResetToken")]
     public class PasswordResetToken
     {
         [Key]

@@ -81,13 +81,12 @@ public class CourseRelatedInteractIMP implements ICourseRelatedInteract
         TokenManager tokenManager=new TokenManager(context);
         FetchAllUserCourseService service= RetrofitClient.GetClient(tokenManager).create(FetchAllUserCourseService.class);
 
-
         Call<List<CourseDTO>> call = service.FetchAllCourseHosted();
 
         call.enqueue(new Callback<List<CourseDTO>>() {
             @Override
             public void onResponse(Call<List<CourseDTO>> call, Response<List<CourseDTO>> response) {
-
+                Log.d("LAYCOURSE", response.code() + " " + response.body().size());
                 if (response.isSuccessful()) {
                     callBack.onSuccess(response.body());
                 } else {

@@ -3,9 +3,9 @@ package com.example.tqt_quiz.presentation.view.activities;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -18,6 +18,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -128,7 +129,24 @@ public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.
     }
 
     private void handleDelete() {
-        presenter.onDeletedClick(quiz_id);
+        AlertDialog.Builder builder = new AlertDialog.Builder(CreateQuiz.this);
+        builder.setMessage("Bạn có chắn chắn rằng muốn xóa quiz này không?");
+        builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                presenter.onDeletedClick(quiz_id);
+            }
+        });
+
+        builder.create();
+
+        builder.show();
     }
 
     private void handlePublish() {
@@ -297,7 +315,7 @@ public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.
         {
             if(oldQuiz.getStartTime().isBefore(LocalDateTime.now()))
             {
-                disableEditQuiz();
+                disableEditQuizAll();
                 btn_Publish.setVisibility(View.GONE);
                 Finish.setVisibility(View.GONE);
                 btnDelete.setVisibility(View.GONE);
@@ -389,11 +407,17 @@ public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.
         date.show();
     }
 
-    void disableEditQuiz()
+    void disableEditQuizAll()
     {
         Title.setEnabled(false);
         Description.setEnabled(false);
         StartTime.setEnabled(false);
         DueTime.setEnabled(false);
+    }
+
+    void disableEditQuiz()
+    {
+        Title.setEnabled(false);
+        Description.setEnabled(false);
     }
 }

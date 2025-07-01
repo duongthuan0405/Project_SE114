@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -13,7 +12,6 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -24,21 +22,12 @@ import com.example.tqt_quiz.domain.dto.AccountWithScore;
 import com.example.tqt_quiz.staticclass.StaticClass;
 import com.google.android.material.imageview.ShapeableImageView;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import com.example.tqt_quiz.domain.dto.AccountWithScore;
 import com.example.tqt_quiz.domain.dto.QuizDTO;
 import com.example.tqt_quiz.presentation.contract_vp.ViewScoreContract;
 import com.example.tqt_quiz.presentation.presenter.ViewScorePresenter;
-import com.example.tqt_quiz.staticclass.StaticClass;
-import com.google.android.material.imageview.ShapeableImageView;
 
 import java.time.Duration;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ViewScore extends AppCompatActivity implements ViewScoreContract.IView

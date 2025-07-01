@@ -5,123 +5,159 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
     android:background="@color/AppBackground">
 
-    <!-- Tiêu đề Quiz (không chỉnh sửa được) -->
-    <TextView
-        android:id="@+id/tv_Title_DoQuiz"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Tiêu đề bài kiểm tra"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="@android:color/black"
-        android:layout_marginBottom="4dp" />
-
-    <!-- Mô tả Quiz -->
-    <TextView
-        android:id="@+id/tv_Description_DoQuiz"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Mô tả bài kiểm tra"
-        android:textSize="17sp"
-        android:textColor="@android:color/darker_gray"
-        android:layout_marginBottom="8dp" />
-
-    <!-- Course ID -->
-    <TextView
-        android:id="@+id/tv_CourseId_DoQuiz"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Course ID: CS101"
-        android:textSize="17sp"
-        android:textStyle="italic"
-        android:textColor="@android:color/darker_gray"
-        android:layout_marginBottom="8dp" />
-
-    <!-- Thời gian bắt đầu -->
-    <TextView
-        android:id="@+id/tv_StartTime_DoQuiz"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Bắt đầu: 2025-06-20 08:00"
-        android:textSize="17sp"
-        android:textColor="@android:color/black"
-        android:layout_marginBottom="4dp" />
-
-    <!-- Thời gian kết thúc -->
-    <TextView
-        android:id="@+id/tv_DueTime_DoQuiz"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Kết thúc: 2025-06-20 09:00"
-        android:textSize="17sp"
-        android:textColor="@android:color/black"
-        android:layout_marginBottom="12dp" />
-
-    <!-- Danh sách câu hỏi -->
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <LinearLayout
-            android:id="@+id/ll_QuestionList_DoQuiz"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" />
-    </ScrollView>
-
-    <!-- Bộ đếm thời gian và nút hoàn thành -->
+    <!-- Thông tin Quiz dạng Card -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="right"
-        android:layout_marginTop="12dp"
-        android:paddingTop="4dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="20dp">
 
-        <!-- Đồng hồ đếm -->
         <LinearLayout
-            android:id="@+id/layout_Timer"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_gravity="center_vertical">
+            android:padding="12dp"
+            android:background="@drawable/btn_rectagle"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp">
 
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_clock"
-                android:layout_marginEnd="6dp"
-                app:tint="@color/red" />
-
-            <TextView
-                android:id="@+id/tv_Timer_DoQuiz"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="00:00:00"
-                android:textSize="16sp"
-                android:textColor="@color/red"
-                android:textStyle="bold" />
+                android:orientation="vertical">
+
+                <!-- Tiêu đề Quiz -->
+                <TextView
+                    android:id="@+id/tv_Title_DoQuiz"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tiêu đề bài kiểm tra"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/gray" />
+
+                <!-- Khóa học -->
+                <TextView
+                    android:id="@+id/tv_CourseId_DoQuiz"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Khóa học: CS101"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/gray"
+                    android:layout_marginTop="4dp" />
+
+                <!-- Thời gian bắt đầu -->
+                <TextView
+                    android:id="@+id/tv_StartTime_DoQuiz"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bắt đầu: 2025-06-20 08:00"
+                    android:textSize="14sp"
+                    android:textColor="@color/gray"
+                    android:layout_marginTop="2dp" />
+
+                <!-- Thời gian kết thúc -->
+                <TextView
+                    android:id="@+id/tv_DueTime_DoQuiz"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Kết thúc: 2025-06-20 09:00"
+                    android:textSize="14sp"
+                    android:textColor="@color/gray"
+                    android:layout_marginTop="2dp" />
+            </LinearLayout>
         </LinearLayout>
 
-        <Space
-            android:layout_width="20dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"/>
-
-        <!-- Nút hoàn thành -->
-        <Button
-            android:id="@+id/btn_Finish_DoQuiz"
-            android:layout_width="wrap_content"
+        <!-- Mô tả Quiz -->
+        <TextView
+            android:id="@+id/tv_DescriptionTitle_DoQuiz"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Hoàn thành"
-            android:textColor="@color/white"
+            android:text="📌 Mô tả bài kiểm tra"
+            android:textColor="@color/dark_gray"
             android:textStyle="bold"
-            android:background="@drawable/btn_rectagle"
-            android:padding="10dp" />
-    </LinearLayout>
+            android:textSize="16sp"
+            android:layout_marginBottom="4dp" />
 
+        <TextView
+            android:id="@+id/tv_Description_DoQuiz"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="(Nội dung mô tả bài kiểm tra sẽ hiển thị ở đây)"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:background="@drawable/rounded_border"
+            android:padding="12dp"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Danh sách câu hỏi -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:id="@+id/ll_QuestionList_DoQuiz"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </ScrollView>
+
+        <!-- Bộ đếm thời gian và nút hoàn thành -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end"
+            android:layout_marginTop="12dp"
+            android:paddingTop="4dp">
+
+            <!-- Bộ đếm -->
+            <LinearLayout
+                android:id="@+id/layout_Timer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_clock"
+                    android:layout_marginEnd="6dp"
+                    app:tint="@color/red" />
+
+                <TextView
+                    android:id="@+id/tv_Timer_DoQuiz"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="00:00:00"
+                    android:textSize="30sp"
+                    android:textColor="@color/red"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical" />
+
+            <!-- Nút hoàn thành -->
+            <Button
+                android:id="@+id/btn_Finish_DoQuiz"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hoàn thành"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:background="@drawable/btn_rectagle"
+                android:padding="10dp" />
+        </LinearLayout>
+
+    </LinearLayout>
 </LinearLayout>
