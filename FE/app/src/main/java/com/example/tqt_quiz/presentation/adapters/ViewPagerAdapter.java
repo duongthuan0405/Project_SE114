@@ -50,7 +50,7 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return 4;
+        return 3;
     }
 
     public Fragment getFragmentAt(int i)

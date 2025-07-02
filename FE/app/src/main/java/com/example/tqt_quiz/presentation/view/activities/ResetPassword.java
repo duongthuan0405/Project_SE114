@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -53,6 +54,7 @@ public class ResetPassword extends AppCompatActivity implements ResetPasswordCon
         edt2 = findViewById(R.id.edt_email_renewPass);
         tvEmail = findViewById(R.id.tv_currentEmail);
         edToken = findViewById(R.id.edt_email_token);
+        edToken.setInputType(InputType.TYPE_CLASS_TEXT);
 
         Intent i = getIntent();
         email = i.getStringExtra("email");

@@ -1,6 +1,7 @@
 package com.example.tqt_quiz.presentation.presenter;
 
 import android.util.Log;
+import android.util.Patterns;
 
 import com.example.tqt_quiz.data.interactor.AuthInteractorIMP;
 import com.example.tqt_quiz.domain.dto.ForgotPasswordRequestDTO;
@@ -19,6 +20,11 @@ public class ForgotPasswordPresenter implements ForgotPasswordContract.IPresente
 
     @Override
     public void onClickContinue(String email) {
+        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches())
+        {
+            view.showMessage("Email không đúng đ̣ịnh dạng");
+            return;
+        }
         authInteract.ForgotPassword(new ForgotPasswordRequestDTO(email), view.getTheContext(), new IAuthInteract.ForgotPasswordCallBack() {
             @Override
             public void onSuccess() {

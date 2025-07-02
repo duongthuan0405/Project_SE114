@@ -52,6 +52,8 @@ public class ChangePassword extends AppCompatActivity implements ChangePasswordC
         Save = findViewById(R.id.btn_continue_forgot_password);
         Title = findViewById(R.id.tv_title_forgot_password);
 
+
+
         //Thay đổi nội dung
         ((TextInputLayout)findViewById(R.id.til_email_token)).setHint("Nhập mật khẩu cũ");
         Save.setText("Lưu");

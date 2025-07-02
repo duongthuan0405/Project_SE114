@@ -1,6 +1,7 @@
 package com.example.tqt_quiz.presentation.presenter;
 
 import android.text.TextUtils;
+import android.util.Patterns;
 
 import com.example.tqt_quiz.data.interactor.AuthInteractorIMP;
 import com.example.tqt_quiz.domain.dto.RegisterRequest;
@@ -25,6 +26,12 @@ public class RegisterPresenter implements RegisterContract.IPresenter {
 
         if (!password.equals(confirmPassword)) {
             view.showRegisterError("Mật khẩu không khớp.");
+            return;
+        }
+
+        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches())
+        {
+            view.showRegisterError("Email không đúng định dạng");
             return;
         }
 

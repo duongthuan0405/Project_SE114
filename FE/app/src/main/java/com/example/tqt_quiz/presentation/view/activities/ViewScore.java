@@ -111,10 +111,32 @@ public class ViewScore extends AppCompatActivity implements ViewScoreContract.IV
 
             tvName.setText(a.getAccount().getFullName());
             float score = (float)a.getTotalCorrectAnswer() / a.getTotalQuestions() * 10;
-            tvScore.setText(String.format("%.1f", score));
-            StaticClass.setImage(imgAvatar, a.getAccount().getAvatar(), R.drawable.resource_default);
-            llScoreList.addView(scoreItem);
-            tvCorrectAnswer.setText(String.format("Kết quả: %d / %d", a.getTotalCorrectAnswer(), a.getTotalQuestions()));
+            int totalCorrect = a.getTotalCorrectAnswer();
+
+            if(a.getStartAt() == null)
+            {
+                tvTimeToDo.setText("Thời gian: Chưa tham gia");
+                tvTimeToDo.setTextColor(Color.parseColor("#F44336"));
+                score = 0;
+                totalCorrect = 0;
+            }
+            else if(a.getFinishAt() == null)
+            {
+                tvTimeToDo.setText("Thời gian: Chưa nộp bài");
+                tvTimeToDo.setTextColor(Color.parseColor("#F28705"));
+                score = 0;
+                totalCorrect = 0;
+            }
+            else
+            {
+                Duration d = Duration.between(a.getStartAt(), a.getFinishAt());
+                long totalSecs = d.getSeconds();
+                long hours = totalSecs / 3600;
+                long mins = (totalSecs - hours * 3600) / 60;
+                long sec = totalSecs - hours * 3600 - mins * 60;
+                tvTimeToDo.setText(String.format("Thời gian: %d giờ %d phút %d giây", hours, mins, sec ));
+            }
+
             if(score < 5f)
             {
                 tvScore.setBackgroundResource(R.drawable.bg_status_ended);
@@ -128,26 +150,10 @@ public class ViewScore extends AppCompatActivity implements ViewScoreContract.IV
                 tvScore.setBackgroundResource(R.drawable.btn_rectangle_green);
             }
 
-
-            if(a.getStartAt() == null)
-            {
-                tvTimeToDo.setText("Thời gian: Chưa tham gia");
-                tvTimeToDo.setTextColor(Color.parseColor("#F44336"));
-            }
-            else if(a.getFinishAt() == null)
-            {
-                tvTimeToDo.setText("Thời gian: Chưa nộp bài");
-                tvTimeToDo.setTextColor(Color.parseColor("#F28705"));
-            }
-            else
-            {
-                Duration d = Duration.between(a.getStartAt(), a.getFinishAt());
-                long totalSecs = d.getSeconds();
-                long hours = totalSecs / 3600;
-                long mins = (totalSecs - hours * 3600) / 60;
-                long sec = totalSecs - hours * 3600 - mins * 60;
-                tvTimeToDo.setText(String.format("Thời gian: %d giờ %d phút %d giây", hours, mins, sec ));
-            }
+            tvScore.setText(String.format("%.1f", score));
+            StaticClass.setImage(imgAvatar, a.getAccount().getAvatar(), R.drawable.resource_default);
+            llScoreList.addView(scoreItem);
+            tvCorrectAnswer.setText(String.format("Kết quả: %d / %d", totalCorrect, a.getTotalQuestions()));
 
         }
     }
