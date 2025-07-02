@@ -3,6 +3,7 @@ package com.example.tqt_quiz.presentation.view.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -80,17 +81,19 @@ public class Login extends AppCompatActivity implements LoginContract.IView {
                 }
         );
 
-        //Thao tác Login Click
         btn_Login.setOnClickListener(v -> {
             String email = edt_Email.getText().toString();
             String password = edt_Password.getText().toString();
+            if(!Patterns.EMAIL_ADDRESS.matcher(email).matches())
+            {
+                showLoginError("Email không đúng định dạng");
+                return;
+            }
             presenter.LoginClick(email, password);
         });
 
-        //Thao tác Register Click
         tv_Register.setOnClickListener(v -> presenter.RegisterClick());
 
-        //Thao tác ForgotPw Click
         tv_ForgotPw.setOnClickListener(v -> presenter.ForgotPasswordClick());
 
         
