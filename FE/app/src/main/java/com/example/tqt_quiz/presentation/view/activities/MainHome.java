@@ -51,10 +51,6 @@ public class MainHome extends AppCompatActivity {
                     tab.setIcon(R.drawable.tab_quiz_selector);
                     break;
                 case 2:
-                    tab.setText("Thông báo");
-                    tab.setIcon(R.drawable.tab_notifications_selector);
-                    break;
-                case 3:
                     tab.setText("Tài khoản");
                     tab.setIcon(R.drawable.tab_profile_selector);
                     break;

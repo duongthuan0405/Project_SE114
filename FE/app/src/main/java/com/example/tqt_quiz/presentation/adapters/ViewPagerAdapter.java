@@ -7,7 +7,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.tqt_quiz.data.repository.RoleManager;
 import com.example.tqt_quiz.presentation.view.fragments.CourseFragment;
-import com.example.tqt_quiz.presentation.view.fragments.NotificationFragment;
 import com.example.tqt_quiz.presentation.view.fragments.ProfileFragment;
 import com.example.tqt_quiz.presentation.view.fragments.QuizFragment;
 import com.example.tqt_quiz.presentation.view.fragments.CourseFragmentSt;
@@ -30,7 +29,6 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
         {
             list.add(new CourseFragment());
             list.add(new QuizFragment());
-            list.add(new NotificationFragment());
             list.add(new ProfileFragment());
         }
 
@@ -38,7 +36,6 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
         {
             list.add(new CourseFragmentSt());
             list.add(new QuizFragmentSt());
-            list.add(new NotificationFragment());
             list.add(new ProfileFragment());
         }
 
