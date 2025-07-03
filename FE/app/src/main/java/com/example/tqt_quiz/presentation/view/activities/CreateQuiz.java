@@ -387,7 +387,7 @@ public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 d = dayOfMonth;
-                M = month;
+                M = month + 1;
                 y = year;
 
                 TimePickerDialog time = new TimePickerDialog(CreateQuiz.this, new TimePickerDialog.OnTimeSetListener() {
@@ -402,7 +402,7 @@ public class CreateQuiz extends AppCompatActivity implements CreateQuizContract.
 
                 time.show();
             }
-        }, defaultDateTime.getYear(), defaultDateTime.getMonthValue(), defaultDateTime.getDayOfMonth());
+        }, defaultDateTime.getYear(), defaultDateTime.getMonthValue() - 1, defaultDateTime.getDayOfMonth());
 
         date.show();
     }
